@@ -1,0 +1,48 @@
+language: python
+
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+
+cache:
+  - pip
+
+# Use unstable R packages
+addons:
+  apt:
+    sources:
+      - debian-sid
+    update: true
+
+before_install:
+  - sudo apt-get -yq --allow-unauthenticated install r-base r-base-dev
+  - sudo Rscript -e 'install.packages("diveMove")'
+
+install:
+  - pip install -r requirements.txt
+  - pip install .
+
+script:
+  - pytest -v skdiveMove/tests
+
+after_success:
+  - pip install .["docs"]
+  - make -C docs/ html
+  - touch docs/build/html/.nojekyll
+
+jobs:
+  include:
+    - stage: GitHub Pages
+      python: "3.8"
+      script: skip
+      deploy:
+        provider: pages:git
+        verbose: true
+        token: $GITHUB_TOKEN
+        edge: true
+        local_dir: ./docs/build/html
+        keep_history: false
+        on:
+          branch: master
+        target_branch: gh-pages

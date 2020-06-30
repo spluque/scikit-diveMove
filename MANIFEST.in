@@ -1,0 +1,2 @@
+recursive-include docs/build/html *
+recursive-include docs/build/latex *

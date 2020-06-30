@@ -1,0 +1,113 @@
+=================================
+ scikit-diveMove Documentation
+=================================
+
+`scikit-diveMove` is a Python interface to R package `diveMove`_ for
+scientific data analysis, with a focus on diving behaviour analysis.  It
+has utilities to represent, visualize, filter, analyse, and summarize
+time-depth recorder (TDR) data.  Miscellaneous functions for handling
+location data are also provided.
+
+.. _diveMove: https://github.com/spluque/diveMove
+
+`scikit-diveMove` is hosted at https://github.com/spluque/scikit-diveMove
+
+
+Installation
+============
+
+At some point, it will be possible to install `skdiveMove` by typing the
+following at a terminal command line:
+
+.. code-block:: sh
+
+   pip install scikit-kinematics
+
+In the meantime, please install from the source files by typing the
+following at the command line:
+
+.. code-block:: sh
+
+   python setup.py install
+
+Once installed, `skdiveMove` can be easily imported as: ::
+
+  import skdiveMove as skdive
+
+
+Dependencies
+------------
+
+`skdiveMove` depends primarily on ``R`` package `diveMove`, which must be
+installed and available to the user running Python.  If needed, install
+`diveMove` at the ``R`` prompt:
+
+.. code-block:: R
+
+   install.packages("diveMove")
+
+The following Python packages must be installed:
+
+  - `rpy2` (> 3.3)
+  - `pandas` (> 1.0)
+  - `numpy` (> 1.19.0)
+  - `matplotlib` (> 3.2)
+
+
+Testing
+=======
+
+The `skdiveMove` package can be tested with `unittest`:
+
+.. code-block:: sh
+
+   python -m unittest -v skdiveMove/tests
+
+or `pytest`:
+
+.. code-block:: sh
+
+   pytest -v skdiveMove/tests
+
+
+Development
+===========
+
+Developers and hackers can clone the project from Github:
+
+.. code-block:: sh
+
+   git clone https://github.com/spluque/scikit-diveMove.git .
+
+and then install with:
+
+.. code-block:: sh
+
+   pip install -e .["dev"]
+
+
+Modules
+=======
+
+.. toctree::
+   :maxdepth: 2
+
+   tdr
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+
+.. note::
+
+   | *Author:* Sebastian Luque
+   | *Version:* 0.0.1
+   | *Date:* July 2020
+   | *email:* spluque@gmail.com
+   | *Copyright (c):* 2020, Sebastian Luque. All rights reserved.
+   | *Licence:* GNU General Public License v3 (GPLv3)
