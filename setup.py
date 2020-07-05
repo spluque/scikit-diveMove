@@ -3,8 +3,11 @@ from skdiveMove import __license__, __version__
 
 
 def readme():
+    """Remove raw directives at the top of README.rst"""
     with open('README.rst') as f:
-        return f.read()
+        lines = f.readlines()[10:]
+
+    return("".join(lines))
 
 
 def get_requirements():
@@ -24,8 +27,6 @@ setup(
     packages=PACKAGES,
     # include_package_data=True,
     # package_data={'tests': ["*.txt", "*.csv", "*.BIN"]},
-    # Project uses reStructuredText, so ensure that the docutils get
-    # installed or upgraded on the target machine
     install_requires=REQUIREMENTS,
     extras_require={
         "dev": ["ipython", "jupyter", "jupyter-sphinx"],
@@ -36,6 +37,7 @@ setup(
     author_email="spluque@gmail.com",
     description="Python interface to R package diveMove",
     long_description=readme(),
+    long_description_content_type="text/x-rst",
     license=__license__,
     download_url="https://github.com/spluque/scikit-diveMove",
     keywords=["animal behaviour", "biology", "behavioural ecology",

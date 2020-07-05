@@ -8,5 +8,5 @@ from .tdr import TDR            # noqa: F401
 
 __author__ = "Sebastian Luque <spluque@gmail.com>"
 __license__ = "AGPLv3"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __all__ = ["TDR"]

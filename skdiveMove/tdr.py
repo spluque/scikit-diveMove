@@ -322,9 +322,9 @@ class TDR:
         method : {"filter", "offset"}
             Name of method to use for zero offset correction.
         **kwargs : optional keyword arguments
-            - methods ‘filter’: (‘k’, ‘probs’, ‘depth_bounds’ (defaults to
-              range), ‘na_rm’ (defaults to True)).
-            - method ‘offset’: (‘offset’).
+            - methods 'filter': ('k', 'probs', 'depth_bounds' (defaults to
+              range), 'na_rm' (defaults to True)).
+            - method 'offset': ('offset').
 
         Notes
         -----
@@ -761,9 +761,9 @@ class TDR:
         knot_factor : int, optional
         descent_crit_q, ascent_crit_q : float, optional
         **kwargs : optional keyword arguments passed to ``zoc`` method
-            - methods ‘filter’: (‘k’, ‘probs’, ‘depth.bounds’ (defaults to
-              range), ‘na.rm’ (defaults to TRUE)).
-            - method ‘offset’: (‘offset’).
+            - methods 'filter': ('k', 'probs', 'depth_bounds' (defaults to
+              range), 'na_rm' (defaults to True)).
+            - method 'offset': ('offset').
 
         Notes
         -----
