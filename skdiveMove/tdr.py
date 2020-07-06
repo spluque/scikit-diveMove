@@ -33,7 +33,7 @@ from rpy2.robjects.packages import importr
 import rpy2.robjects as robjs
 import rpy2.robjects.conversion as cv
 from rpy2.robjects import pandas2ri
-from skdiveMove.plotting import plotTDR, _plotZOCfilters
+import skdiveMove.plotting as plotting
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
@@ -161,6 +161,34 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
     return(res)
 
 
+def _get_dive_indices(indices, diveNo):
+    """Mapping to diveMove's `.diveIndices`"""
+    rstr = """diveIDXFun <- diveMove:::.diveIndices"""
+    dive_idx_fun = robjs.r(rstr)
+    with cv.localconverter(robjs.default_converter +
+                           pandas2ri.converter):
+        # Subtract 1 for zero-based python
+        idx_ok = dive_idx_fun(indices, diveNo) - 1
+
+    return(idx_ok)
+
+
+def read_diveMove_data():
+    """Create at `TDR` instance from diveMove example data set
+
+    Returns
+    -------
+    `TDR`
+
+    """
+    rstr = ("""system.file(file.path("data", "dives.csv"), """
+            """package="diveMove", mustWork=TRUE)""")
+    data_path = robjs.r(rstr)[0]
+    tdrX = TDR(data_path, sep=";", compression="bz2")
+
+    return(tdrX)
+
+
 class TDR:
     """Base class encapsulating TDR objects and processing
 
@@ -185,7 +213,7 @@ class TDR:
         float}.
     dives : dict
         Dictionary of dive activity data {'row_ids': pandas.DataFrame,
-        'model': str, 'splines': <R>, 'crit_vals': pandas.DataFrame}.
+        'model': str, 'splines': dict, 'crit_vals': pandas.DataFrame}.
 
     """
 
@@ -284,34 +312,6 @@ class TDR:
         return(objclass + src + itv + nsamples + beg + end + dur +
                drange + others + zocm)
 
-    def plot(self, concur_vars=None, concur_var_titles=None, **kwargs):
-        """Plot TDR object
-
-        Parameters
-        ----------
-        concur_vars : str or list, optional
-            String or list of strings with names of columns in input to
-            select additional data to plot.
-        concur_var_titles : str or list, optional
-            String or list of strings with y-axis labels for `concur_vars`.
-        **kwargs : optional keyword arguments
-            Arguments passed to ``plotTDR``.
-
-        """
-        try:
-            depth = self.get_depth("zoc")
-        except IndexError:
-            depth = self.get_depth("measured")
-
-        if concur_vars is None:
-            plotTDR(depth, **kwargs)
-        elif concur_var_titles is None:
-            plotTDR(depth, concur_vars=self.tdr[concur_vars],
-                    **kwargs)
-        else:
-            plotTDR(depth, concur_vars=self.tdr.loc[:, concur_vars],
-                    concur_var_titles=concur_var_titles, **kwargs)
-
     def zoc(self, method="filter", **kwargs):
         """Zero offset correction
 
@@ -359,23 +359,6 @@ class TDR:
         self.zoc_pars["method"] = method
         self.zoc_pars["depth_zoc"] = depth_zoc
         self.zoc_pars["filters"] = zoc_filters
-
-    def plotZOCfilters(self, xlim=None, ylim=None, ylab="Depth [m]"):
-        """Plot zero offset correction filters
-
-        Parameters
-        ----------
-        xlim, ylim : 2-tuple/list, optional
-            Minimum and maximum limits for ``x``- and ``y``-axis,
-            respectively.
-        ylab : str, optional
-            Label for ``y`` axis.
-
-        """
-        if self.zoc_pars["method"] == "filter":
-            depth = self.get_depth("measured")
-            zoc_filters = self.zoc_pars["filters"]
-            _plotZOCfilters(depth, zoc_filters, xlim, ylim, ylab)
 
     def detect_wet(self, dry_thr=70, wet_cond=None, wet_thr=3610,
                    interp_wet=False):
@@ -514,15 +497,23 @@ class TDR:
                 dive_phases.loc[grp.index] = (res.pop("label.matrix")[:, 1])
                 # Splines
                 spl = res.pop("dive.spline")
-                spl_list.append(spl)
+                # Convert directly into a dict, with each element turned
+                # into a list of R objects.  Access each via
+                # `_get_dive_spline_slot`
+                spl_dict = dict(zip(spl.names, list(spl)))
+                spl_list.append(spl_dict)
                 # Spline derivatives
                 spl_der = res.pop("spline.deriv")
+                spl_der_idx = pd.TimedeltaIndex(spl_der[:, 0], unit="s")
                 spl_der = pd.DataFrame({'y': spl_der[:, 1]},
-                                       index=spl_der[:, 0])
+                                       index=spl_der_idx)
                 spl_der_list.append(spl_der)
                 # Critical values (all that's left in res)
                 cvals = pd.DataFrame(res, index=[name])
                 cvals.index.rename("dive_id", inplace=True)
+                # Adjust critical indices for Python convention and ensure
+                # integers
+                cvals.iloc[:, :2] = cvals.iloc[:, :2].astype(int) - 1
                 cval_list.append(cvals)
 
             self.dives["model"] = dive_model
@@ -536,6 +527,93 @@ class TDR:
 
         else:
             logger.warning("No dives found")
+
+    def calibrate(self, zoc_method="filter", dry_thr=70, wet_cond=None,
+                  wet_thr=3610, interp_wet=False, dive_thr=4,
+                  dive_model="unimodal", smooth_par=0.1, knot_factor=3,
+                  descent_crit_q=0, ascent_crit_q=0, **kwargs):
+        """Calibrate TDR object
+
+        Convenience method to set all instance attributes.
+
+        Parameters
+        ----------
+        zoc_method : {"filter", "offset"}, optional
+            Name of method to use for zero offset correction.
+        dry_thr : float, optional
+        wet_cond : bool mask, optional
+        wet_thr : float, optional
+        dive_thr : float, optional
+        dive_model : {"unimodal", "smooth.spline"}, optional
+        smooth_par : float, optional
+        knot_factor : int, optional
+        descent_crit_q, ascent_crit_q : float, optional
+        **kwargs : optional keyword arguments passed to ``zoc`` method
+            - methods 'filter': ('k', 'probs', 'depth_bounds' (defaults to
+              range), 'na_rm' (defaults to True)).
+            - method 'offset': ('offset').
+
+        Notes
+        -----
+        This method is homologous to diveMove's ``calibrateDepth`` function.
+
+        """
+        self.zoc(zoc_method, **kwargs)
+        self.detect_wet(dry_thr=dry_thr, wet_cond=wet_cond, wet_thr=wet_thr,
+                        interp_wet=interp_wet)
+        self.detect_dives(dive_thr)
+        self.detect_dive_phases(dive_model=dive_model,
+                                smooth_par=smooth_par,
+                                knot_factor=knot_factor,
+                                descent_crit_q=descent_crit_q,
+                                ascent_crit_q=ascent_crit_q)
+
+    def plot(self, concur_vars=None, concur_var_titles=None, **kwargs):
+        """Plot TDR object
+
+        Parameters
+        ----------
+        concur_vars : str or list, optional
+            String or list of strings with names of columns in input to
+            select additional data to plot.
+        concur_var_titles : str or list, optional
+            String or list of strings with y-axis labels for `concur_vars`.
+        **kwargs : optional keyword arguments
+            Arguments passed to ``plotTDR``.
+
+        """
+        try:
+            depth = self.get_depth("zoc")
+        except IndexError:
+            depth = self.get_depth("measured")
+
+        if concur_vars is None:
+            plotting.plotTDR(depth, **kwargs)
+        elif concur_var_titles is None:
+            plotting.plotTDR(depth, concur_vars=self.tdr[concur_vars],
+                             **kwargs)
+        else:
+            plotting.plotTDR(depth,
+                             concur_vars=self.tdr.loc[:, concur_vars],
+                             concur_var_titles=concur_var_titles,
+                             **kwargs)
+
+    def plotZOCfilters(self, xlim=None, ylim=None, ylab="Depth [m]"):
+        """Plot zero offset correction filters
+
+        Parameters
+        ----------
+        xlim, ylim : 2-tuple/list, optional
+            Minimum and maximum limits for ``x``- and ``y``-axis,
+            respectively.
+        ylab : str, optional
+            Label for ``y`` axis.
+
+        """
+        if self.zoc_pars["method"] == "filter":
+            depth = self.get_depth("measured")
+            zoc_filters = self.zoc_pars["filters"]
+            plotting._plotZOCfilters(depth, zoc_filters, xlim, ylim, ylab)
 
     def plot_phases(self, diveNo=None, concur_vars=None,
                     concur_var_titles=None, surface=False, **kwargs):
@@ -591,14 +669,9 @@ class TDR:
             details_df = pd.concat((row_ids.loc[[sfce0_idx]], row_ids[isin]),
                                    axis=0)
         else:
-            rstr = """diveIDXFun <- diveMove:::.diveIndices"""
-            dive_idx_fun = robjs.r(rstr)
-            with cv.localconverter(robjs.default_converter +
-                                   pandas2ri.converter):
-                # Subtract 1 for zero-based python
-                idx_ok = dive_idx_fun(dive_ids, diveNo) - 1
-                dives_df = dives_all.iloc[idx_ok, :]
-                details_df = row_ids.iloc[idx_ok, :]
+            idx_ok = _get_dive_indices(dive_ids, diveNo)
+            dives_df = dives_all.iloc[idx_ok, :]
+            details_df = row_ids.iloc[idx_ok, :]
 
         wet_all = self.get_wet_activity("phases")
         wetdry_labs = wet_all.groupby("phase_id").nth(1)
@@ -615,17 +688,18 @@ class TDR:
             dry_time = None
 
         if concur_vars is None:
-            plotTDR(dives_df.iloc[:, 0],
-                    phase_cat=details_df["dive.phase"],
-                    dry_time=dry_time, **kwargs)
+            plotting.plotTDR(dives_df.iloc[:, 0],
+                             phase_cat=details_df["dive.phase"],
+                             dry_time=dry_time, **kwargs)
         else:
-            plotTDR(dives_df.iloc[:, 0], concur_vars=dives_df.iloc[:, 1:],
-                    concur_var_titles=concur_var_titles,
-                    phase_cat=details_df["dive.phase"],
-                    dry_time=dry_time, **kwargs)
+            plotting.plotTDR(dives_df.iloc[:, 0],
+                             concur_vars=dives_df.iloc[:, 1:],
+                             concur_var_titles=concur_var_titles,
+                             phase_cat=details_df["dive.phase"],
+                             dry_time=dry_time, **kwargs)
 
     def plot_dive_model(self, diveNo=None, **kwargs):
-        """Plot dive model for selected dives
+        """Plot dive model for selected dive
 
         Parameters
         ----------
@@ -634,12 +708,44 @@ class TDR:
         **kwargs : optional keyword arguments
 
         """
-        if diveNo is None:
-            pass
-        else:
-            diveNo = sorted(diveNo)
+        dive_ids = self.get_dive_details("row_ids", "dive.id")
+        crit_vals = self.get_dive_details("crit_vals").loc[diveNo]
+        idxs = _get_dive_indices(dive_ids, diveNo)
+        depth = self.get_depth("zoc").iloc[idxs]
+        depth_s = self._get_dive_spline_slot(diveNo, "xy")
+        depth_deriv = self.get_dive_details("spline_derivs").loc[diveNo]
 
-        pass
+        # Index with time stamp
+        if depth.shape[0] < 4:
+            depth_s_idx = pd.date_range(depth.index[0], depth.index[-1],
+                                        periods=depth_s.shape[0],
+                                        tz=depth.index.tz)
+            depth_s = pd.Series(depth_s.to_numpy(), index=depth_s_idx)
+            dderiv_idx = pd.date_range(depth.index[0], depth.index[-1],
+                                       periods=depth_deriv.shape[0],
+                                       tz=depth.index.tz)
+            # Extract only the series and index with time stamp
+            depth_deriv = pd.Series(depth_deriv["y"].to_numpy(),
+                                    index=dderiv_idx)
+        else:
+            depth_s = pd.Series(depth_s.to_numpy(),
+                                index=depth.index[0] + depth_s.index)
+            # Extract only the series and index with time stamp
+            depth_deriv = pd.Series(depth_deriv["y"].to_numpy(),
+                                    index=depth.index[0] + depth_deriv.index)
+
+        # Force integer again as `loc` coerced to float above
+        d_crit = crit_vals["descent.crit"].astype(int)
+        a_crit = crit_vals["ascent.crit"].astype(int)
+        d_crit_rate = crit_vals["descent.crit.rate"]
+        a_crit_rate = crit_vals["ascent.crit.rate"]
+        title = "Dive: {:d}".format(diveNo)
+        plotting.plot_dive_model(depth, depth_s=depth_s,
+                                 depth_deriv=depth_deriv,
+                                 d_crit=d_crit, a_crit=a_crit,
+                                 d_crit_rate=d_crit_rate,
+                                 a_crit_rate=a_crit_rate,
+                                 leg_title=title, **kwargs)
 
     def get_wet_activity(self, key, columns=None):
         """Accessor for the ``wet_act`` attribute
@@ -684,7 +790,7 @@ class TDR:
         key : {"row_ids", "model", "splines", "spline_derivs", crit_vals}
             Name of the key to retrieve.
         columns : array_like, optional
-            Names of the columns of the dataframe in `key`.
+            Names of the columns of the dataframe in `key`, when applicable.
 
         """
         try:
@@ -740,45 +846,40 @@ class TDR:
 
         return(odepth)
 
-    def calibrate(self, zoc_method="filter", dry_thr=70, wet_cond=None,
-                  wet_thr=3610, interp_wet=False, dive_thr=4,
-                  dive_model="unimodal", smooth_par=0.1, knot_factor=3,
-                  descent_crit_q=0, ascent_crit_q=0, **kwargs):
-        """Calibrate TDR object
+    def _get_dive_spline_slot(self, diveNo, name):
+        """Accessor for the R objects in `dives`["splines"]
 
-        Convenience method to set all instance attributes.
+        Private method to retrieve elements easily.  Elements can be
+        accessed individually as is, but some elements are handled
+        specially.
 
         Parameters
         ----------
-        zoc_method : {"filter", "offset"}, optional
-            Name of method to use for zero offset correction.
-        dry_thr : float, optional
-        wet_cond : bool mask, optional
-        wet_thr : float, optional
-        dive_thr : float, optional
-        dive_model : {"unimodal", "smooth.spline"}, optional
-        smooth_par : float, optional
-        knot_factor : int, optional
-        descent_crit_q, ascent_crit_q : float, optional
-        **kwargs : optional keyword arguments passed to ``zoc`` method
-            - methods 'filter': ('k', 'probs', 'depth_bounds' (defaults to
-              range), 'na_rm' (defaults to True)).
-            - method 'offset': ('offset').
-
-        Notes
-        -----
-        This method is homologous to diveMove's ``calibrateDepth`` function.
+        diveNo : int or float
+            Which dive number to retrieve spline details for.
+        name : str
+            Element to retrieve. {"data", "xy", "knots", "coefficients",
+            "order", "lambda.opt", "sigmasq", "degree", "g", "a", "b",
+            "variter"}
 
         """
-        self.zoc(zoc_method, **kwargs)
-        self.detect_wet(dry_thr=dry_thr, wet_cond=wet_cond, wet_thr=wet_thr,
-                        interp_wet=interp_wet)
-        self.detect_dives(dive_thr)
-        self.detect_dive_phases(dive_model=dive_model,
-                                smooth_par=smooth_par,
-                                knot_factor=knot_factor,
-                                descent_crit_q=descent_crit_q,
-                                ascent_crit_q=ascent_crit_q)
+        # Safe to assume these are all scalars, based on the current
+        # default settings in diveMove's `.cutDive`
+        scalars = ["order", "lambda.opt", "sigmasq", "degree",
+                   "g", "a", "b", "variter"]
+        idata = self.get_dive_details("splines")[diveNo]
+        if name == "data":
+            x = pd.TimedeltaIndex(np.array(idata[name][0]), unit="s")
+            odata = pd.Series(np.array(idata[name][1]), index=x)
+        elif name == "xy":
+            x = pd.TimedeltaIndex(np.array(idata["x"]), unit="s")
+            odata = pd.Series(np.array(idata["y"]), index=x)
+        elif name in scalars:
+            odata = np.float(idata[name][0])
+        else:
+            odata = np.array(idata[name])
+
+        return(odata)
 
 
 if __name__ == '__main__':

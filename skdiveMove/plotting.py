@@ -5,6 +5,9 @@
 import warnings
 import pandas as pd
 import matplotlib.pyplot as plt
+from pandas.plotting import register_matplotlib_converters
+
+register_matplotlib_converters()
 
 _FIGSIZE = (15, 12)
 
@@ -18,6 +21,11 @@ def _night(times, sunrise_time, sunset_time):
         (N,) array with depth measurements.
     sunrise_time : str
     sunset_time : str
+
+    Returns
+    -------
+    tuple
+        Two pandas.Series (sunsets, sunrises)
 
     """
     tmin = times.min().strftime("%Y-%m-%d ")
@@ -89,6 +97,11 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
     phase_cat : pandas.Series, optional
         Categorical series dividing rows into sections.
     **kwargs : optional keyword arguments
+
+    Returns
+    -------
+    tuple
+        Pyplot Figure and Axes instances.
 
     """
     sunsets, sunrises = _night(depth.index,
@@ -183,6 +196,11 @@ def _plotZOCfilters(depth, zoc_filters, xlim=None, ylim=None,
     ylab : str
         Label for `y` axis.
 
+    Returns
+    -------
+    tuple
+        Pyplot Figure and Axes instances.
+
     """
     nfilters = zoc_filters.shape[1]
     npanels = 3
@@ -228,60 +246,90 @@ def _plotZOCfilters(depth, zoc_filters, xlim=None, ylim=None,
     axs[2].set_xlabel("")
     fig.tight_layout()
 
+    return(fig, axs)
 
-def plot_dive_model(x, y, times_s, depths_s, d_crit, a_crit,
-                    times_deriv, depths_deriv, d_crit_rate, a_crit_rate,
-                    diveNo=1):
+
+def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
+                    d_crit_rate, a_crit_rate, leg_title=None):
     """Plot dive model
 
     Parameters
     ----------
-    x : array_like
-      Array of time step observations.
-    y : array_like
-      Array of depth observations at each time step in `x`.
-    times_s : array_like
-      Array of time steps used to generate the smoothing spline
-      (i.e. knots).
-    depths_s : array_like
-      Array with smoothed depth along `times_s`.
+    x : pandas.Series
+      Time-indexed depth measurements.
+    depth_s : pandas.Series
+      Time-indexed smoothed depth.
+    depth_deriv : pandas.Series
+      Time-indexed derivative of depth smoothing spline.
     d_crit : int
       Integer denoting the index where the descent ends in the observed
       time series.
     a_crit : int
       Integer denoting the index where the ascent begins in the observed
       time series.
-    times_deriv : array_like
-      Array with the time steps where the derivative of the smoothing
-      spline was evaluated.
-    depths_deriv : array_like
-      Array with the derivative of the smoothing spline evaluated at
-      `times_deriv`.
     d_crit_rate : float
       Vertical rate of descent corresponding to the quantile used.
     a_crit_rate :
       Vertical rate of ascent corresponding to the quantile used.
-    diveNo : int, optional
-      Integer for labelling the dive number being plotted.
+    leg_title : str, optional
+      Title for the plot legend (e.g. dive number being plotted).
+
+    Returns
+    -------
+    tuple
+        Pyplot Figure and Axes instances.
 
     Notes
     -----
     The function is homologous to diveMove's plotDiveModel.
 
     """
-    pass
+    d_crit_time = x.index[d_crit]
+    a_crit_time = x.index[a_crit]
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    ax1, ax2 = axs
+    ax1.invert_yaxis()
+    ax1.set_ylabel("Depth")
+    ax2.set_ylabel("First derivative")
+
+    ax1.plot(x, marker="o", linewidth=0.7, color="k", label="input")
+    ax1.plot(depth_s, "--", label="smooth")
+    ax1.plot(x.iloc[:d_crit + 1], color="C1", label="descent")
+    ax1.plot(x.iloc[a_crit:], color="C2", label="ascent")
+    ax1.legend(loc="upper center", title=leg_title, ncol=2)
+
+    ax2.plot(depth_deriv, linewidth=0.5, color="k")  # derivative
+    dstyle = dict(marker=".", linestyle="None")
+    ax2.plot(depth_deriv[depth_deriv > d_crit_rate].loc[:d_crit_time],
+             color="C1", **dstyle)  # descent
+    ax2.plot(depth_deriv[depth_deriv < a_crit_rate].loc[a_crit_time:],
+             color="C2", **dstyle)  # ascent
+    qstyle = dict(linestyle="--", linewidth=0.5, color="k")
+    ax2.axhline(d_crit_rate, **qstyle)
+    ax2.axhline(a_crit_rate, **qstyle)
+    ax2.axvline(d_crit_time, **qstyle)
+    ax2.axvline(a_crit_time, **qstyle)
+    # Text annotation
+    qiter = zip(x.index[[0, 0]],
+                [d_crit_rate, a_crit_rate],
+                [r"descent $\hat{q}$", r"ascent $\hat{q}$"],
+                ["bottom", "top"])
+    for xpos, qval, txt, valign in qiter:
+        ax2.text(xpos, qval, txt, va=valign)
+
+    titer = zip([d_crit_time, a_crit_time], [0, 0],
+                ["descent", "ascent"],
+                ["right", "left"])
+    for ttime, ypos, txt, halign in titer:
+        ax2.text(ttime, ypos, txt, ha=halign)
+
+    return(fig, (ax1, ax2))
 
 
 if __name__ == '__main__':
-    from tdr import TDR
+    from .tdr import TDR
     tdr = TDR(("/home/sluque/Scripts/R/src/diveMove/diveMove"
                "/data/dives.csv"), sep=";", compression="bz2")
-    # print(tdr)
-    # beg, end = _night(tdr.tdr.index, sunset_time="18:00",
-    #                   sunrise_time="06:00")
-    # plotTDR(tdr.tdr["depth"], tdr.tdr[["speed", "light"]], style=".-")
-    # plt.show()
-
     tdr.zoc("offset", offset=3)
     tdr.detect_wet()
     tdr.detect_dives(3)
