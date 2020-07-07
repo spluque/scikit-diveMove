@@ -18,7 +18,7 @@ def get_requirements():
 
 
 REQUIREMENTS = get_requirements()
-PACKAGES = ["skdiveMove"]
+PACKAGES = ["skdiveMove", "skdiveMove.tests"]
 
 setup(
     name="scikit-diveMove",
