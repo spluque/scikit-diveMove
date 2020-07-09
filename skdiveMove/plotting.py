@@ -327,18 +327,19 @@ def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
 
 
 if __name__ == '__main__':
-    from .tdr import TDR
-    tdr = TDR(("/home/sluque/Scripts/R/src/diveMove/diveMove"
-               "/data/dives.csv"), sep=";", compression="bz2")
-    tdr.zoc("offset", offset=3)
-    tdr.detect_wet()
-    tdr.detect_dives(3)
-    tdr.detect_dive_phases("unimodal", descent_crit_q=0.01,
-                           ascent_crit_q=0, knot_factor=20)
-    ccdata = tdr.tdr["speed"]
-    depth = tdr.get_depth("zoc")
-    wet_df = tdr.get_wet_activity("phases")
-    dives_detail = tdr.get_dive_details("row_ids")
+    from .tdr import get_diveMove_sample_data
+    tdrX = get_diveMove_sample_data()
+    print(tdrX)
+
+    tdrX.zoc("offset", offset=3)
+    tdrX.detect_wet()
+    tdrX.detect_dives(3)
+    tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
+                            ascent_crit_q=0, knot_factor=20)
+    ccdata = tdrX.tdr["speed"]
+    depth = tdrX.get_depth("zoc")
+    wet_df = tdrX.get_wet_activity("phases")
+    dives_detail = tdrX.get_dive_details("row_ids")
 
     plotTDR(depth, dry_time=wet_df["phase_label"],
             phase_cat=dives_detail["dive.phase"])

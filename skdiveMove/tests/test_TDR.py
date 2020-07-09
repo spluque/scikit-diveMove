@@ -6,6 +6,7 @@ import unittest as ut
 # import numpy.testing as npt
 from pandas import Series, DataFrame
 import skdiveMove as skdive
+from skdiveMove.tdr import get_diveMove_sample_data
 
 
 class TestTDR(ut.TestCase):
@@ -13,11 +14,8 @@ class TestTDR(ut.TestCase):
 
     """
     def setUp(self):
-        rstr = ("""system.file(file.path("data", "dives.csv"), """
-                """package="diveMove", mustWork=TRUE)""")
-        data_path = skdive.tdr.robjs.r(rstr)[0]
         # An instance to work with
-        self.tdrX = skdive.TDR(data_path, sep=";", compression="bz2")
+        self.tdrX = get_diveMove_sample_data()
         self.default_pars = {"offset_zoc": 3,
                              "dry_thr": 70,
                              "wet_thr": 3610,
@@ -93,6 +91,34 @@ class TestTDR(ut.TestCase):
                                      ascent_crit_q=ascent_crit_q)
         dive_model_tdrX = self.tdrX.get_dive_details("model")
         self.assertEqual(dive_model, dive_model_tdrX)
+        crit_vals = self.tdrX.get_dive_details("crit_vals")
+        self.assertIsInstance(crit_vals, DataFrame)
+        self.assertEqual(crit_vals.ndim, 2)
+        dids_per_row = self.tdrX.get_dive_details("row_ids", "dive.id")
+        dids_uniq = dids_per_row[dids_per_row > 0].unique()
+        self.assertEqual(crit_vals.shape[0], dids_uniq.size)
+
+    def test_calibrate(self):
+        offset = self.default_pars["offset_zoc"]
+        dry_thr = self.default_pars["dry_thr"]
+        wet_thr = self.default_pars["wet_thr"]
+        dive_thr = self.default_pars["dive_thr"]
+        dive_model = self.default_pars["dive_model"]
+        smooth_par = self.default_pars["smooth_par"]
+        knot_factor = self.default_pars["knot_factor"]
+        descent_crit_q = self.default_pars["descent_crit_q"]
+        ascent_crit_q = self.default_pars["ascent_crit_q"]
+
+        self.tdrX.calibrate(zoc_method="offset", offset=offset,
+                            dry_thr=dry_thr,
+                            wet_thr=wet_thr,
+                            dive_thr=dive_thr,
+                            dive_model=dive_model,
+                            smooth_par=smooth_par,
+                            knot_factor=knot_factor,
+                            descent_crit_q=descent_crit_q,
+                            ascent_crit_q=ascent_crit_q)
+
         crit_vals = self.tdrX.get_dive_details("crit_vals")
         self.assertIsInstance(crit_vals, DataFrame)
         self.assertEqual(crit_vals.ndim, 2)

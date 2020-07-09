@@ -34,6 +34,8 @@ import rpy2.robjects as robjs
 import rpy2.robjects.conversion as cv
 from rpy2.robjects import pandas2ri
 import skdiveMove.plotting as plotting
+import skdiveMove.calibrate_speed as speedcal
+
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
@@ -179,6 +181,50 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
     return(res)
 
 
+def _one_dive_stats(x, interval, has_speed=False):
+    """Calculate dive statistics for a single dive's DataFrame
+
+    Parameters
+    ----------
+    x : pandas.DataFrame
+        First column expected to be dive ID, the rest as in diveMove.
+    interval : float
+    has_speed : bool
+
+    Returns
+    -------
+    out : pandas.DataFrame
+
+    """
+    xx = x.iloc[:, 1:]
+    rstr = "one_dive_stats_fun <- diveMove::oneDiveStats"
+    one_dive_stats_fun = robjs.r(rstr)
+    onames_speed = ["begdesc", "enddesc", "begasc", "desctim", "botttim",
+                    "asctim", "divetim", "descdist", "bottdist", "ascdist",
+                    "bottdep_mean", "bottdep_median", "bottdep_sd",
+                    "maxdep", "desc_tdist", "desc_mean_speed",
+                    "desc_angle", "bott_tdist", "bott_mean_speed",
+                    "asc_tdist", "asc_mean_speed", "asc_angle"]
+    onames_nospeed = onames_speed[:14]
+
+    with cv.localconverter(robjs.default_converter +
+                           pandas2ri.converter):
+        res = one_dive_stats_fun(xx, interval, has_speed)
+
+    if has_speed:
+        onames = onames_speed
+    else:
+        onames = onames_nospeed
+
+    res_df = pd.DataFrame(res, columns=onames)
+    for tcol in range(3):
+        # This is per POSIXct convention in R
+        res_df.iloc[:, tcol] = pd.to_datetime(res_df.iloc[:, tcol],
+                                              unit="s")
+
+    return(res_df)
+
+
 def _get_dive_indices(indices, diveNo):
     """Mapping to diveMove's `.diveIndices`"""
     rstr = """diveIDXFun <- diveMove:::.diveIndices"""
@@ -202,7 +248,7 @@ def get_diveMove_sample_data():
     rstr = ("""system.file(file.path("data", "dives.csv"), """
             """package="diveMove", mustWork=TRUE)""")
     data_path = robjs.r(rstr)[0]
-    tdrX = TDR(data_path, sep=";", compression="bz2")
+    tdrX = TDR(data_path, sep=";", compression="bz2", has_speed=True)
 
     return(tdrX)
 
@@ -302,17 +348,20 @@ class TDR:
         self.tdr = tdr_out
         self.dtime = subsample
         speed_col = [x for x in tdr_out.columns if x in _SPEED_NAMES]
-        if speed_col:
+        if speed_col and has_speed:
             self.has_speed = True
             self.speed_colname = speed_col[0]
         else:
             self.has_speed = False
+            self.speed_colname = None
 
         # Attributes to be set from other methods: method used, corrected
         # depth, filtered depth when method="filter"
         self.zoc_pars = {'method': None,
                          'depth_zoc': None,
                          'filters': None}
+        # Speed calibration fit
+        self.speed_calib_fit = None
         # Wet phase activity identification
         self.wet_act = {'phases': None,
                         'times_begend': None,
@@ -483,6 +532,7 @@ class TDR:
                                              depth_intp)
                 self.zoc_pars["depth_zoc"] = zdepth
 
+        phases.loc[:, "phase_id"] = phases.loc[:, "phase_id"].astype(int)
         self.wet_act["phases"] = phases
         self.wet_act["times_begend"] = phases_begend
         self.wet_act["dry_thr"] = dry_thr
@@ -692,6 +742,128 @@ class TDR:
                                 knot_factor=knot_factor,
                                 descent_crit_q=descent_crit_q,
                                 ascent_crit_q=ascent_crit_q)
+
+    def calibrate_speed(self, tau=0.1, contour_level=0.1, z=0, bad=[0, 0],
+                        save_fig=False, fname=None, **kwargs):
+        """Calibrate speed measurements
+
+        Set the `speed_calib_fit` attribute
+
+        Parameters
+        ----------
+        tau : float, optional
+            Quantile on which to regress speed on rate of depth change.
+        contour_level : float, optional
+            The mesh obtained from the bivariate kernel density estimation
+            corresponding to this contour will be used for the quantile
+            regression to define the calibration line.
+        z : float, optional
+            Only changes in depth larger than this value will be used for
+            calibration.
+        bad : array_like, optional
+            Two-element `array_like` indicating that only rates of depth
+            change and speed greater than the given value should be used
+            for calibration, respectively.
+        save_fig : bool, optional
+            Whether to save the plot.
+        fname : str, optional
+            A path to save plot.  Ignored if ``save_fig=False``.
+        **kwargs : optional keyword arguments
+            Passed to ``calibrate_speed.calibrate``
+
+        """
+        depth = self.get_depth("zoc")
+        ddiffs = depth.reset_index().diff().set_index(depth.index)
+        ddepth = ddiffs["depth"].abs()
+        rddepth = ddepth / ddiffs["date_time"].dt.total_seconds()
+        curspeed = self.get_speed("measured")
+        ok = (ddepth > z) & (rddepth > bad[0]) & (curspeed > bad[1])
+        rddepth = rddepth[ok]
+        curspeed = curspeed[ok]
+
+        kde_data = pd.concat((rddepth.rename("depth_rate"),
+                              curspeed), axis=1)
+        qfit, fig, ax = speedcal.calibrate(kde_data, tau=tau,
+                                           contour_level=contour_level,
+                                           z=z, bad=bad, **kwargs)
+        self.speed_calib_fit = qfit
+
+        if save_fig:
+            fig.savefig(fname)
+
+        # ksmooth = importr("KernSmooth")
+        # grdev = importr("grDevices")
+        # bw_nrd = robjs.r["bw.nrd"]
+        # with cv.localconverter(robjs.default_converter +
+        #                        robjs.numpy2ri.converter):
+        #     rddepth_np = rddepth.to_numpy()
+        #     curspeed_np = curspeed.to_numpy()
+        #     bandw = np.array([bw_nrd(rddepth_np),
+        #                       bw_nrd(curspeed_np)])
+        #     z = ksmooth.bkde2D(np.column_stack((rddepth_np,
+        #                                         curspeed_np)),
+        #                        bandwidth=bandw)
+        #     zz = dict(zip(z.names, list(z)))
+        #     bins = grdev.contourLines(zz["x1"], zz["x2"], zz["fhat"],
+        #                               levels=contour_level)
+        #     bins_l = list(bins)[0]
+        #     bins_d = dict(zip(bins_l.names, list(bins_l)))
+
+    def dive_stats(self, depth_deriv=True):
+        """Calculate dive statistics in `TDR` records
+
+        Parameters
+        ----------
+        depth_deriv : bool, optional
+            Whether to compute depth derivative statistics.
+
+        Returns
+        -------
+        pandas.DataFrame
+
+        Notes
+        -----
+        This method homologous to diveMove's `diveStats` function.
+
+        """
+        phases_df = self.get_dive_details("row_ids")
+        depth = self.get_depth("zoc")
+
+        if self.speed_calib_fit:
+            speed = self.get_speed("calibrated")
+        else:
+            speed = self.get_speed("measured")
+
+        dive_ids = phases_df.loc[:, "dive.id"]
+        postdive_ids = phases_df.loc[:, "postdive.id"]
+        ok = (dive_ids > 0) & dive_ids.isin(postdive_ids)
+        okpd = (postdive_ids > 0) & postdive_ids.isin(dive_ids)
+
+        postdive_dur = (postdive_ids[okpd].reset_index()
+                        .groupby("postdive.id")
+                        .apply(lambda x: x.iloc[-1] - x.iloc[0]))
+
+        tdf = (pd.concat((phases_df[["dive.id", "dive.phase"]][ok],
+                          depth[ok], speed[ok]), axis=1)
+               .reset_index()
+               [["dive.id", "dive.phase", "date_time",
+                 "depth", self.speed_colname]])
+        tdf_grp = tdf.groupby("dive.id")
+
+        ones_list = []
+        intvl = pd.Timedelta(self.dtime).total_seconds()
+        for name, grp in tdf_grp:
+            # Speed to be enabled once calibration is implemented
+            res = _one_dive_stats(grp, interval=intvl,
+                                  has_speed=self.has_speed)
+            ones_list.append(res)
+
+        ones_df = pd.concat(ones_list, ignore_index=True)
+        ones_df.set_index(dive_ids[ok].unique(), inplace=True)
+        ones_df.index.rename("dive_id", inplace=True)
+        ones_df["postdive_dur"] = postdive_dur["date_time"]
+
+        return(ones_df)
 
     def plot(self, concur_vars=None, concur_var_titles=None, **kwargs):
         """Plot TDR object
@@ -969,7 +1141,42 @@ class TDR:
             logger.error(msg)
             raise IndexError(msg)
 
-        return(odepth)
+        return(odepth.rename("depth"))
+
+    def get_speed(self, kind="measured"):
+        """Retrieve speed records
+
+        Parameters
+        ----------
+        kind : {"measured", "calibrated"}
+            Which speed to retrieve.
+
+        Returns
+        -------
+        pandas.Series
+
+        """
+        kinds = ["measured", "calibrated"]
+        if kind == kinds[0]:
+            ospeed = self.tdr[self.speed_colname]
+        elif kind == kinds[1]:
+            qfit = self.speed_calib_fit
+            if qfit is None:
+                msg = "Calibrated speed not available."
+                logger.error(msg)
+                raise IndexError(msg)
+            else:
+                coefs = qfit.params
+                coef_a = coefs[0]
+                coef_b = coefs[1]
+
+            ospeed = (self.tdr[self.speed_colname] - coef_a) / coef_b
+        else:
+            msg = "kind must be one of: {}".format(kinds)
+            logger.error(msg)
+            raise IndexError(msg)
+
+        return(ospeed)
 
     def _get_dive_spline_slot(self, diveNo, name):
         """Accessor for the R objects in `dives`["splines"]
