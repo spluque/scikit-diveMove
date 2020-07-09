@@ -17,7 +17,7 @@ Installation
 ============
 
 At some point, it will be possible to install `skdiveMove` by typing the
-following at a terminal command line:
+following at a command line:
 
 .. code-block:: sh
 
@@ -46,12 +46,9 @@ installed and available to the user running Python.  If needed, install
 
    install.packages("diveMove")
 
-The following Python packages must be installed:
+Required Python packages are listed in the `requirements`_ file.
 
-  - `rpy2` (> 3.3)
-  - `pandas` (> 1.0)
-  - `numpy` (> 1.19.0)
-  - `matplotlib` (> 3.2)
+.. _requirements: https://github.com/spluque/scikit-diveMove/blob/master/requirements.txt
 
 
 Testing
@@ -106,7 +103,7 @@ Indices and tables
 .. note::
 
    | *Author:* Sebastian Luque
-   | *Version:* 0.0.2
+   | *Version:* 0.0.5
    | *Date:* July 2020
    | *email:* spluque@gmail.com
    | *Copyright (c):* 2020, Sebastian Luque. All rights reserved.

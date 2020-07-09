@@ -42,7 +42,7 @@ setup(
     download_url="https://github.com/spluque/scikit-diveMove",
     keywords=["animal behaviour", "biology", "behavioural ecology",
               "diving", "diving behaviour"],
-    url="https://https://github.com/spluque/scikit-diveMove",
+    url="https://github.com/spluque/scikit-diveMove",
     classifiers=["Development Status :: 2 - Pre-Alpha",
                  "Programming Language :: Python :: 3",
                  "Intended Audience :: Developers",

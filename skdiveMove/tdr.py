@@ -1,10 +1,10 @@
-"""TDR objects homologous to R package diveMove's main classes
+"""TDR objects homologous to `R` package diveMove's main classes
 
 The :class:`TDR` aims to be a comprehensive class to encapsulate the
 processing of `TDR` records from a data file.
 
-This module instantiates an ``R`` session to interact with low-level
-functions and methods of package ``diveMove``.
+This module instantiates an `R` session to interact with low-level
+functions and methods of package `diveMove`.
 
 Class & Methods Summary
 -----------------------
@@ -12,14 +12,18 @@ Class & Methods Summary
 .. autosummary::
 
    TDR
-   TDR.calibrate
    TDR.zoc
    TDR.detect_wet
    TDR.detect_dives
    TDR.detect_dive_phases
+   TDR.calibrate
+   TDR.calibrate_speed
+   TDR.dive_stats
    TDR.plot
    TDR.plot_phases
-   TDR.plotZOCfilters
+   TDR.plot_zoc_filters
+   TDR.get_wet_activity
+   TDR.get_dive_details
 
 API
 ---
@@ -49,7 +53,7 @@ diveMove = importr("diveMove")
 
 
 def _depth_filter_r(depth, k, probs, depth_bounds, na_rm=True):
-    """Filter method for zero offset correction via diveMove
+    """Filter method for zero offset correction via `diveMove`
 
     Parameters
     ----------
@@ -140,8 +144,8 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
     Notes
     -----
     See details for arguments in diveMove's ``calibrateDepth``.  This
-    function maps to diveMove:::.cutDive, and only sets some of the
-    parameters from the R function.
+    function maps to ``diveMove:::.cutDive``, and only sets some of the
+    parameters from the `R` function.
 
     Returns
     -------
@@ -187,7 +191,7 @@ def _one_dive_stats(x, interval, has_speed=False):
     Parameters
     ----------
     x : pandas.DataFrame
-        First column expected to be dive ID, the rest as in diveMove.
+        First column expected to be dive ID, the rest as in `diveMove`.
     interval : float
     has_speed : bool
 
@@ -238,7 +242,7 @@ def _get_dive_indices(indices, diveNo):
 
 
 def get_diveMove_sample_data():
-    """Create at `TDR` instance from diveMove example data set
+    """Create a `TDR` instance from `diveMove` example data set
 
     Returns
     -------
@@ -895,7 +899,7 @@ class TDR:
                              concur_var_titles=concur_var_titles,
                              **kwargs)
 
-    def plotZOCfilters(self, xlim=None, ylim=None, ylab="Depth [m]"):
+    def plot_zoc_filters(self, xlim=None, ylim=None, ylab="Depth [m]"):
         """Plot zero offset correction filters
 
         Parameters

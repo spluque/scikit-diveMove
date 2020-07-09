@@ -13,9 +13,83 @@
 scientific data analysis, with a focus on diving behaviour analysis.  It
 has utilities to represent, visualize, filter, analyse, and summarize
 time-depth recorder (TDR) data.  Miscellaneous functions for handling
-location data are also provided.
+location data are also provided.  `scikit-diveMove` communicates with a
+single `R` instance for access to low-level tools of package `diveMove`.
 
 .. _diveMove: https://github.com/spluque/diveMove
+
+The table below shows which features of `diveMove` are accessible from
+`scikit-diveMove`:
+
++----------------------------------+--------------------------+--------------------------------+
+|                  `diveMove`      |`scikit-diveMove`         |Notes                           |
++---------------+------------------+                          |                                |
+|Functionality  |Functions/Methods |                          |                                |
++===============+==================+==========================+================================+
+|Movement       |``austFilter``    |                          |To be implemented               |
+|               |``rmsDistFilter`` |                          |                                |
+|               |``grpSpeedFilter``|                          |                                |
+|               |``distSpeed``     |                          |                                |
+|               |``readLocs``      |                          |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|Bout analysis  |``boutfreqs``     |                          |To be implemented               |
+|               |``boutinit``      |                          |                                |
+|               |``bouts2.nlsFUN`` |                          |                                |
+|               |``bouts2.nls``    |                          |                                |
+|               |``bouts3.nlsFUN`` |                          |                                |
+|               |``bouts3.nls``    |                          |                                |
+|               |``bouts2.mleFUN`` |                          |                                |
+|               |``bouts2.ll``     |                          |                                |
+|               |``bouts2.LL``     |                          |                                |
+|               |``bouts.mle``     |                          |                                |
+|               |``labelBouts``    |                          |                                |
+|               |``plotBouts``     |                          |                                |
+|               |``plotBouts2.cdf``|                          |                                |
+|               |``bec2``          |                          |                                |
+|               |``bec3``          |                          |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|Dive analysis  |``readTDR``       | ``TDR.__init__``         |Fully implemented.  Single      |
+|               |``createTDR``     |                          |``TDR`` class for data with or  |
+|               |                  |                          |without speed measurements.     |
+|               |                  |                          |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|               |``calibrateDepth``|``TDR.calibrate``         |Fully implemented               |
+|               |                  |``TDR.zoc``               |                                |
+|               |                  |``TDR.detect_wet``        |                                |
+|               |                  |``TDR.detect_dives``      |                                |
+|               |                  |``TDR.detect_dive_phases``|                                |
++---------------+------------------+--------------------------+--------------------------------+
+|               |``calibrateSpeed``|``TDR.calibrate_speed``   |A new implementation of the     |
+|               |``rqPlot``        |                          |algorithm entirely in Python.   |
+|               |                  |                          |The procedure generates the plot|
+|               |                  |                          |concurrently.                   |
+|               |                  |                          |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|               |``diveStats``     |``TDR.dive_stats``        |``stampDive`` and ``timeBudget``|
+|               |``stampDive``     |                          |to be implemented.              |
+|               |``timeBudget``    |                          |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|               |``plotTDR``       |``TDR.plot``              |Fully implemented.              |
+|               |``plotDiveModel`` |``TDR.plot_zoc_filters``  |Interactivity is the default, as|
+|               |``plotZOC``       |``TDR.plot_phases``       |standard `matplotlib`.          |
+|               |                  |``TDR.plot_dive_model``   |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|               |``getTDR``        |``TDR.tdr``               |Fully implemented.              |
+|               |``getDepth``      |``TDR.get_depth``         |``getCCData`` deemed redundant, |
+|               |``getSpeed``      |``TDR.get_speed``         |as the columns can be accessed  |
+|               |``getTime``       |``TDR.td.index``          |directly from the ``TDR.tdr``   |
+|               |``getCCData``     |``TDR.src_file``          |attribute.                      |
+|               |``getDtime``      |``TDR.dtime``             |                                |
+|               |``getFileName``   |                          |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|               |``getDAct``       |``TDR.get_wet_activity``  | Fully implemented              |
+|               |``getDPhaseLab``  |``TDR.get_dive_details``  |                                |
+|               |``getDiveDeriv``  |                          |                                |
+|               |``getDiveModel``  |                          |                                |
+|               |``getGAct``       |                          |                                |
++---------------+------------------+--------------------------+--------------------------------+
+|               |``extractDive``   |                          |To be implemented               |
++---------------+------------------+--------------------------+--------------------------------+
 
 
 Installation
@@ -53,13 +127,8 @@ installed and available to the user running Python.  If needed, install
 
    install.packages("diveMove")
 
-The following Python packages must be installed:
-
-  - `docutils` (>= 0.3)
-  - `matplotlib` (> 3.0)
-  - `numpy` (>= 1.18)
-  - `pandas` (>= 1.0)
-  - `rpy2` (>= 3.3)
+Required Python packages are listed in the `requirements
+<requirements.txt>`_ file.
 
 
 Documentation
