@@ -12,11 +12,23 @@ cache:
 addons:
   apt:
     sources:
-      - debian-sid
+      - sourceline:
+          "deb http://ftp.us.debian.org/debian unstable main contrib non-free"
+        key_url:
+          "https://ftp-master.debian.org/keys/archive-key-10.asc"
     update: true
+    # Packages needed to build diveMove's dependencies
+    packages:
+      - build-essential
+      - gcc
+      - g++
+      - gfortran
+      - liblapack-dev
+      - libblas-dev
+      - r-base
+      - r-base-dev
 
 before_install:
-  - sudo apt-get -yq --allow-unauthenticated install r-base r-base-dev
   - sudo Rscript -e 'install.packages("diveMove")'
 
 install:
