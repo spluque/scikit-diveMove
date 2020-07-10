@@ -19,6 +19,7 @@ Class & Methods Summary
    TDR.calibrate
    TDR.calibrate_speed
    TDR.dive_stats
+   TDR.time_budget
    TDR.plot
    TDR.plot_phases
    TDR.plot_zoc_filters
@@ -279,8 +280,8 @@ class TDR:
         pandas.Series, 'filters': pandas.DataFrame}.
     wet_act : dict
         Dictionary of wet activity data {'phases': pandas.DataFrame,
-        'times_begend': pandas.DataFrame, 'dry_thr': float, 'wet_thr':
-        float}.
+        'dry_thr': float, 'wet_thr': float}.
+
     dives : dict
         Dictionary of dive activity data {'row_ids': pandas.DataFrame,
         'model': str, 'splines': dict, 'crit_vals': pandas.DataFrame}.
@@ -368,7 +369,6 @@ class TDR:
         self.speed_calib_fit = None
         # Wet phase activity identification
         self.wet_act = {'phases': None,
-                        'times_begend': None,
                         'dry_thr': None,
                         'wet_thr': None}
         self.dives = {'row_ids': None,
@@ -485,7 +485,11 @@ class TDR:
 
         Notes
         -----
-        See details for arguments in diveMove's ``calibrateDepth``.
+
+        See details for arguments in diveMove's ``calibrateDepth``.  Unlike
+        `diveMove`, the beginning/ending times for each phase are not
+        stored with the class instance, as this information can be
+        retrieved via the `.time_budget` method.
 
         Examples
         --------
@@ -498,10 +502,10 @@ class TDR:
 
         >>> tdrX.detect_wet()
 
-        Access the "phases" and "times_begend" attributes
+        Access the "phases" and "dry_thr" attributes
 
         >>> tdrX.get_wet_activity("phases")
-        >>> tdrX.get_wet_activity("times_begend")
+        >>> tdrX.get_wet_activity("dry_thr")
 
         """
         time_py = self.tdr.index
@@ -523,8 +527,6 @@ class TDR:
             phases = pd.DataFrame({'phase_id': phases_l[0],
                                    'phase_label': phases_l[1]},
                                   index=self.tdr.index)
-            phases_begend = pd.DataFrame({'beg': phases_l[2],
-                                          'end': phases_l[3]})
 
         if interp_wet:
             zdepth = depth_py.copy()
@@ -538,7 +540,6 @@ class TDR:
 
         phases.loc[:, "phase_id"] = phases.loc[:, "phase_id"].astype(int)
         self.wet_act["phases"] = phases
-        self.wet_act["times_begend"] = phases_begend
         self.wet_act["dry_thr"] = dry_thr
         self.wet_act["wet_thr"] = wet_thr
 
@@ -570,7 +571,7 @@ class TDR:
 
         """
         depth = self.get_depth("zoc")
-        act_phases = self.get_wet_activity("phases", columns="phase_label")
+        act_phases = self.get_wet_activity("phases")["phase_label"]
         detDiveFun = robjs.r("""detDiveFun <- diveMove:::.detDive""")
         with cv.localconverter(robjs.default_converter +
                                pandas2ri.converter):
@@ -869,6 +870,35 @@ class TDR:
 
         return(ones_df)
 
+    def time_budget(self, ignore_z=True):
+        """Time budget summary of activities at the broadest time scale
+
+        Parameters
+        ----------
+        ignore_z : bool, optional
+            Whether to ignore trivial aquatic periods.
+
+        Returns
+        -------
+        out : pandas.DataFrame
+            DataFrame indexed by phase id, with categorical activity label
+            for each phase, and beginning and ending times.
+
+        """
+        labels = (self.get_wet_activity("phases")["phase_label"]
+                  .reset_index())
+        if ignore_z:
+            labels = labels.mask(labels == "Z", "L")
+
+        grp_key = (labels["phase_label"]
+                   .ne(labels["phase_label"].shift())
+                   .cumsum() + 1).rename("phase_id")
+        labels_grp = labels.groupby(grp_key)
+
+        begs = labels_grp.first().rename(columns={"date_time": "beg"})
+        ends = labels_grp.last()["date_time"].rename("end")
+        pd.concat((begs, ends), axis=1)
+
     def plot(self, concur_vars=None, concur_var_titles=None, **kwargs):
         """Plot TDR object
 
@@ -914,7 +944,7 @@ class TDR:
         if self.zoc_pars["method"] == "filter":
             depth = self.get_depth("measured")
             zoc_filters = self.zoc_pars["filters"]
-            plotting._plotZOCfilters(depth, zoc_filters, xlim, ylim, ylab)
+            plotting._plot_zoc_filters(depth, zoc_filters, xlim, ylim, ylab)
 
     def plot_phases(self, diveNo=None, concur_vars=None,
                     concur_var_titles=None, surface=False, **kwargs):
@@ -974,15 +1004,8 @@ class TDR:
             dives_df = dives_all.iloc[idx_ok, :]
             details_df = row_ids.iloc[idx_ok, :]
 
-        wet_all = self.get_wet_activity("phases")
-        wetdry_labs = wet_all.groupby("phase_id").nth(1)
-        # Set index to integer and subtract one to match times_begend
-        wetdry_labs.set_index(wetdry_labs.index.astype(int) - 1,
-                              inplace=True)
-        wetdry_times = self.get_wet_activity("times_begend")
-        wet_dry = wetdry_times.merge(wetdry_labs, left_index=True,
-                                     right_index=True)
-        drys = wet_dry[wet_dry["phase_label"] == "L"]
+        wet_dry = self.time_budget(ignore_z=True)
+        drys = wet_dry[wet_dry["phase_label"] == "L"][["beg", "end"]]
         if (drys.shape[0] > 0):
             dry_time = drys
         else:
@@ -1048,15 +1071,13 @@ class TDR:
                                  a_crit_rate=a_crit_rate,
                                  leg_title=title, **kwargs)
 
-    def get_wet_activity(self, key, columns=None):
+    def get_wet_activity(self, key):
         """Accessor for the ``wet_act`` attribute
 
         Parameters
         ----------
-        key : {"phases", "times_begend", "dry_thr", "wet_thr"}
+        key : {"phases", "dry_thr", "wet_thr"}
             Name of the key to retrieve.
-        columns : array_like, optional
-            Names of the columns of the "phases" or times_begend dataframe.
 
         """
         try:
@@ -1070,18 +1091,7 @@ class TDR:
             if okey is None:
                 raise IndexError("\'{}\' not available.".format(key))
 
-        if columns:
-            try:
-                odata = okey[columns]
-            except KeyError:
-                msg = ("At least one of the requested columns does not "
-                       "exist.\nAvailable columns: {}").format(okey.columns)
-                logger.error(msg)
-                raise KeyError(msg)
-        else:
-            odata = okey
-
-        return(odata)
+        return(okey)
 
     def get_dive_details(self, key, columns=None):
         """Accessor for the ``dives`` attribute

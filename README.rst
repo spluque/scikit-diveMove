@@ -65,8 +65,8 @@ The table below shows which features of `diveMove` are accessible from
 |               |                  |                          |concurrently.                   |
 |               |                  |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``diveStats``     |``TDR.dive_stats``        |``stampDive`` and ``timeBudget``|
-|               |``stampDive``     |                          |to be implemented.              |
+|               |``diveStats``     |``TDR.dive_stats``        |``stampDive`` to be implemented.|
+|               |``stampDive``     |``TDR.time_budget``       |                                |
 |               |``timeBudget``    |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
 |               |``plotTDR``       |``TDR.plot``              |Fully implemented.              |

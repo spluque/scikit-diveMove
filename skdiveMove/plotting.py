@@ -180,8 +180,8 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
     return(fig, axs)
 
 
-def _plotZOCfilters(depth, zoc_filters, xlim=None, ylim=None,
-                    ylab="Depth [m]"):
+def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
+                      ylab="Depth [m]"):
     """Plot zero offset correction filters
 
     Parameters
