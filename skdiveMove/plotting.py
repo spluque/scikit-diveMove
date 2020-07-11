@@ -9,8 +9,6 @@ from pandas.plotting import register_matplotlib_converters
 
 register_matplotlib_converters()
 
-_FIGSIZE = (15, 12)
-
 
 def _night(times, sunrise_time, sunset_time):
     """Construct Series with sunset and sunrise times for given dates
@@ -55,12 +53,12 @@ def _plot_dry_time(times_dataframe, ax):
                    edgecolor=None, alpha=0.6)
 
 
-def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
-            xlab="time [dd-mmm hh:mm]", ylab_depth="depth [m]",
-            concur_var_titles=None, xlab_format="%d-%b %H:%M",
-            sunrise_time="06:00:00", sunset_time="18:00:00",
-            night_col="gray", dry_time=None, phase_cat=None,
-            key=True, **kwargs):
+def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
+             xlab="time [dd-mmm hh:mm]", ylab_depth="depth [m]",
+             concur_var_titles=None, xlab_format="%d-%b %H:%M",
+             sunrise_time="06:00:00", sunset_time="18:00:00",
+             night_col="gray", dry_time=None, phase_cat=None,
+             key=True, **kwargs):
     """Plot time, depth, and other concurrent data
 
     Parameters
@@ -70,9 +68,10 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
     concur_vars : pandas.Series or pandas.Dataframe
         (N,) Series or dataframe with additional data to plot in subplot.
     xlim : 2-tuple/list, optional
-        Minimum and maximum limits for ``x`` axis.
+        Minimum and maximum limits for ``x`` axis.  Ignored when
+        ``concur_vars=None``.
     ylim : 2-tuple/list, optional
-        Minimum and maximum limits for ``y`` axis.
+        Minimum and maximum limits for ``y`` axis for data other than depth.
     depth_lim : 2-tuple/list, optional
         Minimum and maximum limits for depth to plot.
     xlab : str, optional
@@ -124,10 +123,11 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
                           ncol=len(cat_codes))
 
     if concur_vars is None:
-        fig, axs = plt.subplots(1, 1, figsize=_FIGSIZE)
+        fig, axs = plt.subplots(1, 1)
         axs.set_ylabel(ylab_depth)
         axs.invert_yaxis()
         depth.plot(ax=axs, color="k", **kwargs)
+        axs.set_xlabel("")
         axs.axhline(0, linestyle="--", linewidth=0.75, color="k")
         for beg, end in zip(sunsets, sunrises):
             axs.axvspan(beg, end, facecolor=night_col,
@@ -136,8 +136,6 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
             _plot_phase_cat(depth, axs)
         if (dry_time is not None):
             _plot_dry_time(dry_time, axs)
-        if (xlim is not None):
-            axs.set_xlim(xlim)
         if (depth_lim is not None):
             axs.set_ylim(depth_lim)
     else:
@@ -145,10 +143,11 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
         nplots = full_df.shape[1]
         depth_ser = full_df.iloc[:, 0]
         concur_df = full_df.iloc[:, 1:]
-        fig, axs = plt.subplots(nplots, 1, sharex=True, figsize=_FIGSIZE)
+        fig, axs = plt.subplots(nplots, 1, sharex=True)
         axs[0].set_ylabel(ylab_depth)
         axs[0].invert_yaxis()
         depth_ser.plot(ax=axs[0], color="k", **kwargs)
+        axs[0].set_xlabel("")
         axs[0].axhline(0, linestyle="--", linewidth=0.75, color="k")
         concur_df.plot(ax=axs[1:], subplots=True, legend=False, **kwargs)
         for i, col in enumerate(concur_df.columns):
@@ -158,6 +157,9 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
                 axs[i + 1].set_ylabel(col)
             axs[i + 1].axhline(0, linestyle="--",
                                linewidth=0.75, color="k")
+            if (xlim is not None):
+                axs[i + 1].set_xlim(xlim)
+
         for i, ax in enumerate(axs):
             for beg, end in zip(sunsets, sunrises):
                 ax.axvspan(beg, end, facecolor=night_col,
@@ -170,8 +172,6 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
             for i, col in enumerate(concur_df.columns):
                 _plot_phase_cat(concur_df.loc[:, col], axs[i + 1], False)
 
-        if (xlim is not None):
-            axs[0].set_xlim(xlim)
         if (depth_lim is not None):
             axs[0].set_ylim(depth_lim)
 
@@ -181,7 +181,7 @@ def plotTDR(depth, concur_vars=None, xlim=None, depth_lim=None,
 
 
 def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
-                      ylab="Depth [m]"):
+                      ylab="Depth [m]", **kwargs):
     """Plot zero offset correction filters
 
     Parameters
@@ -195,6 +195,9 @@ def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
     ylim : 2-tuple/list
     ylab : str
         Label for `y` axis.
+    **kwargs : optional keyword arguments
+        Passed to `matplotlib.pyplot.subplots`.  It can be any keyword,
+        except for `sharex` or `sharey`.
 
     Returns
     -------
@@ -208,7 +211,7 @@ def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
     if nfilters > 3:
         lastflts.append(nfilters - 1)
 
-    fig, axs = plt.subplots(npanels, 1, sharex=True, sharey=True)
+    fig, axs = plt.subplots(npanels, 1, sharex=True, sharey=True, **kwargs)
     if xlim:
         axs[0].set_xlim(xlim)
     else:
@@ -250,7 +253,7 @@ def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
 
 
 def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
-                    d_crit_rate, a_crit_rate, leg_title=None):
+                    d_crit_rate, a_crit_rate, leg_title=None, **kwargs):
     """Plot dive model
 
     Parameters
@@ -273,6 +276,9 @@ def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
       Vertical rate of ascent corresponding to the quantile used.
     leg_title : str, optional
       Title for the plot legend (e.g. dive number being plotted).
+    **kwargs : optional keyword arguments
+        Passed to `matplotlib.pyplot.subplots`.  It can be any keyword,
+        except `sharex`.
 
     Returns
     -------
@@ -286,7 +292,7 @@ def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
     """
     d_crit_time = x.index[d_crit]
     a_crit_time = x.index[a_crit]
-    fig, axs = plt.subplots(2, 1, sharex=True)
+    fig, axs = plt.subplots(2, 1, sharex=True, **kwargs)
     ax1, ax2 = axs
     ax1.invert_yaxis()
     ax1.set_ylabel("Depth")
@@ -341,5 +347,5 @@ if __name__ == '__main__':
     wet_df = tdrX.get_wet_activity("phases")
     dives_detail = tdrX.get_dive_details("row_ids")
 
-    plotTDR(depth, dry_time=wet_df["phase_label"],
-            phase_cat=dives_detail["dive.phase"])
+    plot_tdr(depth, dry_time=wet_df["phase_label"],
+             phase_cat=dives_detail["dive.phase"])

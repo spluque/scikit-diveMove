@@ -83,6 +83,15 @@ and then install with:
    pip install -e .["dev"]
 
 
+Example session
+===============
+
+.. toctree::
+   :maxdepth: 2
+
+   demo
+
+
 Modules
 =======
 

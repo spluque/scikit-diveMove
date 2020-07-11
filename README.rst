@@ -65,9 +65,10 @@ The table below shows which features of `diveMove` are accessible from
 |               |                  |                          |concurrently.                   |
 |               |                  |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``diveStats``     |``TDR.dive_stats``        |``stampDive`` to be implemented.|
-|               |``stampDive``     |``TDR.time_budget``       |                                |
-|               |``timeBudget``    |                          |                                |
+|               |``diveStats``     |``TDR.dive_stats``        |Depth derivative stats for dives|
+|               |``stampDive``     |``TDR.time_budget``       |to be implemented.              |
+|               |``timeBudget``    |``TDR.stamp_dives``       |                                |
+|               |                  |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
 |               |``plotTDR``       |``TDR.plot``              |Fully implemented.              |
 |               |``plotDiveModel`` |``TDR.plot_zoc_filters``  |Interactivity is the default, as|
@@ -77,12 +78,12 @@ The table below shows which features of `diveMove` are accessible from
 |               |``getTDR``        |``TDR.tdr``               |Fully implemented.              |
 |               |``getDepth``      |``TDR.get_depth``         |``getCCData`` deemed redundant, |
 |               |``getSpeed``      |``TDR.get_speed``         |as the columns can be accessed  |
-|               |``getTime``       |``TDR.td.index``          |directly from the ``TDR.tdr``   |
+|               |``getTime``       |``TDR.tdr.index``         |directly from the ``TDR.tdr``   |
 |               |``getCCData``     |``TDR.src_file``          |attribute.                      |
 |               |``getDtime``      |``TDR.dtime``             |                                |
 |               |``getFileName``   |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``getDAct``       |``TDR.get_wet_activity``  | Fully implemented              |
+|               |``getDAct``       |``TDR.get_wet_activity``  |  Fully implemented             |
 |               |``getDPhaseLab``  |``TDR.get_dive_details``  |                                |
 |               |``getDiveDeriv``  |                          |                                |
 |               |``getDiveModel``  |                          |                                |

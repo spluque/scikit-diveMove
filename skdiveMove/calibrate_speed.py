@@ -27,7 +27,9 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
 
     Returns
     -------
-    out :
+    out : 3-tuple
+        The quantile regression fit object, `matplotlib.pyplot` `Axes` and
+        `Figures` instances.
 
     Notes
     -----
@@ -55,10 +57,11 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
     fig, ax = plt.subplots(1, 1, **kwargs)
     ax.set_xlabel("Rate of depth change")
     ax.set_ylabel("Speed")
-    zimg = ax.imshow(z, aspect=x_flat.ptp() / y_flat.ptp(),
+    zimg = ax.imshow(z, aspect="auto",
                      extent=[mins[0], maxs[0], mins[1], maxs[1]],
                      cmap="gist_earth_r")
-    fig.colorbar(zimg, fraction=0.1, aspect=30, pad=0.02)
+    fig.colorbar(zimg, fraction=0.1, aspect=30, pad=0.02,
+                 label="Kernel density probability")
     cntr = ax.contour(z, extent=[mins[0], maxs[0], mins[1], maxs[1]],
                       origin="image", levels=[contour_level])
     ax.clabel(cntr, fmt="%1.2f")

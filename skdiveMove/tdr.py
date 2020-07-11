@@ -19,10 +19,11 @@ Class & Methods Summary
    TDR.calibrate
    TDR.calibrate_speed
    TDR.dive_stats
+   TDR.stamp_dives
    TDR.time_budget
    TDR.plot
    TDR.plot_phases
-   TDR.plot_zoc_filters
+   TDR.plot_zoc
    TDR.get_wet_activity
    TDR.get_dive_details
 
@@ -281,10 +282,10 @@ class TDR:
     wet_act : dict
         Dictionary of wet activity data {'phases': pandas.DataFrame,
         'dry_thr': float, 'wet_thr': float}.
-
     dives : dict
         Dictionary of dive activity data {'row_ids': pandas.DataFrame,
-        'model': str, 'splines': dict, 'crit_vals': pandas.DataFrame}.
+        'model': str, 'splines': dict, 'spline_derivs': pandas.DataFrame,
+        'crit_vals': pandas.DataFrame}.
 
     Examples
     --------
@@ -436,7 +437,7 @@ class TDR:
 
         Plot the filters that were applied
 
-        >>> tdrX.plotZOCfilters(ylim=[-1, 10])
+        >>> tdrX.plot_zoc(ylim=[-1, 10])
 
         """
         depth = self.get_depth("measured")
@@ -776,6 +777,18 @@ class TDR:
         **kwargs : optional keyword arguments
             Passed to ``calibrate_speed.calibrate``
 
+        Returns
+        -------
+        out : 3-tuple
+            The quantile regression fit object, `matplotlib.pyplot` `Axes`
+            and `Figures` instances.
+
+        Examples
+        --------
+        >>> tdrX = get_diveMove_sample_data()
+        >>> tdrX.zoc("offset", offset=3)
+        >>> tdrX.calibrate_speed(z=2)
+
         """
         depth = self.get_depth("zoc")
         ddiffs = depth.reset_index().diff().set_index(depth.index)
@@ -796,23 +809,7 @@ class TDR:
         if save_fig:
             fig.savefig(fname)
 
-        # ksmooth = importr("KernSmooth")
-        # grdev = importr("grDevices")
-        # bw_nrd = robjs.r["bw.nrd"]
-        # with cv.localconverter(robjs.default_converter +
-        #                        robjs.numpy2ri.converter):
-        #     rddepth_np = rddepth.to_numpy()
-        #     curspeed_np = curspeed.to_numpy()
-        #     bandw = np.array([bw_nrd(rddepth_np),
-        #                       bw_nrd(curspeed_np)])
-        #     z = ksmooth.bkde2D(np.column_stack((rddepth_np,
-        #                                         curspeed_np)),
-        #                        bandwidth=bandw)
-        #     zz = dict(zip(z.names, list(z)))
-        #     bins = grdev.contourLines(zz["x1"], zz["x2"], zz["fhat"],
-        #                               levels=contour_level)
-        #     bins_l = list(bins)[0]
-        #     bins_d = dict(zip(bins_l.names, list(bins_l)))
+        return(qfit, fig, ax)
 
     def dive_stats(self, depth_deriv=True):
         """Calculate dive statistics in `TDR` records
@@ -829,6 +826,19 @@ class TDR:
         Notes
         -----
         This method homologous to diveMove's `diveStats` function.
+
+        Examples
+        --------
+        ZOC using the "filter" method
+
+        >>> # Window lengths and probabilities
+        >>> DB = [-2, 5]
+        >>> K = [3, 5760]
+        >>> P = [0.5, 0.02]
+        >>> tdrX.calibrate(dive_thr=3, zoc_method="filter",
+        ... k=K, probs=P, depth_bounds=DB, descent_crit_q=0.01,
+        ... knot_factor=20)
+        >>> tdrX.dive_stats()
 
         """
         phases_df = self.get_dive_details("row_ids")
@@ -870,8 +880,54 @@ class TDR:
 
         return(ones_df)
 
-    def time_budget(self, ignore_z=True):
-        """Time budget summary of activities at the broadest time scale
+    def time_budget(self, ignore_z=True, ignore_du=True):
+        """Summary of wet/dry activities at the broadest time scale
+
+        Parameters
+        ----------
+        ignore_z : bool, optional
+            Whether to ignore trivial aquatic periods.
+        ignore_du : bool, optional
+            Whether to ignore diving and underwater periods.
+
+        Returns
+        -------
+        out : pandas.DataFrame
+            DataFrame indexed by phase id, with categorical activity label
+            for each phase, and beginning and ending times.
+
+        Examples
+        --------
+        >>> tdrX = get_diveMove_sample_data()
+        >>> tdrX.zoc("offset", offset=3)
+
+        >>> tdrX.detect_wet()
+        >>> tdrX.detect_dives(3)
+
+        >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
+        ...                         ascent_crit_q=0, knot_factor=20)
+
+        >>> tdrX.time_budget(ignore_z=False)
+
+        """
+        labels = (self.get_wet_activity("phases")["phase_label"]
+                  .reset_index())
+        if ignore_z:
+            labels = labels.mask(labels == "Z", "L")
+        if ignore_du:
+            labels = labels.mask((labels == "U") | (labels == "D"), "W")
+
+        grp_key = (labels["phase_label"]
+                   .ne(labels["phase_label"].shift())
+                   .cumsum() + 1).rename("phase_id")
+        labels_grp = labels.groupby(grp_key)
+
+        begs = labels_grp.first().rename(columns={"date_time": "beg"})
+        ends = labels_grp.last()["date_time"].rename("end")
+        return(pd.concat((begs, ends), axis=1))
+
+    def stamp_dives(self, ignore_z=True):
+        """Identify the wet activity phase corresponding to each dive
 
         Parameters
         ----------
@@ -881,23 +937,54 @@ class TDR:
         Returns
         -------
         out : pandas.DataFrame
-            DataFrame indexed by phase id, with categorical activity label
-            for each phase, and beginning and ending times.
+            DataFrame indexed by dive ID, and three columns identifying
+            which phase thy are in, and the beginning and ending time
+            stamps.
+
+        Examples
+        --------
+        >>> tdrX = get_diveMove_sample_data()
+        >>> tdrX.zoc("offset", offset=3)
+
+        >>> tdrX.detect_wet()
+        >>> tdrX.detect_dives(3)
+
+        >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
+        ...                         ascent_crit_q=0, knot_factor=20)
+        >>> tdrX.stamp_dives()
 
         """
-        labels = (self.get_wet_activity("phases")["phase_label"]
-                  .reset_index())
+        phase_lab = self.get_wet_activity("phases")["phase_label"]
+        # "U" and "D" considered as "W" here
+        phase_lab = phase_lab.mask(phase_lab.isin(["U", "D"]), "W")
         if ignore_z:
-            labels = labels.mask(labels == "Z", "L")
+            phase_lab = phase_lab.mask(phase_lab == "Z", "L")
 
-        grp_key = (labels["phase_label"]
-                   .ne(labels["phase_label"].shift())
+        dive_ids = self.get_dive_details("row_ids", columns="dive.id")
+
+        grp_key = (phase_lab
+                   .ne(phase_lab.shift())
                    .cumsum() + 1).rename("phase_id")
-        labels_grp = labels.groupby(grp_key)
 
-        begs = labels_grp.first().rename(columns={"date_time": "beg"})
-        ends = labels_grp.last()["date_time"].rename("end")
-        pd.concat((begs, ends), axis=1)
+        isdive = dive_ids > 0
+        merged = (pd.concat((grp_key, dive_ids, phase_lab), axis=1)
+                  .loc[isdive, :].reset_index())
+        # Rest index to use in first() and last()
+        merged_grp = merged.groupby("phase_id")
+
+        dives_ll = []
+        for name, group in merged_grp:
+            dives_uniq = pd.Series(group["dive.id"].unique(),
+                                   name="dive_id")
+            beg = [group["date_time"].iloc[0]] * dives_uniq.size
+            end = [group["date_time"].iloc[-1]] * dives_uniq.size
+            dive_df = pd.DataFrame({'phase_id': [name] * dives_uniq.size,
+                                    'beg': beg,
+                                    'end': end}, index=dives_uniq)
+            dives_ll.append(dive_df)
+
+        dives_all = pd.concat(dives_ll)
+        return(dives_all)
 
     def plot(self, concur_vars=None, concur_var_titles=None, **kwargs):
         """Plot TDR object
@@ -910,7 +997,18 @@ class TDR:
         concur_var_titles : str or list, optional
             String or list of strings with y-axis labels for `concur_vars`.
         **kwargs : optional keyword arguments
-            Arguments passed to ``plotTDR``.
+            Arguments passed to plotting function.
+
+        Returns
+        -------
+        tuple
+            ``matplotlib.pyplot`` Figure and Axes instances.
+
+        Examples
+        --------
+        >>> tdrX = get_diveMove_sample_data()
+        >>> tdrX.plot(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
+        ...           depth_lim=[95, -1])
 
         """
         try:
@@ -919,17 +1017,22 @@ class TDR:
             depth = self.get_depth("measured")
 
         if concur_vars is None:
-            plotting.plotTDR(depth, **kwargs)
+            fig, ax = plotting.plot_tdr(depth, **kwargs)
         elif concur_var_titles is None:
-            plotting.plotTDR(depth, concur_vars=self.tdr[concur_vars],
-                             **kwargs)
+            fig, ax = plotting.plot_tdr(depth,
+                                        concur_vars=self.tdr[concur_vars],
+                                        **kwargs)
         else:
-            plotting.plotTDR(depth,
-                             concur_vars=self.tdr.loc[:, concur_vars],
-                             concur_var_titles=concur_var_titles,
-                             **kwargs)
+            ccvars = self.tdr.loc[:, concur_vars]
+            ccvars_title = concur_var_titles  # just to shorten
+            fig, ax = plotting.plot_tdr(depth,
+                                        concur_vars=ccvars,
+                                        concur_var_titles=ccvars_title,
+                                        **kwargs)
 
-    def plot_zoc_filters(self, xlim=None, ylim=None, ylab="Depth [m]"):
+        return(fig, ax)
+
+    def plot_zoc(self, xlim=None, ylim=None, ylab="Depth [m]", **kwargs):
         """Plot zero offset correction filters
 
         Parameters
@@ -939,12 +1042,41 @@ class TDR:
             respectively.
         ylab : str, optional
             Label for ``y`` axis.
+        **kwargs : optional keyword arguments
+            Passed to `matplotlib.pyplot.subplots`.
+
+        Returns
+        -------
+        tuple
+            `matplotlib.pyplot` Figure and Axes instances.
+
+        Examples
+        --------
+        >>> tdrX = get_diveMove_sample_data()
+        >>> tdrX.zoc("offset", offset=3)
+        >>> tdrX.plot_zoc()
 
         """
-        if self.zoc_pars["method"] == "filter":
-            depth = self.get_depth("measured")
+        zoc_method = self.zoc_pars["method"]
+        depth_msrd = self.get_depth("measured")
+        if zoc_method == "filter":
             zoc_filters = self.zoc_pars["filters"]
-            plotting._plot_zoc_filters(depth, zoc_filters, xlim, ylim, ylab)
+            fig, ax = (plotting
+                       ._plot_zoc_filters(depth_msrd, zoc_filters,
+                                          xlim, ylim, ylab, **kwargs))
+        elif zoc_method == "offset":
+            depth_zoc = self.get_depth("zoc")
+            fig, ax = plotting.plt.subplots(1, 1, **kwargs)
+            ax = depth_msrd.plot(ax=ax, rot=0, label="measured")
+            depth_zoc.plot(ax=ax, label="zoc")
+            ax.invert_yaxis()
+            ax.set_xlabel("")
+            ax.set_ylabel(ylab)
+            ax.legend(loc="lower right")
+            ax.set_xlim(xlim)
+            ax.set_ylim(ylim)
+
+        return(fig, ax)
 
     def plot_phases(self, diveNo=None, concur_vars=None,
                     concur_var_titles=None, surface=False, **kwargs):
@@ -960,13 +1092,18 @@ class TDR:
         concur_var_titles : str or list, optional
             String or list of strings with y-axis labels for `concur_vars`.
         **kwargs : optional keyword arguments
-            Arguments passed to ``plotTDR``.
+            Arguments passed to plotting function.
 
-        Notes
-        -----
-        This is not fully functional yet:
+        Returns
+        -------
+        tuple
+            `matplotlib.pyplot` Figure and Axes instances.
 
-          - dry_time is not properly handled and plotted.
+        Examples
+        --------
+        >>> tdrX.calibrate(dive_thr=3, zoc_method="offset",
+        ... offset=3, descent_crit_q=0.01, knot_factor=20)
+        >>> tdrX.plot_phases(list(range(250, 300)), surface=True)
 
         """
         row_ids = self.get_dive_details("row_ids")
@@ -1004,7 +1141,7 @@ class TDR:
             dives_df = dives_all.iloc[idx_ok, :]
             details_df = row_ids.iloc[idx_ok, :]
 
-        wet_dry = self.time_budget(ignore_z=True)
+        wet_dry = self.time_budget(ignore_z=True, ignore_du=True)
         drys = wet_dry[wet_dry["phase_label"] == "L"][["beg", "end"]]
         if (drys.shape[0] > 0):
             dry_time = drys
@@ -1012,15 +1149,19 @@ class TDR:
             dry_time = None
 
         if concur_vars is None:
-            plotting.plotTDR(dives_df.iloc[:, 0],
-                             phase_cat=details_df["dive.phase"],
-                             dry_time=dry_time, **kwargs)
+            fig, ax = (plotting
+                       .plot_tdr(dives_df.iloc[:, 0],
+                                 phase_cat=details_df["dive.phase"],
+                                 dry_time=dry_time, **kwargs))
         else:
-            plotting.plotTDR(dives_df.iloc[:, 0],
-                             concur_vars=dives_df.iloc[:, 1:],
-                             concur_var_titles=concur_var_titles,
-                             phase_cat=details_df["dive.phase"],
-                             dry_time=dry_time, **kwargs)
+            fig, ax = (plotting
+                       .plot_tdr(dives_df.iloc[:, 0],
+                                 concur_vars=dives_df.iloc[:, 1:],
+                                 concur_var_titles=concur_var_titles,
+                                 phase_cat=details_df["dive.phase"],
+                                 dry_time=dry_time, **kwargs))
+
+        return(fig, ax)
 
     def plot_dive_model(self, diveNo=None, **kwargs):
         """Plot dive model for selected dive
@@ -1030,6 +1171,13 @@ class TDR:
         diveNo : array_like, optional
             List of dive numbers (1-based) to plot.
         **kwargs : optional keyword arguments
+            Arguments passed to plotting function.
+
+        Examples
+        --------
+        >>> tdrX.calibrate(dive_thr=3, zoc_method="offset",
+        ... offset=3, descent_crit_q=0.01, knot_factor=20)
+        >>> tdrX.plot_dive_model(diveNo=20, figsize=(10, 10))
 
         """
         dive_ids = self.get_dive_details("row_ids", "dive.id")
