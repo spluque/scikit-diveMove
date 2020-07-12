@@ -60,7 +60,7 @@ class TestTDR(ut.TestCase):
         self.tdrX.detect_wet(dry_thr=dry_thr, wet_cond=None,
                              wet_thr=wet_thr, interp_wet=False)
         self.tdrX.detect_dives(dive_thr)
-        row_ids = self.tdrX.get_dive_details("row_ids")
+        row_ids = self.tdrX.get_dives_details("row_ids")
         self.assertIsInstance(row_ids, DataFrame)
         self.assertEqual(row_ids.ndim, 2)
         self.assertEqual(row_ids.shape[0], self.tdrX.tdr.shape[0])
@@ -84,12 +84,12 @@ class TestTDR(ut.TestCase):
                                      knot_factor=knot_factor,
                                      descent_crit_q=descent_crit_q,
                                      ascent_crit_q=ascent_crit_q)
-        dive_model_tdrX = self.tdrX.get_dive_details("model")
+        dive_model_tdrX = self.tdrX.get_dives_details("model")
         self.assertEqual(dive_model, dive_model_tdrX)
-        crit_vals = self.tdrX.get_dive_details("crit_vals")
+        crit_vals = self.tdrX.get_dives_details("crit_vals")
         self.assertIsInstance(crit_vals, DataFrame)
         self.assertEqual(crit_vals.ndim, 2)
-        dids_per_row = self.tdrX.get_dive_details("row_ids", "dive.id")
+        dids_per_row = self.tdrX.get_dives_details("row_ids", "dive_id")
         dids_uniq = dids_per_row[dids_per_row > 0].unique()
         self.assertEqual(crit_vals.shape[0], dids_uniq.size)
 
@@ -114,10 +114,10 @@ class TestTDR(ut.TestCase):
                             descent_crit_q=descent_crit_q,
                             ascent_crit_q=ascent_crit_q)
 
-        crit_vals = self.tdrX.get_dive_details("crit_vals")
+        crit_vals = self.tdrX.get_dives_details("crit_vals")
         self.assertIsInstance(crit_vals, DataFrame)
         self.assertEqual(crit_vals.ndim, 2)
-        dids_per_row = self.tdrX.get_dive_details("row_ids", "dive.id")
+        dids_per_row = self.tdrX.get_dives_details("row_ids", "dive_id")
         dids_uniq = dids_per_row[dids_per_row > 0].unique()
         self.assertEqual(crit_vals.shape[0], dids_uniq.size)
 

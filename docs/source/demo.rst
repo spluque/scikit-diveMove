@@ -144,7 +144,15 @@ Following calibration, use the different accessor methods:
 
 .. jupyter-execute::
 
-   print(tdrX.get_dive_details("row_ids"))
+   print(tdrX.get_dives_details("row_ids"))
+
+.. jupyter-execute::
+
+   print(tdrX.get_dives_details("spline_derivs"))
+
+.. jupyter-execute::
+
+   print(tdrX.get_dives_details("crit_vals"))
 
 
 Calibrate speed measurements

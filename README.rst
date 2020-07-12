@@ -59,7 +59,7 @@ The table below shows which features of `diveMove` are accessible from
 |               |                  |``TDR.detect_dives``      |                                |
 |               |                  |``TDR.detect_dive_phases``|                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``calibrateSpeed``|``TDR.calibrate_speed``   |A new implementation of the     |
+|               |``calibrateSpeed``|``TDR.calibrate_speed``   |New implementation of the       |
 |               |``rqPlot``        |                          |algorithm entirely in Python.   |
 |               |                  |                          |The procedure generates the plot|
 |               |                  |                          |concurrently.                   |
@@ -83,9 +83,9 @@ The table below shows which features of `diveMove` are accessible from
 |               |``getDtime``      |``TDR.dtime``             |                                |
 |               |``getFileName``   |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``getDAct``       |``TDR.get_wet_activity``  |  Fully implemented             |
-|               |``getDPhaseLab``  |``TDR.get_dive_details``  |                                |
-|               |``getDiveDeriv``  |                          |                                |
+|               |``getDAct``       |``TDR.get_wet_activity``  |``getDiveDeriv`` and            |
+|               |``getDPhaseLab``  |``TDR.get_dives_details`` |``getDiveModel`` functionality  |
+|               |``getDiveDeriv``  |                          |to be implemented.              |
 |               |``getDiveModel``  |                          |                                |
 |               |``getGAct``       |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+

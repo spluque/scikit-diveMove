@@ -6,8 +6,10 @@ processing of `TDR` records from a data file.
 This module instantiates an `R` session to interact with low-level
 functions and methods of package `diveMove`.
 
-Class & Methods Summary
------------------------
+Class & Main Methods Summary
+----------------------------
+
+See `API` section for details on minor methods.
 
 .. autosummary::
 
@@ -23,9 +25,10 @@ Class & Methods Summary
    TDR.time_budget
    TDR.plot
    TDR.plot_phases
+   TDR.plot_dive_model
    TDR.plot_zoc
    TDR.get_wet_activity
-   TDR.get_dive_details
+   TDR.get_dives_details
 
 API
 ---
@@ -180,6 +183,8 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
         asc_crit = robjs.r.slot(dmodel, dmodel_slots[4])[0]
         desc_crit_r = robjs.r.slot(dmodel, dmodel_slots[5])[0]
         asc_crit_r = robjs.r.slot(dmodel, dmodel_slots[6])[0]
+        # Replace dots with underscore for the output
+        dmodel_slots = [x.replace(".", "_") for x in dmodel_slots]
         res = dict(zip(dmodel_slots,
                        [lmtx, spl, spl_der, desc_crit, asc_crit,
                         desc_crit_r, asc_crit_r]))
@@ -579,8 +584,11 @@ class TDR:
             phases_df = detDiveFun(pd.Series(depth), pd.Series(act_phases),
                                    dive_thr=dive_thr)
 
+        # Replace dots with underscore
+        phases_df.columns = (phases_df.columns.str
+                             .replace(".", "_", regex=False))
         phases_df.set_index(depth.index, inplace=True)
-        dive_activity = phases_df.pop("dive.activity")
+        dive_activity = phases_df.pop("dive_activity")
         # Dive and post-dive ID should be integer
         phases_df = phases_df.astype(int)
         self.dives["row_ids"] = phases_df
@@ -623,8 +631,8 @@ class TDR:
         ...                         ascent_crit_q=0, knot_factor=20)
 
         """
-        phases_df = self.get_dive_details("row_ids")
-        dive_ids = self.get_dive_details("row_ids", columns="dive.id")
+        phases_df = self.get_dives_details("row_ids")
+        dive_ids = self.get_dives_details("row_ids", columns="dive_id")
         depth = self.get_depth("zoc")
         ok = (dive_ids > 0) & ~depth.isna()
 
@@ -644,8 +652,8 @@ class TDR:
             xx = pd.Categorical(np.repeat(["X"], phases_df.shape[0]),
                                 categories=["D", "DB", "B", "BA",
                                             "DA", "A", "X"])
-            self.dives["row_ids"]["dive.phase"] = xx
-            dive_phases = self.dives["row_ids"]["dive.phase"]
+            self.dives["row_ids"]["dive_phase"] = xx
+            dive_phases = self.dives["row_ids"]["dive_phase"]
             cval_list = []
             spl_der_list = []
             spl_list = []
@@ -655,16 +663,16 @@ class TDR:
                                 knot_factor=knot_factor,
                                 descent_crit_q=descent_crit_q,
                                 ascent_crit_q=ascent_crit_q)
-                dive_phases.loc[grp.index] = (res.pop("label.matrix")[:, 1])
+                dive_phases.loc[grp.index] = (res.pop("label_matrix")[:, 1])
                 # Splines
-                spl = res.pop("dive.spline")
+                spl = res.pop("dive_spline")
                 # Convert directly into a dict, with each element turned
                 # into a list of R objects.  Access each via
                 # `_get_dive_spline_slot`
                 spl_dict = dict(zip(spl.names, list(spl)))
                 spl_list.append(spl_dict)
                 # Spline derivatives
-                spl_der = res.pop("spline.deriv")
+                spl_der = res.pop("spline_deriv")
                 spl_der_idx = pd.TimedeltaIndex(spl_der[:, 0], unit="s")
                 spl_der = pd.DataFrame({'y': spl_der[:, 1]},
                                        index=spl_der_idx)
@@ -841,7 +849,7 @@ class TDR:
         >>> tdrX.dive_stats()
 
         """
-        phases_df = self.get_dive_details("row_ids")
+        phases_df = self.get_dives_details("row_ids")
         depth = self.get_depth("zoc")
 
         if self.speed_calib_fit:
@@ -849,21 +857,21 @@ class TDR:
         else:
             speed = self.get_speed("measured")
 
-        dive_ids = phases_df.loc[:, "dive.id"]
-        postdive_ids = phases_df.loc[:, "postdive.id"]
+        dive_ids = phases_df.loc[:, "dive_id"]
+        postdive_ids = phases_df.loc[:, "postdive_id"]
         ok = (dive_ids > 0) & dive_ids.isin(postdive_ids)
         okpd = (postdive_ids > 0) & postdive_ids.isin(dive_ids)
 
         postdive_dur = (postdive_ids[okpd].reset_index()
-                        .groupby("postdive.id")
+                        .groupby("postdive_id")
                         .apply(lambda x: x.iloc[-1] - x.iloc[0]))
 
-        tdf = (pd.concat((phases_df[["dive.id", "dive.phase"]][ok],
+        tdf = (pd.concat((phases_df[["dive_id", "dive_phase"]][ok],
                           depth[ok], speed[ok]), axis=1)
                .reset_index()
-               [["dive.id", "dive.phase", "date_time",
+               [["dive_id", "dive_phase", "date_time",
                  "depth", self.speed_colname]])
-        tdf_grp = tdf.groupby("dive.id")
+        tdf_grp = tdf.groupby("dive_id")
 
         ones_list = []
         intvl = pd.Timedelta(self.dtime).total_seconds()
@@ -960,7 +968,7 @@ class TDR:
         if ignore_z:
             phase_lab = phase_lab.mask(phase_lab == "Z", "L")
 
-        dive_ids = self.get_dive_details("row_ids", columns="dive.id")
+        dive_ids = self.get_dives_details("row_ids", columns="dive_id")
 
         grp_key = (phase_lab
                    .ne(phase_lab.shift())
@@ -974,7 +982,7 @@ class TDR:
 
         dives_ll = []
         for name, group in merged_grp:
-            dives_uniq = pd.Series(group["dive.id"].unique(),
+            dives_uniq = pd.Series(group["dive_id"].unique(),
                                    name="dive_id")
             beg = [group["date_time"].iloc[0]] * dives_uniq.size
             end = [group["date_time"].iloc[-1]] * dives_uniq.size
@@ -1106,13 +1114,13 @@ class TDR:
         >>> tdrX.plot_phases(list(range(250, 300)), surface=True)
 
         """
-        row_ids = self.get_dive_details("row_ids")
-        dive_ids = row_ids["dive.id"]
+        row_ids = self.get_dives_details("row_ids")
+        dive_ids = row_ids["dive_id"]
         dive_ids_uniq = dive_ids.unique()
-        postdive_ids = row_ids["postdive.id"]
+        postdive_ids = row_ids["postdive_id"]
 
         if diveNo is None:
-            diveNo = np.arange(1, row_ids["dive.id"].max() + 1).tolist()
+            diveNo = np.arange(1, row_ids["dive_id"].max() + 1).tolist()
         else:
             diveNo = [x for x in sorted(diveNo) if x in dive_ids_uniq]
 
@@ -1151,14 +1159,14 @@ class TDR:
         if concur_vars is None:
             fig, ax = (plotting
                        .plot_tdr(dives_df.iloc[:, 0],
-                                 phase_cat=details_df["dive.phase"],
+                                 phase_cat=details_df["dive_phase"],
                                  dry_time=dry_time, **kwargs))
         else:
             fig, ax = (plotting
                        .plot_tdr(dives_df.iloc[:, 0],
                                  concur_vars=dives_df.iloc[:, 1:],
                                  concur_var_titles=concur_var_titles,
-                                 phase_cat=details_df["dive.phase"],
+                                 phase_cat=details_df["dive_phase"],
                                  dry_time=dry_time, **kwargs))
 
         return(fig, ax)
@@ -1180,12 +1188,12 @@ class TDR:
         >>> tdrX.plot_dive_model(diveNo=20, figsize=(10, 10))
 
         """
-        dive_ids = self.get_dive_details("row_ids", "dive.id")
-        crit_vals = self.get_dive_details("crit_vals").loc[diveNo]
+        dive_ids = self.get_dives_details("row_ids", "dive_id")
+        crit_vals = self.get_dives_details("crit_vals").loc[diveNo]
         idxs = _get_dive_indices(dive_ids, diveNo)
         depth = self.get_depth("zoc").iloc[idxs]
         depth_s = self._get_dive_spline_slot(diveNo, "xy")
-        depth_deriv = self.get_dive_details("spline_derivs").loc[diveNo]
+        depth_deriv = self.get_dives_details("spline_derivs").loc[diveNo]
 
         # Index with time stamp
         if depth.shape[0] < 4:
@@ -1207,10 +1215,10 @@ class TDR:
                                     index=depth.index[0] + depth_deriv.index)
 
         # Force integer again as `loc` coerced to float above
-        d_crit = crit_vals["descent.crit"].astype(int)
-        a_crit = crit_vals["ascent.crit"].astype(int)
-        d_crit_rate = crit_vals["descent.crit.rate"]
-        a_crit_rate = crit_vals["ascent.crit.rate"]
+        d_crit = crit_vals["descent_crit"].astype(int)
+        a_crit = crit_vals["ascent_crit"].astype(int)
+        d_crit_rate = crit_vals["descent_crit_rate"]
+        a_crit_rate = crit_vals["ascent_crit_rate"]
         title = "Dive: {:d}".format(diveNo)
         plotting.plot_dive_model(depth, depth_s=depth_s,
                                  depth_deriv=depth_deriv,
@@ -1241,7 +1249,7 @@ class TDR:
 
         return(okey)
 
-    def get_dive_details(self, key, columns=None):
+    def get_dives_details(self, key, columns=None):
         """Accessor for the ``dives`` attribute
 
         Parameters
@@ -1361,7 +1369,7 @@ class TDR:
         # default settings in diveMove's `.cutDive`
         scalars = ["order", "lambda.opt", "sigmasq", "degree",
                    "g", "a", "b", "variter"]
-        idata = self.get_dive_details("splines")[diveNo]
+        idata = self.get_dives_details("splines")[diveNo]
         if name == "data":
             x = pd.TimedeltaIndex(np.array(idata[name][0]), unit="s")
             odata = pd.Series(np.array(idata[name][1]), index=x)
