@@ -383,7 +383,7 @@ class TDR:
                       'spline_derivs': None,
                       'crit_vals': None}
 
-    def __repr__(self):
+    def __str__(self):
         objclass = ("Time-Depth Recorder data -- Class {} object\n"
                     .format(self.__class__.__name__))
         src = "{0:<20} {1}\n".format("Source File", self.src_file)
