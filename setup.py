@@ -31,7 +31,7 @@ setup(
     extras_require={
         "dev": ["ipython", "jupyter", "jupyter-sphinx"],
         "docs": ["jupyter-sphinx"]
-      },
+    },
     # metadata for upload to PyPI
     author="Sebastian Luque",
     author_email="spluque@gmail.com",

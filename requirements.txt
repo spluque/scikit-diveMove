@@ -7,3 +7,5 @@ pandas>=1.0
 rpy2>=3.3
 scipy>=1.5
 statsmodels>=0.11
+xarray>=0.16
+netcdf4>=1.5

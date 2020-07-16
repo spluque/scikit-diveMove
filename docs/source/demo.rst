@@ -13,6 +13,8 @@ up a logger to monitor progress to this section.
 .. jupyter-execute::
 
    # Set up
+   import os
+   import os.path as osp
    import numpy as np
    import pandas as pd
    import skdiveMove as skdive
@@ -35,17 +37,15 @@ Load `diveMove`'s example data, using ``TDR.__init__`` method, and print:
 .. jupyter-execute::
    :linenos:
 
-   rstr = ("""system.file(file.path("data", "dives.csv"), """
-           """package="diveMove", mustWork=TRUE)""")
-   # Access `rpy2`'s R instance directly from `tdr` module
-   data_path = skdive.tdr.robjs.r(rstr)[0]
-   tdrX = skdive.TDR(data_path, sep=";", compression="bz2", has_speed=True)
+   here = osp.dirname(os.getcwd())
+   ifile = osp.join(here, "skdiveMove", "tests", "data", "ag_mk7_2002_022.nc")
+   tdrX = skdive.TDR(ifile, depth_name="depth", has_speed=True)
    print(tdrX)
 
    # Access measured data
    tdrX.get_depth("measured")
 
-   # Or simply use function ``skdive.get_diveMove_sample_data`` to do the
+   # Or simply use function ``skdive.tests.diveMove2skd`` to do the
    # same with this particular data set.
 
 
@@ -132,27 +132,27 @@ Following calibration, use the different accessor methods:
 .. jupyter-execute::
 
    # Time series of the wet/dry phases
-   print(tdrX.get_wet_activity("phases"))
+   print(tdrX.phases.get_wet_activity())
 
 .. jupyter-execute::
 
-   print(tdrX.get_wet_activity("dry_thr"))
+   print(tdrX.phases.params["wet_dry"]["dry_thr"])
 
 .. jupyter-execute::
 
-   print(tdrX.get_wet_activity("wet_thr"))
+   print(tdrX.phases.params["wet_dry"]["wet_thr"])
 
 .. jupyter-execute::
 
-   print(tdrX.get_dives_details("row_ids"))
+   print(tdrX.phases.get_dives_details("row_ids"))
 
 .. jupyter-execute::
 
-   print(tdrX.get_dives_details("spline_derivs"))
+   print(tdrX.phases.get_dives_details("spline_derivs"))
 
 .. jupyter-execute::
 
-   print(tdrX.get_dives_details("crit_vals"))
+   print(tdrX.phases.get_dives_details("crit_vals"))
 
 
 Calibrate speed measurements
@@ -170,11 +170,11 @@ Time budgets
 
 .. jupyter-execute::
 
-   print(tdrX.time_budget(ignore_z=True, ignore_du=False))
+   print(tdrX.phases.time_budget(ignore_z=True, ignore_du=False))
 
 .. jupyter-execute::
 
-   print(tdrX.time_budget(ignore_z=True, ignore_du=True))
+   print(tdrX.phases.time_budget(ignore_z=True, ignore_du=True))
 
 
 Dive statistics
@@ -190,4 +190,4 @@ Dive stamps
 
 .. jupyter-execute::
 
-   print(tdrX.stamp_dives())
+   print(tdrX.phases.stamp_dives())

@@ -99,6 +99,9 @@ Modules
    :maxdepth: 2
 
    tdr
+   tdrsource
+   zoc
+   tdrphases
 
 
 Indices and tables

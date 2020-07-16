@@ -1,5 +1,8 @@
 """Plotting module
 
+These are considered low-level functions that do not handle the
+higher-level classes of the package.
+
 """
 
 import warnings
@@ -207,8 +210,8 @@ def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
     """
     nfilters = zoc_filters.shape[1]
     npanels = 3
-    lastflts = [1]
-    if nfilters > 3:
+    lastflts = [1]              # col idx of second filters
+    if nfilters > 2:            # append col idx of last filter
         lastflts.append(nfilters - 1)
 
     fig, axs = plt.subplots(npanels, 1, sharex=True, sharey=True, **kwargs)
@@ -230,20 +233,18 @@ def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
     depth.plot(ax=axs[0], color="lightgray", label="input")
     axs[0].legend(loc="lower left")
     # Need to plot legend for input depth here
-    filter_names = zoc_filters.columns[:-1]
-    flt0 = (zoc_filters.iloc[:, 0]
-            .plot(ax=axs[1], label=filter_names[0]))  # first filter
-    flts_l = [flt0]
-    if lastflts[0] < (nfilters - 1):
-        for i in lastflts:
-            flt_i = zoc_filters.iloc[:, i].plot(ax=axs[1])
-            flts_l.append(flt_i)
+    filter_names = zoc_filters.columns
+    (zoc_filters.iloc[:, 0]
+     .plot(ax=axs[1], label=filter_names[0]))  # first filter
+    for i in lastflts:
+        zoc_filters.iloc[:, i].plot(ax=axs[1], label=filter_names[i])
     axs[1].legend(loc="lower left")
 
     # ZOC depth
+    depth_zoc = depth - zoc_filters.iloc[:, -1]
     depth_zoc_label = ("input - {}"
-                       .format(zoc_filters.columns[-2]))
-    (zoc_filters.iloc[:, -1]
+                       .format(zoc_filters.columns[-1]))
+    (depth_zoc
      .plot(ax=axs[2], color="k", rot=0, label=depth_zoc_label))
     axs[2].legend(loc="lower left")
     axs[2].set_xlabel("")

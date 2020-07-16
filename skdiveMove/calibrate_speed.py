@@ -104,6 +104,6 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
 
 
 if __name__ == '__main__':
-    from .tdr import get_diveMove_sample_data
-    tdrX = get_diveMove_sample_data()
+    from skdiveMove.tests import diveMove2skd
+    tdrX = diveMove2skd()
     print(tdrX)
