@@ -48,10 +48,9 @@ The table below shows which features of `diveMove` are accessible from
 |               |``bec2``          |                          |                                |
 |               |``bec3``          |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|Dive analysis  |``readTDR``       | ``TDR.__init__``         |Fully implemented.  Single      |
+|Dive analysis  |``readTDR``       |``TDR.__init__``          |Fully implemented.  Single      |
 |               |``createTDR``     |``TDRSource.__init__``    |``TDR`` class for data with or  |
 |               |                  |                          |without speed measurements.     |
-|               |                  |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
 |               |``calibrateDepth``|``TDR.calibrate``         |Fully implemented               |
 |               |                  |``TDR.zoc``               |                                |
@@ -63,12 +62,10 @@ The table below shows which features of `diveMove` are accessible from
 |               |``rqPlot``        |                          |algorithm entirely in Python.   |
 |               |                  |                          |The procedure generates the plot|
 |               |                  |                          |concurrently.                   |
-|               |                  |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``diveStats``     |``TDR.dive_stats``        |Depth derivative stats for dives|
-|               |``stampDive``     |``TDR.time_budget``       |to be implemented.              |
+|               |``diveStats``     |``TDR.dive_stats``        |Fully implemented               |
+|               |``stampDive``     |``TDR.time_budget``       |                                |
 |               |``timeBudget``    |``TDR.stamp_dives``       |                                |
-|               |                  |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
 |               |``plotTDR``       |``TDR.plot``              |Fully implemented.              |
 |               |``plotDiveModel`` |``TDR.plot_zoc_filters``  |Interactivity is the default, as|
@@ -83,9 +80,9 @@ The table below shows which features of `diveMove` are accessible from
 |               |``getDtime``      |``TDR.dtime``             |                                |
 |               |``getFileName``   |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``getDAct``       |``TDR.get_wet_activity``  |``getDiveDeriv`` and            |
-|               |``getDPhaseLab``  |``TDR.get_dives_details`` |``getDiveModel`` functionality  |
-|               |``getDiveDeriv``  |                          |to be implemented.              |
+|               |``getDAct``       |``TDR.get_wet_activity``  |Fully implemented               |
+|               |``getDPhaseLab``  |``TDR.get_dives_details`` |                                |
+|               |``getDiveDeriv``  |``TDR.get_dive_deriv``    |                                |
 |               |``getDiveModel``  |                          |                                |
 |               |``getGAct``       |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+

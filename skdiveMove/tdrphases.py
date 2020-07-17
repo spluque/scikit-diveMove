@@ -23,73 +23,12 @@ import logging
 import numpy as np
 import pandas as pd
 from skdiveMove.core import robjs, cv, pandas2ri
-from skdiveMove.helpers import get_var_sampling_interval
+from skdiveMove.helpers import get_var_sampling_interval, _cut_dive
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
 # should set up logging.basicConfig() as needed
 logger.addHandler(logging.NullHandler())
-
-
-def _cut_dive(x, dive_model, smooth_par, knot_factor,
-              descent_crit_q, ascent_crit_q):
-    """Private function to retrieve results from `diveModel` object in R
-
-    Parameters
-    ----------
-    x : pandas.DataFrame
-        Subset with a single dive's data, with first column expected to be
-        dive ID.
-    dive_model : str
-    smooth_par : float
-    knot_factor : int
-    descent_crit_q : float
-    ascent_crit_q : float
-
-    Notes
-    -----
-    See details for arguments in diveMove's ``calibrateDepth``.  This
-    function maps to ``diveMove:::.cutDive``, and only sets some of the
-    parameters from the `R` function.
-
-    Returns
-    -------
-    out : dict
-        Dictionary with the following keys and corresponding component:
-        {'label_matrix', 'dive_spline', 'spline_deriv', 'descent_crit',
-        'ascent_crit', 'descent_crit_rate', 'ascent_crit_rate'}
-
-    """
-    xx = x.iloc[:, 1:]
-    rstr = """cutDiveFun <- diveMove:::.cutDive"""
-    cutDiveFun = robjs.r(rstr)
-    with cv.localconverter(robjs.default_converter +
-                           pandas2ri.converter):
-        dmodel = cutDiveFun(xx, dive_model=dive_model,
-                            smooth_par=smooth_par,
-                            knot_factor=knot_factor,
-                            descent_crit_q=descent_crit_q,
-                            ascent_crit_q=ascent_crit_q)
-        dmodel_slots = ["label.matrix", "dive.spline", "spline.deriv",
-                        "descent.crit", "ascent.crit",
-                        "descent.crit.rate", "ascent.crit.rate"]
-
-        lmtx = (robjs.r.slot(dmodel, dmodel_slots[0])
-                .reshape((xx.shape[0], 2), order="F"))
-        spl = robjs.r.slot(dmodel, dmodel_slots[1])
-        spl_der = robjs.r.slot(dmodel, dmodel_slots[2])
-        spl_der = np.column_stack((spl_der[0], spl_der[1]))
-        desc_crit = robjs.r.slot(dmodel, dmodel_slots[3])[0]
-        asc_crit = robjs.r.slot(dmodel, dmodel_slots[4])[0]
-        desc_crit_r = robjs.r.slot(dmodel, dmodel_slots[5])[0]
-        asc_crit_r = robjs.r.slot(dmodel, dmodel_slots[6])[0]
-        # Replace dots with underscore for the output
-        dmodel_slots = [x.replace(".", "_") for x in dmodel_slots]
-        res = dict(zip(dmodel_slots,
-                       [lmtx, spl, spl_der, desc_crit, asc_crit,
-                        desc_crit_r, asc_crit_r]))
-
-    return(res)
 
 
 class TDRPhases:
@@ -415,7 +354,7 @@ class TDRPhases:
         der = self.get_dives_details("spline_derivs").loc[diveNo]
         crit_vals = self.get_dives_details("crit_vals").loc[diveNo]
         spl_data = self.get_dives_details("splines")[diveNo]["data"]
-        spl_times = np.array(spl_data)[0]  # x row is time steps in (s)
+        spl_times = np.array(spl_data[0])  # x row is time steps in (s)
 
         if phase == "descent":
             descent_crit = int(crit_vals["descent_crit"])
@@ -437,6 +376,26 @@ class TDRPhases:
             raise KeyError(msg)
 
         return(oder)
+
+    def _get_dive_deriv_stats(self, diveNo):
+        """Calculate stats for the depth derivative of a given dive
+
+        """
+        desc = self.get_dive_deriv(diveNo, "descent")
+        bott = self.get_dive_deriv(diveNo, "bottom")
+        asc = self.get_dive_deriv(diveNo, "ascent")
+        # Rename DataFrame to match diveNo
+        desc_sts = (pd.DataFrame(desc.describe().iloc[1:]).transpose()
+                    .add_prefix("descD_").rename({"y": diveNo}))
+        bott_sts = (pd.DataFrame(bott.describe().iloc[1:]).transpose()
+                    .add_prefix("bottD_").rename({"y": diveNo}))
+        asc_sts = (pd.DataFrame(asc.describe().iloc[1:]).transpose()
+                   .add_prefix("ascD_").rename({"y": diveNo}))
+        sts = pd.merge(desc_sts, bott_sts, left_index=True,
+                       right_index=True)
+        sts = pd.merge(sts, asc_sts, left_index=True, right_index=True)
+
+        return(sts)
 
     def time_budget(self, ignore_z=True, ignore_du=True):
         """Summary of wet/dry activities at the broadest time scale

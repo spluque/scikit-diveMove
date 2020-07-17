@@ -51,15 +51,14 @@ API
 import logging
 import numpy as np
 import pandas as pd
-from skdiveMove.core import robjs, cv, pandas2ri
 from skdiveMove.tdrsource import TDRSource
 from skdiveMove.zoc import ZOC
 from skdiveMove.tdrphases import TDRPhases
 import skdiveMove.plotting as plotting
 import skdiveMove.calibrate_speed as speedcal
 from skdiveMove.helpers import (get_var_sampling_interval,
-                                _get_dive_indices,
-                                _add_xr_attr)
+                                _get_dive_indices, _add_xr_attr,
+                                _one_dive_stats, _speed_stats)
 import xarray as xr
 
 
@@ -70,50 +69,6 @@ logger.addHandler(logging.NullHandler())
 
 # Keep attributes in xarray operations
 xr.set_options(keep_attrs=True)
-
-
-def _one_dive_stats(x, interval, has_speed=False):
-    """Calculate dive statistics for a single dive's DataFrame
-
-    Parameters
-    ----------
-    x : pandas.DataFrame
-        First column expected to be dive ID, the rest as in `diveMove`.
-    interval : float
-    has_speed : bool
-
-    Returns
-    -------
-    out : pandas.DataFrame
-
-    """
-    xx = x.iloc[:, 1:]
-    rstr = "one_dive_stats_fun <- diveMove::oneDiveStats"
-    one_dive_stats_fun = robjs.r(rstr)
-    onames_speed = ["begdesc", "enddesc", "begasc", "desctim", "botttim",
-                    "asctim", "divetim", "descdist", "bottdist", "ascdist",
-                    "bottdep_mean", "bottdep_median", "bottdep_sd",
-                    "maxdep", "desc_tdist", "desc_mean_speed",
-                    "desc_angle", "bott_tdist", "bott_mean_speed",
-                    "asc_tdist", "asc_mean_speed", "asc_angle"]
-    onames_nospeed = onames_speed[:14]
-
-    with cv.localconverter(robjs.default_converter +
-                           pandas2ri.converter):
-        res = one_dive_stats_fun(xx, interval, has_speed)
-
-    if has_speed:
-        onames = onames_speed
-    else:
-        onames = onames_nospeed
-
-    res_df = pd.DataFrame(res, columns=onames)
-    for tcol in range(3):
-        # This is per POSIXct convention in R
-        res_df.iloc[:, tcol] = pd.to_datetime(res_df.iloc[:, tcol],
-                                              unit="s")
-
-    return(res_df)
 
 
 class TDR(TDRSource):
@@ -517,44 +472,68 @@ class TDR(TDRSource):
 
         """
         phases_df = self.get_dives_details("row_ids")
-        depth = self.get_depth("zoc")
-        intvl = get_var_sampling_interval(depth).total_seconds()
-        depth = depth.to_series()
 
-        if self.speed_calib_fit:
-            speed = self.get_speed("calibrated")
-        else:
-            speed = self.get_speed("measured")
+        # calib_speed=False if no fit object
+        tdr = self.get_tdr(calib_depth=True,
+                           calib_speed=bool(self.speed_calib_fit))
 
-        speed = speed.to_series()
+        intvl = (get_var_sampling_interval(tdr[self.depth_name])
+                 .total_seconds())
+        tdr = tdr.to_dataframe()
 
         dive_ids = phases_df.loc[:, "dive_id"]
         postdive_ids = phases_df.loc[:, "postdive_id"]
         ok = (dive_ids > 0) & dive_ids.isin(postdive_ids)
         okpd = (postdive_ids > 0) & postdive_ids.isin(dive_ids)
+        postdive_ids = postdive_ids[okpd]
 
-        postdive_dur = (postdive_ids[okpd].reset_index()
+        postdive_dur = (postdive_ids.reset_index()
                         .groupby("postdive_id")
                         .apply(lambda x: x.iloc[-1] - x.iloc[0]))
 
-        tdf = (pd.concat((phases_df[["dive_id", "dive_phase"]][ok],
-                          depth[ok], speed[ok]), axis=1)
-               .reset_index()
-               [["dive_id", "dive_phase", "date_time",
-                 "depth", self.speed_name]])
-        tdf_grp = tdf.groupby("dive_id")
+        tdrf = (pd.concat((phases_df[["dive_id", "dive_phase"]][ok],
+                           tdr[ok]), axis=1).reset_index())
+
+        # Ugly hack to re-order columns for `diveMove` convention
+        names0 = ["dive_id", "dive_phase", "date_time", self.depth_name]
+        colnames = tdrf.columns.to_list()
+        if self.has_speed:
+            names0.append(self.speed_name)
+        colnames = names0 + list(set(colnames) - set(names0))
+        tdrf = tdrf.reindex(columns=colnames)
+        tdrf_grp = tdrf.groupby("dive_id")
 
         ones_list = []
-        for name, grp in tdf_grp:
-            # Speed to be enabled once calibration is implemented
+        for name, grp in tdrf_grp:
             res = _one_dive_stats(grp, interval=intvl,
                                   has_speed=self.has_speed)
+            # Rename to match dive number
+            res = res.rename({0: name})
+
+            if depth_deriv:
+                deriv_stats = self.phases._get_dive_deriv_stats(name)
+                res = pd.concat((res, deriv_stats), axis=1)
+
             ones_list.append(res)
 
         ones_df = pd.concat(ones_list, ignore_index=True)
         ones_df.set_index(dive_ids[ok].unique(), inplace=True)
         ones_df.index.rename("dive_id", inplace=True)
         ones_df["postdive_dur"] = postdive_dur["date_time"]
+
+        # For postdive total distance and mean speed (if available)
+        if self.has_speed:
+            speed_postd = (tdr[self.speed_name][okpd]
+                           .groupby(postdive_ids))
+            pd_speed_ll = []
+            for name, grp in speed_postd:
+                res = _speed_stats(grp.reset_index())
+                onames = ["postdive_tdist", "postdive_mean_speed"]
+                res_df = pd.DataFrame(res[:, :-1], columns=onames,
+                                      index=[name])
+                pd_speed_ll.append(res_df)
+            pd_speed_stats = pd.concat(pd_speed_ll)
+            ones_df = pd.concat((ones_df, pd_speed_stats), axis=1)
 
         return(ones_df)
 
@@ -950,6 +929,34 @@ class TDR(TDRSource):
 
         """
         return(self.phases.stamp_dives(**kwargs))
+
+    def get_tdr(self, calib_depth=True, calib_speed=True):
+        """Return a copy of tdr Dataset
+
+        Parameters
+        ----------
+        calib_depth : bool, optional
+            Whether to return calibrated depth measurements.
+        calib_speed : bool, optional
+            Whether to return calibrated speed measurements.
+
+        Returns
+        -------
+        xarray.Dataset
+        """
+        tdr = self.tdr.copy()
+
+        if calib_depth:
+            depth_name = self.depth_name
+            depth_cal = self.get_depth("zoc")
+            tdr[depth_name] = depth_cal
+
+        if self.has_speed and calib_speed:
+            speed_name = self.speed_name
+            speed_cal = self.get_speed("calibrated")
+            tdr[speed_name] = speed_cal
+
+        return(tdr)
 
 
 if __name__ == '__main__':
