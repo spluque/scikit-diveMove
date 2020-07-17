@@ -889,11 +889,22 @@ class TDR(TDRSource):
 
         Returns
         -------
-        *args : arguments passed to `TDRPhases.get_dives_details`
-        **kwargs : arguments passed to `TDRPhases.get_dives_details`
+        *args : arguments for `TDRPhases.get_dives_details`
+        **kwargs : keyword arguments for `TDRPhases.get_dives_details`
 
         """
         return(self.phases.get_dives_details(*args, **kwargs))
+
+    def get_dive_deriv(self, *args, **kwargs):
+        """Retrieve depth spline derivative for a given dive
+
+        Parameters
+        ----------
+        *args : arguments for `TDRPhases.get_dive_deriv`
+        **kwargs : keyword arguments for `TDRPhases.get_dive_deriv`
+
+        """
+        return(self.phases.get_dive_deriv(*args, **kwargs))
 
     def get_phases_params(self, key):
         """Retrieve parameters used for identification of phases

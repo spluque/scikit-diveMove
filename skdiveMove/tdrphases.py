@@ -11,6 +11,7 @@ Class and Methods Summary
    TDRPhases.detect_dives
    TDRPhases.detect_dive_phases
    TDRPhases.get_dives_details
+   TDRPhases.get_dive_deriv
    TDRPhases.get_wet_activity
    TDRPhases.get_params
    TDRPhases.time_budget
@@ -395,6 +396,47 @@ class TDRPhases:
             odata = np.array(idata[name])
 
         return(odata)
+
+    def get_dive_deriv(self, diveNo, phase):
+        """Retrieve depth spline derivative for a given dive
+
+        Parameters
+        ----------
+        diveNo : int
+            Dive number to retrieve derivative for.
+        phase : {"descent", "bottom", "ascent"}
+            If provided, the dive phase to retrieve data for.
+
+        Returns
+        -------
+        out : pandas.Series
+
+        """
+        der = self.get_dives_details("spline_derivs").loc[diveNo]
+        crit_vals = self.get_dives_details("crit_vals").loc[diveNo]
+        spl_data = self.get_dives_details("splines")[diveNo]["data"]
+        spl_times = np.array(spl_data)[0]  # x row is time steps in (s)
+
+        if phase == "descent":
+            descent_crit = int(crit_vals["descent_crit"])
+            deltat_crit = pd.Timedelta(spl_times[descent_crit], unit="s")
+            oder = der.loc[:deltat_crit]
+        elif phase == "bottom":
+            descent_crit = int(crit_vals["descent_crit"])
+            deltat1 = pd.Timedelta(spl_times[descent_crit], unit="s")
+            ascent_crit = int(crit_vals["ascent_crit"])
+            deltat2 = pd.Timedelta(spl_times[ascent_crit], unit="s")
+            oder = der[(der.index >= deltat1) & (der.index <= deltat2)]
+        elif phase == "ascent":
+            ascent_crit = int(crit_vals["ascent_crit"])
+            deltat_crit = pd.Timedelta(spl_times[ascent_crit], unit="s")
+            oder = der.loc[deltat_crit:]
+        else:
+            msg = "`phase` must be 'descent', 'bottom' or 'ascent'"
+            logger.error(msg)
+            raise KeyError(msg)
+
+        return(oder)
 
     def time_budget(self, ignore_z=True, ignore_du=True):
         """Summary of wet/dry activities at the broadest time scale
