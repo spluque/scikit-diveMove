@@ -115,7 +115,7 @@ Indices and tables
 .. note::
 
    | *Author:* Sebastian Luque
-   | *Version:* 0.0.5
+   | *Version:* 0.0.7
    | *Date:* July 2020
    | *email:* spluque@gmail.com
    | *Copyright (c):* 2020, Sebastian Luque. All rights reserved.

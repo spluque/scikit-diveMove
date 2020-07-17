@@ -132,27 +132,27 @@ Following calibration, use the different accessor methods:
 .. jupyter-execute::
 
    # Time series of the wet/dry phases
-   print(tdrX.phases.get_wet_activity())
+   print(tdrX.get_wet_activity())
 
 .. jupyter-execute::
 
-   print(tdrX.phases.params["wet_dry"]["dry_thr"])
+   print(tdrX.get_phases_params("wet_dry")["dry_thr"])
 
 .. jupyter-execute::
 
-   print(tdrX.phases.params["wet_dry"]["wet_thr"])
+   print(tdrX.get_phases_params("wet_dry")["wet_thr"])
 
 .. jupyter-execute::
 
-   print(tdrX.phases.get_dives_details("row_ids"))
+   print(tdrX.get_dives_details("row_ids"))
 
 .. jupyter-execute::
 
-   print(tdrX.phases.get_dives_details("spline_derivs"))
+   print(tdrX.get_dives_details("spline_derivs"))
 
 .. jupyter-execute::
 
-   print(tdrX.phases.get_dives_details("crit_vals"))
+   print(tdrX.get_dives_details("crit_vals"))
 
 
 Calibrate speed measurements
@@ -170,11 +170,11 @@ Time budgets
 
 .. jupyter-execute::
 
-   print(tdrX.phases.time_budget(ignore_z=True, ignore_du=False))
+   print(tdrX.time_budget(ignore_z=True, ignore_du=False))
 
 .. jupyter-execute::
 
-   print(tdrX.phases.time_budget(ignore_z=True, ignore_du=True))
+   print(tdrX.time_budget(ignore_z=True, ignore_du=True))
 
 
 Dive statistics
@@ -190,4 +190,6 @@ Dive stamps
 
 .. jupyter-execute::
 
-   print(tdrX.phases.stamp_dives())
+   print(tdrX.stamp_dives())
+
+Feel free to download a copy of this :jupyter-download:script:`demo`.

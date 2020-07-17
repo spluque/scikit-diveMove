@@ -1,10 +1,10 @@
-"""Unit test for TDR class
+"""Unit test for TDR classes
 
 """
 
 import unittest as ut
 # import numpy.testing as npt
-from pandas import Series, DataFrame
+from pandas import DataFrame
 import skdiveMove as skdive
 from skdiveMove.tests import diveMove2skd
 
@@ -86,6 +86,48 @@ class TestTDR(ut.TestCase):
                         .get_dives_details("row_ids", "dive_id"))
         dids_uniq = dids_per_row[dids_per_row > 0].unique()
         self.assertEqual(crit_vals.shape[0], dids_uniq.size)
+
+    def test_time_budget(self):
+        depth = self.depth
+        dry_thr = self.default_pars["dry_thr"]
+        wet_thr = self.default_pars["wet_thr"]
+        dive_thr = self.default_pars["dive_thr"]
+        dive_model = self.default_pars["dive_model"]
+        smooth_par = self.default_pars["smooth_par"]
+        knot_factor = self.default_pars["knot_factor"]
+        descent_crit_q = self.default_pars["descent_crit_q"]
+        ascent_crit_q = self.default_pars["ascent_crit_q"]
+        self.phases.detect_wet(depth, dry_thr=dry_thr, wet_cond=None,
+                               wet_thr=wet_thr, interp_wet=False)
+        self.phases.detect_dives(depth, dive_thr)
+        self.phases.detect_dive_phases(depth, dive_model=dive_model,
+                                       smooth_par=smooth_par,
+                                       knot_factor=knot_factor,
+                                       descent_crit_q=descent_crit_q,
+                                       ascent_crit_q=ascent_crit_q)
+        tbudget = self.phases.time_budget(ignore_z=True, ignore_du=True)
+        self.assertIsInstance(tbudget, DataFrame)
+
+    def test_stamp_dives(self):
+        depth = self.depth
+        dry_thr = self.default_pars["dry_thr"]
+        wet_thr = self.default_pars["wet_thr"]
+        dive_thr = self.default_pars["dive_thr"]
+        dive_model = self.default_pars["dive_model"]
+        smooth_par = self.default_pars["smooth_par"]
+        knot_factor = self.default_pars["knot_factor"]
+        descent_crit_q = self.default_pars["descent_crit_q"]
+        ascent_crit_q = self.default_pars["ascent_crit_q"]
+        self.phases.detect_wet(depth, dry_thr=dry_thr, wet_cond=None,
+                               wet_thr=wet_thr, interp_wet=False)
+        self.phases.detect_dives(depth, dive_thr)
+        self.phases.detect_dive_phases(depth, dive_model=dive_model,
+                                       smooth_par=smooth_par,
+                                       knot_factor=knot_factor,
+                                       descent_crit_q=descent_crit_q,
+                                       ascent_crit_q=ascent_crit_q)
+        stamps = self.phases.stamp_dives(ignore_z=True)
+        self.assertIsInstance(stamps, DataFrame)
 
 
 if __name__ == '__main__':

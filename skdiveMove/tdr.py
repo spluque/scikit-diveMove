@@ -895,8 +895,8 @@ class TDR(TDRSource):
         """
         return(self.phases.get_dives_details(*args, **kwargs))
 
-    def get_phase_params(self, key):
-        """Retrieve phase identification parameters
+    def get_phases_params(self, key):
+        """Retrieve parameters used for identification of phases
 
         Parameters
         ----------

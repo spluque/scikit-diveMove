@@ -49,7 +49,7 @@ The table below shows which features of `diveMove` are accessible from
 |               |``bec3``          |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
 |Dive analysis  |``readTDR``       | ``TDR.__init__``         |Fully implemented.  Single      |
-|               |``createTDR``     |                          |``TDR`` class for data with or  |
+|               |``createTDR``     |``TDRSource.__init__``    |``TDR`` class for data with or  |
 |               |                  |                          |without speed measurements.     |
 |               |                  |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
