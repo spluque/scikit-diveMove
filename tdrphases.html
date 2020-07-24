@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDRPhases class &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bout analysis" href="bouts.html" />
+    <link rel="prev" title="ZOC class" href="zoc.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="bouts.html" title="Bout analysis"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="zoc.html" title="ZOC class"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">TDRPhases class</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-tdrphases">
+<span id="tdrphases-class"></span><h1>TDRPhases class<a class="headerlink" href="#module-tdrphases" title="Permalink to this headline">¶</a></h1>
+<p>Class handling all TDR phase operations</p>
+<p>Phase identification methods take <cite>depth</cite> as input.</p>
+<div class="section" id="class-and-methods-summary">
+<h2>Class and Methods Summary<a class="headerlink" href="#class-and-methods-summary" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.detect_wet" title="tdrphases.TDRPhases.detect_wet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.detect_wet</span></code></a>(depth[, dry_thr, …])</p></td>
+<td><p>Detect wet/dry activity phases</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.detect_dives" title="tdrphases.TDRPhases.detect_dives"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.detect_dives</span></code></a>(depth, dive_thr)</p></td>
+<td><p>Identify dive events</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.detect_dive_phases" title="tdrphases.TDRPhases.detect_dive_phases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.detect_dive_phases</span></code></a>(depth, dive_model)</p></td>
+<td><p>Detect dive phases</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.get_dives_details" title="tdrphases.TDRPhases.get_dives_details"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.get_dives_details</span></code></a>(key[, columns])</p></td>
+<td><p>Accessor for the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.get_dive_deriv" title="tdrphases.TDRPhases.get_dive_deriv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.get_dive_deriv</span></code></a>(diveNo, phase)</p></td>
+<td><p>Retrieve depth spline derivative for a given dive</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.get_wet_activity" title="tdrphases.TDRPhases.get_wet_activity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.get_wet_activity</span></code></a>()</p></td>
+<td><p>Accessor for the <code class="docutils literal notranslate"><span class="pre">wet_dry</span></code> attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.get_params" title="tdrphases.TDRPhases.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.get_params</span></code></a>(key)</p></td>
+<td><p>Return parameters used for identifying wet/dry or diving phases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.time_budget" title="tdrphases.TDRPhases.time_budget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.time_budget</span></code></a>([ignore_z, ignore_du])</p></td>
+<td><p>Summary of wet/dry activities at the broadest time scale</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tdrphases.TDRPhases.stamp_dives" title="tdrphases.TDRPhases.stamp_dives"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDRPhases.stamp_dives</span></code></a>([ignore_z])</p></td>
+<td><p>Identify the wet activity phase corresponding to each dive</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="tdrphases.TDRPhases">
+<em class="property">class </em><code class="sig-prename descclassname">tdrphases.</code><code class="sig-name descname">TDRPhases</code><a class="reference internal" href="_modules/tdrphases.html#TDRPhases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Core TDR phase identification routines</p>
+<dl class="py attribute">
+<dt id="tdrphases.TDRPhases.wet_dry">
+<code class="sig-name descname">wet_dry</code><a class="headerlink" href="#tdrphases.TDRPhases.wet_dry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tdrphases.TDRPhases.dives">
+<code class="sig-name descname">dives</code><a class="headerlink" href="#tdrphases.TDRPhases.dives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of dive activity data {‘row_ids’: pandas.DataFrame,
+‘model’: str, ‘splines’: dict, ‘spline_derivs’: pandas.DataFrame,
+‘crit_vals’: pandas.DataFrame}.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tdrphases.TDRPhases.params">
+<code class="sig-name descname">params</code><a class="headerlink" href="#tdrphases.TDRPhases.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary with parameters used for detection of wet/dry and dive
+phases. {‘wet_dry’: {‘dry_thr’: float, ‘wet_thr’: float}, ‘dives’:
+{‘dive_thr’: float, ‘dive_model’: str, ‘smooth_par’: float,
+‘knot_factor’: int, ‘descent_crit_q’: float, ‘ascent_crit_q’:
+float}}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.detect_dive_phases">
+<code class="sig-name descname">detect_dive_phases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">dive_model</span></em>, <em class="sig-param"><span class="n">smooth_par</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">knot_factor</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">descent_crit_q</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ascent_crit_q</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.detect_dive_phases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.detect_dive_phases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect dive phases</p>
+<p>Complete filling the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>depth</strong> (<em>xarray.DataArray</em>) – DataArray with zero-offset corrected depth measurements.</p></li>
+<li><p><strong>dive_model</strong> (<em>{&quot;unimodal&quot;</em><em>, </em><em>&quot;smooth.spline&quot;}</em>) – </p></li>
+<li><p><strong>smooth_par</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>knot_factor</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>descent_crit_q</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>ascent_crit_q</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See details for arguments in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.detect_dives">
+<code class="sig-name descname">detect_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">dive_thr</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.detect_dives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.detect_dives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identify dive events</p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute’s “row_ids” dictionary element, and
+update the <code class="docutils literal notranslate"><span class="pre">wet_act</span></code> attribute’s “phases” dictionary element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>depth</strong> (<em>xarray.DataArray</em>) – DataArray with zero-offset corrected depth measurements.</p></li>
+<li><p><strong>dive_thr</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See details for arguments in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.detect_wet">
+<code class="sig-name descname">detect_wet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">dry_thr</span><span class="o">=</span><span class="default_value">70</span></em>, <em class="sig-param"><span class="n">wet_cond</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wet_thr</span><span class="o">=</span><span class="default_value">3610</span></em>, <em class="sig-param"><span class="n">interp_wet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.detect_wet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.detect_wet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect wet/dry activity phases</p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">wet_dry</span></code> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>depth</strong> (<em>xarray.DataArray</em>) – DataArray with zero-offset corrected depth measurements.</p></li>
+<li><p><strong>dry_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>wet_cond</strong> (<em>bool mask</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>wet_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>interp_wet</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>See details for arguments in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code>.  Unlike
+<cite>diveMove</cite>, the beginning/ending times for each phase are not
+stored with the class instance, as this information can be
+retrieved via the <cite>.time_budget</cite> method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.get_dive_deriv">
+<code class="sig-name descname">get_dive_deriv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span></em>, <em class="sig-param"><span class="n">phase</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.get_dive_deriv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.get_dive_deriv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve depth spline derivative for a given dive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>diveNo</strong> (<em>int</em>) – Dive number to retrieve derivative for.</p></li>
+<li><p><strong>phase</strong> (<em>{&quot;descent&quot;</em><em>, </em><em>&quot;bottom&quot;</em><em>, </em><em>&quot;ascent&quot;}</em>) – If provided, the dive phase to retrieve data for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.get_dives_details">
+<code class="sig-name descname">get_dives_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">columns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.get_dives_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.get_dives_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor for the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>{&quot;row_ids&quot;</em><em>, </em><em>&quot;model&quot;</em><em>, </em><em>&quot;splines&quot;</em><em>, </em><em>&quot;spline_derivs&quot;</em><em>, </em><em>crit_vals}</em>) – Name of the key to retrieve.</p></li>
+<li><p><strong>columns</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Names of the columns of the dataframe in <cite>key</cite>, when applicable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.get_params">
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.get_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return parameters used for identifying wet/dry or diving phases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>{'wet_dry'</em><em>, </em><em>'dives'}</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.get_wet_activity">
+<code class="sig-name descname">get_wet_activity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.get_wet_activity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.get_wet_activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor for the <code class="docutils literal notranslate"><span class="pre">wet_dry</span></code> attribute</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.stamp_dives">
+<code class="sig-name descname">stamp_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ignore_z</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.stamp_dives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.stamp_dives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identify the wet activity phase corresponding to each dive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ignore_z</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – DataFrame indexed by dive ID, and three columns identifying
+which phase thy are in, and the beginning and ending time
+stamps.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrphases.TDRPhases.time_budget">
+<code class="sig-name descname">time_budget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ignore_z</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ignore_du</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrphases.html#TDRPhases.time_budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrphases.TDRPhases.time_budget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary of wet/dry activities at the broadest time scale</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ignore_z</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p></li>
+<li><p><strong>ignore_du</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to ignore diving and underwater periods.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – DataFrame indexed by phase id, with categorical activity label
+for each phase, and beginning and ending times.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TDRPhases class</a><ul>
+<li><a class="reference internal" href="#class-and-methods-summary">Class and Methods Summary</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="zoc.html"
+                        title="previous chapter">ZOC class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="bouts.html"
+                        title="next chapter">Bout analysis</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tdrphases.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="bouts.html" title="Bout analysis"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="zoc.html" title="ZOC class"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">TDRPhases class</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tdrphases &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tdrphases</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tdrphases</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Class handling all TDR phase operations</span>
+
+<span class="sd">Phase identification methods take `depth` as input.</span>
+
+<span class="sd">Class and Methods Summary</span>
+<span class="sd">-------------------------</span>
+
+<span class="sd">.. autosummary::</span>
+
+<span class="sd">   TDRPhases.detect_wet</span>
+<span class="sd">   TDRPhases.detect_dives</span>
+<span class="sd">   TDRPhases.detect_dive_phases</span>
+<span class="sd">   TDRPhases.get_dives_details</span>
+<span class="sd">   TDRPhases.get_dive_deriv</span>
+<span class="sd">   TDRPhases.get_wet_activity</span>
+<span class="sd">   TDRPhases.get_params</span>
+<span class="sd">   TDRPhases.time_budget</span>
+<span class="sd">   TDRPhases.stamp_dives</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.core</span> <span class="kn">import</span> <span class="n">robjs</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">pandas2ri</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_var_sampling_interval</span><span class="p">,</span> <span class="n">_cut_dive</span><span class="p">,</span>
+                                <span class="n">rle_key</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># Add the null handler if importing as library; whatever using this library</span>
+<span class="c1"># should set up logging.basicConfig() as needed</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="TDRPhases"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases">[docs]</a><span class="k">class</span> <span class="nc">TDRPhases</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Core TDR phase identification routines</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wet_dry : pandas.DataFrame</span>
+<span class="sd">    dives : dict</span>
+<span class="sd">        Dictionary of dive activity data {&#39;row_ids&#39;: pandas.DataFrame,</span>
+<span class="sd">        &#39;model&#39;: str, &#39;splines&#39;: dict, &#39;spline_derivs&#39;: pandas.DataFrame,</span>
+<span class="sd">        &#39;crit_vals&#39;: pandas.DataFrame}.</span>
+<span class="sd">    params : dict</span>
+<span class="sd">        Dictionary with parameters used for detection of wet/dry and dive</span>
+<span class="sd">        phases. {&#39;wet_dry&#39;: {&#39;dry_thr&#39;: float, &#39;wet_thr&#39;: float}, &#39;dives&#39;:</span>
+<span class="sd">        {&#39;dive_thr&#39;: float, &#39;dive_model&#39;: str, &#39;smooth_par&#39;: float,</span>
+<span class="sd">        &#39;knot_factor&#39;: int, &#39;descent_crit_q&#39;: float, &#39;ascent_crit_q&#39;:</span>
+<span class="sd">        float}}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wet_dry</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dives</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">splines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">spline_derivs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crit_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">wet_dry</span><span class="o">=</span><span class="p">{},</span> <span class="n">dives</span><span class="o">=</span><span class="p">{})</span>
+
+<div class="viewcode-block" id="TDRPhases.detect_wet"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.detect_wet">[docs]</a>    <span class="k">def</span> <span class="nf">detect_wet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">dry_thr</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">wet_cond</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">wet_thr</span><span class="o">=</span><span class="mi">3610</span><span class="p">,</span> <span class="n">interp_wet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect wet/dry activity phases</span>
+
+<span class="sd">        Set the ``wet_dry`` attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        depth : xarray.DataArray</span>
+<span class="sd">            DataArray with zero-offset corrected depth measurements.</span>
+<span class="sd">        dry_thr : float, optional</span>
+<span class="sd">        wet_cond : bool mask, optional</span>
+<span class="sd">        wet_thr : float, optional</span>
+<span class="sd">        interp_wet : bool, optional</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+<span class="sd">        See details for arguments in diveMove&#39;s ``calibrateDepth``.  Unlike</span>
+<span class="sd">        `diveMove`, the beginning/ending times for each phase are not</span>
+<span class="sd">        stored with the class instance, as this information can be</span>
+<span class="sd">        retrieved via the `.time_budget` method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">depth_py</span> <span class="o">=</span> <span class="n">depth</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+        <span class="n">time_py</span> <span class="o">=</span> <span class="n">depth_py</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">dtime</span> <span class="o">=</span> <span class="n">get_var_sampling_interval</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">wet_cond</span><span class="p">:</span>
+            <span class="n">wet_cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">wet_cond</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">time_py</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wet_cond</span> <span class="o">=</span> <span class="o">~</span><span class="n">depth_py</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+
+        <span class="n">rstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;detPhaseFun &lt;- diveMove:::.detPhase&quot;&quot;&quot;</span>
+        <span class="n">detPhaseFun</span> <span class="o">=</span> <span class="n">robjs</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">rstr</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">cv</span><span class="o">.</span><span class="n">localconverter</span><span class="p">(</span><span class="n">robjs</span><span class="o">.</span><span class="n">default_converter</span> <span class="o">+</span>
+                               <span class="n">pandas2ri</span><span class="o">.</span><span class="n">converter</span><span class="p">):</span>
+            <span class="n">phases_l</span> <span class="o">=</span> <span class="n">detPhaseFun</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">time_py</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">depth_py</span><span class="p">),</span>
+                                   <span class="n">dry_thr</span><span class="o">=</span><span class="n">dry_thr</span><span class="p">,</span> <span class="n">wet_thr</span><span class="o">=</span><span class="n">wet_thr</span><span class="p">,</span>
+                                   <span class="n">wet_cond</span><span class="o">=</span><span class="n">wet_cond</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">dtime</span><span class="p">)</span>
+            <span class="n">phases</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;phase_id&#39;</span><span class="p">:</span> <span class="n">phases_l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                   <span class="s1">&#39;phase_label&#39;</span><span class="p">:</span> <span class="n">phases_l</span><span class="p">[</span><span class="mi">1</span><span class="p">]},</span>
+                                  <span class="n">index</span><span class="o">=</span><span class="n">time_py</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">interp_wet</span><span class="p">:</span>
+            <span class="n">zdepth</span> <span class="o">=</span> <span class="n">depth_py</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">iswet</span> <span class="o">=</span> <span class="n">phases</span><span class="p">[</span><span class="s2">&quot;phase_label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;W&quot;</span>
+            <span class="n">iswetna</span> <span class="o">=</span> <span class="n">iswet</span> <span class="o">&amp;</span> <span class="n">zdepth</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">iswetna</span><span class="p">):</span>
+                <span class="n">depth_intp</span> <span class="o">=</span> <span class="n">depth_py</span><span class="p">[</span><span class="n">iswet</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">)</span>
+                <span class="n">zdepth</span><span class="p">[</span><span class="n">iswetna</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">depth_intp</span><span class="p">),</span>
+                                             <span class="n">depth_intp</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zoc_pars</span><span class="p">[</span><span class="s2">&quot;depth_zoc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">zdepth</span>
+
+        <span class="n">phases</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;phase_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">phases</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;phase_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wet_dry</span> <span class="o">=</span> <span class="n">phases</span>
+        <span class="n">wet_dry_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">dry_thr</span><span class="o">=</span><span class="n">dry_thr</span><span class="p">,</span> <span class="n">wet_thr</span><span class="o">=</span><span class="n">wet_thr</span><span class="p">,</span>
+                              <span class="n">interp_wet</span><span class="o">=</span><span class="n">interp_wet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">wet_dry_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TDRPhases.detect_dives"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.detect_dives">[docs]</a>    <span class="k">def</span> <span class="nf">detect_dives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">dive_thr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Identify dive events</span>
+
+<span class="sd">        Set the ``dives`` attribute&#39;s &quot;row_ids&quot; dictionary element, and</span>
+<span class="sd">        update the ``wet_act`` attribute&#39;s &quot;phases&quot; dictionary element.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        depth : xarray.DataArray</span>
+<span class="sd">            DataArray with zero-offset corrected depth measurements.</span>
+<span class="sd">        dive_thr : float</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        See details for arguments in diveMove&#39;s ``calibrateDepth``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">depth_py</span> <span class="o">=</span> <span class="n">depth</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+        <span class="n">act_phases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">[</span><span class="s2">&quot;phase_label&quot;</span><span class="p">]</span>
+        <span class="n">detDiveFun</span> <span class="o">=</span> <span class="n">robjs</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;detDiveFun &lt;- diveMove:::.detDive&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">cv</span><span class="o">.</span><span class="n">localconverter</span><span class="p">(</span><span class="n">robjs</span><span class="o">.</span><span class="n">default_converter</span> <span class="o">+</span>
+                               <span class="n">pandas2ri</span><span class="o">.</span><span class="n">converter</span><span class="p">):</span>
+            <span class="n">phases_df</span> <span class="o">=</span> <span class="n">detDiveFun</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">depth_py</span><span class="p">),</span>
+                                   <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">act_phases</span><span class="p">),</span>
+                                   <span class="n">dive_thr</span><span class="o">=</span><span class="n">dive_thr</span><span class="p">)</span>
+
+        <span class="c1"># Replace dots with underscore</span>
+        <span class="n">phases_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">(</span><span class="n">phases_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span>
+                             <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="n">phases_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">depth_py</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">dive_activity</span> <span class="o">=</span> <span class="n">phases_df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;dive_activity&quot;</span><span class="p">)</span>
+        <span class="c1"># Dive and post-dive ID should be integer</span>
+        <span class="n">phases_df</span> <span class="o">=</span> <span class="n">phases_df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;row_ids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">phases_df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">[</span><span class="s2">&quot;phase_label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dive_activity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dives&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;dive_thr&#39;</span><span class="p">:</span> <span class="n">dive_thr</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="TDRPhases.detect_dive_phases"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.detect_dive_phases">[docs]</a>    <span class="k">def</span> <span class="nf">detect_dive_phases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">dive_model</span><span class="p">,</span> <span class="n">smooth_par</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                           <span class="n">knot_factor</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                           <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect dive phases</span>
+
+<span class="sd">        Complete filling the ``dives`` attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        depth : xarray.DataArray</span>
+<span class="sd">            DataArray with zero-offset corrected depth measurements.</span>
+<span class="sd">        dive_model : {&quot;unimodal&quot;, &quot;smooth.spline&quot;}</span>
+<span class="sd">        smooth_par : float, optional</span>
+<span class="sd">        knot_factor : int, optional</span>
+<span class="sd">        descent_crit_q : float, optional</span>
+<span class="sd">        ascent_crit_q : float, optional</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        See details for arguments in diveMove&#39;s ``calibrateDepth``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">depth_py</span> <span class="o">=</span> <span class="n">depth</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+        <span class="n">phases_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">)</span>
+        <span class="n">dive_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">dive_ids</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">depth_py</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ok</span><span class="p">):</span>
+            <span class="n">ddepths</span> <span class="o">=</span> <span class="n">depth_py</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>  <span class="c1"># diving depths</span>
+            <span class="n">dtimes</span> <span class="o">=</span> <span class="n">ddepths</span><span class="o">.</span><span class="n">index</span>
+            <span class="n">dids</span> <span class="o">=</span> <span class="n">dive_ids</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ok</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()))</span>
+            <span class="n">time_num</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtimes</span> <span class="o">-</span> <span class="n">dtimes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">divedf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;dive_id&#39;</span><span class="p">:</span> <span class="n">dids</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span>
+                                   <span class="s1">&#39;idx&#39;</span><span class="p">:</span> <span class="n">idx</span><span class="p">,</span>
+                                   <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="n">ddepths</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span>
+                                   <span class="s1">&#39;time_num&#39;</span><span class="p">:</span> <span class="n">time_num</span><span class="p">},</span>
+                                  <span class="n">index</span><span class="o">=</span><span class="n">ddepths</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">grouped</span> <span class="o">=</span> <span class="n">divedf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
+
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s2">&quot;X&quot;</span><span class="p">],</span> <span class="n">phases_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                                <span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;DB&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span>
+                                            <span class="s2">&quot;DA&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;row_ids&quot;</span><span class="p">][</span><span class="s2">&quot;dive_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx</span>
+            <span class="n">dive_phases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;row_ids&quot;</span><span class="p">][</span><span class="s2">&quot;dive_phase&quot;</span><span class="p">]</span>
+            <span class="n">cval_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">spl_der_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">spl_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">grouped</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">_cut_dive</span><span class="p">(</span><span class="n">grp</span><span class="p">,</span> <span class="n">dive_model</span><span class="o">=</span><span class="n">dive_model</span><span class="p">,</span>
+                                <span class="n">smooth_par</span><span class="o">=</span><span class="n">smooth_par</span><span class="p">,</span>
+                                <span class="n">knot_factor</span><span class="o">=</span><span class="n">knot_factor</span><span class="p">,</span>
+                                <span class="n">descent_crit_q</span><span class="o">=</span><span class="n">descent_crit_q</span><span class="p">,</span>
+                                <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">ascent_crit_q</span><span class="p">)</span>
+                <span class="n">dive_phases</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">grp</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;label_matrix&quot;</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="c1"># Splines</span>
+                <span class="n">spl</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;dive_spline&quot;</span><span class="p">)</span>
+                <span class="c1"># Convert directly into a dict, with each element turned</span>
+                <span class="c1"># into a list of R objects.  Access each via</span>
+                <span class="c1"># `_get_dive_spline_slot`</span>
+                <span class="n">spl_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">spl</span><span class="p">)))</span>
+                <span class="n">spl_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spl_dict</span><span class="p">)</span>
+                <span class="c1"># Spline derivatives</span>
+                <span class="n">spl_der</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;spline_deriv&quot;</span><span class="p">)</span>
+                <span class="n">spl_der_idx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">TimedeltaIndex</span><span class="p">(</span><span class="n">spl_der</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+                <span class="n">spl_der</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">spl_der</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]},</span>
+                                       <span class="n">index</span><span class="o">=</span><span class="n">spl_der_idx</span><span class="p">)</span>
+                <span class="n">spl_der_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spl_der</span><span class="p">)</span>
+                <span class="c1"># Critical values (all that&#39;s left in res)</span>
+                <span class="n">cvals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+                <span class="n">cvals</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;dive_id&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="c1"># Adjust critical indices for Python convention and ensure</span>
+                <span class="c1"># integers</span>
+                <span class="n">cvals</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvals</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">cval_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cvals</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dive_model</span>
+            <span class="c1"># Splines</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;splines&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">grouped</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                                             <span class="n">spl_list</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;spline_derivs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">spl_der_list</span><span class="p">,</span>
+                                                    <span class="n">keys</span><span class="o">=</span><span class="p">(</span><span class="n">grouped</span>
+                                                          <span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;crit_vals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">cval_list</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No dives found&quot;</span><span class="p">)</span>
+
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dives&quot;</span><span class="p">]</span>
+         <span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">dive_model</span><span class="o">=</span><span class="n">dive_model</span><span class="p">,</span> <span class="n">smooth_par</span><span class="o">=</span><span class="n">smooth_par</span><span class="p">,</span>
+                      <span class="n">knot_factor</span><span class="o">=</span><span class="n">knot_factor</span><span class="p">,</span>
+                      <span class="n">descent_crit_q</span><span class="o">=</span><span class="n">descent_crit_q</span><span class="p">,</span>
+                      <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">ascent_crit_q</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="TDRPhases.get_dives_details"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.get_dives_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_dives_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Accessor for the ``dives`` attribute</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key : {&quot;row_ids&quot;, &quot;model&quot;, &quot;splines&quot;, &quot;spline_derivs&quot;, crit_vals}</span>
+<span class="sd">            Name of the key to retrieve.</span>
+<span class="sd">        columns : array_like, optional</span>
+<span class="sd">            Names of the columns of the dataframe in `key`, when applicable.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">okey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s2"> is not found.</span><span class="se">\n</span><span class="s2">Available keys: </span><span class="si">{}</span><span class="s2">&quot;</span>
+                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">okey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s2"> not available.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">odata</span> <span class="o">=</span> <span class="n">okey</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;At least one of the requested columns does not &quot;</span>
+                       <span class="s2">&quot;exist.</span><span class="se">\n</span><span class="s2">Available columns: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">okey</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">odata</span> <span class="o">=</span> <span class="n">okey</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">odata</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TDRPhases.get_wet_activity"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.get_wet_activity">[docs]</a>    <span class="k">def</span> <span class="nf">get_wet_activity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Accessor for the ``wet_dry`` attribute</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TDRPhases.get_params"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return parameters used for identifying wet/dry or diving phases.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key: {&#39;wet_dry&#39;, &#39;dives&#39;}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;wet_dry&quot;</span><span class="p">:</span>
+            <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;dives&quot;</span><span class="p">:</span>
+            <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dives&quot;</span><span class="p">])</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_dive_spline_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Accessor for the R objects in `dives`[&quot;splines&quot;]</span>
+
+<span class="sd">        Private method to retrieve elements easily.  Elements can be</span>
+<span class="sd">        accessed individually as is, but some elements are handled</span>
+<span class="sd">        specially.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        diveNo : int or float</span>
+<span class="sd">            Which dive number to retrieve spline details for.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Element to retrieve. {&quot;data&quot;, &quot;xy&quot;, &quot;knots&quot;, &quot;coefficients&quot;,</span>
+<span class="sd">            &quot;order&quot;, &quot;lambda.opt&quot;, &quot;sigmasq&quot;, &quot;degree&quot;, &quot;g&quot;, &quot;a&quot;, &quot;b&quot;,</span>
+<span class="sd">            &quot;variter&quot;}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Safe to assume these are all scalars, based on the current</span>
+        <span class="c1"># default settings in diveMove&#39;s `.cutDive`</span>
+        <span class="n">scalars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;order&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda.opt&quot;</span><span class="p">,</span> <span class="s2">&quot;sigmasq&quot;</span><span class="p">,</span> <span class="s2">&quot;degree&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;variter&quot;</span><span class="p">]</span>
+        <span class="n">idata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;splines&quot;</span><span class="p">)[</span><span class="n">diveNo</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">TimedeltaIndex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+            <span class="n">odata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="n">index</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">TimedeltaIndex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+            <span class="n">odata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span> <span class="n">index</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">scalars</span><span class="p">:</span>
+            <span class="n">odata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">odata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">odata</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TDRPhases.get_dive_deriv"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.get_dive_deriv">[docs]</a>    <span class="k">def</span> <span class="nf">get_dive_deriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">,</span> <span class="n">phase</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve depth spline derivative for a given dive</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        diveNo : int</span>
+<span class="sd">            Dive number to retrieve derivative for.</span>
+<span class="sd">        phase : {&quot;descent&quot;, &quot;bottom&quot;, &quot;ascent&quot;}</span>
+<span class="sd">            If provided, the dive phase to retrieve data for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.Series</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">der</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;spline_derivs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">diveNo</span><span class="p">]</span>
+        <span class="n">crit_vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;crit_vals&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">diveNo</span><span class="p">]</span>
+        <span class="n">spl_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;splines&quot;</span><span class="p">)[</span><span class="n">diveNo</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="n">spl_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">spl_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># x row is time steps in (s)</span>
+
+        <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s2">&quot;descent&quot;</span><span class="p">:</span>
+            <span class="n">descent_crit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">crit_vals</span><span class="p">[</span><span class="s2">&quot;descent_crit&quot;</span><span class="p">])</span>
+            <span class="n">deltat_crit</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">spl_times</span><span class="p">[</span><span class="n">descent_crit</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+            <span class="n">oder</span> <span class="o">=</span> <span class="n">der</span><span class="o">.</span><span class="n">loc</span><span class="p">[:</span><span class="n">deltat_crit</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">phase</span> <span class="o">==</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span>
+            <span class="n">descent_crit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">crit_vals</span><span class="p">[</span><span class="s2">&quot;descent_crit&quot;</span><span class="p">])</span>
+            <span class="n">deltat1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">spl_times</span><span class="p">[</span><span class="n">descent_crit</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+            <span class="n">ascent_crit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">crit_vals</span><span class="p">[</span><span class="s2">&quot;ascent_crit&quot;</span><span class="p">])</span>
+            <span class="n">deltat2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">spl_times</span><span class="p">[</span><span class="n">ascent_crit</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+            <span class="n">oder</span> <span class="o">=</span> <span class="n">der</span><span class="p">[(</span><span class="n">der</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">deltat1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">der</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="n">deltat2</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="n">phase</span> <span class="o">==</span> <span class="s2">&quot;ascent&quot;</span><span class="p">:</span>
+            <span class="n">ascent_crit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">crit_vals</span><span class="p">[</span><span class="s2">&quot;ascent_crit&quot;</span><span class="p">])</span>
+            <span class="n">deltat_crit</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">spl_times</span><span class="p">[</span><span class="n">ascent_crit</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+            <span class="n">oder</span> <span class="o">=</span> <span class="n">der</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">deltat_crit</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;`phase` must be &#39;descent&#39;, &#39;bottom&#39; or &#39;ascent&#39;&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">oder</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_dive_deriv_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate stats for the depth derivative of a given dive</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dive_deriv</span><span class="p">(</span><span class="n">diveNo</span><span class="p">,</span> <span class="s2">&quot;descent&quot;</span><span class="p">)</span>
+        <span class="n">bott</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dive_deriv</span><span class="p">(</span><span class="n">diveNo</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
+        <span class="n">asc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dive_deriv</span><span class="p">(</span><span class="n">diveNo</span><span class="p">,</span> <span class="s2">&quot;ascent&quot;</span><span class="p">)</span>
+        <span class="c1"># Rename DataFrame to match diveNo</span>
+        <span class="n">desc_sts</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="s2">&quot;descD_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">diveNo</span><span class="p">}))</span>
+        <span class="n">bott_sts</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">bott</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="s2">&quot;bottD_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">diveNo</span><span class="p">}))</span>
+        <span class="n">asc_sts</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">asc</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+                   <span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="s2">&quot;ascD_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">diveNo</span><span class="p">}))</span>
+        <span class="n">sts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">desc_sts</span><span class="p">,</span> <span class="n">bott_sts</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                       <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">sts</span><span class="p">,</span> <span class="n">asc_sts</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">sts</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TDRPhases.time_budget"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.time_budget">[docs]</a>    <span class="k">def</span> <span class="nf">time_budget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Summary of wet/dry activities at the broadest time scale</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ignore_z : bool, optional</span>
+<span class="sd">            Whether to ignore trivial aquatic periods.</span>
+<span class="sd">        ignore_du : bool, optional</span>
+<span class="sd">            Whether to ignore diving and underwater periods.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            DataFrame indexed by phase id, with categorical activity label</span>
+<span class="sd">            for each phase, and beginning and ending times.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_wet_activity</span><span class="p">()[</span><span class="s2">&quot;phase_label&quot;</span><span class="p">]</span>
+                  <span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">ignore_z</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ignore_du</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">mask</span><span class="p">((</span><span class="n">labels</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">),</span> <span class="s2">&quot;W&quot;</span><span class="p">)</span>
+
+        <span class="n">grp_key</span> <span class="o">=</span> <span class="n">rle_key</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="s2">&quot;phase_label&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;phase_id&quot;</span><span class="p">)</span>
+        <span class="n">labels_grp</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">grp_key</span><span class="p">)</span>
+
+        <span class="n">begs</span> <span class="o">=</span> <span class="n">labels_grp</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;date_time&quot;</span><span class="p">:</span> <span class="s2">&quot;beg&quot;</span><span class="p">})</span>
+        <span class="n">ends</span> <span class="o">=</span> <span class="n">labels_grp</span><span class="o">.</span><span class="n">last</span><span class="p">()[</span><span class="s2">&quot;date_time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">begs</span><span class="p">,</span> <span class="n">ends</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TDRPhases.stamp_dives"><a class="viewcode-back" href="../tdrphases.html#tdrphases.TDRPhases.stamp_dives">[docs]</a>    <span class="k">def</span> <span class="nf">stamp_dives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Identify the wet activity phase corresponding to each dive</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ignore_z : bool, optional</span>
+<span class="sd">            Whether to ignore trivial aquatic periods.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            DataFrame indexed by dive ID, and three columns identifying</span>
+<span class="sd">            which phase thy are in, and the beginning and ending time</span>
+<span class="sd">            stamps.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">phase_lab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wet_activity</span><span class="p">()[</span><span class="s2">&quot;phase_label&quot;</span><span class="p">]</span>
+        <span class="c1"># &quot;U&quot; and &quot;D&quot; considered as &quot;W&quot; here</span>
+        <span class="n">phase_lab</span> <span class="o">=</span> <span class="n">phase_lab</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">phase_lab</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">]),</span> <span class="s2">&quot;W&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ignore_z</span><span class="p">:</span>
+            <span class="n">phase_lab</span> <span class="o">=</span> <span class="n">phase_lab</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">phase_lab</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">)</span>
+
+        <span class="n">dive_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
+
+        <span class="n">grp_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">phase_lab</span>
+                   <span class="o">.</span><span class="n">ne</span><span class="p">(</span><span class="n">phase_lab</span><span class="o">.</span><span class="n">shift</span><span class="p">())</span>
+                   <span class="o">.</span><span class="n">cumsum</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;phase_id&quot;</span><span class="p">)</span>
+
+        <span class="n">isdive</span> <span class="o">=</span> <span class="n">dive_ids</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">grp_key</span><span class="p">,</span> <span class="n">dive_ids</span><span class="p">,</span> <span class="n">phase_lab</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                  <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">isdive</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+        <span class="c1"># Rest index to use in first() and last()</span>
+        <span class="n">merged_grp</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;phase_id&quot;</span><span class="p">)</span>
+
+        <span class="n">dives_ll</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">merged_grp</span><span class="p">:</span>
+            <span class="n">dives_uniq</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;dive_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
+                                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
+            <span class="n">beg</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;date_time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">dives_uniq</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;date_time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">dives_uniq</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">dive_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;phase_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="n">dives_uniq</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                                    <span class="s1">&#39;beg&#39;</span><span class="p">:</span> <span class="n">beg</span><span class="p">,</span>
+                                    <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">end</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">dives_uniq</span><span class="p">)</span>
+            <span class="n">dives_ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dive_df</span><span class="p">)</span>
+
+        <span class="n">dives_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dives_ll</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">dives_all</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tdrphases</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

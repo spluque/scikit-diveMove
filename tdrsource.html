@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDRSource class &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ZOC class" href="zoc.html" />
+    <link rel="prev" title="TDR class" href="tdr.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="zoc.html" title="ZOC class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tdr.html" title="TDR class"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">TDRSource class</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-tdrsource">
+<span id="tdrsource-class"></span><h1>TDRSource class<a class="headerlink" href="#module-tdrsource" title="Permalink to this headline">¶</a></h1>
+<p>Base definition of the TDR input data</p>
+<dl class="py class">
+<dt id="tdrsource.TDRSource">
+<em class="property">class </em><code class="sig-prename descclassname">tdrsource.</code><code class="sig-name descname">TDRSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tdr_file</span></em>, <em class="sig-param"><span class="n">depth_name</span><span class="o">=</span><span class="default_value">'depth'</span></em>, <em class="sig-param"><span class="n">has_speed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrsource.html#TDRSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrsource.TDRSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define TDR data source</p>
+<p>Use xarray.Dataset to ensure pseudo-standard metadata</p>
+<dl class="py attribute">
+<dt id="tdrsource.TDRSource.tdr_file">
+<code class="sig-name descname">tdr_file</code><a class="headerlink" href="#tdrsource.TDRSource.tdr_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>String indicating the file where the data comes from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tdrsource.TDRSource.tdr">
+<code class="sig-name descname">tdr</code><a class="headerlink" href="#tdrsource.TDRSource.tdr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dataset with input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>xarray.Dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tdrsource.TDRSource.depth_name">
+<code class="sig-name descname">depth_name</code><a class="headerlink" href="#tdrsource.TDRSource.depth_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of data variable with depth measurements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tdrsource.TDRSource.has_speed">
+<code class="sig-name descname">has_speed</code><a class="headerlink" href="#tdrsource.TDRSource.has_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether input data include speed measurements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tdrsource.TDRSource.speed_name">
+<code class="sig-name descname">speed_name</code><a class="headerlink" href="#tdrsource.TDRSource.speed_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of data variable with the speed measurements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="tdrsource.TDRSource.get_depth">
+<code class="sig-name descname">get_depth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrsource.html#TDRSource.get_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrsource.TDRSource.get_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return depth array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>xarray.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrsource.TDRSource.get_speed">
+<code class="sig-name descname">get_speed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrsource.html#TDRSource.get_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrsource.TDRSource.get_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return speed array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>xarray.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tdrsource.TDRSource.get_tdr">
+<code class="sig-name descname">get_tdr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdrsource.html#TDRSource.get_tdr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdrsource.TDRSource.get_tdr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return TDR Dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>xarray.Dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tdr.html"
+                        title="previous chapter">TDR class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="zoc.html"
+                        title="next chapter">ZOC class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tdrsource.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="zoc.html" title="ZOC class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tdr.html" title="TDR class"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">TDRSource class</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

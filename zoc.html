@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZOC class &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TDRPhases class" href="tdrphases.html" />
+    <link rel="prev" title="TDRSource class" href="tdrsource.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdrphases.html" title="TDRPhases class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tdrsource.html" title="TDRSource class"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ZOC class</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-zoc">
+<span id="zoc-class"></span><h1>ZOC class<a class="headerlink" href="#module-zoc" title="Permalink to this headline">¶</a></h1>
+<p>Class performing zero-offset correction of depth</p>
+<div class="section" id="class-and-methods-summary">
+<h2>Class and Methods Summary<a class="headerlink" href="#class-and-methods-summary" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#zoc.ZOC.offset_depth" title="zoc.ZOC.offset_depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZOC.offset_depth</span></code></a>(depth[, offset])</p></td>
+<td><p>Perform ZOC with “offset” method</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#zoc.ZOC.filter_depth" title="zoc.ZOC.filter_depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZOC.filter_depth</span></code></a>(depth, k, probs[, …])</p></td>
+<td><p>Perform ZOC with “filter” method</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#zoc.ZOC.__call__" title="zoc.ZOC.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZOC.__call__</span></code></a>(depth[, method])</p></td>
+<td><p>Apply zero offset correction to depth measurements</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="zoc.ZOC">
+<em class="property">class </em><code class="sig-prename descclassname">zoc.</code><code class="sig-name descname">ZOC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">depth_zoc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filters</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zoc.html#ZOC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#zoc.ZOC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform zero offset correction</p>
+<dl class="py attribute">
+<dt id="zoc.ZOC.method">
+<code class="sig-name descname">method</code><a class="headerlink" href="#zoc.ZOC.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the ZOC method used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="zoc.ZOC.params">
+<code class="sig-name descname">params</code><a class="headerlink" href="#zoc.ZOC.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary with parameters used in the method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="zoc.ZOC.depth_zoc">
+<code class="sig-name descname">depth_zoc</code><a class="headerlink" href="#zoc.ZOC.depth_zoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataArray with corrected depth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>xarray.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="zoc.ZOC.filters">
+<code class="sig-name descname">filters</code><a class="headerlink" href="#zoc.ZOC.filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataFrame with output filters for method=”filter”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="zoc.ZOC.__call__">
+<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'filter'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zoc.html#ZOC.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#zoc.ZOC.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply zero offset correction to depth measurements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>{&quot;filter&quot;</em><em>, </em><em>&quot;offset&quot;}</em>) – Name of method to use for zero offset correction.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to the chosen method (<a class="reference internal" href="#zoc.ZOC.offset_depth" title="zoc.ZOC.offset_depth"><code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_depth()</span></code></a>,
+<a class="reference internal" href="#zoc.ZOC.filter_depth" title="zoc.ZOC.filter_depth"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter_depth()</span></code></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>More details in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code> function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="zoc.ZOC.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">depth_zoc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filters</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zoc.html#ZOC.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#zoc.ZOC.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize object</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="zoc.ZOC.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#zoc.ZOC.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="zoc.ZOC.filter_depth">
+<code class="sig-name descname">filter_depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">probs</span></em>, <em class="sig-param"><span class="n">depth_bounds</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">na_rm</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zoc.html#ZOC.filter_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#zoc.ZOC.filter_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform ZOC with “filter” method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>depth</strong> (<em>xarray.DataArray</em>) – DataArray with observed depth measurements.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – ‘filter’: (‘k’, ‘probs’, ‘depth_bounds’ (defaults to
+range), ‘na_rm’ (defaults to True)).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>More details in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code> function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="zoc.ZOC.get_depth">
+<code class="sig-name descname">get_depth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zoc.html#ZOC.get_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#zoc.ZOC.get_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depth array accessor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>xarray.DataArray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="zoc.ZOC.get_params">
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/zoc.html#ZOC.get_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#zoc.ZOC.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return parameters used for zero-offset correction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="zoc.ZOC.offset_depth">
+<code class="sig-name descname">offset_depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">offset</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/zoc.html#ZOC.offset_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#zoc.ZOC.offset_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform ZOC with “offset” method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>depth</strong> (<em>xarray.DataArray</em>) – DataArray with observed depth measurements.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – For this method: ‘offset’: 0 (default).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>More details in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code> function.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ZOC class</a><ul>
+<li><a class="reference internal" href="#class-and-methods-summary">Class and Methods Summary</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tdrsource.html"
+                        title="previous chapter">TDRSource class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tdrphases.html"
+                        title="next chapter">TDRPhases class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/zoc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdrphases.html" title="TDRPhases class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tdrsource.html" title="TDRSource class"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ZOC class</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

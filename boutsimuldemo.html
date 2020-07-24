@@ -1,0 +1,482 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulating bouts &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TDR class" href="tdr.html" />
+    <link rel="prev" title="Bout analysis" href="boutsdemo.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdr.html" title="TDR class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="boutsdemo.html" title="Bout analysis"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulating-bouts">
+<h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Permalink to this headline">¶</a></h1>
+<p>This follows the simulation of mixed Poisson distributions in <a class="reference external" href="https://doi.org/10.1163/156853907782418213">Luque &amp;
+Guinet (2007)</a>, and the comparison of models for characterizing such
+distributions.</p>
+<p>Set up the environment.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">skdiveMove.bouts</span> <span class="k">as</span> <span class="nn">skbouts</span>
+
+<span class="c1"># For figure sizes</span>
+<span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.precision&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="section" id="generate-two-process-mixture">
+<h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Permalink to this headline">¶</a></h2>
+<p>For a mixed distribution of two random Poisson processes with a mixing
+parameter <span class="math notranslate nohighlight">\(p=0.7\)</span>, and density parameters <span class="math notranslate nohighlight">\(\lambda_f=0.05\)</span>, and
+<span class="math notranslate nohighlight">\(\lambda_s=0.005\)</span>, we can set up the following function to generate
+samples:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">genx</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lda0</span><span class="p">,</span> <span class="n">lda1</span><span class="p">):</span>
+    <span class="n">chooser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+    <span class="c1"># We need to convert from scale to rate parameter</span>
+    <span class="n">proc1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">lda0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">proc2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">lda1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">proc_mix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">chooser</span> <span class="o">&lt;</span> <span class="n">p</span><span class="p">,</span> <span class="n">proc1</span><span class="p">,</span> <span class="n">proc2</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">proc_mix</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Define the true values described above, grouping the parameters into a
+<cite>Series</cite> to simplify further operations.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p_true</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">lda0_true</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">lda1_true</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">pars_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;lambda0&quot;</span><span class="p">:</span> <span class="n">lda0_true</span><span class="p">,</span>
+                       <span class="s2">&quot;lambda1&quot;</span><span class="p">:</span> <span class="n">lda1_true</span><span class="p">,</span>
+                       <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p_true</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Declare the number of simulations and the number of samples to generate:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of simulations</span>
+<span class="n">nsims</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="c1"># Size of each sample</span>
+<span class="n">nsamp</span> <span class="o">=</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Set up variables to accumulate simulations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up NLS simulations</span>
+<span class="n">coefs_nls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Set up MLE simulations</span>
+<span class="n">coefs_mle</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Fixed bounds fit 1</span>
+<span class="n">p_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">opts1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">))</span>
+<span class="c1"># Fixed bounds fit 2</span>
+<span class="n">p_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">opts2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Perform the simulations in a loop, fitting the nonlinear least squares
+(NLS) model, and the alternative maximum likelihood (MLE) model at each
+iteration.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Estimate parameters `nsims` times</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsims</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">genx</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">],</span>
+             <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda1&quot;</span><span class="p">])</span>
+    <span class="c1"># NLS</span>
+    <span class="n">xbouts</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">init_pars</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">80</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">)</span>
+    <span class="n">p_i</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">bouts</span><span class="o">.</span><span class="n">calc_p</span><span class="p">(</span><span class="n">coefs</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># only one here</span>
+    <span class="n">coefs_i</span> <span class="o">=</span> <span class="n">coefs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;lambda&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p_i</span><span class="p">}))</span>
+    <span class="n">coefs_nls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefs_i</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+
+    <span class="c1"># MLE</span>
+    <span class="n">xbouts</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsMLE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">init_pars</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">80</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">fit1</span><span class="p">,</span> <span class="n">fit2</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="n">fit1_opts</span><span class="o">=</span><span class="n">opts1</span><span class="p">,</span>
+                            <span class="n">fit2_opts</span><span class="o">=</span><span class="n">opts2</span><span class="p">)</span>
+    <span class="n">coefs_mle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<div class="section" id="non-linear-least-squares-nls">
+<h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Permalink to this headline">¶</a></h2>
+<p>Collect and display NLS results from the simulations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nls_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">coefs_nls</span><span class="p">),</span>
+                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
+<span class="c1"># Centrality and variance</span>
+<span class="n">nls_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lambda0</th>
+      <th>lambda1</th>
+      <th>p</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>500.000</td>
+      <td>5.000e+02</td>
+      <td>500.000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.047</td>
+      <td>4.006e-03</td>
+      <td>0.728</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.005</td>
+      <td>4.261e-04</td>
+      <td>0.021</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.033</td>
+      <td>2.867e-03</td>
+      <td>0.637</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.044</td>
+      <td>3.716e-03</td>
+      <td>0.715</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.047</td>
+      <td>3.995e-03</td>
+      <td>0.730</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.051</td>
+      <td>4.279e-03</td>
+      <td>0.743</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.062</td>
+      <td>5.918e-03</td>
+      <td>0.783</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="maximum-likelihood-estimation-mle">
+<h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Permalink to this headline">¶</a></h2>
+<p>Collect and display MLE results from the simulations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mle_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">coefs_mle</span><span class="p">),</span>
+                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
+<span class="c1"># Centrality and variance</span>
+<span class="n">mle_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lambda0</th>
+      <th>lambda1</th>
+      <th>p</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>500.000</td>
+      <td>5.000e+02</td>
+      <td>500.000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.050</td>
+      <td>5.026e-03</td>
+      <td>0.699</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.003</td>
+      <td>3.858e-04</td>
+      <td>0.024</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.042</td>
+      <td>4.026e-03</td>
+      <td>0.593</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.048</td>
+      <td>4.771e-03</td>
+      <td>0.684</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.050</td>
+      <td>5.022e-03</td>
+      <td>0.701</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.052</td>
+      <td>5.274e-03</td>
+      <td>0.717</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.059</td>
+      <td>6.545e-03</td>
+      <td>0.764</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="comparing-nls-vs-mle">
+<h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Permalink to this headline">¶</a></h2>
+<p>The bias relative to the true values of the mixed distribution can be
+readily assessed for NLS:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0   -2.745e-03
+lambda1   -9.942e-04
+p          2.845e-02
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>and for MLE:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    2.666e-04
+lambda1    2.586e-05
+p         -5.994e-04
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>To visualize the estimates obtained throughout the simulations, we can
+compare density plots, along with the true parameter values:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/boutsimuldemo_10_0.png" src="_images/boutsimuldemo_10_0.png" />
+</div>
+</div>
+<p>Feel free to download a copy of this demo
+(<a class="reference download internal" download="" href="_downloads/e7286e38e0eda222368b49c43a03b4b6/boutsimuldemo.py">boutsimuldemo.py</a>).</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simulating bouts</a><ul>
+<li><a class="reference internal" href="#generate-two-process-mixture">Generate two-process mixture</a></li>
+<li><a class="reference internal" href="#non-linear-least-squares-nls">Non-linear least squares (NLS)</a></li>
+<li><a class="reference internal" href="#maximum-likelihood-estimation-mle">Maximum likelihood estimation (MLE)</a></li>
+<li><a class="reference internal" href="#comparing-nls-vs-mle">Comparing NLS vs MLE</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="boutsdemo.html"
+                        title="previous chapter">Bout analysis</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tdr.html"
+                        title="next chapter">TDR class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/boutsimuldemo.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdr.html" title="TDR class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="boutsdemo.html" title="Bout analysis"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

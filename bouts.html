@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bout analysis &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="TDRPhases class" href="tdrphases.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdrphases.html" title="TDRPhases class"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-bouts">
+<span id="bout-analysis"></span><h1>Bout analysis<a class="headerlink" href="#module-bouts" title="Permalink to this headline">¶</a></h1>
+<p>Tools and classes for the identification of behavioural bouts</p>
+<p>A histogram of log-transformed frequencies of <cite>x</cite> with a chosen bin width
+and upper limit forms the basis for models.  Histogram bins following empty
+ones have their frequencies averaged over the number of previous empty bins
+plus one.  Models attempt to discern the number of random Poisson
+processes, and their parameters, generating the underlying distribution of
+log-transformed frequencies.</p>
+<p>The abstract class <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bouts</span></code></a> provides basic methods.</p>
+<div class="section" id="abstract-class-methods-summary">
+<h2>Abstract class &amp; methods summary<a class="headerlink" href="#abstract-class-methods-summary" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts</span></code></a>(x, bw[, method])</p></td>
+<td><p>Abstract base class for models of log-transformed frequencies</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.init_pars</span></code></a>(x_break[, plot, ax])</p></td>
+<td><p>Find starting values for mixtures of random Poisson processes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.Bouts.fit" title="bouts.Bouts.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.fit</span></code></a>(start)</p></td>
+<td><p>Fit Poisson mixture model to log frequencies</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bouts.Bouts.bec" title="bouts.Bouts.bec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.bec</span></code></a>(coefs)</p></td>
+<td><p>Calculate bout ending criteria from model coefficients</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.Bouts.plot_fit" title="bouts.Bouts.plot_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.plot_fit</span></code></a>(coefs[, ax])</p></td>
+<td><p>Plot log frequency histogram and fitted model</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nonlinear-least-squares-models">
+<h2>Nonlinear least squares models<a class="headerlink" href="#nonlinear-least-squares-models" title="Permalink to this headline">¶</a></h2>
+<p>Currently, the model describing the histogram as it is built is implemented
+in the <cite>BoutsNLS</cite> class.  For the case of a mixture of two Poisson
+processes, this class would set up the model:</p>
+<div class="math notranslate nohighlight" id="equation-1">
+<span class="eqno">(1)<a class="headerlink" href="#equation-1" title="Permalink to this equation">¶</a></span>\[y = log[N_f \lambda_f  e^{-\lambda_f  t} +
+        N_s \lambda_s e^{-\lambda_s t}]\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_f\)</span> and <span class="math notranslate nohighlight">\(N_s\)</span> are the number of events belonging to
+process <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(s\)</span>, respectively; and <span class="math notranslate nohighlight">\(\lambda_f\)</span> and
+<span class="math notranslate nohighlight">\(\lambda_s\)</span> are the probabilities of an event occurring in each
+process.  Mixtures of more processes can also be added to the model.</p>
+<p>The bout-ending criterion (BEC) corresponding to equation <a class="reference internal" href="#equation-1">(1)</a> is:</p>
+<div class="math notranslate nohighlight" id="equation-2">
+<span class="eqno">(2)<a class="headerlink" href="#equation-2" title="Permalink to this equation">¶</a></span>\[BEC = \frac{1}{\lambda_f - \lambda_s}
+      log \frac{N_f \lambda_f}{N_s \lambda_s}\]</div>
+<p>Note that there is one BEC per transition between Poisson processes.</p>
+<p>The methods of this subclass are provided by the abstract super class
+<a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bouts</span></code></a>, and adds the methods below.</p>
+</div>
+<div class="section" id="methods-summary">
+<h2>Methods summary<a class="headerlink" href="#methods-summary" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.BoutsNLS.plot_ecdf" title="bouts.BoutsNLS.plot_ecdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsNLS.plot_ecdf</span></code></a>(coefs[, ax])</p></td>
+<td><p>Plot observed and modelled empirical cumulative frequencies</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="maximum-likelihood-models">
+<h2>Maximum likelihood models<a class="headerlink" href="#maximum-likelihood-models" title="Permalink to this headline">¶</a></h2>
+<p>This is the preferred approach to modelling mixtures of random Poisson
+processes, as it does not rely on the subjective construction of a
+histogram.  The histogram is only used to generate reasonable starting
+values, but the underlying paramters of the model are obtained via maximum
+likelihood, so it is more robust.</p>
+<p>For the case of a mixture of two processes, as above, the log likelihood of
+all the <span class="math notranslate nohighlight">\(N_t\)</span> in a mixture can be expressed as:</p>
+<div class="math notranslate nohighlight" id="equation-3">
+<span class="eqno">(3)<a class="headerlink" href="#equation-3" title="Permalink to this equation">¶</a></span>\[log\ L_2 = \sum_{i=1}^{N_t} log[p \lambda_f e^{-\lambda_f t_i} +
+                                 (1-p) \lambda_s e^{-\lambda_s t_i}]\]</div>
+<p>where <span class="math notranslate nohighlight">\(p\)</span> is a mixing parameter indicating the proportion of fast to
+slow process events in the sampled population.</p>
+<p>The BEC in this case can be estimated as:</p>
+<div class="math notranslate nohighlight" id="equation-4">
+<span class="eqno">(4)<a class="headerlink" href="#equation-4" title="Permalink to this equation">¶</a></span>\[BEC = \frac{1}{\lambda_f - \lambda_s}
+      log \frac{p\lambda_f}{(1-p)\lambda_s}\]</div>
+<p>The subclass <a class="reference internal" href="#bouts.BoutsMLE" title="bouts.BoutsMLE"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoutsMLE</span></code></a> offers the framework for these models.</p>
+</div>
+<div class="section" id="class-methods-summary">
+<h2>Class &amp; methods summary<a class="headerlink" href="#class-methods-summary" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.BoutsMLE.loglik_fun" title="bouts.BoutsMLE.loglik_fun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsMLE.loglik_fun</span></code></a>(params, x[, transformed])</p></td>
+<td><p>Log likelihood function of parameters given observed data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bouts.BoutsMLE.fit" title="bouts.BoutsMLE.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsMLE.fit</span></code></a>(start[, fit1_opts, fit2_opts])</p></td>
+<td><p>Maximum likelihood estimation of log frequencies</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.BoutsMLE.bec" title="bouts.BoutsMLE.bec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsMLE.bec</span></code></a>(fit)</p></td>
+<td><p>Calculate bout ending criteria from model coefficients</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bouts.BoutsMLE.plot_fit" title="bouts.BoutsMLE.plot_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsMLE.plot_fit</span></code></a>(fit[, ax])</p></td>
+<td><p>Plot log frequency histogram and fitted model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.BoutsMLE.plot_ecdf" title="bouts.BoutsMLE.plot_ecdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsMLE.plot_ecdf</span></code></a>(fit[, ax])</p></td>
+<td><p>Plot observed and modelled empirical cumulative frequencies</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="bouts.Bouts">
+<em class="property">class </em><code class="sig-prename descclassname">bouts.</code><code class="sig-name descname">Bouts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">bw</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'standard'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.Bouts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for models of log-transformed frequencies</p>
+<p>This is a base class for other classes to build on, and do the model
+fitting.  <cite>Bouts</cite> is an abstract base class to set up bout
+identification procedures.  Subclasses must implement <cite>fit</cite> and <cite>bec</cite>
+methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
+<dl class="py attribute">
+<dt id="bouts.Bouts.x">
+<code class="sig-name descname">x</code><a class="headerlink" href="#bouts.Bouts.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array with input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bouts.Bouts.method">
+<code class="sig-name descname">method</code><a class="headerlink" href="#bouts.Bouts.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used for calculating the histogram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="bouts.Bouts.lnfreq">
+<code class="sig-name descname">lnfreq</code><a class="headerlink" href="#bouts.Bouts.lnfreq" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataFrame with the centers of histogram bins, and corresponding
+log-frequencies of <cite>x</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.Bouts.bec">
+<em class="property">abstract </em><code class="sig-name descname">bec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coefs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts.bec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.Bouts.bec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate bout ending criteria from model coefficients</p>
+<p>Implementing default as from NLS method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns, and indexed by
+parameter names “a” and “lambda”.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
+coefs.shape[1]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray, shape (n,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.Bouts.fit">
+<em class="property">abstract </em><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.Bouts.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit Poisson mixture model to log frequencies</p>
+<p>Default is non-linear least squares method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – Coefficients of the model.</p></li>
+<li><p><strong>pcov</strong> (<em>2D array</em>) – Covariance of coefs.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.Bouts.init_pars">
+<code class="sig-name descname">init_pars</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_break</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts.init_pars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.Bouts.init_pars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find starting values for mixtures of random Poisson processes</p>
+<p>Starting values are calculated using the “broken stick” method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_break</strong> (<em>array_like</em>) – One- or two-element array with values determining the break(s)
+for broken stick model, such that x &lt; x_break[0] is first
+process, x &gt;= x_break[1] &amp; x &lt; x_break[2] is second process,
+and x &gt;= x_break[2] is third one.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to plot the broken stick model.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – An Axes instance to use as target.  Default is to create one.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to plotting function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – DataFrame with coefficients for each process.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.Bouts.plot_fit">
+<code class="sig-name descname">plot_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coefs</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts.plot_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.Bouts.plot_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot log frequency histogram and fitted model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns, and indexed by
+parameter names “a” and “lambda”.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ax</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>matplotlib.Axes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="bouts.BoutsMLE">
+<em class="property">class </em><code class="sig-prename descclassname">bouts.</code><code class="sig-name descname">BoutsMLE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">bw</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'standard'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nonlinear least squares bout identification</p>
+<dl class="py method">
+<dt id="bouts.BoutsMLE.bec">
+<code class="sig-name descname">bec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fit</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.bec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE.bec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate bout ending criteria from model coefficients</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fit</strong> (<em>scipy.optimize.OptimizeResult</em>) – Object with the optimization result, having a <cite>x</cite> attribute
+with coefficients of the solution.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Current implementation is for a two-process mixture, hence an array
+of a single float is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.BoutsMLE.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">fit1_opts</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fit2_opts</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum likelihood estimation of log frequencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with starting values for coefficients of each process
+in columns.  These can come from the “broken stick” method as
+in <a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Bouts.init_pars()</span></code></a>, and will be transformed to minimize
+the first log likelihood function.</p></li>
+<li><p><strong>fit2_opts</strong> (<em>fit1_opts</em><em>,</em>) – Dictionaries with keywords to be pass to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code>, for the first and second fits.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>fit1, fit2</strong> – Objects with the optimization result from the first and second
+fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Current implementation handles mixtures of two Poisson processes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.BoutsMLE.loglik_fun">
+<code class="sig-name descname">loglik_fun</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">transformed</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.loglik_fun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE.loglik_fun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log likelihood function of parameters given observed data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>array_like</em>) – 1-D array with parameters to fit.  Currently must be 3-length,
+with mixing parameter <span class="math notranslate nohighlight">\(p\)</span>, density parameter
+<span class="math notranslate nohighlight">\(\lambda_f\)</span> and <span class="math notranslate nohighlight">\(\lambda_s\)</span>, in that order.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – Independent data array described by parameters <cite>p</cite> and <cite>lambdas</cite>.</p></li>
+<li><p><strong>transformed</strong> (<em>bool</em>) – Whether <cite>params</cite> are transformed and need to be un-transformed
+to calculate the likelihood.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>out</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.BoutsMLE.plot_ecdf">
+<code class="sig-name descname">plot_ecdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fit</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.plot_ecdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE.plot_ecdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot observed and modelled empirical cumulative frequencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fit</strong> (<em>scipy.optimize.OptimizeResult</em>) – Object with the optimization result, having a <cite>x</cite> attribute
+with coefficients of the solution.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ax</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>matplotlib.Axes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.BoutsMLE.plot_fit">
+<code class="sig-name descname">plot_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fit</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.plot_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE.plot_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot log frequency histogram and fitted model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fit</strong> (<em>scipy.optimize.OptimizeResult</em>) – Object with the optimization result, having a <cite>x</cite> attribute
+with coefficients of the solution.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ax</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>matplotlib.Axes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="bouts.BoutsNLS">
+<em class="property">class </em><code class="sig-prename descclassname">bouts.</code><code class="sig-name descname">BoutsNLS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">bw</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'standard'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsNLS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nonlinear least squares bout identification</p>
+<dl class="py method">
+<dt id="bouts.BoutsNLS.bec">
+<code class="sig-name descname">bec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coefs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS.bec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsNLS.bec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate bout ending criteria from model coefficients</p>
+<p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – List of BEC’s implied by <cite>coefs</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.BoutsNLS.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsNLS.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit non-linear least squares to log frequencies</p>
+<p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – Coefficients of the model.</p></li>
+<li><p><strong>pcov</strong> (<em>2D array</em>) – Covariance of coefs.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="bouts.BoutsNLS.plot_ecdf">
+<code class="sig-name descname">plot_ecdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coefs</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS.plot_ecdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsNLS.plot_ecdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot observed and modelled empirical cumulative frequencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ax</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>matplotlib.Axes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="bouts.label_bouts">
+<code class="sig-prename descclassname">bouts.</code><code class="sig-name descname">label_bouts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">bec</span></em>, <em class="sig-param"><span class="n">as_diff</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#label_bouts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.label_bouts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify data into bouts based on bout ending criteria</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>pandas.Series</em>) – Series with data to classify according to <cite>bec</cite>.</p></li>
+<li><p><strong>bec</strong> (<em>array_like</em>) – Array with bout-ending criteria. It is assumed to be sorted.</p></li>
+<li><p><strong>as_diff</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to apply <cite>diff</cite> on <cite>x</cite> so it matches <cite>bec</cite>’s scale.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – Integer array with the same shape as <cite>x</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Bout analysis</a><ul>
+<li><a class="reference internal" href="#abstract-class-methods-summary">Abstract class &amp; methods summary</a></li>
+<li><a class="reference internal" href="#nonlinear-least-squares-models">Nonlinear least squares models</a></li>
+<li><a class="reference internal" href="#methods-summary">Methods summary</a></li>
+<li><a class="reference internal" href="#maximum-likelihood-models">Maximum likelihood models</a></li>
+<li><a class="reference internal" href="#class-methods-summary">Class &amp; methods summary</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tdrphases.html"
+                        title="previous chapter">TDRPhases class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/bouts.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdrphases.html" title="TDRPhases class"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

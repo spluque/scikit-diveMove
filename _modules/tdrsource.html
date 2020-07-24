@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tdrsource &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tdrsource</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tdrsource</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base definition of the TDR input data</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">_SPEED_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;velocity&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="TDRSource"><a class="viewcode-back" href="../tdrsource.html#tdrsource.TDRSource">[docs]</a><span class="k">class</span> <span class="nc">TDRSource</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Define TDR data source</span>
+
+<span class="sd">    Use xarray.Dataset to ensure pseudo-standard metadata</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tdr_file : str</span>
+<span class="sd">        String indicating the file where the data comes from.</span>
+<span class="sd">    tdr : xarray.Dataset</span>
+<span class="sd">        Dataset with input data.</span>
+<span class="sd">    depth_name : str</span>
+<span class="sd">        Name of data variable with depth measurements.</span>
+<span class="sd">    has_speed : bool</span>
+<span class="sd">        Whether input data include speed measurements.</span>
+<span class="sd">    speed_name : str</span>
+<span class="sd">        Name of data variable with the speed measurements.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
+<span class="sd">    &gt;&gt;&gt; tdrX = diveMove2skd(True)</span>
+<span class="sd">    &gt;&gt;&gt; print(tdrX)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tdr_file</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+                 <span class="n">has_speed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up attributes for TDRSource objects</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tdr_file : str, path object of file-like object</span>
+<span class="sd">            A valid string path for the file with TDR measurements, or path</span>
+<span class="sd">            or file-like object, interpreted as in ``pandas.read_csv``.</span>
+<span class="sd">        depth_name : str, optional</span>
+<span class="sd">            Name of data variable with depth measurements. Default: &quot;depth&quot;.</span>
+<span class="sd">        has_speed : bool, optional</span>
+<span class="sd">            Weather data includes speed measurements. Column name must be</span>
+<span class="sd">            one of [&quot;velocity&quot;, &quot;speed&quot;].  Default: False.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to ``xarray.load_dataset``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="n">tdr_file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span> <span class="o">=</span> <span class="n">depth_name</span>
+        <span class="n">speed_var</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                     <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_SPEED_NAMES</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">speed_var</span> <span class="ow">and</span> <span class="n">has_speed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_speed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span> <span class="o">=</span> <span class="n">speed_var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_speed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tdr_file</span> <span class="o">=</span> <span class="n">tdr_file</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">objcls</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Time-Depth Recorder data -- Class </span><span class="si">{}</span><span class="s2"> object</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">objcls</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">))</span>
+
+<div class="viewcode-block" id="TDRSource.get_depth"><a class="viewcode-back" href="../tdrsource.html#tdrsource.TDRSource.get_depth">[docs]</a>    <span class="k">def</span> <span class="nf">get_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return depth array</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.DataArray</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="TDRSource.get_speed"><a class="viewcode-back" href="../tdrsource.html#tdrsource.TDRSource.get_speed">[docs]</a>    <span class="k">def</span> <span class="nf">get_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return speed array</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.DataArray</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="TDRSource.get_tdr"><a class="viewcode-back" href="../tdrsource.html#tdrsource.TDRSource.get_tdr">[docs]</a>    <span class="k">def</span> <span class="nf">get_tdr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return TDR Dataset</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.Dataset</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tdrsource</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>

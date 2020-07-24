@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bouts.boutsnls &#8212; skdiveMove 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">bouts.boutsnls</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for bouts.boutsnls</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;BoutsNLS class</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">ScalarFormatter</span>
+<span class="kn">from</span> <span class="nn">statsmodels.distributions.empirical_distribution</span> <span class="kn">import</span> <span class="n">ECDF</span>
+<span class="kn">import</span> <span class="nn">skdiveMove.bouts.bouts</span> <span class="k">as</span> <span class="nn">bouts</span>
+
+
+<div class="viewcode-block" id="BoutsNLS"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsNLS">[docs]</a><span class="k">class</span> <span class="nc">BoutsNLS</span><span class="p">(</span><span class="n">bouts</span><span class="o">.</span><span class="n">Bouts</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Nonlinear least squares bout identification</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="BoutsNLS.fit"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsNLS.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit non-linear least squares to log frequencies</span>
+
+<span class="sd">        The metaclass :class:`bouts.Bouts` implements this method.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        start : pandas.DataFrame</span>
+<span class="sd">            DataFrame with coefficients for each process in columns.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        coefs : pandas.DataFrame</span>
+<span class="sd">            Coefficients of the model.</span>
+<span class="sd">        pcov : 2D array</span>
+<span class="sd">            Covariance of coefs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">bouts</span><span class="o">.</span><span class="n">Bouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BoutsNLS.bec"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsNLS.bec">[docs]</a>    <span class="k">def</span> <span class="nf">bec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate bout ending criteria from model coefficients</span>
+
+<span class="sd">        The metaclass :class:`bouts.Bouts` implements this method.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coefs : pandas.DataFrame</span>
+<span class="sd">            DataFrame with model coefficients in columns.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : list</span>
+<span class="sd">            List of BEC&#39;s implied by `coefs`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># The metaclass implements this method</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">bouts</span><span class="o">.</span><span class="n">Bouts</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BoutsNLS.plot_ecdf"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsNLS.plot_ecdf">[docs]</a>    <span class="k">def</span> <span class="nf">plot_ecdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot observed and modelled empirical cumulative frequencies</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coefs : pandas.DataFrame</span>
+<span class="sd">            DataFrame with model coefficients in columns.</span>
+<span class="sd">        ax : matplotlib.Axes instance</span>
+<span class="sd">            An Axes instance to use as target.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Passed to `matplotlib.pyplot.gca`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ax : `matplotlib.Axes`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
+
+        <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x_ecdf</span> <span class="o">=</span> <span class="n">ECDF</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>
+        <span class="n">x_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">x_ecdf</span><span class="p">(</span><span class="n">x_pred</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Plot ECDF of data</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x_pred</span><span class="p">),</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observed&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ScalarFormatter</span><span class="p">())</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="c1"># Plot estimated CDF</span>
+        <span class="n">p</span><span class="p">,</span> <span class="n">lambdas</span> <span class="o">=</span> <span class="n">bouts</span><span class="o">.</span><span class="n">calc_p</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
+        <span class="n">y_mod</span> <span class="o">=</span> <span class="n">bouts</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x_pred</span><span class="p">),</span> <span class="n">p</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x_pred</span><span class="p">),</span> <span class="n">y_mod</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+        <span class="c1"># Add a little offset to ylim for visibility</span>
+        <span class="n">yoffset</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">*</span><span class="n">yoffset</span><span class="p">)</span>       <span class="c1"># add some spacing</span>
+        <span class="c1"># Plot BEC</span>
+        <span class="n">becx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
+        <span class="n">becy</span> <span class="o">=</span> <span class="n">bouts</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">becy</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+        <span class="c1"># Annotations</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">becx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">xcrd</span> <span class="o">=</span> <span class="n">becx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;bec = </span><span class="si">{0:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xcrd</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">xcrd</span><span class="p">,</span> <span class="n">yoffset</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+                        <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;ECDF [x]&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+    <span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+    <span class="n">pars</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;dry_thr&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+            <span class="s2">&quot;wet_thr&quot;</span><span class="p">:</span> <span class="mi">3610</span><span class="p">,</span>
+            <span class="s2">&quot;dive_thr&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;dive_model&quot;</span><span class="p">:</span> <span class="s2">&quot;unimodal&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;smooth_par&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;knot_factor&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="s2">&quot;descent_crit_q&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+            <span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+    <span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">],</span>
+                   <span class="n">dry_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">],</span> <span class="n">wet_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">],</span>
+                   <span class="n">dive_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_thr&quot;</span><span class="p">],</span>
+                   <span class="n">dive_model</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_model&quot;</span><span class="p">],</span>
+                   <span class="n">smooth_par</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;smooth_par&quot;</span><span class="p">],</span>
+                   <span class="n">knot_factor</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;knot_factor&quot;</span><span class="p">],</span>
+                   <span class="n">descent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;descent_crit_q&quot;</span><span class="p">],</span>
+                   <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">])</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">dive_stats</span><span class="p">()</span>
+    <span class="n">stamps</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">stamp_dives</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">stats_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">stamps</span><span class="p">,</span> <span class="n">stats</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># 2=4 here</span>
+    <span class="n">postdives</span> <span class="o">=</span> <span class="n">stats_tab</span><span class="p">[</span><span class="s2">&quot;postdive_dur&quot;</span><span class="p">][</span><span class="n">stats_tab</span><span class="p">[</span><span class="s2">&quot;phase_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="n">postdives_diff</span> <span class="o">=</span> <span class="n">postdives</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+    <span class="c1"># Remove isolated dives</span>
+    <span class="n">postdives_diff</span> <span class="o">=</span> <span class="n">postdives_diff</span><span class="p">[</span><span class="n">postdives_diff</span> <span class="o">&lt;</span> <span class="mi">2000</span><span class="p">]</span>
+
+    <span class="c1"># Set up instance</span>
+    <span class="n">bouts_postdive</span> <span class="o">=</span> <span class="n">BoutsNLS</span><span class="p">(</span><span class="n">postdives_diff</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="c1"># Get init parameters</span>
+    <span class="n">bout_init_pars</span> <span class="o">=</span> <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">50</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">nls_coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">bout_init_pars</span><span class="p">)</span>
+    <span class="c1"># BEC</span>
+    <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">nls_coefs</span><span class="p">)</span>
+    <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">nls_coefs</span><span class="p">)</span>
+    <span class="c1"># ECDF</span>
+    <span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">nls_coefs</span><span class="p">)</span>
+    <span class="c1"># Try 3 processes</span>
+    <span class="c1"># Get init parameters</span>
+    <span class="n">bout_init_pars</span> <span class="o">=</span> <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">550</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">nls_coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">bout_init_pars</span><span class="p">)</span>
+    <span class="c1"># BEC</span>
+    <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">nls_coefs</span><span class="p">)</span>
+    <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">nls_coefs</span><span class="p">)</span>
+    <span class="c1"># ECDF</span>
+    <span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">bouts_postdive</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">nls_coefs</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">bouts.boutsnls</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>
