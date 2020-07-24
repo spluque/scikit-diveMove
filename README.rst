@@ -4,6 +4,10 @@
     width=10% align=left>
    <h1>scikit-diveMove</h1>
 
+.. image:: https://img.shields.io/pypi/v/scikit-diveMove?style=flat-square
+   :target: https://img.shields.io/pypi/v/scikit-diveMove
+   :alt: PyPI
+
 .. image:: https://travis-ci.org/spluque/scikit-diveMove.svg?branch=master
    :target: https://travis-ci.org/spluque/scikit-diveMove
    :alt: Build Status
@@ -93,15 +97,13 @@ The table below shows which features of `diveMove` are accessible from
 Installation
 ============
 
-At some point, it will be possible to install `skdiveMove` by typing the
-following at a terminal command line:
+Type the following at a terminal command line:
 
 .. code-block:: sh
 
    pip install scikit-kinematics
 
-In the meantime, please install from the source files by typing the
-following at the command line:
+Or install from source tree by typing the following at the command line:
 
 .. code-block:: sh
 

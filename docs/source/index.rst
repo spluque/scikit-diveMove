@@ -16,15 +16,13 @@ location data are also provided.
 Installation
 ============
 
-At some point, it will be possible to install `skdiveMove` by typing the
-following at a command line:
+Type the following at a terminal command line:
 
 .. code-block:: sh
 
    pip install scikit-kinematics
 
-In the meantime, please install from the source files by typing the
-following at the command line:
+Or install from source tree by typing the following at the command line:
 
 .. code-block:: sh
 
@@ -113,13 +111,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-
-.. note::
-
-   | *Author:* Sebastian Luque
-   | *Version:* 0.0.7
-   | *Date:* July 2020
-   | *email:* spluque@gmail.com
-   | *Copyright (c):* 2020, Sebastian Luque. All rights reserved.
-   | *Licence:* GNU General Public License v3 (GPLv3)

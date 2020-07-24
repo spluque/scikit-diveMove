@@ -5,7 +5,7 @@ from skdiveMove import __license__, __version__
 def readme():
     """Remove raw directives at the top of README.rst"""
     with open('README.rst') as f:
-        lines = f.readlines()[10:]
+        lines = f.readlines()[14:]
 
     return("".join(lines))
 
@@ -45,7 +45,7 @@ setup(
     keywords=["animal behaviour", "biology", "behavioural ecology",
               "diving", "diving behaviour"],
     url="https://github.com/spluque/scikit-diveMove",
-    classifiers=["Development Status :: 2 - Pre-Alpha",
+    classifiers=["Development Status :: 3 - Alpha",
                  "Programming Language :: Python :: 3",
                  "Intended Audience :: Developers",
                  "Intended Audience :: Science/Research",
