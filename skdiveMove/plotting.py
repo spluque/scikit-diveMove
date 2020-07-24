@@ -117,6 +117,7 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
         scatter = ax.scatter(ser.index, ser, s=12, marker="o", c=cat_codes)
         if legend:
             with warnings.catch_warnings():
+                # Still getting a warning about masked element
                 warnings.filterwarnings("ignore", category=UserWarning,
                                         module="numpy")
                 warnings.filterwarnings("ignore", category=UserWarning,

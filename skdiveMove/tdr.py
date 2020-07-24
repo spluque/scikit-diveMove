@@ -1,6 +1,6 @@
 """TDR objects homologous to `R` package diveMove's main classes
 
-The :class:`TDR` aims to be a comprehensive class to encapsulate the
+The :class:`TDR` class aims to be a comprehensive class to encapsulate the
 processing of `TDR` records from a data file.
 
 This module instantiates an `R` session to interact with low-level
@@ -74,21 +74,21 @@ xr.set_options(keep_attrs=True)
 class TDR(TDRSource):
     """Base class encapsulating TDR objects and processing
 
-    TDR subclasses TDRSource to provide comprehensive TDR processing
+    TDR subclasses `TDRSource` to provide comprehensive TDR processing
     capabilities.
 
     Attributes
     ----------
     tdr_file : str
-        String indicating the file where the data comes from.
+        String indicating the file where data comes from.
     tdr : xarray.Dataset
         Dataset with input data.
     depth_name : str
-        Name of data variable with depth measurements.
+        Name of Dataset variable with depth measurements.
     has_speed : bool
         Whether input data include speed measurements.
     speed_name : str
-        Name of data variable with the speed measurements.
+        Name of Dataset variable with the speed measurements.
     zoc_depth : ZOC
         Instance to perform and store zero offset correction operations for
         depth.
@@ -203,6 +203,7 @@ class TDR(TDRSource):
         """
         depth = self.get_depth("measured")
         self.zoc_depth(depth, method=method, **kwargs)
+        logger.info("Finished ZOC")
 
     def detect_wet(self, **kwargs):
         """Detect wet/dry activity phases
@@ -211,11 +212,11 @@ class TDR(TDRSource):
 
         Parameters
         ----------
-        **kwargs : Keyword arguments for `TDRPhases.detect_wet`
+        **kwargs : Keyword arguments
+            Passed to :meth:`~tdrphases.TDRPhases.detect_wet`
 
         Notes
         -----
-
         See details for arguments in diveMove's ``calibrateDepth``.  Unlike
         `diveMove`, the beginning/ending times for each phase are not
         stored with the class instance, as this information can be
@@ -241,6 +242,7 @@ class TDR(TDRSource):
         """
         depth = self.get_depth("zoc")
         self.phases.detect_wet(depth, **kwargs)
+        logger.info("Finished detecting wet/dry periods")
 
     def detect_dives(self, dive_thr):
         """Identify dive events
@@ -251,7 +253,7 @@ class TDR(TDRSource):
         Parameters
         ----------
         dry_thr : float
-            Passed to `TDRPhases.detect_dives`.
+            Passed to :meth:`~tdrphases.TDRPhases.detect_dives`.
 
         Notes
         -----
@@ -273,6 +275,7 @@ class TDR(TDRSource):
         """
         depth = self.get_depth("zoc")
         self.phases.detect_dives(depth, dive_thr=dive_thr)
+        logger.info("Finished detecting dives")
 
     def detect_dive_phases(self, **kwargs):
         """Detect dive phases
@@ -282,7 +285,7 @@ class TDR(TDRSource):
         Parameters
         ----------
         **kwargs : optional keyword arguments
-            Passed to `TDRPhases.detect_dive_phases`
+            Passed to :meth:`~tdrphases.TDRPhases.detect_dive_phases`
 
         Notes
         -----
@@ -310,6 +313,7 @@ class TDR(TDRSource):
         """
         depth = self.get_depth("zoc")
         self.phases.detect_dive_phases(depth, **kwargs)
+        logger.info("Finished detecting dive phases")
 
     def calibrate(self, zoc_method="filter", dry_thr=70, wet_cond=None,
                   wet_thr=3610, interp_wet=False, dive_thr=4,
@@ -331,10 +335,12 @@ class TDR(TDRSource):
         smooth_par : float, optional
         knot_factor : int, optional
         descent_crit_q, ascent_crit_q : float, optional
-        **kwargs : optional keyword arguments passed to `zoc` method
-            - methods 'filter': ('k', 'probs', 'depth_bounds' (defaults to
+        **kwargs : optional keyword arguments
+            Passed to :meth:`TDR.zoc` method:
+
+            * method 'filter': ('k', 'probs', 'depth_bounds' (defaults to
               range), 'na_rm' (defaults to True)).
-            - method 'offset': ('offset').
+            * method 'offset': ('offset').
 
         Notes
         -----
@@ -401,7 +407,7 @@ class TDR(TDRSource):
         fname : str, optional
             A path to save plot.  Ignored if ``save_fig=False``.
         **kwargs : optional keyword arguments
-            Passed to `calibrate_speed.calibrate`
+            Passed to :func:`calibrate_speed.calibrate`
 
         Returns
         -------
@@ -436,6 +442,7 @@ class TDR(TDRSource):
         if save_fig:
             fig.savefig(fname)
 
+        logger.info("Finished calibrating speed")
         return(qfit, fig, ax)
 
     def dive_stats(self, depth_deriv=True):
@@ -868,8 +875,8 @@ class TDR(TDRSource):
 
         Returns
         -------
-        *args : arguments for `TDRPhases.get_dives_details`
-        **kwargs : keyword arguments for `TDRPhases.get_dives_details`
+        *args, **kwargs : arguments and keyword arguments
+            Passed to :meth:`~tdrphases.TDRPhases.get_dives_details`
 
         """
         return(self.phases.get_dives_details(*args, **kwargs))
@@ -879,8 +886,10 @@ class TDR(TDRSource):
 
         Parameters
         ----------
-        *args : arguments for `TDRPhases.get_dive_deriv`
-        **kwargs : keyword arguments for `TDRPhases.get_dive_deriv`
+        *args : arguments
+            Passed to :meth:`~tdrphases.TDRPhases.get_dive_deriv`
+        **kwargs : keyword arguments
+            Passed to :meth:`~tdrphases.TDRPhases.get_dive_deriv`
 
         """
         return(self.phases.get_dive_deriv(*args, **kwargs))
@@ -906,11 +915,19 @@ class TDR(TDRSource):
         Parameters
         ----------
         **kwargs : optional keyword arguments
-            Passed to `TDRPhases.time_budget`
+            Passed to :meth:`~tdrphases.TDRPhases.time_budget`
 
         Returns
         -------
         out : pandas.DataFrame
+
+        Examples
+        --------
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd()
+        >>> tdrX.calibrate(dive_thr=3, zoc_method="offset",
+        ...                offset=3, descent_crit_q=0.01, knot_factor=20)
+        >>> tdrX.time_budget(ignore_z=True, ignore_du=True)
 
         """
         return(self.phases.time_budget(**kwargs))
@@ -921,11 +938,19 @@ class TDR(TDRSource):
         Parameters
         ----------
         **kwargs : optional keyword arguments
-            Passed to `TDRPhases.time_budget`
+            Passed to :meth:`~tdrphases.TDRPhases.stamp_dives`
 
         Returns
         -------
         out : pandas.DataFrame
+
+        Examples
+        --------
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd()
+        >>> tdrX.calibrate(dive_thr=3, zoc_method="offset",
+        ...                offset=3, descent_crit_q=0.01, knot_factor=20)
+        >>> tdrX.stamp_dives(ignore_z=True)
 
         """
         return(self.phases.stamp_dives(**kwargs))
@@ -943,6 +968,7 @@ class TDR(TDRSource):
         Returns
         -------
         xarray.Dataset
+
         """
         tdr = self.tdr.copy()
 
@@ -958,8 +984,41 @@ class TDR(TDRSource):
 
         return(tdr)
 
+    def extract_dive(self, diveNo, **kwargs):
+        """Extract TDR data corresponding to a particular set of dives
+
+        Parameters
+        ----------
+        diveNo : array_like, optional
+            List of dive numbers (1-based) to plot.
+        **kwargs : optional keyword arguments
+            Passed to :meth:`get_tdr`
+
+        Returns
+        -------
+        xarray.Dataset
+
+        Examples
+        --------
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd()
+        >>> tdrX.calibrate(dive_thr=3, zoc_method="offset",
+        ...                offset=3, descent_crit_q=0.01, knot_factor=20)
+        >>> tdrX.extract_dive(diveNo=20)
+
+        """
+        dive_ids = self.get_dives_details("row_ids", "dive_id")
+        idxs = _get_dive_indices(dive_ids, diveNo)
+        tdr = self.get_tdr(**kwargs)
+        tdr_i = tdr[dict(date_time=idxs.astype(int))]
+
+        return(tdr_i)
+
 
 if __name__ == '__main__':
+    # Set up info level logging
+    logging.basicConfig(level=logging.INFO)
+
     ifile = r"tests/data/ag_mk7_2002_022.nc"
 
     # tdrX = TDRSource(ifile, has_speed=True)
@@ -986,3 +1045,4 @@ if __name__ == '__main__':
 
     tdrX.calibrate(zoc_method="offset", offset=3, dive_thr=3, k=K, probs=P,
                    depth_bounds=DB, descent_crit_q=0.01, knot_factor=20)
+    tdrX.calibrate_speed(z=2)

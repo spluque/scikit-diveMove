@@ -8,7 +8,7 @@ from skdiveMove.core import robjs, cv, pandas2ri
 
 __all__ = ["_get_dive_indices", "_add_xr_attr",
            "get_var_sampling_interval", "_cut_dive",
-           "_one_dive_stats", "_speed_stats"]
+           "_one_dive_stats", "_speed_stats", "rle_key"]
 
 
 def _get_dive_indices(indices, diveNo):
@@ -191,3 +191,34 @@ def _speed_stats(x, vdist=None):
         res = speed_stats_fun(**kwargs)
 
     return(res)
+
+
+def rle_key(x):
+    """Emulate a run length encoder
+
+    Assigns a numerical sequence identifying run lengths in input Series.
+
+    Parameters
+    ----------
+    x : pandas.Series
+        Series with data to encode.
+
+    Returns
+    -------
+    out : pandas.Series
+
+    """
+    xout = (x.ne(x.shift()).cumsum() + 1)
+    return(xout)
+
+
+if __name__ == '__main__':
+    N = 18
+    color = np.repeat(list("ABCABC"), 3)
+    ss = pd.Series(color,
+                   index=pd.date_range("2020-01-01", periods=N,
+                                       freq="10s", tz="UTC"),
+                   dtype="category")
+
+    xx = pd.Series(np.random.standard_normal(10))
+    rle_key(xx > 0)

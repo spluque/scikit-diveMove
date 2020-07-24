@@ -23,7 +23,8 @@ import logging
 import numpy as np
 import pandas as pd
 from skdiveMove.core import robjs, cv, pandas2ri
-from skdiveMove.helpers import get_var_sampling_interval, _cut_dive
+from skdiveMove.helpers import (get_var_sampling_interval, _cut_dive,
+                                rle_key)
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
@@ -421,9 +422,7 @@ class TDRPhases:
         if ignore_du:
             labels = labels.mask((labels == "U") | (labels == "D"), "W")
 
-        grp_key = (labels["phase_label"]
-                   .ne(labels["phase_label"].shift())
-                   .cumsum() + 1).rename("phase_id")
+        grp_key = rle_key(labels["phase_label"]).rename("phase_id")
         labels_grp = labels.groupby(grp_key)
 
         begs = labels_grp.first().rename(columns={"date_time": "beg"})

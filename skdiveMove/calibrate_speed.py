@@ -23,7 +23,7 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
     z : float, optional
     bad : array_like, optional
     **kwargs : optional keyword arguments
-        Arguments passed to ``matplotlib.pyplot.subplots``.
+        Arguments passed to `matplotlib.pyplot.subplots`.
 
     Returns
     -------

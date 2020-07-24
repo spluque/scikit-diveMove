@@ -18,7 +18,8 @@ def get_requirements():
 
 
 REQUIREMENTS = get_requirements()
-PACKAGES = ["skdiveMove", "skdiveMove.tests"]
+DEV_REQUIRES = ["ipython", "jupyter", "jupyter-sphinx"]
+PACKAGES = ["skdiveMove", "skdiveMove.bouts", "skdiveMove.tests"]
 
 setup(
     name="scikit-diveMove",
@@ -29,7 +30,7 @@ setup(
     # package_data={'tests': ["*.txt", "*.csv", "*.BIN"]},
     install_requires=REQUIREMENTS,
     extras_require={
-        "dev": ["ipython", "jupyter", "jupyter-sphinx"],
+        "dev": DEV_REQUIRES,
         "docs": ["jupyter-sphinx"]
     },
     # metadata for upload to PyPI

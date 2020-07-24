@@ -10,5 +10,5 @@ from skdiveMove.tdrsource import TDRSource  # noqa: F401
 
 __author__ = "Sebastian Luque <spluque@gmail.com>"
 __license__ = "AGPLv3"
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 __all__ = ["TDR", "TDRSource"]

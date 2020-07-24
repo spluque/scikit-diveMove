@@ -11,11 +11,9 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import sys
-import os
 from skdiveMove import __version__
 
 sys.path.append("../skdiveMove")
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 
 # -- Project information -----------------------------------------------------
@@ -60,6 +58,9 @@ exclude_patterns = ['Thumbs.db', '.DS_Store']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# jupyter_sphinx
+jupyter_sphinx_linenos = True
+jupyter_sphinx_continue_linenos = True
 
 # -- Options for HTML output -------------------------------------------------
 

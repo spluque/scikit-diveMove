@@ -26,13 +26,13 @@ The table below shows which features of `diveMove` are accessible from
 +---------------+------------------+                          |                                |
 |Functionality  |Functions/Methods |                          |                                |
 +===============+==================+==========================+================================+
-|Movement       |``austFilter``    |                          |To be implemented               |
+|Movement       |``austFilter``    |                          |Under consideration.            |
 |               |``rmsDistFilter`` |                          |                                |
 |               |``grpSpeedFilter``|                          |                                |
 |               |``distSpeed``     |                          |                                |
 |               |``readLocs``      |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|Bout analysis  |``boutfreqs``     |                          |To be implemented               |
+|Bout analysis  |``boutfreqs``     |``BoutsNLS`` ``BoutsMLE`` |Fully implemented in Python.    |
 |               |``boutinit``      |                          |                                |
 |               |``bouts2.nlsFUN`` |                          |                                |
 |               |``bouts2.nls``    |                          |                                |
@@ -86,7 +86,7 @@ The table below shows which features of `diveMove` are accessible from
 |               |``getDiveModel``  |                          |                                |
 |               |``getGAct``       |                          |                                |
 +---------------+------------------+--------------------------+--------------------------------+
-|               |``extractDive``   |                          |To be implemented               |
+|               |``extractDive``   |                          |Fully implemented               |
 +---------------+------------------+--------------------------+--------------------------------+
 
 

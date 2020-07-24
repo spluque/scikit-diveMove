@@ -83,13 +83,15 @@ and then install with:
    pip install -e .["dev"]
 
 
-Example session
-===============
+Demos
+=====
 
 .. toctree::
    :maxdepth: 2
 
-   demo
+   tdrdemo
+   boutsdemo
+   boutsimuldemo
 
 
 Modules
@@ -102,6 +104,7 @@ Modules
    tdrsource
    zoc
    tdrphases
+   bouts
 
 
 Indices and tables

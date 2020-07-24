@@ -1,6 +1,6 @@
-================================
- Diving behaviour analysis demo
-================================
+===========================
+ Diving behaviour analysis
+===========================
 
 Here is a bird's-eye view of the functionality of `scikit-diveMove`,
 loosely following `diveMove`'s `vignette`_.
@@ -192,4 +192,5 @@ Dive stamps
 
    print(tdrX.stamp_dives())
 
-Feel free to download a copy of this :jupyter-download:script:`demo`.
+Feel free to download a copy of this demo
+(:jupyter-download:script:`tdrdemo`).

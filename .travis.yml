@@ -50,6 +50,7 @@ jobs:
       script: skip
       deploy:
         provider: pages:git
+        skip_cleanup: true
         verbose: true
         token: $GITHUB_TOKEN
         edge: true

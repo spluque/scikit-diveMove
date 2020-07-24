@@ -112,7 +112,8 @@ class ZOC:
         method : {"filter", "offset"}
             Name of method to use for zero offset correction.
         **kwargs : optional keyword arguments
-            Passed to the chosen method.
+            Passed to the chosen method (:meth:`offset_depth`,
+            :meth:`filter_depth`)
 
         Notes
         -----
