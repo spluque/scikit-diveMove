@@ -4,11 +4,18 @@ This is a reimplementation of the algorithm in diveMove, as it was too
 cumbersome to use rpy2 for this operation.
 
 """
+
+import logging
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
 import statsmodels.formula.api as smf
+
+logger = logging.getLogger(__name__)
+# Add the null handler if importing as library; whatever using this library
+# should set up logging.basicConfig() as needed
+logger.addHandler(logging.NullHandler())
 
 
 def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
@@ -81,6 +88,7 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
     qmod = smf.quantreg("y ~ x", qdata)
     qfit = qmod.fit(q=tau)
     coefs = qfit.params
+    logger.info("a={}, b={}".format(*coefs))
     # Plot the binned data, adding some noise for clarity
     xjit_binned = np.random.normal(binned[:, 0],
                                    xnpy[:, 0].ptp() / (2 * n_eval))

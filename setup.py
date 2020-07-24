@@ -26,8 +26,9 @@ setup(
     version=__version__,
     python_requires=">=3.6",
     packages=PACKAGES,
-    # include_package_data=True,
-    # package_data={'tests': ["*.txt", "*.csv", "*.BIN"]},
+    include_package_data=True,
+    # Below is redundant but safe
+    package_data={'tests': ["*.txt", "*.csv", "*.nc"]},
     install_requires=REQUIREMENTS,
     extras_require={
         "dev": DEV_REQUIRES,
