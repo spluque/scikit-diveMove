@@ -1,0 +1,94 @@
+# Build on supported Pythons
+#
+# Closely watch version references for actions!
+
+name: Python build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build Python package
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up R (release)
+        # They tell us to use master (ambiguously)
+        uses: r-lib/actions/setup-r@master
+
+      - name: Install diveMove
+        run: |
+          install.packages('diveMove')
+        shell: Rscript {0}
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Python requirements
+        # Set LD_LIBRARY_PATH for subsequent steps
+        run: |
+          python -m pip install --upgrade pip setuptools wheel twine
+          python -m pip install -r requirements.txt
+          LDLP=$(python -m rpy2.situation LD_LIBRARY_PATH)
+          export LD_LIBRARY_PATH=${LDLP}:${LD_LIBRARY_PATH}
+          echo "::set-env name=LD_LIBRARY_PATH::${LD_LIBRARY_PATH}"
+
+      - name: Build binary wheel and source tarball
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TESTPYPI_TOKEN }}
+        run: |
+          python setup.py build sdist bdist_wheel
+          twine check dist/*
+
+      - name: Build Sphinx docs
+        if: matrix.python-version == 3.8
+        run: |
+          python -m pip install .['docs']
+          make -C docs/ html
+          touch docs/build/html/.nojekyll
+
+      - name: Upload products
+        uses: actions/upload-artifact@v2
+        if:
+          (matrix.python-version == 3.8) &&
+          startsWith(github.ref, 'refs/tags')
+        with:
+          name: dist-pkg
+          path: |
+            dist
+            docs/build
+
+  deploy:
+    # No matrix here, so just test for tag. Runs on every tag, so artifact
+    # expected from "build"
+    name: Deploy to GitHub Pages
+    if: startsWith(github.ref, 'refs/tags')
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Download products
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-pkg
+
+      - name: Publish GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.5.7
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs/build/html

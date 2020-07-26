@@ -4,13 +4,17 @@
     width=10% align=left>
    <h1>scikit-diveMove</h1>
 
-.. image:: https://img.shields.io/pypi/v/scikit-diveMove?style=flat-square
-   :target: https://img.shields.io/pypi/v/scikit-diveMove
+.. image:: https://img.shields.io/pypi/v/scikit-diveMove
+   :target: https://pypi.python.org/pypi/scikit-diveMove
    :alt: PyPI
 
-.. image:: https://travis-ci.org/spluque/scikit-diveMove.svg?branch=master
-   :target: https://travis-ci.org/spluque/scikit-diveMove
-   :alt: Build Status
+.. image:: https://github.com/spluque/scikit-diveMove/workflows/TestPyPI/badge.svg
+   :target: https://github.com/spluque/scikit-diveMove/actions?query=workflow%3ATestPyPI
+   :alt: TestPyPI
+
+.. image:: https://github.com/spluque/scikit-diveMove/workflows/Python%20build/badge.svg
+   :target: https://github.com/spluque/scikit-diveMove/actions?query=workflow%3A%22Python+build%22
+   :alt: Python Build
 
 
 `scikit-diveMove` is a Python interface to R package `diveMove`_ for

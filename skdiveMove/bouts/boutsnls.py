@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 from statsmodels.distributions.empirical_distribution import ECDF
-import skdiveMove.bouts.bouts as bouts
+from . import bouts
 
 
 class BoutsNLS(bouts.Bouts):

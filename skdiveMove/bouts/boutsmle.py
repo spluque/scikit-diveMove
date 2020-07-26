@@ -10,7 +10,7 @@ from scipy.special import logit, expit
 from statsmodels.distributions.empirical_distribution import ECDF
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
-import skdiveMove.bouts.bouts as bouts
+from . import bouts
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library

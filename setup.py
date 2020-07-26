@@ -5,7 +5,7 @@ from skdiveMove import __license__, __version__
 def readme():
     """Remove raw directives at the top of README.rst"""
     with open('README.rst') as f:
-        lines = f.readlines()[14:]
+        lines = f.readlines()[18:]
 
     return("".join(lines))
 
