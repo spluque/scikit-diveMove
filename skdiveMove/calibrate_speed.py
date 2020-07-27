@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
+def calibrate(x, tau, contour_level, z=0, bad=[0, 0], ax=None):
     """Calibration based on kernel density estimation
 
     Parameters
@@ -29,14 +29,14 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
     contour_level : float
     z : float, optional
     bad : array_like, optional
-    **kwargs : optional keyword arguments
-        Arguments passed to `matplotlib.pyplot.subplots`.
+    ax : matplotlib.Axes, optional
+        An Axes instance to use as target.  Default is to create one.
 
     Returns
     -------
-    out : 3-tuple
-        The quantile regression fit object, `matplotlib.pyplot` `Axes` and
-        `Figures` instances.
+    out : 2-tuple
+        The quantile regression fit object, and `matplotlib.pyplot` `Axes`
+        instance.
 
     Notes
     -----
@@ -61,7 +61,10 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
     z = kde(grid_coords.T)
     z = np.flipud(z.reshape(n_eval, n_eval))
 
-    fig, ax = plt.subplots(1, 1, **kwargs)
+    fig = plt.gcf()
+    if ax is None:
+        ax = plt.gca()
+
     ax.set_xlabel("Rate of depth change")
     ax.set_ylabel("Speed")
     zimg = ax.imshow(z, aspect="auto",
@@ -72,10 +75,6 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
     cntr = ax.contour(z, extent=[mins[0], maxs[0], mins[1], maxs[1]],
                       origin="image", levels=[contour_level])
     ax.clabel(cntr, fmt="%1.2f")
-    # # Equivalent to R's `contourLines`
-    # cntr_vertices = cntr.collections[0].get_paths()[0].vertices
-    # # Scatter with input data
-    # ax.scatter(xnpy[:, 0], xnpy[:, 1], marker=".")
 
     # Fit quantile regression
     # -----------------------
@@ -108,7 +107,7 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], **kwargs):
     # Adjust limits to compensate for the noise in x
     ax.set_xlim([mins[0], maxs[0]])
 
-    return(qfit, fig, ax)
+    return(qfit, ax)
 
 
 if __name__ == '__main__':

@@ -382,7 +382,7 @@ class TDR(TDRSource):
                                 ascent_crit_q=ascent_crit_q)
 
     def calibrate_speed(self, tau=0.1, contour_level=0.1, z=0, bad=[0, 0],
-                        save_fig=False, fname=None, **kwargs):
+                        **kwargs):
         """Calibrate speed measurements
 
         Set the `speed_calib_fit` attribute
@@ -402,18 +402,14 @@ class TDR(TDRSource):
             Two-element `array_like` indicating that only rates of depth
             change and speed greater than the given value should be used
             for calibration, respectively.
-        save_fig : bool, optional
-            Whether to save the plot.
-        fname : str, optional
-            A path to save plot.  Ignored if ``save_fig=False``.
         **kwargs : optional keyword arguments
             Passed to :func:`calibrate_speed.calibrate`
 
         Returns
         -------
-        out : 3-tuple
-            The quantile regression fit object, `matplotlib.pyplot` `Axes`
-            and `Figures` instances.
+        out : 2-tuple
+            The quantile regression fit object, and `matplotlib.pyplot`
+            `Axes` instance.
 
         Examples
         --------
@@ -434,16 +430,13 @@ class TDR(TDRSource):
 
         kde_data = pd.concat((rddepth.rename("depth_rate"),
                               curspeed), axis=1)
-        qfit, fig, ax = speedcal.calibrate(kde_data, tau=tau,
-                                           contour_level=contour_level,
-                                           z=z, bad=bad, **kwargs)
+        qfit, ax = speedcal.calibrate(kde_data, tau=tau,
+                                      contour_level=contour_level,
+                                      z=z, bad=bad, **kwargs)
         self.speed_calib_fit = qfit
 
-        if save_fig:
-            fig.savefig(fname)
-
         logger.info("Finished calibrating speed")
-        return(qfit, fig, ax)
+        return(qfit, ax)
 
     def dive_stats(self, depth_deriv=True):
         """Calculate dive statistics in `TDR` records

@@ -99,10 +99,17 @@ Modules
    :maxdepth: 2
 
    tdr
-   tdrsource
-   zoc
-   tdrphases
    bouts
+
+
+Low-level submodules
+====================
+
+.. toctree::
+
+   tdrsource
+   tdrphases
+   zoc
 
 
 Indices and tables
@@ -111,3 +118,9 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+.. note::
+
+   | Icon created by B. Agustín Amenábar Larraín
+   | from Noun Project

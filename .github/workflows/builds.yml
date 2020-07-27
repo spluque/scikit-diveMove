@@ -42,9 +42,6 @@ jobs:
           echo "::set-env name=LD_LIBRARY_PATH::${LD_LIBRARY_PATH}"
 
       - name: Build binary wheel and source tarball
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TESTPYPI_TOKEN }}
         run: |
           python setup.py build sdist bdist_wheel
           twine check dist/*
