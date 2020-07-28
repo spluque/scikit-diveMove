@@ -3,6 +3,7 @@ import os
 import os.path as osp
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import skdiveMove as skdive
 
 # For figure sizes
@@ -77,8 +78,9 @@ print(tdrX.get_dives_details("spline_derivs"))
 
 print(tdrX.get_dives_details("crit_vals"))
 
+fig, ax = plt.subplots(figsize=(7, 6))
 # Consider only changes in depth larger than 2 m
-qfit, fig, ax = tdrX.calibrate_speed(z=2, figsize=(8, 6))
+qfit, _ = tdrX.calibrate_speed(z=2, ax=ax)
 print(qfit.summary())
 
 print(tdrX.time_budget(ignore_z=True, ignore_du=False))

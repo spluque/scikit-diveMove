@@ -5,11 +5,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tdr &#8212; skdiveMove 0.0.7 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <title>tdr &#8212; skdiveMove 0.1.3 documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
-    
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,7 +17,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
@@ -31,7 +29,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.0.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tdr</a></li> 
       </ul>
@@ -427,7 +425,7 @@
                                 <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">ascent_crit_q</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TDR.calibrate_speed"><a class="viewcode-back" href="../tdr.html#tdr.TDR.calibrate_speed">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">contour_level</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bad</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                        <span class="n">save_fig</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                        <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calibrate speed measurements</span>
 
 <span class="sd">        Set the `speed_calib_fit` attribute</span>
@@ -447,18 +445,14 @@
 <span class="sd">            Two-element `array_like` indicating that only rates of depth</span>
 <span class="sd">            change and speed greater than the given value should be used</span>
 <span class="sd">            for calibration, respectively.</span>
-<span class="sd">        save_fig : bool, optional</span>
-<span class="sd">            Whether to save the plot.</span>
-<span class="sd">        fname : str, optional</span>
-<span class="sd">            A path to save plot.  Ignored if ``save_fig=False``.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Passed to :func:`calibrate_speed.calibrate`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        out : 3-tuple</span>
-<span class="sd">            The quantile regression fit object, `matplotlib.pyplot` `Axes`</span>
-<span class="sd">            and `Figures` instances.</span>
+<span class="sd">        out : 2-tuple</span>
+<span class="sd">            The quantile regression fit object, and `matplotlib.pyplot`</span>
+<span class="sd">            `Axes` instance.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -479,16 +473,13 @@
 
         <span class="n">kde_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">rddepth</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;depth_rate&quot;</span><span class="p">),</span>
                               <span class="n">curspeed</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">qfit</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">speedcal</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">kde_data</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="n">tau</span><span class="p">,</span>
-                                           <span class="n">contour_level</span><span class="o">=</span><span class="n">contour_level</span><span class="p">,</span>
-                                           <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">bad</span><span class="o">=</span><span class="n">bad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">qfit</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">speedcal</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">kde_data</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="n">tau</span><span class="p">,</span>
+                                      <span class="n">contour_level</span><span class="o">=</span><span class="n">contour_level</span><span class="p">,</span>
+                                      <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">bad</span><span class="o">=</span><span class="n">bad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">speed_calib_fit</span> <span class="o">=</span> <span class="n">qfit</span>
 
-        <span class="k">if</span> <span class="n">save_fig</span><span class="p">:</span>
-            <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished calibrating speed&quot;</span><span class="p">)</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">qfit</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
+        <span class="k">return</span><span class="p">(</span><span class="n">qfit</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TDR.dive_stats"><a class="viewcode-back" href="../tdr.html#tdr.TDR.dive_stats">[docs]</a>    <span class="k">def</span> <span class="nf">dive_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth_deriv</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate dive statistics in `TDR` records</span>
@@ -1125,7 +1116,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.0.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tdr</a></li> 
       </ul>
