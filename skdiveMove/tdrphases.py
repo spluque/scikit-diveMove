@@ -56,8 +56,7 @@ class TDRPhases:
                           spline_derivs=None, crit_vals=None)
         self.params = dict(wet_dry={}, dives={})
 
-    def detect_wet(self, depth, dry_thr=70, wet_cond=None,
-                   wet_thr=3610, interp_wet=False):
+    def detect_wet(self, depth, dry_thr=70, wet_cond=None, wet_thr=3610):
         """Detect wet/dry activity phases
 
         Set the ``wet_dry`` attribute.
@@ -69,7 +68,6 @@ class TDRPhases:
         dry_thr : float, optional
         wet_cond : bool mask, optional
         wet_thr : float, optional
-        interp_wet : bool, optional
 
         Notes
         -----
@@ -101,20 +99,9 @@ class TDRPhases:
                                    'phase_label': phases_l[1]},
                                   index=time_py)
 
-        if interp_wet:
-            zdepth = depth_py.copy()
-            iswet = phases["phase_label"] == "W"
-            iswetna = iswet & zdepth.isna()
-            if any(iswetna):
-                depth_intp = depth_py[iswet].interpolate(method="cubic")
-                zdepth[iswetna] = np.maximum(np.zeros_like(depth_intp),
-                                             depth_intp)
-                self.zoc_pars["depth_zoc"] = zdepth
-
         phases.loc[:, "phase_id"] = phases.loc[:, "phase_id"].astype(int)
         self.wet_dry = phases
-        wet_dry_params = dict(dry_thr=dry_thr, wet_thr=wet_thr,
-                              interp_wet=interp_wet)
+        wet_dry_params = dict(dry_thr=dry_thr, wet_thr=wet_thr)
         self.params["wet_dry"].update(wet_dry_params)
 
     def detect_dives(self, depth, dive_thr):

@@ -205,13 +205,14 @@ class TDR(TDRSource):
         self.zoc_depth(depth, method=method, **kwargs)
         logger.info("Finished ZOC")
 
-    def detect_wet(self, **kwargs):
+    def detect_wet(self, interp_wet=False, **kwargs):
         """Detect wet/dry activity phases
 
         Set the ``wet_dry`` attribute.
 
         Parameters
         ----------
+        interp_wet : bool, optional
         **kwargs : Keyword arguments
             Passed to :meth:`~tdrphases.TDRPhases.detect_wet`
 
@@ -242,6 +243,23 @@ class TDR(TDRSource):
         """
         depth = self.get_depth("zoc")
         self.phases.detect_wet(depth, **kwargs)
+
+        if interp_wet:
+            zdepth = depth.to_series()
+            phases = self.phases.get_wet_activity()
+            iswet = phases["phase_label"] == "W"
+            iswetna = iswet & zdepth.isna()
+
+            if any(iswetna):
+                depth_intp = zdepth[iswet].interpolate(method="cubic")
+                zdepth[iswetna] = np.maximum(np.zeros_like(depth_intp),
+                                             depth_intp)
+                zdepth = zdepth.to_xarray()
+                zdepth.attrs = depth.attrs
+                _add_xr_attr(zdepth, "history", "interp_wet")
+                self.zoc_depth._depth_zoc = zdepth
+                self.zoc_depth.params.update(dict(interp_wet=interp_wet))
+
         logger.info("Finished detecting wet/dry periods")
 
     def detect_dives(self, dive_thr):
