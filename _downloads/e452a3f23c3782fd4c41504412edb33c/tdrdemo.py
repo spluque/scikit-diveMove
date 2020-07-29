@@ -1,18 +1,21 @@
 # Set up
 import os
 import os.path as osp
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import skdiveMove as skdive
 
-# For figure sizes
+# Declare figure sizes
 _FIG1X1 = (11, 5)
 _FIG2X1 = (10, 8)
 _FIG3X1 = (11, 11)
 
+import numpy as np   # only for setting print options here
+import pandas as pd  # only for setting print options here
+import xarray as xr  # only for setting print options here
+
 pd.set_option("display.precision", 3)
 np.set_printoptions(precision=3, sign="+")
+xr.set_options(display_style="html")
 %matplotlib inline
 
 here = osp.dirname(os.getcwd())
@@ -20,7 +23,6 @@ ifile = osp.join(here, "skdiveMove", "tests", "data", "ag_mk7_2002_022.nc")
 tdrX = skdive.TDR(ifile, depth_name="depth", has_speed=True)
 print(tdrX)
 
-# Access measured data
 tdrX.get_depth("measured")
 
 # Or simply use function ``skdive.tests.diveMove2skd`` to do the
@@ -82,6 +84,10 @@ fig, ax = plt.subplots(figsize=(7, 6))
 # Consider only changes in depth larger than 2 m
 qfit, _ = tdrX.calibrate_speed(z=2, ax=ax)
 print(qfit.summary())
+
+print(tdrX.get_depth("zoc"))
+
+print(tdrX.get_speed("calibrated"))
 
 print(tdrX.time_budget(ignore_z=True, ignore_du=False))
 

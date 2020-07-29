@@ -100,6 +100,7 @@ Modules
 
    tdr
    bouts
+   metadata
 
 
 Low-level submodules

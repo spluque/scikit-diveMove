@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tdrphases &#8212; skdiveMove 0.1.3 documentation</title>
+    <title>tdrphases &#8212; skdiveMove 0.1.4 documentation</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tdrphases</a></li> 
       </ul>
@@ -223,6 +223,10 @@
         <span class="n">phases_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">)</span>
         <span class="n">dive_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">dive_ids</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">depth_py</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+        <span class="n">xx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s2">&quot;X&quot;</span><span class="p">],</span> <span class="n">phases_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;DB&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span>
+                                        <span class="s2">&quot;DA&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">])</span>
+        <span class="n">dive_phases</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">phases_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ok</span><span class="p">):</span>
             <span class="n">ddepths</span> <span class="o">=</span> <span class="n">depth_py</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>  <span class="c1"># diving depths</span>
@@ -237,11 +241,6 @@
                                   <span class="n">index</span><span class="o">=</span><span class="n">ddepths</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
             <span class="n">grouped</span> <span class="o">=</span> <span class="n">divedf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
 
-            <span class="n">xx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s2">&quot;X&quot;</span><span class="p">],</span> <span class="n">phases_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                                <span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;DB&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span>
-                                            <span class="s2">&quot;DA&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;row_ids&quot;</span><span class="p">][</span><span class="s2">&quot;dive_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx</span>
-            <span class="n">dive_phases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;row_ids&quot;</span><span class="p">][</span><span class="s2">&quot;dive_phase&quot;</span><span class="p">]</span>
             <span class="n">cval_list</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">spl_der_list</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">spl_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -285,6 +284,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No dives found&quot;</span><span class="p">)</span>
 
+        <span class="c1"># Update the `dives` attribute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dives</span><span class="p">[</span><span class="s2">&quot;row_ids&quot;</span><span class="p">][</span><span class="s2">&quot;dive_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dive_phases</span>
         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dives&quot;</span><span class="p">]</span>
          <span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">dive_model</span><span class="o">=</span><span class="n">dive_model</span><span class="p">,</span> <span class="n">smooth_par</span><span class="o">=</span><span class="n">smooth_par</span><span class="p">,</span>
                       <span class="n">knot_factor</span><span class="o">=</span><span class="n">knot_factor</span><span class="p">,</span>
@@ -497,9 +498,7 @@
 
         <span class="n">dive_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
 
-        <span class="n">grp_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">phase_lab</span>
-                   <span class="o">.</span><span class="n">ne</span><span class="p">(</span><span class="n">phase_lab</span><span class="o">.</span><span class="n">shift</span><span class="p">())</span>
-                   <span class="o">.</span><span class="n">cumsum</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;phase_id&quot;</span><span class="p">)</span>
+        <span class="n">grp_key</span> <span class="o">=</span> <span class="n">rle_key</span><span class="p">(</span><span class="n">phase_lab</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;phase_id&quot;</span><span class="p">)</span>
 
         <span class="n">isdive</span> <span class="o">=</span> <span class="n">dive_ids</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="n">merged</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">grp_key</span><span class="p">,</span> <span class="n">dive_ids</span><span class="p">,</span> <span class="n">phase_lab</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -554,7 +553,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tdrphases</a></li> 
       </ul>

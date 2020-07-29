@@ -1,16 +1,15 @@
 # Set up
-import os
-import os.path as osp
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from skdiveMove.tests import diveMove2skd
 import skdiveMove.bouts as skbouts
 
-# For figure sizes
+# Declare figure sizes
 _FIG1X1 = (7, 6)
 _FIG1X2 = (12, 5)
 _FIG3X1 = (11, 11)
+
+import numpy as np
 
 pd.set_option("display.precision", 3)
 np.set_printoptions(precision=3, sign="+")
@@ -116,7 +115,7 @@ fig, axs = plt.subplots(1, 2, figsize=_FIG1X2)
 postdives_nlsbouts.plot_ecdf(coefs2, ax=axs[0])
 axs[0].set_title("NLS")
 postdives_mlebouts.plot_ecdf(fit2, ax=axs[1])
-axs[1].set_title("MLM");
+axs[1].set_title("MLE");
 
 bec = postdives_mlebouts.bec(fit2)
 skbouts.label_bouts(postdives.dt.total_seconds(), bec, as_diff=True)
