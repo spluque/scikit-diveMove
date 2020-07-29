@@ -9,7 +9,7 @@ on: [push, pull_request]
 jobs:
   build:
     name: Build Python package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]

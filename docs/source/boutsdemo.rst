@@ -11,18 +11,21 @@ up a logger to monitor progress to this section.
 .. jupyter-execute::
 
    # Set up
-   import os
-   import os.path as osp
-   import numpy as np
    import pandas as pd
    import matplotlib.pyplot as plt
    from skdiveMove.tests import diveMove2skd
    import skdiveMove.bouts as skbouts
 
-   # For figure sizes
+   # Declare figure sizes
    _FIG1X1 = (7, 6)
    _FIG1X2 = (12, 5)
    _FIG3X1 = (11, 11)
+
+.. jupyter-execute::
+   :hide-code:
+   :hide-output:
+
+   import numpy as np
 
    pd.set_option("display.precision", 3)
    np.set_printoptions(precision=3, sign="+")
@@ -184,7 +187,7 @@ Maximum likelihood estimation
 
 Another way to model Poisson mixtures that does not rely on the
 subjectively created histogram, and involves fewer parameters, requires
-fitting via maximum likelihood estimation (MLM). This approach is available
+fitting via maximum likelihood estimation (MLE). This approach is available
 in :class:`BoutsMLE`.
 
 Set up an instance.
@@ -253,7 +256,7 @@ Plot the fit.
    fig, ax = plt.subplots(figsize=_FIG1X1)
    postdives_mlebouts.plot_fit(fit2, ax=ax);
 
-Compare the cumulative frequency distribution between NLS and MLM model
+Compare the cumulative frequency distribution between NLS and MLE model
 estimates.
 
 .. jupyter-execute::
@@ -263,9 +266,9 @@ estimates.
    postdives_nlsbouts.plot_ecdf(coefs2, ax=axs[0])
    axs[0].set_title("NLS")
    postdives_mlebouts.plot_ecdf(fit2, ax=axs[1])
-   axs[1].set_title("MLM");
+   axs[1].set_title("MLE");
 
-Label bouts based on BEC from the last MLM model.  Note that `Timedelta`
+Label bouts based on BEC from the last MLE model.  Note that `Timedelta`
 type needs to be converted to total seconds to allow comparison with BEC.
 
 .. jupyter-execute::

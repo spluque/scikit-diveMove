@@ -208,7 +208,7 @@ def rle_key(x):
     out : pandas.Series
 
     """
-    xout = (x.ne(x.shift()).cumsum() + 1)
+    xout = x.ne(x.shift()).cumsum()
     return(xout)
 
 

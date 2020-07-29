@@ -180,6 +180,10 @@ class TDRPhases:
         phases_df = self.get_dives_details("row_ids")
         dive_ids = self.get_dives_details("row_ids", columns="dive_id")
         ok = (dive_ids > 0) & ~depth_py.isna()
+        xx = pd.Categorical(np.repeat(["X"], phases_df.shape[0]),
+                            categories=["D", "DB", "B", "BA",
+                                        "DA", "A", "X"])
+        dive_phases = pd.Series(xx, index=phases_df.index)
 
         if any(ok):
             ddepths = depth_py[ok]  # diving depths
@@ -194,11 +198,6 @@ class TDRPhases:
                                   index=ddepths.index)
             grouped = divedf.groupby("dive_id")
 
-            xx = pd.Categorical(np.repeat(["X"], phases_df.shape[0]),
-                                categories=["D", "DB", "B", "BA",
-                                            "DA", "A", "X"])
-            self.dives["row_ids"]["dive_phase"] = xx
-            dive_phases = self.dives["row_ids"]["dive_phase"]
             cval_list = []
             spl_der_list = []
             spl_list = []
@@ -242,6 +241,8 @@ class TDRPhases:
         else:
             logger.warning("No dives found")
 
+        # Update the `dives` attribute
+        self.dives["row_ids"]["dive_phase"] = dive_phases
         (self.params["dives"]
          .update(dict(dive_model=dive_model, smooth_par=smooth_par,
                       knot_factor=knot_factor,
@@ -454,9 +455,7 @@ class TDRPhases:
 
         dive_ids = self.get_dives_details("row_ids", columns="dive_id")
 
-        grp_key = (phase_lab
-                   .ne(phase_lab.shift())
-                   .cumsum() + 1).rename("phase_id")
+        grp_key = rle_key(phase_lab).rename("phase_id")
 
         isdive = dive_ids > 0
         merged = (pd.concat((grp_key, dive_ids, phase_lab), axis=1)

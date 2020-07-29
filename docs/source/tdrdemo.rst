@@ -15,18 +15,25 @@ up a logger to monitor progress to this section.
    # Set up
    import os
    import os.path as osp
-   import numpy as np
-   import pandas as pd
    import matplotlib.pyplot as plt
    import skdiveMove as skdive
 
-   # For figure sizes
+   # Declare figure sizes
    _FIG1X1 = (11, 5)
    _FIG2X1 = (10, 8)
    _FIG3X1 = (11, 11)
 
+.. jupyter-execute::
+   :hide-code:
+   :hide-output:
+
+   import numpy as np   # only for setting print options here
+   import pandas as pd  # only for setting print options here
+   import xarray as xr  # only for setting print options here
+
    pd.set_option("display.precision", 3)
    np.set_printoptions(precision=3, sign="+")
+   xr.set_options(display_style="html")
    %matplotlib inline
 
 
@@ -43,7 +50,21 @@ Load `diveMove`'s example data, using ``TDR.__init__`` method, and print:
    tdrX = skdive.TDR(ifile, depth_name="depth", has_speed=True)
    print(tdrX)
 
-   # Access measured data
+Notice that `TDR` reads files in `NetCDF4`_ format, which is a very
+versatile file format, and encourages using properly documented data sets.
+`skdiveMove` relies on `xarray.Dataset` objects to represent such data
+sets.  It is easy to generate a `xarray.Dataset` objects from Pandas
+DataFrames by using method :meth:`.to_xarray`. `skdiveMove` documents
+processing steps by appending to the `history` attribute, in an effort
+towards building metadata standards.
+
+.. _NetCDF4: https://www.unidata.ucar.edu/software/netcdf
+
+Access measured data:
+
+.. jupyter-execute::
+   :linenos:
+
    tdrX.get_depth("measured")
 
    # Or simply use function ``skdive.tests.diveMove2skd`` to do the
@@ -165,6 +186,17 @@ Calibrate speed measurements
    # Consider only changes in depth larger than 2 m
    qfit, _ = tdrX.calibrate_speed(z=2, ax=ax)
    print(qfit.summary())
+
+Notice processing steps have been appended to the `history` attribute of
+the `DataArray`:
+
+.. jupyter-execute::
+
+   print(tdrX.get_depth("zoc"))
+
+.. jupyter-execute::
+
+   print(tdrX.get_speed("calibrated"))
 
 
 Time budgets

@@ -21,6 +21,10 @@ Set up the environment.
    # For figure sizes
    _FIG3X1 = (9, 12)
 
+.. jupyter-execute::
+   :hide-code:
+   :hide-output:
+
    pd.set_option("display.precision", 3)
    np.set_printoptions(precision=3, sign="+")
    %matplotlib inline
