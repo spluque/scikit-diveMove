@@ -1,0 +1,3 @@
+[run]
+source = skdiveMove
+omit = skdiveMove/tests/*

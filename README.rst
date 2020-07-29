@@ -16,6 +16,9 @@
    :target: https://github.com/spluque/scikit-diveMove/actions?query=workflow%3A%22Python+build%22
    :alt: Python Build
 
+.. image:: https://codecov.io/gh/spluque/scikit-diveMove/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/spluque/scikit-diveMove
+
 
 `scikit-diveMove` is a Python interface to R package `diveMove`_ for
 scientific data analysis, with a focus on diving behaviour analysis.  It

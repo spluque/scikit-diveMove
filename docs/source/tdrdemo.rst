@@ -154,7 +154,7 @@ Following calibration, use the different accessor methods:
 .. jupyter-execute::
 
    # Time series of the wet/dry phases
-   print(tdrX.get_wet_activity())
+   print(tdrX.wet_dry)
 
 .. jupyter-execute::
 

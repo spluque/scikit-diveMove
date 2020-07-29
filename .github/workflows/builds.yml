@@ -41,6 +41,22 @@ jobs:
           export LD_LIBRARY_PATH=${LDLP}:${LD_LIBRARY_PATH}
           echo "::set-env name=LD_LIBRARY_PATH::${LD_LIBRARY_PATH}"
 
+      - name: Test and coverage
+        run: |
+          python -m pip install --upgrade coverage
+          coverage run -m pytest skdiveMove/tests
+          coverage xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+        if:
+          (matrix.python-version == 3.8) &&
+          startsWith(github.ref, 'refs/tags')
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          fail_ci_if_error: true
+
       - name: Build binary wheel and source tarball
         run: |
           python setup.py build sdist bdist_wheel

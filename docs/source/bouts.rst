@@ -3,4 +3,4 @@
 ===============
 
 .. automodule:: bouts
-   :members:
+   :show-inheritance:

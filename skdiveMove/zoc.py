@@ -26,12 +26,7 @@ logger.addHandler(logging.NullHandler())
 class ZOC:
     """Perform zero offset correction
 
-    Attributes
-    ----------
-    method : str
-        Name of the ZOC method used.
-    filters : pandas.DataFrame
-        DataFrame with output filters for method="filter"
+    See help(ZOC) for attributes.
 
     """
 
@@ -41,10 +36,14 @@ class ZOC:
 
         Parameters
         ----------
-        method, params, filters
-            See help(ZOC), help(ZOC.params)
+        method : str
+            Name of the ZOC method used.
+        params : dict
+            See help(ZOC.params)
         depth_zoc : xarray.DataArray
-            DataArray with corrected depth.
+            See help(ZOC.depth)
+        filters : pandas.DataFrame
+            DataFrame with output filters for method="filter"
 
         """
         self.method = method
@@ -224,13 +223,16 @@ class ZOC:
     """
 
     def _get_params(self):
-        """Parameters used with method for zero-offset correction
-
-        Returns
-        -------
-        dict
-
-        """
-        return(self._params)
+        return((self.method, self._params))
 
     params = property(_get_params)
+    """Parameters used with method for zero-offset correction
+
+    Returns
+    -------
+    method : str
+        Method used for ZOC.
+    params : dict
+        Dictionary with parameters and values used for ZOC.
+
+    """

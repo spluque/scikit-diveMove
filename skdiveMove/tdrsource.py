@@ -38,9 +38,8 @@ class TDRSource:
 
         Parameters
         ----------
-        tdr_file : str, path object of file-like object
-            A valid string path for the file with TDR measurements, or path
-            or file-like object, interpreted as in ``pandas.read_csv``.
+        tdr_file : str, Path or xarray.backends.*DataStore
+            As first argument for :func:`xarray.load_dataset`.
         depth_name : str, optional
             Name of data variable with depth measurements. Default: "depth".
         has_speed : bool, optional

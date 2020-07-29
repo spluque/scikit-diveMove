@@ -40,7 +40,6 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
     'jupyter_sphinx'
 ]
 
@@ -61,6 +60,11 @@ pygments_style = 'sphinx'
 # jupyter_sphinx
 jupyter_sphinx_linenos = True
 jupyter_sphinx_continue_linenos = True
+
+# autodoc
+autodoc_default_options = {
+    'members': True
+}
 
 # -- Options for HTML output -------------------------------------------------
 

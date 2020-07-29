@@ -879,9 +879,13 @@ class TDR(TDRSource):
     wet_dry = property(_get_wet_activity)
     """Wet/dry activity labels
 
+    Extends :meth:`TDRPhases.wet_dry`.
+
     Returns
     -------
     pandas.DataFrame
+        DataFrame with columns: `phase_id` and `phase_label` for each
+        measurement.
 
     """
 
@@ -927,14 +931,19 @@ class TDR(TDRSource):
         return(self.phases.get_params(key))
 
     def _get_zoc_params(self):
-        return(self.zoc_depth.get_params())
+        return(self.zoc_depth.params)
 
     zoc_params = property(_get_zoc_params)
     """ZOC procedure parameters
 
+    Extends :attr:`ZOC.params`.
+
     Returns
     -------
-    dict
+    method : str
+        Method used for ZOC.
+    params : dict
+        Dictionary with parameters and values used for ZOC.
 
     """
 

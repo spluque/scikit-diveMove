@@ -25,7 +25,7 @@ Nonlinear least squares models
 ------------------------------
 
 Currently, the model describing the histogram as it is built is implemented
-in the `BoutsNLS` class.  For the case of a mixture of two Poisson
+in the :class:`BoutsNLS` class.  For the case of a mixture of two Poisson
 processes, this class would set up the model:
 
 .. math::

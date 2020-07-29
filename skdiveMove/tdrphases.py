@@ -277,6 +277,8 @@ class TDRPhases:
     Returns
     -------
     pandas.DataFrame
+        DataFrame with columns: `phase_id` and `phase_label` for each
+        measurement.
 
     """
 

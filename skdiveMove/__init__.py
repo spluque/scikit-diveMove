@@ -1,6 +1,4 @@
-""""Functions for working with diveMove
-
-Copyright (c) 2020 Sebastian Luque <spluque@gmail.com>
+""""Classes for interacting with diveMove
 
 """
 
@@ -10,5 +8,5 @@ from skdiveMove.tdrsource import TDRSource  # noqa: F401
 
 __author__ = "Sebastian Luque <spluque@gmail.com>"
 __license__ = "AGPLv3"
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __all__ = ["TDR", "TDRSource"]
