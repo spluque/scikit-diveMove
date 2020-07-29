@@ -21,14 +21,14 @@ class TestZOC(ut.TestCase):
     def test_init(self):
         self.assertIsInstance(self.zocX, skdive.tdr.ZOC)
         self.assertIsNone(self.zocX.method)
-        self.assertIsNone(self.zocX.params)
-        self.assertIsNone(self.zocX.depth_zoc)
+        self.assertIsNone(self.zocX._params)
+        self.assertIsNone(self.zocX._depth_zoc)
         self.assertIsNone(self.zocX.filters)
 
     def test_offset_depth(self):
-        depth = self.tdrX.get_depth()
+        depth = self.tdrX.depth
         self.zocX.offset_depth(depth, offset=3)
-        depth_zoc = self.zocX.get_depth()
+        depth_zoc = self.zocX.depth
         self.assertIsInstance(depth_zoc, xr.DataArray)
         self.assertIn("offset", self.zocX.params)
         self.assertEqual(self.zocX.method, "offset")
@@ -36,16 +36,16 @@ class TestZOC(ut.TestCase):
         self.assertIn("ZOC", attr_hist)
 
     def test_get_depth(self):
-        depth = self.tdrX.get_depth()
+        depth = self.tdrX.depth
         self.zocX.offset_depth(depth, offset=3)
-        depth_zoc = self.zocX.get_depth()
+        depth_zoc = self.zocX.depth
         self.assertIsInstance(depth_zoc, xr.DataArray)
 
     def test_get_params(self):
-        depth = self.tdrX.get_depth()
+        depth = self.tdrX.depth
         self.zocX.offset_depth(depth, offset=3)
-        params = self.zocX.get_params()
-        self.assertIsInstance(params, dict)
+        params = self.zocX.params
+        self.assertIsInstance(params, tuple)
 
     @ut.skip("test takes too long")
     def test_filter_depth(self):
@@ -67,9 +67,9 @@ class TestZOC(ut.TestCase):
         self.assertEqual(self.zocX.method, "filter")
 
     def test_call(self):
-        depth = self.tdrX.get_depth()
+        depth = self.tdrX.depth
         self.zocX(depth, "offset", offset=3)
-        self.assertIsInstance(self.zocX.depth_zoc, xr.DataArray)
+        self.assertIsInstance(self.zocX.depth, xr.DataArray)
         self.assertIn("offset", self.zocX.params)
         self.assertEqual(self.zocX.method, "offset")
 

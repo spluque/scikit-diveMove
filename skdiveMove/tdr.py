@@ -208,8 +208,6 @@ class TDR(TDRSource):
     def detect_wet(self, interp_wet=False, **kwargs):
         """Detect wet/dry activity phases
 
-        Set the ``wet_dry`` attribute.
-
         Parameters
         ----------
         interp_wet : bool, optional
@@ -246,7 +244,7 @@ class TDR(TDRSource):
 
         if interp_wet:
             zdepth = depth.to_series()
-            phases = self.phases.get_wet_activity()
+            phases = self.phases.wet_dry
             iswet = phases["phase_label"] == "W"
             iswetna = iswet & zdepth.isna()
 
@@ -823,9 +821,9 @@ class TDR(TDRSource):
         """
         kinds = ["measured", "zoc"]
         if kind == kinds[0]:
-            odepth = TDRSource.get_depth(self)
+            odepth = self.depth
         elif kind == kinds[1]:
-            odepth = self.zoc_depth.get_depth()
+            odepth = self.zoc_depth.depth
             if odepth is None:
                 msg = "ZOC depth not available."
                 logger.error(msg)
@@ -851,7 +849,7 @@ class TDR(TDRSource):
 
         """
         kinds = ["measured", "calibrated"]
-        ispeed = TDRSource.get_speed(self)
+        ispeed = self.speed
 
         if kind == kinds[0]:
             ospeed = ispeed
@@ -875,18 +873,26 @@ class TDR(TDRSource):
 
         return(ospeed)
 
-    def get_wet_activity(self):
-        """Retrieve wet/dry activity DataFrame
+    def _get_wet_activity(self):
+        return(self.phases.wet_dry)
 
-        """
-        return(self.phases.get_wet_activity())
+    wet_dry = property(_get_wet_activity)
+    """Wet/dry activity labels
+
+    Returns
+    -------
+    pandas.DataFrame
+
+    """
 
     def get_dives_details(self, *args, **kwargs):
         """Retrieve wet/dry activity DataFrame
 
-        Returns
-        -------
-        *args, **kwargs : arguments and keyword arguments
+        Parameters
+        ----------
+        *args : positional arguments
+            Passed to :meth:`~tdrphases.TDRPhases.get_dives_details`
+        **kwargs : keyword arguments
             Passed to :meth:`~tdrphases.TDRPhases.get_dives_details`
 
         """
@@ -919,6 +925,18 @@ class TDR(TDRSource):
 
         """
         return(self.phases.get_params(key))
+
+    def _get_zoc_params(self):
+        return(self.zoc_depth.get_params())
+
+    zoc_params = property(_get_zoc_params)
+    """ZOC procedure parameters
+
+    Returns
+    -------
+    dict
+
+    """
 
     def time_budget(self, **kwargs):
         """Summary of wet/dry activities at the broadest scale

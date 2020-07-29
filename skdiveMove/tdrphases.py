@@ -12,7 +12,7 @@ Class and Methods Summary
    TDRPhases.detect_dive_phases
    TDRPhases.get_dives_details
    TDRPhases.get_dive_deriv
-   TDRPhases.get_wet_activity
+   TDRPhases.wet_dry
    TDRPhases.get_params
    TDRPhases.time_budget
    TDRPhases.stamp_dives
@@ -37,7 +37,6 @@ class TDRPhases:
 
     Attributes
     ----------
-    wet_dry : pandas.DataFrame
     dives : dict
         Dictionary of dive activity data {'row_ids': pandas.DataFrame,
         'model': str, 'splines': dict, 'spline_derivs': pandas.DataFrame,
@@ -51,15 +50,13 @@ class TDRPhases:
 
     """
     def __init__(self):
-        self.wet_dry = None
+        self._wet_dry = None
         self.dives = dict(row_ids=None, model=None, splines=None,
                           spline_derivs=None, crit_vals=None)
         self.params = dict(wet_dry={}, dives={})
 
     def detect_wet(self, depth, dry_thr=70, wet_cond=None, wet_thr=3610):
         """Detect wet/dry activity phases
-
-        Set the ``wet_dry`` attribute.
 
         Parameters
         ----------
@@ -100,7 +97,7 @@ class TDRPhases:
                                   index=time_py)
 
         phases.loc[:, "phase_id"] = phases.loc[:, "phase_id"].astype(int)
-        self.wet_dry = phases
+        self._wet_dry = phases
         wet_dry_params = dict(dry_thr=dry_thr, wet_thr=wet_thr)
         self.params["wet_dry"].update(wet_dry_params)
 
@@ -138,7 +135,7 @@ class TDRPhases:
         # Dive and post-dive ID should be integer
         phases_df = phases_df.astype(int)
         self.dives["row_ids"] = phases_df
-        self.wet_dry["phase_label"] = dive_activity
+        self._wet_dry["phase_label"] = dive_activity
         self.params["dives"].update({'dive_thr': dive_thr})
 
     def detect_dive_phases(self, depth, dive_model, smooth_par=0.1,
@@ -271,11 +268,17 @@ class TDRPhases:
 
         return(odata)
 
-    def get_wet_activity(self):
-        """Accessor for the ``wet_dry`` attribute
+    def _get_wet_activity(self):
+        return(self._wet_dry)
 
-        """
-        return(self.wet_dry)
+    wet_dry = property(_get_wet_activity)
+    """Wet/dry activity labels
+
+    Returns
+    -------
+    pandas.DataFrame
+
+    """
 
     def get_params(self, key):
         """Return parameters used for identifying wet/dry or diving phases.
@@ -403,8 +406,7 @@ class TDRPhases:
             for each phase, and beginning and ending times.
 
         """
-        labels = (self.get_wet_activity()["phase_label"]
-                  .reset_index())
+        labels = self.wet_dry["phase_label"].reset_index()
         if ignore_z:
             labels = labels.mask(labels == "Z", "L")
         if ignore_du:
@@ -434,7 +436,7 @@ class TDRPhases:
             stamps.
 
         """
-        phase_lab = self.get_wet_activity()["phase_label"]
+        phase_lab = self.wet_dry["phase_label"]
         # "U" and "D" considered as "W" here
         phase_lab = phase_lab.mask(phase_lab.isin(["U", "D"]), "W")
         if ignore_z:

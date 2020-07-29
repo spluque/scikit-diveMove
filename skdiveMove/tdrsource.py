@@ -68,32 +68,26 @@ class TDRSource:
                   .format(self.__class__.__name__))
         return(objcls + "{}".format(self.tdr))
 
-    def get_depth(self):
-        """Return depth array
-
-        Returns
-        -------
-        xarray.DataArray
-
-        """
+    def _get_depth(self):
         return(self.tdr[self.depth_name])
 
-    def get_speed(self):
-        """Return speed array
+    depth = property(_get_depth)
+    """Return depth array
 
-        Returns
-        -------
-        xarray.DataArray
+    Returns
+    -------
+    xarray.DataArray
 
-        """
+    """
+
+    def _get_speed(self):
         return(self.tdr[self.speed_name])
 
-    def get_tdr(self):
-        """Return TDR Dataset
+    speed = property(_get_speed)
+    """Return speed array
 
-        Returns
-        -------
-        xarray.Dataset
+    Returns
+    -------
+    xarray.DataArray
 
-        """
-        return(self.tdr)
+    """

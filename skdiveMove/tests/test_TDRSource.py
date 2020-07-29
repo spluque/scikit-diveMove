@@ -23,11 +23,11 @@ class TestTDRSource(ut.TestCase):
         self.assertTrue(self.tdrX.has_speed)
 
     def test_get_depth(self):
-        depth = self.tdrX.get_depth()
+        depth = self.tdrX.depth
         self.assertIsInstance(depth, xr.DataArray)
 
     def test_get_speed(self):
-        speed = self.tdrX.get_speed()
+        speed = self.tdrX.speed
         self.assertIsInstance(speed, xr.DataArray)
 
 

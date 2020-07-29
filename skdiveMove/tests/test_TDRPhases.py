@@ -9,7 +9,7 @@ import skdiveMove as skdive
 from skdiveMove.tests import diveMove2skd
 
 
-class TestTDR(ut.TestCase):
+class TestTDRPhases(ut.TestCase):
     """Test `TDR` class methods
 
     """
@@ -36,8 +36,8 @@ class TestTDR(ut.TestCase):
         dry_thr = self.default_pars["dry_thr"]
         wet_thr = self.default_pars["wet_thr"]
         self.phases.detect_wet(self.depth, dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=False)
-        wet_dry = self.phases.get_wet_activity()
+                               wet_thr=wet_thr)
+        wet_dry = self.phases.wet_dry
         self.assertIsInstance(wet_dry, DataFrame)
         self.assertEqual(wet_dry.ndim, 2)
         # self.assertEqual(wet_act_phases.shape[0], self.tdrX.tdr.shape[0])
@@ -52,7 +52,7 @@ class TestTDR(ut.TestCase):
         wet_thr = self.default_pars["wet_thr"]
         dive_thr = self.default_pars["dive_thr"]
         self.phases.detect_wet(depth, dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=False)
+                               wet_thr=wet_thr)
         self.phases.detect_dives(depth, dive_thr)
         row_ids = self.phases.get_dives_details("row_ids")
         self.assertIsInstance(row_ids, DataFrame)
@@ -70,7 +70,7 @@ class TestTDR(ut.TestCase):
         descent_crit_q = self.default_pars["descent_crit_q"]
         ascent_crit_q = self.default_pars["ascent_crit_q"]
         self.phases.detect_wet(depth, dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=False)
+                               wet_thr=wet_thr)
         self.phases.detect_dives(depth, dive_thr)
         self.phases.detect_dive_phases(depth, dive_model=dive_model,
                                        smooth_par=smooth_par,
@@ -98,7 +98,7 @@ class TestTDR(ut.TestCase):
         descent_crit_q = self.default_pars["descent_crit_q"]
         ascent_crit_q = self.default_pars["ascent_crit_q"]
         self.phases.detect_wet(depth, dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=False)
+                               wet_thr=wet_thr)
         self.phases.detect_dives(depth, dive_thr)
         self.phases.detect_dive_phases(depth, dive_model=dive_model,
                                        smooth_par=smooth_par,
@@ -119,7 +119,7 @@ class TestTDR(ut.TestCase):
         descent_crit_q = self.default_pars["descent_crit_q"]
         ascent_crit_q = self.default_pars["ascent_crit_q"]
         self.phases.detect_wet(depth, dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=False)
+                               wet_thr=wet_thr)
         self.phases.detect_dives(depth, dive_thr)
         self.phases.detect_dive_phases(depth, dive_model=dive_model,
                                        smooth_par=smooth_par,

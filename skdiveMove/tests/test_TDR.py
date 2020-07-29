@@ -33,7 +33,7 @@ class TestTDR(ut.TestCase):
     def test_zoc_offset(self):
         self.tdrX.zoc("offset", offset=3)
         self.assertEqual(self.tdrX.zoc_depth.method, "offset")
-        self.assertIsInstance(self.tdrX.zoc_depth.depth_zoc, xr.DataArray)
+        self.assertIsInstance(self.tdrX.zoc_depth.depth, xr.DataArray)
         self.assertIn("offset", self.tdrX.zoc_depth.params)
 
     def test_detect_wet(self):
@@ -43,7 +43,7 @@ class TestTDR(ut.TestCase):
         self.tdrX.zoc("offset", offset=offset)
         self.tdrX.detect_wet(dry_thr=dry_thr, wet_cond=None,
                              wet_thr=wet_thr, interp_wet=False)
-        wet_act_phases = self.tdrX.get_wet_activity()
+        wet_act_phases = self.tdrX.wet_dry
         self.assertIsInstance(wet_act_phases, DataFrame)
         self.assertEqual(wet_act_phases.ndim, 2)
         # self.assertEqual(wet_act_phases.shape[0], self.tdrX.tdr.shape[0])

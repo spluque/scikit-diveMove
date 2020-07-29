@@ -30,10 +30,6 @@ class ZOC:
     ----------
     method : str
         Name of the ZOC method used.
-    params : dict
-        Dictionary with parameters used in the method.
-    depth_zoc : xarray.DataArray
-        DataArray with corrected depth.
     filters : pandas.DataFrame
         DataFrame with output filters for method="filter"
 
@@ -43,10 +39,17 @@ class ZOC:
                  depth_zoc=None, filters=None):
         """Initialize object
 
+        Parameters
+        ----------
+        method, params, filters
+            See help(ZOC), help(ZOC.params)
+        depth_zoc : xarray.DataArray
+            DataArray with corrected depth.
+
         """
         self.method = method
-        self.params = params
-        self.depth_zoc = depth_zoc
+        self._params = params
+        self._depth_zoc = depth_zoc
         self.filters = filters
 
     def offset_depth(self, depth, offset=0):
@@ -65,14 +68,14 @@ class ZOC:
 
         """
         self.method = "offset"
-        self.params = dict(offset=offset)
+        self._params = dict(offset=offset)
 
         depth_zoc = depth - offset
         depth_zoc[depth_zoc < 0] = 0
 
         _add_xr_attr(depth_zoc, "history", "ZOC")
 
-        self.depth_zoc = depth_zoc
+        self._depth_zoc = depth_zoc
 
     def filter_depth(self, depth, k, probs, depth_bounds=None, na_rm=True):
         """Perform ZOC with "filter" method
@@ -93,15 +96,15 @@ class ZOC:
         self.method = "filter"
 
         depth_ser = depth.to_series()
-        self.params = dict(k=k, probs=probs, depth_bounds=depth_bounds,
-                           na_rm=na_rm)
-        depthmtx = self._depth_filter_r(depth_ser, **self.params)
+        self._params = dict(k=k, probs=probs, depth_bounds=depth_bounds,
+                            na_rm=na_rm)
+        depthmtx = self._depth_filter_r(depth_ser, **self._params)
         depth_zoc = depthmtx.pop("depth_adj")
         depth_zoc[depth_zoc < 0] = 0
         depth_zoc = depth_zoc.rename("depth").to_xarray()
         depth_zoc.attrs = depth.attrs
         _add_xr_attr(depth_zoc, "history", "ZOC")
-        self.depth_zoc = depth_zoc
+        self._depth_zoc = depth_zoc
         self.filters = depthmtx
 
     def __call__(self, depth, method="filter", **kwargs):
@@ -208,22 +211,26 @@ class ZOC:
         filters["depth_adj"] = depth - filters[wname]
         return(filters.iloc[:, 1:])
 
-    def get_depth(self):
-        """Depth array accessor
+    def _get_depth(self):
+        return(self._depth_zoc)
 
-        Returns
-        -------
-        xarray.DataArray
+    depth = property(_get_depth)
+    """Depth array accessor
 
-        """
-        return(self.depth_zoc)
+    Returns
+    -------
+    xarray.DataArray
 
-    def get_params(self):
-        """Return parameters used for zero-offset correction
+    """
+
+    def _get_params(self):
+        """Parameters used with method for zero-offset correction
 
         Returns
         -------
         dict
 
         """
-        return(self.params)
+        return(self._params)
+
+    params = property(_get_params)
