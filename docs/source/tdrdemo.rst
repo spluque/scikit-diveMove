@@ -184,8 +184,8 @@ Calibrate speed measurements
 
    fig, ax = plt.subplots(figsize=(7, 6))
    # Consider only changes in depth larger than 2 m
-   qfit, _ = tdrX.calibrate_speed(z=2, ax=ax)
-   print(qfit.summary())
+   tdrX.calibrate_speed(z=2, ax=ax)
+   print(tdrX.speed_calib_fit.summary())
 
 Notice processing steps have been appended to the `history` attribute of
 the `DataArray`:

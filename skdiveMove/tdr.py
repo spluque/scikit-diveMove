@@ -421,12 +421,6 @@ class TDR(TDRSource):
         **kwargs : optional keyword arguments
             Passed to :func:`calibrate_speed.calibrate`
 
-        Returns
-        -------
-        out : 2-tuple
-            The quantile regression fit object, and `matplotlib.pyplot`
-            `Axes` instance.
-
         Examples
         --------
         >>> from skdiveMove.tests import diveMove2skd
@@ -450,9 +444,7 @@ class TDR(TDRSource):
                                       contour_level=contour_level,
                                       z=z, bad=bad, **kwargs)
         self.speed_calib_fit = qfit
-
         logger.info("Finished calibrating speed")
-        return(qfit, ax)
 
     def dive_stats(self, depth_deriv=True):
         """Calculate dive statistics in `TDR` records

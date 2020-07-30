@@ -5,7 +5,8 @@
 import unittest as ut
 # import numpy.testing as npt
 import xarray as xr
-from pandas import Series, DataFrame
+from pandas import DataFrame
+import statsmodels
 import skdiveMove as skdive
 from skdiveMove.tests import diveMove2skd
 
@@ -123,6 +124,17 @@ class TestTDR(ut.TestCase):
                         .get_dives_details("row_ids", "dive_id"))
         dids_uniq = dids_per_row[dids_per_row > 0].unique()
         self.assertEqual(crit_vals.shape[0], dids_uniq.size)
+
+    def test_calibrate_speed(self):
+        offset = self.default_pars["offset_zoc"]
+        z = 2
+
+        self.tdrX.zoc(method="offset", offset=offset)
+        self.tdrX.calibrate_speed(z=z, plot=False)
+
+        self.assertIsInstance(self.tdrX.speed_calib_fit,
+                              (statsmodels.regression.linear_model
+                               .RegressionResultsWrapper))
 
 
 if __name__ == '__main__':

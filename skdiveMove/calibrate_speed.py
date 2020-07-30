@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def calibrate(x, tau, contour_level, z=0, bad=[0, 0], ax=None):
+def calibrate(x, tau, contour_level, z=0, bad=[0, 0], plot=True, ax=None):
     """Calibration based on kernel density estimation
 
     Parameters
@@ -29,6 +29,8 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], ax=None):
     contour_level : float
     z : float, optional
     bad : array_like, optional
+    plot : bool, optional
+        Whether to plot calibration results.
     ax : matplotlib.Axes, optional
         An Axes instance to use as target.  Default is to create one.
 
@@ -36,7 +38,7 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], ax=None):
     -------
     out : 2-tuple
         The quantile regression fit object, and `matplotlib.pyplot` `Axes`
-        instance.
+        instance (if plot=True, otherwise None).
 
     Notes
     -----
@@ -61,21 +63,6 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], ax=None):
     z = kde(grid_coords.T)
     z = np.flipud(z.reshape(n_eval, n_eval))
 
-    fig = plt.gcf()
-    if ax is None:
-        ax = plt.gca()
-
-    ax.set_xlabel("Rate of depth change")
-    ax.set_ylabel("Speed")
-    zimg = ax.imshow(z, aspect="auto",
-                     extent=[mins[0], maxs[0], mins[1], maxs[1]],
-                     cmap="gist_earth_r")
-    fig.colorbar(zimg, fraction=0.1, aspect=30, pad=0.02,
-                 label="Kernel density probability")
-    cntr = ax.contour(z, extent=[mins[0], maxs[0], mins[1], maxs[1]],
-                      origin="image", levels=[contour_level])
-    ax.clabel(cntr, fmt="%1.2f")
-
     # Fit quantile regression
     # -----------------------
     # Bin depth rate
@@ -88,19 +75,35 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], ax=None):
     qfit = qmod.fit(q=tau)
     coefs = qfit.params
     logger.info("a={}, b={}".format(*coefs))
-    # Plot the binned data, adding some noise for clarity
-    xjit_binned = np.random.normal(binned[:, 0],
-                                   xnpy[:, 0].ptp() / (2 * n_eval))
-    ax.scatter(xjit_binned, binned[:, 1], s=6, alpha=0.3)
-    # Plot line
-    xnew = np.linspace(mins[0], maxs[0])
-    yhat = coefs[0] + coefs[1] * xnew
-    ax.plot(xnew, yhat, "--k",
-            label=(r"$y = {:.3f} {:+.3f} x$"
-                   .format(coefs[0], coefs[1])))
-    ax.legend(loc="lower right")
-    # Adjust limits to compensate for the noise in x
-    ax.set_xlim([mins[0], maxs[0]])
+
+    if plot:
+        fig = plt.gcf()
+        if ax is None:
+            ax = plt.gca()
+
+        ax.set_xlabel("Rate of depth change")
+        ax.set_ylabel("Speed")
+        zimg = ax.imshow(z, aspect="auto",
+                         extent=[mins[0], maxs[0], mins[1], maxs[1]],
+                         cmap="gist_earth_r")
+        fig.colorbar(zimg, fraction=0.1, aspect=30, pad=0.02,
+                     label="Kernel density probability")
+        cntr = ax.contour(z, extent=[mins[0], maxs[0], mins[1], maxs[1]],
+                          origin="image", levels=[contour_level])
+        ax.clabel(cntr, fmt="%1.2f")
+        # Plot the binned data, adding some noise for clarity
+        xjit_binned = np.random.normal(binned[:, 0],
+                                       xnpy[:, 0].ptp() / (2 * n_eval))
+        ax.scatter(xjit_binned, binned[:, 1], s=6, alpha=0.3)
+        # Plot line
+        xnew = np.linspace(mins[0], maxs[0])
+        yhat = coefs[0] + coefs[1] * xnew
+        ax.plot(xnew, yhat, "--k",
+                label=(r"$y = {:.3f} {:+.3f} x$"
+                       .format(coefs[0], coefs[1])))
+        ax.legend(loc="lower right")
+        # Adjust limits to compensate for the noise in x
+        ax.set_xlim([mins[0], maxs[0]])
 
     return(qfit, ax)
 
