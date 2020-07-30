@@ -92,11 +92,6 @@ def calibrate(x, tau, contour_level, z=0, bad=[0, 0], ax=None):
     xjit_binned = np.random.normal(binned[:, 0],
                                    xnpy[:, 0].ptp() / (2 * n_eval))
     ax.scatter(xjit_binned, binned[:, 1], s=6, alpha=0.3)
-    # # Plot line (using the contour line vertices in qdata)
-    # x_new = np.linspace(cntr_vertices[:, 0].min(),
-    #                     cntr_vertices[:, 0].max())
-    # yhat = coefs[0] + coefs[1] * x_new
-    # ax.plot(x_new, yhat)
     # Plot line
     xnew = np.linspace(mins[0], maxs[0])
     yhat = coefs[0] + coefs[1] * xnew

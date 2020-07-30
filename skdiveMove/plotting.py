@@ -129,7 +129,6 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
     if concur_vars is None:
         fig, axs = plt.subplots(1, 1)
         axs.set_ylabel(ylab_depth)
-        axs.invert_yaxis()
         depth.plot(ax=axs, color="k", **kwargs)
         axs.set_xlabel("")
         axs.axhline(0, linestyle="--", linewidth=0.75, color="k")
@@ -142,6 +141,7 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
             _plot_dry_time(dry_time, axs)
         if (depth_lim is not None):
             axs.set_ylim(depth_lim)
+        axs.invert_yaxis()
     else:
         full_df = pd.concat((depth, concur_vars), axis=1)
         nplots = full_df.shape[1]
@@ -149,7 +149,6 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
         concur_df = full_df.iloc[:, 1:]
         fig, axs = plt.subplots(nplots, 1, sharex=True)
         axs[0].set_ylabel(ylab_depth)
-        axs[0].invert_yaxis()
         depth_ser.plot(ax=axs[0], color="k", **kwargs)
         axs[0].set_xlabel("")
         axs[0].axhline(0, linestyle="--", linewidth=0.75, color="k")
@@ -178,6 +177,8 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
 
         if (depth_lim is not None):
             axs[0].set_ylim(depth_lim)
+
+        axs[0].invert_yaxis()
 
     fig.tight_layout()
 
