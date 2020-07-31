@@ -68,7 +68,7 @@ tdrX.plot_phases(diveNo=list(range(250, 300)), surface=True, figsize=_FIG1X1);
 tdrX.plot_dive_model(diveNo=20, figsize=(10, 10));
 
 # Time series of the wet/dry phases
-print(tdrX.get_wet_activity())
+print(tdrX.wet_dry)
 
 print(tdrX.get_phases_params("wet_dry")["dry_thr"])
 
@@ -82,8 +82,8 @@ print(tdrX.get_dives_details("crit_vals"))
 
 fig, ax = plt.subplots(figsize=(7, 6))
 # Consider only changes in depth larger than 2 m
-qfit, _ = tdrX.calibrate_speed(z=2, ax=ax)
-print(qfit.summary())
+tdrX.calibrate_speed(z=2, ax=ax)
+print(tdrX.speed_calib_fit.summary())
 
 print(tdrX.get_depth("zoc"))
 

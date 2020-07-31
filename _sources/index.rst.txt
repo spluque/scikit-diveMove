@@ -81,6 +81,7 @@ and then install with:
    pip install -e .["dev"]
 
 
+
 Demos
 =====
 
@@ -103,25 +104,9 @@ Modules
    metadata
 
 
-Low-level submodules
-====================
-
-.. toctree::
-
-   tdrsource
-   tdrphases
-   zoc
-
-
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-
-.. note::
-
-   | Icon created by B. Agustín Amenábar Larraín
-   | from Noun Project

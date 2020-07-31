@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tdr &#8212; skdiveMove 0.1.4 documentation</title>
+    <title>tdr &#8212; skdiveMove 0.1.5 documentation</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tdr</a></li> 
       </ul>
@@ -248,13 +248,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">zoc_depth</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished ZOC&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TDR.detect_wet"><a class="viewcode-back" href="../tdr.html#tdr.TDR.detect_wet">[docs]</a>    <span class="k">def</span> <span class="nf">detect_wet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TDR.detect_wet"><a class="viewcode-back" href="../tdr.html#tdr.TDR.detect_wet">[docs]</a>    <span class="k">def</span> <span class="nf">detect_wet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interp_wet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect wet/dry activity phases</span>
-
-<span class="sd">        Set the ``wet_dry`` attribute.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        interp_wet : bool, optional</span>
 <span class="sd">        **kwargs : Keyword arguments</span>
 <span class="sd">            Passed to :meth:`~tdrphases.TDRPhases.detect_wet`</span>
 
@@ -285,6 +284,23 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;zoc&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phases</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">interp_wet</span><span class="p">:</span>
+            <span class="n">zdepth</span> <span class="o">=</span> <span class="n">depth</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+            <span class="n">phases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phases</span><span class="o">.</span><span class="n">wet_dry</span>
+            <span class="n">iswet</span> <span class="o">=</span> <span class="n">phases</span><span class="p">[</span><span class="s2">&quot;phase_label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;W&quot;</span>
+            <span class="n">iswetna</span> <span class="o">=</span> <span class="n">iswet</span> <span class="o">&amp;</span> <span class="n">zdepth</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">iswetna</span><span class="p">):</span>
+                <span class="n">depth_intp</span> <span class="o">=</span> <span class="n">zdepth</span><span class="p">[</span><span class="n">iswet</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">)</span>
+                <span class="n">zdepth</span><span class="p">[</span><span class="n">iswetna</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">depth_intp</span><span class="p">),</span>
+                                             <span class="n">depth_intp</span><span class="p">)</span>
+                <span class="n">zdepth</span> <span class="o">=</span> <span class="n">zdepth</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
+                <span class="n">zdepth</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">depth</span><span class="o">.</span><span class="n">attrs</span>
+                <span class="n">_add_xr_attr</span><span class="p">(</span><span class="n">zdepth</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;interp_wet&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zoc_depth</span><span class="o">.</span><span class="n">_depth_zoc</span> <span class="o">=</span> <span class="n">zdepth</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zoc_depth</span><span class="o">.</span><span class="n">_params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">interp_wet</span><span class="o">=</span><span class="n">interp_wet</span><span class="p">))</span>
+
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished detecting wet/dry periods&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TDR.detect_dives"><a class="viewcode-back" href="../tdr.html#tdr.TDR.detect_dives">[docs]</a>    <span class="k">def</span> <span class="nf">detect_dives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dive_thr</span><span class="p">):</span>
@@ -448,12 +464,6 @@
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Passed to :func:`calibrate_speed.calibrate`</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        out : 2-tuple</span>
-<span class="sd">            The quantile regression fit object, and `matplotlib.pyplot`</span>
-<span class="sd">            `Axes` instance.</span>
-
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
@@ -477,9 +487,7 @@
                                       <span class="n">contour_level</span><span class="o">=</span><span class="n">contour_level</span><span class="p">,</span>
                                       <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">bad</span><span class="o">=</span><span class="n">bad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">speed_calib_fit</span> <span class="o">=</span> <span class="n">qfit</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished calibrating speed&quot;</span><span class="p">)</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">qfit</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished calibrating speed&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TDR.dive_stats"><a class="viewcode-back" href="../tdr.html#tdr.TDR.dive_stats">[docs]</a>    <span class="k">def</span> <span class="nf">dive_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth_deriv</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate dive statistics in `TDR` records</span>
@@ -785,6 +793,11 @@
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Arguments passed to plotting function.</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            Pyplot Figure and Axes instances.</span>
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
@@ -826,12 +839,14 @@
         <span class="n">d_crit_rate</span> <span class="o">=</span> <span class="n">crit_vals</span><span class="p">[</span><span class="s2">&quot;descent_crit_rate&quot;</span><span class="p">]</span>
         <span class="n">a_crit_rate</span> <span class="o">=</span> <span class="n">crit_vals</span><span class="p">[</span><span class="s2">&quot;ascent_crit_rate&quot;</span><span class="p">]</span>
         <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Dive: </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">diveNo</span><span class="p">)</span>
-        <span class="n">plotting</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">depth_s</span><span class="o">=</span><span class="n">depth_s</span><span class="p">,</span>
-                                 <span class="n">depth_deriv</span><span class="o">=</span><span class="n">depth_deriv</span><span class="p">,</span>
-                                 <span class="n">d_crit</span><span class="o">=</span><span class="n">d_crit</span><span class="p">,</span> <span class="n">a_crit</span><span class="o">=</span><span class="n">a_crit</span><span class="p">,</span>
-                                 <span class="n">d_crit_rate</span><span class="o">=</span><span class="n">d_crit_rate</span><span class="p">,</span>
-                                 <span class="n">a_crit_rate</span><span class="o">=</span><span class="n">a_crit_rate</span><span class="p">,</span>
-                                 <span class="n">leg_title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plotting</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">depth_s</span><span class="o">=</span><span class="n">depth_s</span><span class="p">,</span>
+                                            <span class="n">depth_deriv</span><span class="o">=</span><span class="n">depth_deriv</span><span class="p">,</span>
+                                            <span class="n">d_crit</span><span class="o">=</span><span class="n">d_crit</span><span class="p">,</span> <span class="n">a_crit</span><span class="o">=</span><span class="n">a_crit</span><span class="p">,</span>
+                                            <span class="n">d_crit_rate</span><span class="o">=</span><span class="n">d_crit_rate</span><span class="p">,</span>
+                                            <span class="n">a_crit_rate</span><span class="o">=</span><span class="n">a_crit_rate</span><span class="p">,</span>
+                                            <span class="n">leg_title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TDR.get_depth"><a class="viewcode-back" href="../tdr.html#tdr.TDR.get_depth">[docs]</a>    <span class="k">def</span> <span class="nf">get_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;measured&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve depth records</span>
@@ -848,9 +863,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kinds</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;measured&quot;</span><span class="p">,</span> <span class="s2">&quot;zoc&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="n">kinds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-            <span class="n">odepth</span> <span class="o">=</span> <span class="n">TDRSource</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">odepth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span>
         <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="n">kinds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">odepth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoc_depth</span><span class="o">.</span><span class="n">get_depth</span><span class="p">()</span>
+            <span class="n">odepth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoc_depth</span><span class="o">.</span><span class="n">depth</span>
             <span class="k">if</span> <span class="n">odepth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;ZOC depth not available.&quot;</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -876,7 +891,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kinds</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;measured&quot;</span><span class="p">,</span> <span class="s2">&quot;calibrated&quot;</span><span class="p">]</span>
-        <span class="n">ispeed</span> <span class="o">=</span> <span class="n">TDRSource</span><span class="o">.</span><span class="n">get_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ispeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span>
 
         <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="n">kinds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">ospeed</span> <span class="o">=</span> <span class="n">ispeed</span>
@@ -900,18 +915,30 @@
 
         <span class="k">return</span><span class="p">(</span><span class="n">ospeed</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TDR.get_wet_activity"><a class="viewcode-back" href="../tdr.html#tdr.TDR.get_wet_activity">[docs]</a>    <span class="k">def</span> <span class="nf">get_wet_activity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieve wet/dry activity DataFrame</span>
+    <span class="k">def</span> <span class="nf">_get_wet_activity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phases</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">)</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phases</span><span class="o">.</span><span class="n">get_wet_activity</span><span class="p">())</span></div>
+    <span class="n">wet_dry</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_wet_activity</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Wet/dry activity labels</span>
+
+<span class="sd">    Extends :meth:`TDRPhases.wet_dry`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        DataFrame with columns: `phase_id` and `phase_label` for each</span>
+<span class="sd">        measurement.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TDR.get_dives_details"><a class="viewcode-back" href="../tdr.html#tdr.TDR.get_dives_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_dives_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve wet/dry activity DataFrame</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        *args, **kwargs : arguments and keyword arguments</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        *args : positional arguments</span>
+<span class="sd">            Passed to :meth:`~tdrphases.TDRPhases.get_dives_details`</span>
+<span class="sd">        **kwargs : keyword arguments</span>
 <span class="sd">            Passed to :meth:`~tdrphases.TDRPhases.get_dives_details`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -944,6 +971,23 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phases</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_zoc_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoc_depth</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="n">zoc_params</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_zoc_params</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;ZOC procedure parameters</span>
+
+<span class="sd">    Extends :attr:`ZOC.params`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    method : str</span>
+<span class="sd">        Method used for ZOC.</span>
+<span class="sd">    params : dict</span>
+<span class="sd">        Dictionary with parameters and values used for ZOC.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TDR.time_budget"><a class="viewcode-back" href="../tdr.html#tdr.TDR.time_budget">[docs]</a>    <span class="k">def</span> <span class="nf">time_budget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Summary of wet/dry activities at the broadest scale</span>
@@ -1020,7 +1064,7 @@
 
         <span class="k">return</span><span class="p">(</span><span class="n">tdr</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TDR.extract_dive"><a class="viewcode-back" href="../tdr.html#tdr.TDR.extract_dive">[docs]</a>    <span class="k">def</span> <span class="nf">extract_dive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TDR.extract_dives"><a class="viewcode-back" href="../tdr.html#tdr.TDR.extract_dives">[docs]</a>    <span class="k">def</span> <span class="nf">extract_dives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Extract TDR data corresponding to a particular set of dives</span>
 
 <span class="sd">        Parameters</span>
@@ -1056,32 +1100,9 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
     <span class="n">ifile</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;tests/data/ag_mk7_2002_022.nc&quot;</span>
-
+    <span class="n">tdrX</span> <span class="o">=</span> <span class="n">TDR</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># tdrX = TDRSource(ifile, has_speed=True)</span>
     <span class="c1"># print(tdrX)</span>
-
-    <span class="c1"># xx = ZOC()</span>
-    <span class="c1"># xx.offset_depth(tdrX.get_depth(), 3)</span>
-    <span class="c1"># xx(tdrX.get_depth(), &quot;offset&quot;, offset=3)</span>
-
-    <span class="n">DB</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
-    <span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5760</span><span class="p">]</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]</span>
-    <span class="c1"># xx(tdrX.get_depth(), &quot;filter&quot;, k=K, probs=P, depth_bounds=DB)</span>
-
-    <span class="n">tdrX</span> <span class="o">=</span> <span class="n">TDR</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="c1"># tdrX.zoc(method=&quot;filter&quot;, k=K, probs=P, depth_bounds=DB)</span>
-
-    <span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="c1"># Compare n dives detected</span>
-    <span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
-    <span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="n">dive_model</span><span class="o">=</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                            <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-
-    <span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="n">P</span><span class="p">,</span>
-                   <span class="n">depth_bounds</span><span class="o">=</span><span class="n">DB</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate_speed</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
             <div class="clearer"></div>
@@ -1116,14 +1137,20 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tdr</a></li> 
       </ul>
     </div>
+
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
   </body>
 </html>

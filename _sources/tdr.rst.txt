@@ -3,4 +3,3 @@
 ===========
 
 .. automodule:: tdr
-   :members:

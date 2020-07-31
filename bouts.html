@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bout analysis &#8212; skdiveMove 0.1.4 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.1.5 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -86,7 +86,7 @@ log-transformed frequencies.</p>
 <div class="section" id="nonlinear-least-squares-models">
 <h2>Nonlinear least squares models<a class="headerlink" href="#nonlinear-least-squares-models" title="Permalink to this headline">¶</a></h2>
 <p>Currently, the model describing the histogram as it is built is implemented
-in the <cite>BoutsNLS</cite> class.  For the case of a mixture of two Poisson
+in the <a class="reference internal" href="#bouts.BoutsNLS" title="bouts.BoutsNLS"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoutsNLS</span></code></a> class.  For the case of a mixture of two Poisson
 processes, this class would set up the model:</p>
 <div class="math notranslate nohighlight" id="equation-1">
 <span class="eqno">(1)<a class="headerlink" href="#equation-1" title="Permalink to this equation">¶</a></span>\[y = log[N_f \lambda_f  e^{-\lambda_f  t} +
@@ -168,7 +168,8 @@ slow process events in the sampled population.</p>
 <dl class="py class">
 <dt id="bouts.Bouts">
 <em class="property">class </em><code class="sig-prename descclassname">bouts.</code><code class="sig-name descname">Bouts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">bw</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'standard'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.Bouts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class for models of log-transformed frequencies</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract base class for models of log-transformed frequencies</p>
 <p>This is a base class for other classes to build on, and do the model
 fitting.  <cite>Bouts</cite> is an abstract base class to set up bout
 identification procedures.  Subclasses must implement <cite>fit</cite> and <cite>bec</cite>
@@ -298,7 +299,8 @@ parameter names “a” and “lambda”.</p></li>
 <dl class="py class">
 <dt id="bouts.BoutsMLE">
 <em class="property">class </em><code class="sig-prename descclassname">bouts.</code><code class="sig-name descname">BoutsMLE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">bw</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'standard'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Nonlinear least squares bout identification</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.bouts.Bouts</span></code></p>
+<p>Nonlinear least squares bout identification</p>
 <dl class="py method">
 <dt id="bouts.BoutsMLE.bec">
 <code class="sig-name descname">bec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fit</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.bec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsMLE.bec" title="Permalink to this definition">¶</a></dt>
@@ -418,7 +420,8 @@ with coefficients of the solution.</p></li>
 <dl class="py class">
 <dt id="bouts.BoutsNLS">
 <em class="property">class </em><code class="sig-prename descclassname">bouts.</code><code class="sig-name descname">BoutsNLS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">bw</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'standard'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsNLS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Nonlinear least squares bout identification</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.bouts.Bouts</span></code></p>
+<p>Nonlinear least squares bout identification</p>
 <dl class="py method">
 <dt id="bouts.BoutsNLS.bec">
 <code class="sig-name descname">bec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coefs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS.bec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bouts.BoutsNLS.bec" title="Permalink to this definition">¶</a></dt>
@@ -429,10 +432,11 @@ with coefficients of the solution.</p></li>
 <dd class="field-odd"><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>out</strong> – List of BEC’s implied by <cite>coefs</cite>.</p>
+<dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
+coefs.shape[1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>ndarray, shape (n,)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -568,13 +572,19 @@ with coefficients of the solution.</p></li>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>
+
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
   </body>
 </html>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Read and write metadata &#8212; skdiveMove 0.1.4 documentation</title>
+    <title>Read and write metadata &#8212; skdiveMove 0.1.5 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -19,7 +19,6 @@
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="TDRSource class" href="tdrsource.html" />
     <link rel="prev" title="Bout analysis" href="bouts.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,12 +31,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tdrsource.html" title="TDRSource class"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
           <a href="bouts.html" title="Bout analysis"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Read and write metadata</a></li> 
       </ul>
     </div>  
@@ -47,8 +43,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-skdiveMove.metadata">
-<span id="read-and-write-metadata"></span><h1>Read and write metadata<a class="headerlink" href="#module-skdiveMove.metadata" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-metadata">
+<span id="read-and-write-metadata"></span><h1>Read and write metadata<a class="headerlink" href="#module-metadata" title="Permalink to this headline">¶</a></h1>
 <p>Tools to read and write DataArray and Dataset attributes</p>
 <p>Easily dump a template to set up metadata for a given Dataset or DataArray
 that can subsequenty be read-in and append attributes to the objects.</p>
@@ -60,10 +56,10 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.metadata.dump_template" title="skdiveMove.metadata.dump_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_template</span></code></a>(fname, config_type)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metadata.dump_template" title="metadata.dump_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_template</span></code></a>(fname, config_type)</p></td>
 <td><p>Dump configuration file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#skdiveMove.metadata.assign_xr_attrs" title="skdiveMove.metadata.assign_xr_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_xr_attrs</span></code></a>(obj, config_file)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metadata.assign_xr_attrs" title="metadata.assign_xr_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_xr_attrs</span></code></a>(obj, config_file)</p></td>
 <td><p>Assign attributes to xarray.Dataset or xarray.DataArray</p></td>
 </tr>
 </tbody>
@@ -72,8 +68,8 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="skdiveMove.metadata.assign_xr_attrs">
-<code class="sig-prename descclassname">skdiveMove.metadata.</code><code class="sig-name descname">assign_xr_attrs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="n">config_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/metadata.html#assign_xr_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.metadata.assign_xr_attrs" title="Permalink to this definition">¶</a></dt>
+<dt id="metadata.assign_xr_attrs">
+<code class="sig-prename descclassname">metadata.</code><code class="sig-name descname">assign_xr_attrs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="n">config_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metadata.html#assign_xr_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metadata.assign_xr_attrs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign attributes to xarray.Dataset or xarray.DataArray</p>
 <p>The <cite>config_file</cite> should have only one-level of nesting.</p>
 <dl class="field-list simple">
@@ -121,8 +117,8 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="skdiveMove.metadata.dump_template">
-<code class="sig-prename descclassname">skdiveMove.metadata.</code><code class="sig-name descname">dump_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">config_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/metadata.html#dump_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.metadata.dump_template" title="Permalink to this definition">¶</a></dt>
+<dt id="metadata.dump_template">
+<code class="sig-prename descclassname">metadata.</code><code class="sig-name descname">dump_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">config_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metadata.html#dump_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metadata.dump_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump configuration file</p>
 <p>Dump a json configuration template file to buil metadata for a Dataset
 or DataArray.</p>
@@ -168,9 +164,6 @@ or DataArray.</p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="bouts.html"
                         title="previous chapter">Bout analysis</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="tdrsource.html"
-                        title="next chapter">TDRSource class</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -202,18 +195,21 @@ or DataArray.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tdrsource.html" title="TDRSource class"
-             >next</a> |</li>
-        <li class="right" >
           <a href="bouts.html" title="Bout analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Read and write metadata</a></li> 
       </ul>
     </div>
+
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
   </body>
 </html>
