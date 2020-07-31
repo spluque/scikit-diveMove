@@ -45,8 +45,9 @@ class BoutsNLS(bouts.Bouts):
 
         Returns
         -------
-        out : list
-            List of BEC's implied by `coefs`.
+        out : ndarray, shape (n,)
+            1-D array with BECs implied by `coefs`.  Length is
+            coefs.shape[1]
 
         """
         # The metaclass implements this method
