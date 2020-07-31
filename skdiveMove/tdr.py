@@ -256,7 +256,7 @@ class TDR(TDRSource):
                 zdepth.attrs = depth.attrs
                 _add_xr_attr(zdepth, "history", "interp_wet")
                 self.zoc_depth._depth_zoc = zdepth
-                self.zoc_depth.params.update(dict(interp_wet=interp_wet))
+                self.zoc_depth._params.update(dict(interp_wet=interp_wet))
 
         logger.info("Finished detecting wet/dry periods")
 
