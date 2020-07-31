@@ -5,7 +5,6 @@ higher-level classes of the package.
 
 """
 
-import warnings
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
@@ -114,17 +113,14 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
         """Scatter plot and legend of series coloured by categories"""
         cats = phase_cat.cat.categories
         cat_codes = phase_cat.cat.codes
-        scatter = ax.scatter(ser.index, ser, s=12, marker="o", c=cat_codes)
+        isna_ser = ser.isna()
+        ser_nona = ser.dropna()
+        scatter = ax.scatter(ser_nona.index, ser_nona, s=12, marker="o",
+                             c=cat_codes[~isna_ser])
         if legend:
-            with warnings.catch_warnings():
-                # Still getting a warning about masked element
-                warnings.filterwarnings("ignore", category=UserWarning,
-                                        module="numpy")
-                warnings.filterwarnings("ignore", category=UserWarning,
-                                        module="matplotlib")
-                handles, _ = scatter.legend_elements()
-                ax.legend(handles, cats, loc="lower right",
-                          ncol=len(cat_codes))
+            handles, _ = scatter.legend_elements()
+            ax.legend(handles, cats, loc="lower right",
+                      ncol=len(cat_codes))
 
     if concur_vars is None:
         fig, axs = plt.subplots(1, 1)
@@ -339,16 +335,3 @@ if __name__ == '__main__':
     from .tdr import get_diveMove_sample_data
     tdrX = get_diveMove_sample_data()
     print(tdrX)
-
-    tdrX.zoc("offset", offset=3)
-    tdrX.detect_wet()
-    tdrX.detect_dives(3)
-    tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
-                            ascent_crit_q=0, knot_factor=20)
-    ccdata = tdrX.tdr["speed"]
-    depth = tdrX.get_depth("zoc")
-    wet_df = tdrX.get_wet_activity("phases")
-    dives_detail = tdrX.get_dive_details("row_ids")
-
-    plot_tdr(depth, dry_time=wet_df["phase_label"],
-             phase_cat=dives_detail["dive.phase"])
