@@ -166,50 +166,6 @@ class ZOC:
         colnames.append("depth_adj")
         return(pd.DataFrame(depthmtx, index=depth.index, columns=colnames))
 
-    def _depth_filter(self, depth, k, probs, depth_bounds, na_rm=True):
-        """Filter method for zero offset correction using Pandas
-
-        Parameters
-        ----------
-        depth : pandas.Series
-        k : array_like
-        probs : array_like
-        depth_bounds : array_like
-        na_rm : bool, optional
-
-        Notes
-        -----
-        This doesn't work exactly like R's version, as it uses Pandas rolling
-        quantile funtion.
-
-        TODO: find a way to do this with signal filters (e.g. `scipy.signal`).
-
-        """
-        isna_depth = depth.isna()
-        isin_bounds = (depth > depth_bounds[0]) & (depth < depth_bounds[1])
-        if na_rm:
-            isok_depth = ~isna_depth & isin_bounds
-        else:
-            isok_depth = isin_bounds | isna_depth
-
-        filters = pd.DataFrame({'depth_0': depth}, index=depth.index)
-        for i, wwidth in enumerate(k):
-            wname = "k{0}_p{1}".format(wwidth, probs[i])
-            filters[wname] = filters.iloc[:, -1]
-            dd = (filters.iloc[:, i][isok_depth]
-                  .rolling(wwidth, min_periods=1)
-                  .quantile(probs[i]))
-            filters.iloc[:, i + 1][isok_depth] = dd
-            # Linear interpolation for depths out of bounds
-            d_intp_offbounds = (filters.iloc[:, i + 1]
-                                .mask(~isin_bounds)
-                                .interpolate())
-            filters.iloc[:, i + 1] = d_intp_offbounds
-            filters.loc[:, wname][isna_depth] = np.NAN
-
-        filters["depth_adj"] = depth - filters[wname]
-        return(filters.iloc[:, 1:])
-
     def _get_depth(self):
         return(self._depth_zoc)
 
