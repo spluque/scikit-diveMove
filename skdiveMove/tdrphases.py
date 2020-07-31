@@ -330,7 +330,7 @@ class TDRPhases:
 
         return(odata)
 
-    def get_dive_deriv(self, diveNo, phase):
+    def get_dive_deriv(self, diveNo, phase=None):
         """Retrieve depth spline derivative for a given dive
 
         Parameters
@@ -342,7 +342,7 @@ class TDRPhases:
 
         Returns
         -------
-        out : pandas.Series
+        out : pandas.DataFrame
 
         """
         der = self.get_dives_details("spline_derivs").loc[diveNo]
@@ -364,6 +364,8 @@ class TDRPhases:
             ascent_crit = int(crit_vals["ascent_crit"])
             deltat_crit = pd.Timedelta(spl_times[ascent_crit], unit="s")
             oder = der.loc[deltat_crit:]
+        elif phase is None:
+            oder = der
         else:
             msg = "`phase` must be 'descent', 'bottom' or 'ascent'"
             logger.error(msg)
