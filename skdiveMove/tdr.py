@@ -1021,7 +1021,7 @@ class TDR(TDRSource):
 
         return(tdr)
 
-    def extract_dive(self, diveNo, **kwargs):
+    def extract_dives(self, diveNo, **kwargs):
         """Extract TDR data corresponding to a particular set of dives
 
         Parameters
@@ -1057,29 +1057,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
 
     ifile = r"tests/data/ag_mk7_2002_022.nc"
-
+    tdrX = TDR(ifile, has_speed=True)
     # tdrX = TDRSource(ifile, has_speed=True)
     # print(tdrX)
-
-    # xx = ZOC()
-    # xx.offset_depth(tdrX.get_depth(), 3)
-    # xx(tdrX.get_depth(), "offset", offset=3)
-
-    DB = [-2, 5]
-    K = [3, 5760]
-    P = [0.5, 0.02]
-    # xx(tdrX.get_depth(), "filter", k=K, probs=P, depth_bounds=DB)
-
-    tdrX = TDR(ifile, has_speed=True)
-    # tdrX.zoc(method="filter", k=K, probs=P, depth_bounds=DB)
-
-    tdrX.zoc("offset", offset=3)
-    # Compare n dives detected
-    tdrX.detect_wet()
-    tdrX.detect_dives(dive_thr=3)
-    tdrX.detect_dive_phases(dive_model="unimodal", descent_crit_q=0.01,
-                            ascent_crit_q=0, knot_factor=20)
-
-    tdrX.calibrate(zoc_method="offset", offset=3, dive_thr=3, k=K, probs=P,
-                   depth_bounds=DB, descent_crit_q=0.01, knot_factor=20)
-    tdrX.calibrate_speed(z=2)
