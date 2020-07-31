@@ -750,6 +750,11 @@ class TDR(TDRSource):
         **kwargs : optional keyword arguments
             Arguments passed to plotting function.
 
+        Returns
+        -------
+        tuple
+            Pyplot Figure and Axes instances.
+
         Examples
         --------
         >>> from skdiveMove.tests import diveMove2skd
@@ -791,12 +796,14 @@ class TDR(TDRSource):
         d_crit_rate = crit_vals["descent_crit_rate"]
         a_crit_rate = crit_vals["ascent_crit_rate"]
         title = "Dive: {:d}".format(diveNo)
-        plotting.plot_dive_model(depth, depth_s=depth_s,
-                                 depth_deriv=depth_deriv,
-                                 d_crit=d_crit, a_crit=a_crit,
-                                 d_crit_rate=d_crit_rate,
-                                 a_crit_rate=a_crit_rate,
-                                 leg_title=title, **kwargs)
+        fig, axs = plotting.plot_dive_model(depth, depth_s=depth_s,
+                                            depth_deriv=depth_deriv,
+                                            d_crit=d_crit, a_crit=a_crit,
+                                            d_crit_rate=d_crit_rate,
+                                            a_crit_rate=a_crit_rate,
+                                            leg_title=title, **kwargs)
+
+        return(fig, axs)
 
     def get_depth(self, kind="measured"):
         """Retrieve depth records
