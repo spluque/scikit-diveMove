@@ -6,6 +6,7 @@ import unittest as ut
 import numpy as np
 import xarray as xr
 from pandas import DataFrame
+from pandas.testing import assert_frame_equal
 import statsmodels
 import skdiveMove as skdive
 from skdiveMove.tests import diveMove2skd
@@ -51,6 +52,10 @@ class TestTDR(ut.TestCase):
                     knot_factor=knot_factor,
                     descent_crit_q=descent_crit_q,
                     ascent_crit_q=ascent_crit_q))
+        diveNo_max = (self.tdr_calib
+                      .get_dives_details("row_ids", "dive_id")
+                      .max())
+        self.diveNo_seq = np.arange(diveNo_max) + 1
 
     def test_init(self):
         self.assertIsInstance(self.tdrX, skdive.TDR)
@@ -86,6 +91,14 @@ class TestTDR(ut.TestCase):
         zoc_depth = self.tdrX.get_depth("zoc")
         self.assertIn("interp_wet", zoc_depth.attrs["history"])
 
+        # Test providing wet_cond
+        dry_cond = self.tdrX.get_depth("measured").to_series().isna()
+        self.tdrX.detect_wet(dry_thr=dry_thr, wet_cond=~dry_cond,
+                             wet_thr=wet_thr, interp_wet=True)
+        wwet_act_phases = self.tdrX.wet_dry
+        # Here we expect same result as before
+        assert_frame_equal(wet_act_phases, wwet_act_phases)
+
     def test_detect_dives(self):
         offset = self.default_pars["zoc_offset"]
         dry_thr = self.default_pars["dry_thr"]
@@ -98,7 +111,6 @@ class TestTDR(ut.TestCase):
         row_ids = self.tdrX.get_dives_details("row_ids")
         self.assertIsInstance(row_ids, DataFrame)
         self.assertEqual(row_ids.ndim, 2)
-        # self.assertEqual(row_ids.shape[0], self.tdrX.tdr.shape[0])
 
     def test_detect_dive_phases(self):
         offset = self.default_pars["zoc_offset"]
@@ -172,12 +184,18 @@ class TestTDR(ut.TestCase):
         self.assertNotIn("history", mspeed.attrs)
         self.assertIn("history", calspeed.attrs)
 
+    def test_get_dives_details(self):
+        tdr_calib = self.tdr_calib
+
+        # Test wrong key
+        self.assertRaises(KeyError, tdr_calib.get_dives_details, "foo")
+        self.assertRaises(KeyError, tdr_calib.get_dives_details,
+                          "row_ids", "foo")
+
     def test_get_dive_deriv(self):
         tdr_calib = self.tdr_calib
         # random dive
-        rdive = (np.random
-                 .choice(tdr_calib.get_dives_details("row_ids", "dive_id")
-                         .max()))
+        rdive = np.random.choice(self.diveNo_seq)
 
         # Full length derivative
         dder = tdr_calib.get_dive_deriv(rdive)
@@ -186,6 +204,9 @@ class TestTDR(ut.TestCase):
         for phase in ["descent", "bottom", "ascent"]:
             dder = tdr_calib.get_dive_deriv(rdive, phase)
             self.assertIsInstance(dder, DataFrame)
+            # Test nonexistent phase
+            with self.assertRaises(KeyError):
+                tdr_calib.get_dive_deriv(rdive, "foo")
 
     def test_get_params(self):
         tdr_calib = self.tdr_calib
@@ -193,6 +214,7 @@ class TestTDR(ut.TestCase):
         self.assertIsInstance(wet_dry, dict)
         dives = tdr_calib.get_phases_params("dives")
         self.assertIsInstance(dives, dict)
+        self.assertRaises(KeyError, tdr_calib.get_phases_params, "foo")
         # ZOC params should be tuple
         self.assertIsInstance(tdr_calib.zoc_params, tuple)
 
@@ -223,9 +245,7 @@ class TestTDR(ut.TestCase):
         z = 2
         tdr_calib.calibrate_speed(z=z, plot=False)
         # random dives
-        rdives = (np.random
-                  .choice(tdr_calib.get_dives_details("row_ids", "dive_id")
-                          .max(), 10).tolist())
+        rdives = np.random.choice(self.diveNo_seq, 20).tolist()
 
         dives = tdr_calib.extract_dives(rdives, calib_depth=True,
                                         calib_speed=True)
@@ -245,79 +265,119 @@ class TestTDR(ut.TestCase):
     def test_plot(self):
         tdr = self.tdrX
         fig, ax = tdr.plot()
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
+        l_depth = ax.get_lines()[0].get_xydata()
+        self.assertEqual(l_depth.shape[0],
+                         tdr.get_depth("measured").shape[0])
         plt.close(fig)
+
         # With concur_vars
         fig, axs = tdr.plot(concur_vars="speed")
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        for ax in axs:
-            self.assertIsInstance(ax, mpl.pyplot.Axes)
+        l_speed = axs[1].get_lines()[0].get_xydata()
+        self.assertEqual(l_speed.shape[0],
+                         tdr.get_speed("measured").shape[0])
         plt.close(fig)
 
         fig, axs = tdr.plot(concur_vars="temperature",
                             concur_var_titles="Temperature")
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        for ax in axs:
-            self.assertIsInstance(ax, mpl.pyplot.Axes)
+        l_temp = axs[1].get_lines()[0].get_xydata()
+        self.assertEqual(l_temp.shape[0],
+                         tdr.get_speed("measured").shape[0])
         plt.close(fig)
 
     def test_plot_zoc(self):
         tdr_calib = self.tdr_calib
         fig, ax = tdr_calib.plot_zoc()
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        self.assertIsInstance(ax, mpl.pyplot.Axes)
+        lines = ax.get_lines()
+        self.assertGreaterEqual(len(lines), 2)
         plt.close(fig)
         # TODO: test arguments
+
+        # Calibrate with "filter" and test plot_zoc
+        tdr = self.tdrX
+        DB = [-2, 5]
+        K = [3, 600]
+        P = [0.5, 0.02]
+        tdr.zoc(k=K, probs=P, depth_bounds=DB)
+        fig, axs = tdr.plot_zoc(ylim=[-1, 10])
+        # Measured depth should be in first Axes
+        idepth = axs[0].get_lines()[1].get_xydata()[:, 1]
+        np.testing.assert_equal(idepth,
+                                tdr.get_depth("measured").values)
+        # First filter should be in second Axes (2nd line)
+        filter0 = axs[1].get_lines()[1].get_xydata()[:, 1]
+        np.testing.assert_equal(filter0,
+                                tdr.zoc_depth.filters.iloc[:, 0])
+        # Second filter should be in second Axes (3rd line)
+        filter1 = axs[1].get_lines()[2].get_xydata()[:, 1]
+        np.testing.assert_equal(filter1,
+                                tdr.zoc_depth.filters.iloc[:, 1])
+        # ZOC depth should be in third Axes
+        zdepth = axs[2].get_lines()[1].get_xydata()[:, 1]
+        # Set < 0 as for ZOC
+        zdepth[zdepth < 0] = 0
+        np.testing.assert_equal(zdepth,
+                                tdr.get_depth("zoc").values)
 
     def test_plot_phases(self):
         tdr_calib = self.tdr_calib
         fig, ax = tdr_calib.plot_phases()
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        self.assertIsInstance(ax, mpl.pyplot.Axes)
+        lines = ax.get_lines()
+        self.assertEqual(len(lines), 2)
         plt.close(fig)
         # Test selected dives
         # random dives
-        rdives = (np.random
-                  .choice(tdr_calib.get_dives_details("row_ids", "dive_id")
-                          .max(), 20).tolist())
+        rdives = np.random.choice(self.diveNo_seq, 10).tolist()
         fig, ax = tdr_calib.plot_phases(diveNo=rdives)
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        self.assertIsInstance(ax, mpl.pyplot.Axes)
+        l_depth = ax.get_lines()[0].get_ydata()
+        tdr_dives = (tdr_calib
+                     .extract_dives(rdives, calib_depth=True,
+                                    calib_speed=False))
+        self.assertEqual(l_depth.size, tdr_dives.depth.size)
         plt.close(fig)
 
         # Test selected dives with surface
         fig, ax = tdr_calib.plot_phases(diveNo=rdives, surface=True)
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        self.assertIsInstance(ax, mpl.pyplot.Axes)
+        # Compare scatter collection against line data
+        l_depth = ax.get_lines()[0].get_xydata()
+        scat_data = ax.collections[0].get_offsets().data
+        self.assertLessEqual(scat_data.size, l_depth.size)
         plt.close(fig)
 
         # Test selected dives with concur_vars
         fig, axs = tdr_calib.plot_phases(diveNo=rdives, concur_vars="speed")
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        for ax in axs:
-            self.assertIsInstance(ax, mpl.pyplot.Axes)
+        # We should have 2 Axes
+        self.assertEqual(len(axs), 2)
+        l_depth = axs[0].get_lines()[0].get_xydata()
+        l_speed = axs[1].get_lines()[0].get_xydata()
+        self.assertEqual(l_depth.size, l_speed.size)
+        self.assertEqual(l_depth.shape[0], tdr_dives.depth.size)
         plt.close(fig)
 
         # Test selected dives with concur_vars and surface
         fig, axs = tdr_calib.plot_phases(diveNo=rdives, concur_vars="speed",
                                          surface=True)
-        self.assertIsInstance(fig, mpl.pyplot.Figure)
-        for ax in axs:
-            self.assertIsInstance(ax, mpl.pyplot.Axes)
+        self.assertEqual(len(axs), 2)
+        l_depth = axs[0].get_lines()[0].get_xydata()
+        l_speed = axs[1].get_lines()[0].get_xydata()
+        speed_scat = axs[1].collections[0].get_offsets().data
+        self.assertEqual(l_depth.size, l_speed.size)
+        self.assertLessEqual(speed_scat.size, l_speed.size)
         plt.close(fig)
 
     def test_plot_dive_model(self):
         tdr_calib = self.tdr_calib
         # Test selected random dives
-        rdives = (np.random
-                  .choice(tdr_calib.get_dives_details("row_ids", "dive_id")
-                          .max(), 20).tolist())
+        rdives = np.random.choice(self.diveNo_seq, 10).tolist()
 
         for dive in rdives:
+            print("diveNo: {}".format(dive))
             fig, axs = tdr_calib.plot_dive_model(diveNo=dive)
-            self.assertIsInstance(fig, mpl.pyplot.Figure)
-            for ax in axs:
-                self.assertIsInstance(ax, mpl.pyplot.Axes)
+            # TODO
+            self.assertEqual(len(axs), 2)
+            lines_ax0 = axs[0].get_lines()
+            self.assertEqual(len(lines_ax0), 4)
+            lines_ax1 = axs[1].get_lines()
+            self.assertEqual(len(lines_ax1), 7)
             plt.close(fig)
 
 

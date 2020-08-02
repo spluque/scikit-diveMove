@@ -22,6 +22,13 @@ class TestTDRSource(ut.TestCase):
         self.assertIsInstance(self.tdrX.tdr, xr.Dataset)
         self.assertTrue(self.tdrX.has_speed)
 
+        # Test no speed
+        tdr = diveMove2skd(True, False)
+        self.assertFalse(tdr.has_speed)
+
+    def test_str(self):
+        self.assertIn("Class TDRSource object", self.tdrX.__str__())
+
     def test_get_depth(self):
         depth = self.tdrX.depth
         self.assertIsInstance(depth, xr.DataArray)

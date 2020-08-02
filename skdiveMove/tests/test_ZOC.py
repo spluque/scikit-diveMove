@@ -47,31 +47,51 @@ class TestZOC(ut.TestCase):
         params = self.zocX.params
         self.assertIsInstance(params, tuple)
 
-    @ut.skip("test takes too long")
+    # @ut.skip("test takes too long")
     def test_filter_depth(self):
         """Test for "filter" method
 
-        Disabled, as it is too long
+        Test target is the process, *not* the result.  The 2nd window width
+        is not what the data call for, but was chosen for test performance
+        reasons.
 
         """
-        depth = self.tdrX.get_depth()
+        depth = self.tdrX.depth
         DB = [-2, 5]
-        K = [3, 5760]
+        K = [3, 600]
         P = [0.5, 0.02]
         self.zocX.filter_depth(depth, k=K, probs=P, depth_bounds=DB)
-        self.assertIsInstance(self.zocX.depth_zoc, xr.DataArray)
-        self.assertIn("k", self.zocX.params)
-        self.assertIn("probs", self.zocX.params)
-        self.assertIn("depth_bounds", self.zocX.params)
-        self.assertIn("na_rm", self.zocX.params)
+        self.assertIsInstance(self.zocX.depth, xr.DataArray)
+        self.assertIn("k", self.zocX.params[1])
+        self.assertIn("probs", self.zocX.params[1])
+        self.assertIn("depth_bounds", self.zocX.params[1])
+        self.assertIn("na_rm", self.zocX.params[1])
         self.assertEqual(self.zocX.method, "filter")
+        attr_hist = self.zocX.depth.attrs["history"]
+        self.assertIn("ZOC", attr_hist)
 
-    def test_call(self):
+    def test_call_offset(self):
         depth = self.tdrX.depth
         self.zocX(depth, "offset", offset=3)
         self.assertIsInstance(self.zocX.depth, xr.DataArray)
         self.assertIn("offset", self.zocX.params)
         self.assertEqual(self.zocX.method, "offset")
+
+    def test_call_filter(self):
+        depth = self.tdrX.depth
+        DB = [-2, 5]
+        K = [3, 600]
+        P = [0.5, 0.02]
+        self.zocX(depth, k=K, probs=P, depth_bounds=DB)
+        self.assertIsInstance(self.zocX.depth, xr.DataArray)
+        self.assertIn("filter", self.zocX.params)
+        self.assertIn("k", self.zocX.params[1])
+        self.assertIn("probs", self.zocX.params[1])
+        self.assertIn("depth_bounds", self.zocX.params[1])
+        self.assertIn("na_rm", self.zocX.params[1])
+        self.assertEqual(self.zocX.method, "filter")
+        attr_hist = self.zocX.depth.attrs["history"]
+        self.assertIn("ZOC", attr_hist)
 
 
 if __name__ == '__main__':

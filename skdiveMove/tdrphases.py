@@ -64,6 +64,8 @@ class TDRPhases:
             DataArray with zero-offset corrected depth measurements.
         dry_thr : float, optional
         wet_cond : bool mask, optional
+            A Pandas.Series bool mask indexed as `depth`.  Default is
+            generated from testing for non-missing `depth`.
         wet_thr : float, optional
 
         Notes
@@ -79,10 +81,7 @@ class TDRPhases:
         time_py = depth_py.index
         dtime = get_var_sampling_interval(depth).total_seconds()
 
-        if wet_cond:
-            wet_cond = (pd.Series(wet_cond, index=time_py)
-                        .astype("bool"))
-        else:
+        if wet_cond is None:
             wet_cond = ~depth_py.isna()
 
         rstr = """detPhaseFun <- diveMove:::.detPhase"""
@@ -290,10 +289,13 @@ class TDRPhases:
         key: {'wet_dry', 'dives'}
 
         """
-        if key == "wet_dry":
-            return(self.params["wet_dry"])
-        elif key == "dives":
-            return(self.params["dives"])
+        try:
+            params = self.params[key]
+        except KeyError:
+            msg = "key must be one of: {}".format(self.params.keys())
+            logger.error(msg)
+            raise KeyError(msg)
+        return(params)
 
     def _get_dive_spline_slot(self, diveNo, name):
         """Accessor for the R objects in `dives`["splines"]

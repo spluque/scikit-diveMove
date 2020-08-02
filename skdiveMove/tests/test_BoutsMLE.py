@@ -112,8 +112,8 @@ class TestBoutsMLE(ut.TestCase):
 
         fig, ax = plt.subplots()
         _ = xbouts.plot_fit(fit2, ax=ax)
-        line = ax.get_lines()
-        self.assertEqual(len(line), 2)
+        lines = ax.get_lines()
+        self.assertEqual(len(lines), 2)
         plt.close()
 
     def test_plot_ecdf(self):

@@ -40,11 +40,6 @@ class TestTDRPhases(ut.TestCase):
         wet_dry = self.phases.wet_dry
         self.assertIsInstance(wet_dry, DataFrame)
         self.assertEqual(wet_dry.ndim, 2)
-        # self.assertEqual(wet_act_phases.shape[0], self.tdrX.tdr.shape[0])
-        # dry_thr_tdrX = self.tdrX.phases.get_wet_activity("dry_thr")
-        # self.assertEqual(dry_thr_tdrX, dry_thr)
-        # wet_thr_tdrX = self.tdrX.get_wet_activity("wet_thr")
-        # self.assertEqual(wet_thr_tdrX, wet_thr)
 
     def test_detect_dives(self):
         depth = self.depth

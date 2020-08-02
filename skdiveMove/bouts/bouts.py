@@ -196,7 +196,7 @@ class Bouts(metaclass=ABCMeta):
                 brks = np.append(brks, brks[-1] + bw)
             h, edges = np.histogram(x, bins=brks)
         elif method == "seq_diff":
-            x_diff = x.diff().abs()
+            x_diff = np.abs(np.diff(x))
             upper = x_diff.max()
             brks = np.arange(0, upper, bw)
             if brks[-1] < upper:

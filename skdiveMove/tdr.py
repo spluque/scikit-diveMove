@@ -644,6 +644,7 @@ class TDR(TDRSource):
             fig, ax = plotting.plt.subplots(1, 1, **kwargs)
             ax = depth_msrd.plot(ax=ax, rot=0, label="measured")
             depth_zoc.plot(ax=ax, label="zoc")
+            ax.axhline(0, linestyle="--", linewidth=0.75, color="k")
             ax.set_xlabel("")
             ax.set_ylabel(ylab)
             ax.legend(loc="lower right")

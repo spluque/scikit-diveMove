@@ -30,7 +30,7 @@ class TestBoutsNLS(ut.TestCase):
 
         Attributes
         ----------
-        x : ndarray
+        x : pandas.Series
         pars_true : pandas.Series
         nsamp : int
         mle_opts1, mle_opts2 : dict
@@ -49,7 +49,7 @@ class TestBoutsNLS(ut.TestCase):
                   pars_true.loc["lambda0"],
                   pars_true.loc["lambda1"])
         self.nsamp = nsamp
-        self.x = x
+        self.x = pd.Series(x)
 
         # Fixed bounds fit 1
         p_bnd = (-2, None)
@@ -69,6 +69,15 @@ class TestBoutsNLS(ut.TestCase):
         xbouts = skbouts.BoutsNLS(x, 5)
         self.assertIsInstance(xbouts, skbouts.BoutsNLS)
         self.assertIsInstance(xbouts.lnfreq, pd.DataFrame)
+
+        xbouts = skbouts.BoutsNLS(x, 0.25, method="seq_diff")
+        self.assertIsInstance(xbouts, skbouts.BoutsNLS)
+        self.assertIsInstance(xbouts.lnfreq, pd.DataFrame)
+
+    def test_str(self):
+        x = self.x
+        xbouts = skbouts.BoutsNLS(x, 5)
+        self.assertIn("Class BoutsNLS object", xbouts.__str__())
 
     def test_init_pars(self):
         x = self.x
@@ -103,6 +112,17 @@ class TestBoutsNLS(ut.TestCase):
         bec = xbouts.bec(coefs)
         self.assertIsInstance(bec, np.ndarray)
         self.assertEqual(bec.size, 1)
+
+    def test_label_bouts(self):
+        x = self.x
+        xbouts = skbouts.BoutsNLS(x, 5)
+        init_pars = xbouts.init_pars([80], plot=False)
+
+        coefs, pcov = xbouts.fit(init_pars)
+        bec = xbouts.bec(coefs)
+        xlabeled = skbouts.label_bouts(x, bec)
+        self.assertIsInstance(xlabeled, type(x))
+        self.assertEqual(xlabeled.shape, x.shape)
 
     def test_plot_fit(self):
         x = self.x

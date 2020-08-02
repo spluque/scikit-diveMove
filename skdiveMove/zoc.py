@@ -12,7 +12,6 @@ Class and Methods Summary
 """
 
 import logging
-import numpy as np
 import pandas as pd
 from skdiveMove.core import robjs, cv, pandas2ri
 from skdiveMove.helpers import _add_xr_attr
