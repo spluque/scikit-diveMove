@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bouts.boutsmle &#8212; skdiveMove 0.1.5 documentation</title>
+    <title>bouts.boutsmle &#8212; skdiveMove 0.1.6 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.1.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>
@@ -62,18 +62,19 @@
 
 
 <span class="k">def</span> <span class="nf">mle_fun</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Random Poisson processes function</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Random Poisson processes function</span>
 
 <span class="sd">    The current implementation takes two or three random Poisson processes.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x : array_like</span>
-<span class="sd">        Independent data array described by parameters `p` and `lambdas`.</span>
+<span class="sd">        Independent data array described by parameters `p` and</span>
+<span class="sd">        :math:`\lambdas`.</span>
 <span class="sd">    p : list</span>
 <span class="sd">        List with mixing parameters of the model.</span>
 <span class="sd">    lambdas : array_like</span>
-<span class="sd">        1-D Array with the density parameters (:math:`lambda`) of the</span>
+<span class="sd">        1-D Array with the density parameters (:math:`\lambda`) of the</span>
 <span class="sd">        model.  Its length must be length(p) + 1.</span>
 
 <span class="sd">    Returns</span>
@@ -115,7 +116,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BoutsMLE.loglik_fun"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.loglik_fun">[docs]</a>    <span class="k">def</span> <span class="nf">loglik_fun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">transformed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Log likelihood function of parameters given observed data</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Log likelihood function of parameters given observed data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -124,7 +125,8 @@
 <span class="sd">            with mixing parameter :math:`p`, density parameter</span>
 <span class="sd">            :math:`\lambda_f` and :math:`\lambda_s`, in that order.</span>
 <span class="sd">        x : array_like</span>
-<span class="sd">            Independent data array described by parameters `p` and `lambdas`.</span>
+<span class="sd">            Independent data array described by model with parameters `p`</span>
+<span class="sd">            and :math:`\lambda_f` and :math:`\lambda_s`.</span>
 <span class="sd">        transformed : bool</span>
 <span class="sd">            Whether `params` are transformed and need to be un-transformed</span>
 <span class="sd">            to calculate the likelihood.</span>
@@ -426,7 +428,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.1.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.1.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>
