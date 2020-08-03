@@ -573,7 +573,7 @@ class TDR(TDRSource):
         """
         try:
             depth = self.get_depth("zoc")
-        except IndexError:
+        except LookupError:
             depth = self.get_depth("measured")
 
         if "ylab_depth" not in kwargs:
@@ -827,11 +827,11 @@ class TDR(TDRSource):
             if odepth is None:
                 msg = "ZOC depth not available."
                 logger.error(msg)
-                raise IndexError(msg)
+                raise LookupError(msg)
         else:
             msg = "kind must be one of: {}".format(kinds)
             logger.error(msg)
-            raise IndexError(msg)
+            raise LookupError(msg)
 
         return(odepth)
 
@@ -858,7 +858,7 @@ class TDR(TDRSource):
             if qfit is None:
                 msg = "Calibrated speed not available."
                 logger.error(msg)
-                raise IndexError(msg)
+                raise LookupError(msg)
             else:
                 coefs = qfit.params
                 coef_a = coefs[0]
@@ -869,7 +869,7 @@ class TDR(TDRSource):
         else:
             msg = "kind must be one of: {}".format(kinds)
             logger.error(msg)
-            raise IndexError(msg)
+            raise LookupError(msg)
 
         return(ospeed)
 

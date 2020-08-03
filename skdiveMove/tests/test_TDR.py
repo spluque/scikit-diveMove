@@ -174,6 +174,8 @@ class TestTDR(ut.TestCase):
 
         self.assertNotIn("history", mdepth.attrs)
         self.assertIn("history", zocdepth.attrs)
+        # Wrong request
+        self.assertRaises(LookupError, tdr_calib.get_depth, "foo")
 
     def test_get_speed(self):
         tdr_calib = self.tdr_calib
@@ -183,6 +185,9 @@ class TestTDR(ut.TestCase):
         calspeed = tdr_calib.get_speed("calibrated")
         self.assertNotIn("history", mspeed.attrs)
         self.assertIn("history", calspeed.attrs)
+        # Wrong requests
+        self.assertRaises(LookupError, tdr_calib.get_speed, "foo")
+        self.assertRaises(LookupError, self.tdrX.get_speed, "calibrated")
 
     def test_get_dives_details(self):
         tdr_calib = self.tdr_calib
@@ -205,8 +210,8 @@ class TestTDR(ut.TestCase):
             dder = tdr_calib.get_dive_deriv(rdive, phase)
             self.assertIsInstance(dder, DataFrame)
             # Test nonexistent phase
-            with self.assertRaises(KeyError):
-                tdr_calib.get_dive_deriv(rdive, "foo")
+            self.assertRaises(KeyError, tdr_calib.get_dive_deriv,
+                              rdive, "foo")
 
     def test_get_params(self):
         tdr_calib = self.tdr_calib

@@ -1,4 +1,4 @@
-"""Tools and classes for the identification of behavioural bouts
+r"""Tools and classes for the identification of behavioural bouts
 
 A histogram of log-transformed frequencies of `x` with a chosen bin width
 and upper limit forms the basis for models.  Histogram bins following empty

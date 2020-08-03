@@ -19,18 +19,19 @@ logger.addHandler(logging.NullHandler())
 
 
 def mle_fun(x, p, lambdas):
-    """Random Poisson processes function
+    r"""Random Poisson processes function
 
     The current implementation takes two or three random Poisson processes.
 
     Parameters
     ----------
     x : array_like
-        Independent data array described by parameters `p` and `lambdas`.
+        Independent data array described by parameters `p` and
+        :math:`\lambdas`.
     p : list
         List with mixing parameters of the model.
     lambdas : array_like
-        1-D Array with the density parameters (:math:`lambda`) of the
+        1-D Array with the density parameters (:math:`\lambda`) of the
         model.  Its length must be length(p) + 1.
 
     Returns
@@ -72,7 +73,7 @@ class BoutsMLE(bouts.Bouts):
     """
 
     def loglik_fun(self, params, x, transformed=True):
-        """Log likelihood function of parameters given observed data
+        r"""Log likelihood function of parameters given observed data
 
         Parameters
         ----------
@@ -81,7 +82,8 @@ class BoutsMLE(bouts.Bouts):
             with mixing parameter :math:`p`, density parameter
             :math:`\lambda_f` and :math:`\lambda_s`, in that order.
         x : array_like
-            Independent data array described by parameters `p` and `lambdas`.
+            Independent data array described by model with parameters `p`
+            and :math:`\lambda_f` and :math:`\lambda_s`.
         transformed : bool
             Whether `params` are transformed and need to be un-transformed
             to calculate the likelihood.

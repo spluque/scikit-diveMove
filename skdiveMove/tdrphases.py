@@ -252,7 +252,7 @@ class TDRPhases:
             raise KeyError(msg)
         else:
             if okey is None:
-                raise IndexError("\'{}\' not available.".format(key))
+                raise KeyError("\'{}\' not available.".format(key))
 
         if columns:
             try:

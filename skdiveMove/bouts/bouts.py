@@ -15,7 +15,7 @@ from skdiveMove.helpers import rle_key
 
 
 def nls_fun(x, coefs):
-    """Random Poisson processes function
+    r"""Random Poisson processes function
 
     This is a generalized form taking any number of Poisson processes.
 
@@ -24,7 +24,7 @@ def nls_fun(x, coefs):
     x : array_like
         Independent data array described by the function
     coefs : array_like
-        2-D array with coefficients ('a', 'lambda') in rows for each
+        2-D array with coefficients ('a', :math:'\lambda') in rows for each
         process of the model in columns.
 
     Returns
@@ -41,7 +41,7 @@ def nls_fun(x, coefs):
 
 
 def calc_p(coefs):
-    """Calculate `p` (proportion) parameter from `a` coefficients
+    r"""Calculate `p` (proportion) parameter from `a` coefficients
 
     Parameters
     ----------
@@ -54,7 +54,7 @@ def calc_p(coefs):
     p : list
         Proportion parameters implied in `coef`.
     lambdas : pandas.Series
-        A series with with the :math:`lambda` parameters from `coef`.
+        A series with with the :math:`\lambda` parameters from `coef`.
 
     """
     ncoefs = coefs.shape[1]
@@ -74,16 +74,17 @@ def calc_p(coefs):
 
 
 def ecdf(x, p, lambdas):
-    """Estimated cumulative frequency for two- or three-process models
+    r"""Estimated cumulative frequency for two- or three-process models
 
     Parameters
     ----------
     x : array_like
-        Independent data array described by parameters `p` and `lambdas`.
+        Independent data array described by model with parameters `p` and
+        :math:`\lambda_f` and :math:`\lambda_s`.
     p : list
         List with mixing parameters of the model.
     lambdas : pandas.Series
-        Series with the density parameters (:math:`lambda`) of the
+        Series with the density parameters (:math:`\lambda`) of the
         model.  Its length must be length(p) + 1.
 
     Returns
