@@ -79,8 +79,8 @@ def ecdf(x, p, lambdas):
     Parameters
     ----------
     x : array_like
-        Independent data array described by model with parameters `p` and
-        :math:`\lambda_f` and :math:`\lambda_s`.
+        Independent data array described by model with parameters `p`,
+        :math:`\lambda_f`, and :math:`\lambda_s`.
     p : list
         List with mixing parameters of the model.
     lambdas : pandas.Series

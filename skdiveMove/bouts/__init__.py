@@ -44,8 +44,8 @@ The bout-ending criterion (BEC) corresponding to equation :eq:`1` is:
 .. math::
    :label: 2
 
-   BEC = \\frac{1}{\lambda_f - \lambda_s}
-         log \\frac{N_f \lambda_f}{N_s \lambda_s}
+   BEC = \frac{1}{\lambda_f - \lambda_s}
+         log \frac{N_f \lambda_f}{N_s \lambda_s}
 
 Note that there is one BEC per transition between Poisson processes.
 
@@ -75,8 +75,8 @@ all the :math:`N_t` in a mixture can be expressed as:
 .. math::
    :label: 3
 
-   log\ L_2 = \\sum_{i=1}^{N_t} log[p \lambda_f e^{-\lambda_f t_i} +
-                                    (1-p) \lambda_s e^{-\lambda_s t_i}]
+   log\ L_2 = \sum_{i=1}^{N_t} log[p \lambda_f e^{-\lambda_f t_i} +
+                                   (1-p) \lambda_s e^{-\lambda_s t_i}]
 
 where :math:`p` is a mixing parameter indicating the proportion of fast to
 slow process events in the sampled population.
@@ -86,8 +86,8 @@ The BEC in this case can be estimated as:
 .. math::
    :label: 4
 
-   BEC = \\frac{1}{\lambda_f - \lambda_s}
-         log \\frac{p\lambda_f}{(1-p)\lambda_s}
+   BEC = \frac{1}{\lambda_f - \lambda_s}
+         log \frac{p\lambda_f}{(1-p)\lambda_s}
 
 The subclass :class:`BoutsMLE` offers the framework for these models.
 

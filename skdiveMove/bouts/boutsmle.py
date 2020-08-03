@@ -26,8 +26,8 @@ def mle_fun(x, p, lambdas):
     Parameters
     ----------
     x : array_like
-        Independent data array described by parameters `p` and
-        :math:`\lambdas`.
+        Independent data array described by model with parameters `p`,
+        :math:`\lambda_f`, and :math:`\lambda_s`.
     p : list
         List with mixing parameters of the model.
     lambdas : array_like
@@ -82,8 +82,8 @@ class BoutsMLE(bouts.Bouts):
             with mixing parameter :math:`p`, density parameter
             :math:`\lambda_f` and :math:`\lambda_s`, in that order.
         x : array_like
-            Independent data array described by model with parameters `p`
-            and :math:`\lambda_f` and :math:`\lambda_s`.
+            Independent data array described by model with parameters `p`,
+            :math:`\lambda_f`, and :math:`\lambda_s`.
         transformed : bool
             Whether `params` are transformed and need to be un-transformed
             to calculate the likelihood.
