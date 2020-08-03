@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bout analysis &#8212; skdiveMove 0.1.6 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.1.7 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.7 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -97,8 +97,8 @@ process <span class="math notranslate nohighlight">\(f\)</span> and <span class=
 process.  Mixtures of more processes can also be added to the model.</p>
 <p>The bout-ending criterion (BEC) corresponding to equation <a class="reference internal" href="#equation-1">(1)</a> is:</p>
 <div class="math notranslate nohighlight" id="equation-2">
-<span class="eqno">(2)<a class="headerlink" href="#equation-2" title="Permalink to this equation">¶</a></span>\[\begin{split}BEC = \\frac{1}{\lambda_f - \lambda_s}
-      log \\frac{N_f \lambda_f}{N_s \lambda_s}\end{split}\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-2" title="Permalink to this equation">¶</a></span>\[BEC = \frac{1}{\lambda_f - \lambda_s}
+      log \frac{N_f \lambda_f}{N_s \lambda_s}\]</div>
 <p>Note that there is one BEC per transition between Poisson processes.</p>
 <p>The methods of this subclass are provided by the abstract super class
 <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bouts</span></code></a>, and adds the methods below.</p>
@@ -127,14 +127,14 @@ likelihood, so it is more robust.</p>
 <p>For the case of a mixture of two processes, as above, the log likelihood of
 all the <span class="math notranslate nohighlight">\(N_t\)</span> in a mixture can be expressed as:</p>
 <div class="math notranslate nohighlight" id="equation-3">
-<span class="eqno">(3)<a class="headerlink" href="#equation-3" title="Permalink to this equation">¶</a></span>\[\begin{split}log\ L_2 = \\sum_{i=1}^{N_t} log[p \lambda_f e^{-\lambda_f t_i} +
-                                 (1-p) \lambda_s e^{-\lambda_s t_i}]\end{split}\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-3" title="Permalink to this equation">¶</a></span>\[log\ L_2 = \sum_{i=1}^{N_t} log[p \lambda_f e^{-\lambda_f t_i} +
+                                (1-p) \lambda_s e^{-\lambda_s t_i}]\]</div>
 <p>where <span class="math notranslate nohighlight">\(p\)</span> is a mixing parameter indicating the proportion of fast to
 slow process events in the sampled population.</p>
 <p>The BEC in this case can be estimated as:</p>
 <div class="math notranslate nohighlight" id="equation-4">
-<span class="eqno">(4)<a class="headerlink" href="#equation-4" title="Permalink to this equation">¶</a></span>\[\begin{split}BEC = \\frac{1}{\lambda_f - \lambda_s}
-      log \\frac{p\lambda_f}{(1-p)\lambda_s}\end{split}\]</div>
+<span class="eqno">(4)<a class="headerlink" href="#equation-4" title="Permalink to this equation">¶</a></span>\[BEC = \frac{1}{\lambda_f - \lambda_s}
+      log \frac{p\lambda_f}{(1-p)\lambda_s}\]</div>
 <p>The subclass <a class="reference internal" href="#bouts.BoutsMLE" title="bouts.BoutsMLE"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoutsMLE</span></code></a> offers the framework for these models.</p>
 </div>
 <div class="section" id="class-methods-summary">
@@ -359,8 +359,8 @@ fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
 <li><p><strong>params</strong> (<em>array_like</em>) – 1-D array with parameters to fit.  Currently must be 3-length,
 with mixing parameter <span class="math notranslate nohighlight">\(p\)</span>, density parameter
 <span class="math notranslate nohighlight">\(\lambda_f\)</span> and <span class="math notranslate nohighlight">\(\lambda_s\)</span>, in that order.</p></li>
-<li><p><strong>x</strong> (<em>array_like</em>) – Independent data array described by model with parameters <cite>p</cite>
-and <span class="math notranslate nohighlight">\(\lambda_f\)</span> and <span class="math notranslate nohighlight">\(\lambda_s\)</span>.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – Independent data array described by model with parameters <cite>p</cite>,
+<span class="math notranslate nohighlight">\(\lambda_f\)</span>, and <span class="math notranslate nohighlight">\(\lambda_s\)</span>.</p></li>
 <li><p><strong>transformed</strong> (<em>bool</em>) – Whether <cite>params</cite> are transformed and need to be un-transformed
 to calculate the likelihood.</p></li>
 </ul>
@@ -573,7 +573,7 @@ coefs.shape[1]</p>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.7 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>
