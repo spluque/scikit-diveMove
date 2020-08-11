@@ -2,4 +2,5 @@
  TDR class
 ===========
 
-.. automodule:: tdr
+.. automodule:: skdiveMove
+   :inherited-members:

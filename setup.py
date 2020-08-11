@@ -28,7 +28,9 @@ setup(
     packages=PACKAGES,
     include_package_data=True,
     # Below is redundant but safe
-    package_data={'tests': ["*.txt", "*.csv", "*.nc"]},
+    package_data={
+        'tests': ["*.txt", "*.csv", "*.nc"],
+        'skdiveMove': ["config_examples/*.json"]},
     install_requires=REQUIREMENTS,
     extras_require={
         "dev": DEV_REQUIRES,

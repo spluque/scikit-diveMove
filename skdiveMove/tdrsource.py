@@ -3,6 +3,7 @@
 """
 
 import xarray as xr
+from skdiveMove.helpers import get_var_sampling_interval
 
 _SPEED_NAMES = ["velocity", "speed"]
 
@@ -63,9 +64,35 @@ class TDRSource:
         self.tdr_file = tdr_file
 
     def __str__(self):
-        objcls = ("Time-Depth Recorder data -- Class {} object\n"
+        x = self.tdr
+        xdf = x.to_dataframe()
+        objcls = ("Time-Depth Recorder -- Class {} object\n"
                   .format(self.__class__.__name__))
-        return(objcls + "{}".format(self.tdr))
+        src = "{0:<20} {1}\n".format("Source File", self.tdr_file)
+        itv = ("{0:<20} {1}\n"
+               .format("Sampling interval",
+                       get_var_sampling_interval(x[self.depth_name])))
+        nsamples = "{0:<20} {1}\n".format("Number of Samples",
+                                          xdf.shape[0])
+        beg = "{0:<20} {1}\n".format("Sampling Begins",
+                                     xdf.index[0])
+        end = "{0:<20} {1}\n".format("Sampling Ends",
+                                     xdf.index[-1])
+        dur = "{0:<20} {1}\n".format("Total duration",
+                                     xdf.index[-1] - xdf.index[0])
+        drange = "{0:<20} [{1},{2}]\n".format("Measured depth range",
+                                              xdf[self.depth_name].min(),
+                                              xdf[self.depth_name].max())
+        others = "{0:<20} {1}\n".format("Other variables",
+                                        [x for x in xdf.columns
+                                         if x != self.depth_name])
+        attr_list = "Attributes:\n"
+        for key, val in sorted(x.attrs.items()):
+            attr_list += "{0:>35}: {1}\n".format(key, val)
+        attr_list = attr_list.rstrip("\n")
+
+        return(objcls + src + itv + nsamples + beg + end + dur + drange +
+               others + attr_list)
 
     def _get_depth(self):
         return(self.tdr[self.depth_name])

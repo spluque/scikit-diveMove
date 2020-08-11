@@ -13,7 +13,7 @@ Class and Methods Summary
    TDRPhases.get_dives_details
    TDRPhases.get_dive_deriv
    TDRPhases.wet_dry
-   TDRPhases.get_params
+   TDRPhases.get_phases_params
    TDRPhases.time_budget
    TDRPhases.stamp_dives
 
@@ -22,9 +22,10 @@ Class and Methods Summary
 import logging
 import numpy as np
 import pandas as pd
+from skdiveMove.zoc import ZOC
 from skdiveMove.core import robjs, cv, pandas2ri
 from skdiveMove.helpers import (get_var_sampling_interval, _cut_dive,
-                                rle_key)
+                                rle_key, _add_xr_attr)
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
@@ -32,11 +33,15 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-class TDRPhases:
+class TDRPhases(ZOC):
     """Core TDR phase identification routines
+
+    See help(TDRSource) for inherited attributes.
 
     Attributes
     ----------
+    wet_dry
+
     dives : dict
         Dictionary of dive activity data {'row_ids': pandas.DataFrame,
         'model': str, 'splines': dict, 'spline_derivs': pandas.DataFrame,
@@ -49,24 +54,44 @@ class TDRPhases:
         float}}
 
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        """Initialize TDRPhases instance
+
+        Parameters
+        ----------
+        *args : positional arguments
+            Passed to :meth:`TDRSource.__init__`
+        **kwargs : keyword arguments
+            Passed to :meth:`TDRSource.__init__`
+
+        """
+        ZOC.__init__(self, *args, **kwargs)
         self._wet_dry = None
         self.dives = dict(row_ids=None, model=None, splines=None,
                           spline_derivs=None, crit_vals=None)
         self.params = dict(wet_dry={}, dives={})
 
-    def detect_wet(self, depth, dry_thr=70, wet_cond=None, wet_thr=3610):
+    def __str__(self):
+        base = ZOC.__str__(self)
+        wetdry_params = self.get_phases_params("wet_dry")
+        dives_params = self.get_phases_params("dives")
+        return(base +
+               ("\n{0:<20} {1}\n{2:<20} {3}"
+                .format("Wet/Dry parameters:", wetdry_params,
+                        "Dives parameters:", dives_params)))
+
+    def detect_wet(self, dry_thr=70, wet_cond=None, wet_thr=3610,
+                   interp_wet=False):
         """Detect wet/dry activity phases
 
         Parameters
         ----------
-        depth : xarray.DataArray
-            DataArray with zero-offset corrected depth measurements.
         dry_thr : float, optional
         wet_cond : bool mask, optional
             A Pandas.Series bool mask indexed as `depth`.  Default is
             generated from testing for non-missing `depth`.
         wet_thr : float, optional
+        interp_wet : bool, optional
 
         Notes
         -----
@@ -76,7 +101,26 @@ class TDRPhases:
         stored with the class instance, as this information can be
         retrieved via the `.time_budget` method.
 
+        Examples
+        --------
+        ZOC using the "offset" method for convenience
+
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd("TDRPhases")
+        >>> tdrX.zoc("offset", offset=3)
+
+        Detect wet/dry phases
+
+        >>> tdrX.detect_wet()
+
+        Access the "phases" and "dry_thr" attributes
+
+        >>> tdrX.get_wet_activity("phases")
+        >>> tdrX.get_wet_activity("dry_thr")
+
         """
+        # Retrieve copy of depth from our own property
+        depth = self.depth_zoc
         depth_py = depth.to_series()
         time_py = depth_py.index
         dtime = get_var_sampling_interval(depth).total_seconds()
@@ -100,7 +144,24 @@ class TDRPhases:
         wet_dry_params = dict(dry_thr=dry_thr, wet_thr=wet_thr)
         self.params["wet_dry"].update(wet_dry_params)
 
-    def detect_dives(self, depth, dive_thr):
+        if interp_wet:
+            zdepth = depth.to_series()
+            iswet = phases["phase_label"] == "W"
+            iswetna = iswet & zdepth.isna()
+
+            if any(iswetna):
+                depth_intp = zdepth[iswet].interpolate(method="cubic")
+                zdepth[iswetna] = np.maximum(np.zeros_like(depth_intp),
+                                             depth_intp)
+                zdepth = zdepth.to_xarray()
+                zdepth.attrs = depth.attrs
+                _add_xr_attr(zdepth, "history", "interp_wet")
+                self._depth_zoc = zdepth
+                self._zoc_params.update(dict(interp_wet=interp_wet))
+
+        logger.info("Finished detecting wet/dry periods")
+
+    def detect_dives(self, dive_thr):
         """Identify dive events
 
         Set the ``dives`` attribute's "row_ids" dictionary element, and
@@ -108,15 +169,28 @@ class TDRPhases:
 
         Parameters
         ----------
-        depth : xarray.DataArray
-            DataArray with zero-offset corrected depth measurements.
         dive_thr : float
 
         Notes
         -----
         See details for arguments in diveMove's ``calibrateDepth``.
 
+        Examples
+        --------
+        ZOC using the "offset" method for convenience
+
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd("TDRPhases")
+        >>> tdrX.zoc("offset", offset=3)
+
+        Detect wet/dry phases and dives with 3 m threshold
+
+        >>> tdrX.detect_wet()
+        >>> tdrX.detect_dives(3)
+
         """
+        # Retrieve copy of depth from our own property
+        depth = self.depth_zoc
         depth_py = depth.to_series()
         act_phases = self.wet_dry["phase_label"]
         detDiveFun = robjs.r("""detDiveFun <- diveMove:::.detDive""")
@@ -137,7 +211,9 @@ class TDRPhases:
         self._wet_dry["phase_label"] = dive_activity
         self.params["dives"].update({'dive_thr': dive_thr})
 
-    def detect_dive_phases(self, depth, dive_model, smooth_par=0.1,
+        logger.info("Finished detecting dives")
+
+    def detect_dive_phases(self, dive_model, smooth_par=0.1,
                            knot_factor=3, descent_crit_q=0,
                            ascent_crit_q=0):
         """Detect dive phases
@@ -146,8 +222,6 @@ class TDRPhases:
 
         Parameters
         ----------
-        depth : xarray.DataArray
-            DataArray with zero-offset corrected depth measurements.
         dive_model : {"unimodal", "smooth.spline"}
         smooth_par : float, optional
         knot_factor : int, optional
@@ -158,7 +232,28 @@ class TDRPhases:
         -----
         See details for arguments in diveMove's ``calibrateDepth``.
 
+        Examples
+        --------
+        ZOC using the "offset" method for convenience
+
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd("TDRPhases")
+        >>> tdrX.zoc("offset", offset=3)
+
+        Detect wet/dry phases and dives with 3 m threshold
+
+        >>> tdrX.detect_wet()
+        >>> tdrX.detect_dives(3)
+
+        Detect dive phases using the "unimodal" method and selected
+        parameters
+
+        >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
+        ...                         ascent_crit_q=0, knot_factor=20)
+
         """
+        # Retrieve copy of depth from our own property
+        depth = self.depth_zoc
         depth_py = depth.to_series()
         phases_df = self.get_dives_details("row_ids")
         dive_ids = self.get_dives_details("row_ids", columns="dive_id")
@@ -232,8 +327,10 @@ class TDRPhases:
                       descent_crit_q=descent_crit_q,
                       ascent_crit_q=ascent_crit_q)))
 
+        logger.info("Finished detecting dive phases")
+
     def get_dives_details(self, key, columns=None):
-        """Accessor for the ``dives`` attribute
+        """Accessor for the `dives` attribute
 
         Parameters
         ----------
@@ -281,12 +378,16 @@ class TDRPhases:
 
     """
 
-    def get_params(self, key):
+    def get_phases_params(self, key):
         """Return parameters used for identifying wet/dry or diving phases.
 
         Parameters
         ----------
         key: {'wet_dry', 'dives'}
+
+        Returns
+        -------
+        out : dict
 
         """
         try:
@@ -411,6 +512,17 @@ class TDRPhases:
             DataFrame indexed by phase id, with categorical activity label
             for each phase, and beginning and ending times.
 
+        Examples
+        --------
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd("TDRPhases")
+        >>> tdrX.zoc("offset", offset=3)
+        >>> tdrX.detect_wet()
+        >>> tdrX.detect_dives(3)
+        >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
+        ...                         ascent_crit_q=0, knot_factor=20)
+        >>> tdrX.time_budget(ignore_z=True, ignore_du=True)
+
         """
         labels = self.wet_dry["phase_label"].reset_index()
         if ignore_z:
@@ -440,6 +552,17 @@ class TDRPhases:
             DataFrame indexed by dive ID, and three columns identifying
             which phase thy are in, and the beginning and ending time
             stamps.
+
+        Examples
+        --------
+        >>> from skdiveMove.tests import diveMove2skd
+        >>> tdrX = diveMove2skd("TDRPhases")
+        >>> tdrX.zoc("offset", offset=3)
+        >>> tdrX.detect_wet()
+        >>> tdrX.detect_dives(3)
+        >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
+        ...                         ascent_crit_q=0, knot_factor=20)
+        >>> tdrX.stamp_dives(ignore_z=True)
 
         """
         phase_lab = self.wet_dry["phase_label"]

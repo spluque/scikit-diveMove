@@ -1,0 +1,35 @@
+{
+    "log_level": "INFO",
+    "read": {
+	"depth_name": "depth",
+	"has_speed": true,
+	"load_dataset_kwargs": {}
+    },
+    "zoc": {
+	"required": true,
+	"method": "offset",
+	"parameters": {
+	    "offset": 3
+	}
+    },
+    "wet_dry": {
+	"dry_thr": 70,
+	"wet_thr": 3610,
+	"interp_wet": false
+    },
+    "dives": {
+	"dive_thr": 3,
+	"dive_model": "unimodal",
+	"smooth_par": 0.1,
+	"knot_factor": 3,
+	"descent_crit_q": 0,
+	"ascent_crit_q": 0
+    },
+    "speed_calib": {
+	"required": true,
+	"tau": 0.1,
+	"contour_level": 0.1,
+	"z": 2,
+	"bad": [0, 0]
+    }
+}

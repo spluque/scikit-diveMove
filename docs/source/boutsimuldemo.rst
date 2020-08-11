@@ -1,3 +1,5 @@
+.. _boutsimuldemo-label:
+
 ==================
  Simulating bouts
 ==================

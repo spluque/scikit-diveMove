@@ -5,7 +5,7 @@
 import unittest as ut
 # import numpy.testing as npt
 import xarray as xr
-import skdiveMove as skdive
+import skdiveMove.tdrsource as tdrsrc
 from skdiveMove.tests import diveMove2skd
 
 
@@ -15,15 +15,15 @@ class TestTDRSource(ut.TestCase):
     """
     def setUp(self):
         # An instance to work with
-        self.tdrX = diveMove2skd(True)
+        self.tdrX = diveMove2skd("TDRSource", True)
 
     def test_init(self):
-        self.assertIsInstance(self.tdrX, skdive.tdr.TDRSource)
+        self.assertIsInstance(self.tdrX, tdrsrc.TDRSource)
         self.assertIsInstance(self.tdrX.tdr, xr.Dataset)
         self.assertTrue(self.tdrX.has_speed)
 
         # Test no speed
-        tdr = diveMove2skd(True, False)
+        tdr = diveMove2skd("TDRSource", False)
         self.assertFalse(tdr.has_speed)
 
     def test_str(self):

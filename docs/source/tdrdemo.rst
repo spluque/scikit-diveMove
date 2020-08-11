@@ -1,3 +1,5 @@
+.. _tdrdemo-label:
+
 ===========================
  Diving behaviour analysis
 ===========================
@@ -13,8 +15,7 @@ up a logger to monitor progress to this section.
 .. jupyter-execute::
 
    # Set up
-   import os
-   import os.path as osp
+   import pkg_resources as pkg_rsrc
    import matplotlib.pyplot as plt
    import skdiveMove as skdive
 
@@ -45,8 +46,10 @@ Load `diveMove`'s example data, using ``TDR.__init__`` method, and print:
 .. jupyter-execute::
    :linenos:
 
-   here = osp.dirname(os.getcwd())
-   ifile = osp.join(here, "skdiveMove", "tests", "data", "ag_mk7_2002_022.nc")
+   ifile = (pkg_rsrc
+            .resource_filename("skdiveMove",
+                               ("tests/data/"
+                                "ag_mk7_2002_022.nc")))
    tdrX = skdive.TDR(ifile, depth_name="depth", has_speed=True)
    print(tdrX)
 
@@ -71,14 +74,13 @@ Access measured data:
    # same with this particular data set.
 
 
-Plotting measured data
-======================
+Plot measured data:
 
 .. jupyter-execute::
    :linenos:
 
    tdrX.plot(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
-             depth_lim=[95, -1], figsize=_FIG1X1);
+             depth_lim=[-1, 95], figsize=_FIG1X1);
 
 Plot concurrent data:
 
@@ -87,14 +89,20 @@ Plot concurrent data:
 
    ccvars = ["light", "speed"]
    tdrX.plot(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
-             depth_lim=[95, -1], concur_vars=ccvars, figsize=_FIG3X1);
+             depth_lim=[-1, 95], concur_vars=ccvars, figsize=_FIG3X1);
 
 
 Calibrate measurements
 ======================
 
-Depth measurements can be calibrated in a single step with the `.calibrate`
-method:
+Calibration of TDR measurements involves the following steps, which rely on
+data from pressure sensors (barometers):
+
+
+Zero offset correction (ZOC) of depth measurements
+--------------------------------------------------
+
+Using the "offset" method here for speed performance reasons:
 
 .. jupyter-execute::
    :linenos:
@@ -110,29 +118,76 @@ method:
            "descent_crit_q": 0,
            "ascent_crit_q": 0}
 
-   # Apply zero-offset correction with the "offset" method, and set other
-   # parameters for detection of wet/dry phases and dive phases
-   tdrX.calibrate(zoc_method="offset", offset=pars["offset_zoc"],
-                  dry_thr=pars["dry_thr"],
-                  wet_thr=pars["wet_thr"],
-                  dive_thr=pars["dive_thr"],
-                  dive_model=pars["dive_model"],
-                  smooth_par=pars["smooth_par"],
-                  knot_factor=pars["knot_factor"],
-                  descent_crit_q=pars["descent_crit_q"],
-                  ascent_crit_q=pars["ascent_crit_q"])
+   tdrX.zoc("offset", offset=pars["offset_zoc"])
 
    # Plot ZOC job
    tdrX.plot_zoc(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
                  figsize=(13, 6));
 
-Alternatively, each of the steps of the calibration process performed by
-this method can be done in a stepwise manner, allowing finer control.
-Please see the `TDR` class API section.
+
+Detection of wet vs dry phases
+------------------------------
+
+Periods of missing depth measurements longer than `dry_thr` are considered
+dry phases, whereas periods that are briefer than `wet_thr` are not
+considered to represent a transition to a wet phase.
+
+.. jupyter-execute::
+   :linenos:
+
+   tdrX.detect_wet(dry_thr=pars["dry_thr"], wet_thr=pars["wet_thr"])
+
+Other options, not explored here, include providing a boolean mask Series
+to indicate which periods to consider wet phases (argument `wet_cond`), and
+whether to linearly interpolate depth through wet phases with duration
+below `wet_thr` (argument `interp_wet`).
+
+
+Detection of dive events
+------------------------
+
+When depth measurements are greater than `dive_thr`, a dive event is deemed
+to have started, ending when measurements cross that threshold again.
+
+.. jupyter-execute::
+   :linenos:
+
+   tdrX.detect_dives(dive_thr=pars["dive_thr"])
+
+
+Detection of dive phases
+------------------------
+
+Two methods for dive phase detection are available ("unimodal" and
+"smooth_spline"), and this demo uses the default "unimodal" method:
+
+.. jupyter-execute::
+   :linenos:
+
+   tdrX.detect_dive_phases(dive_model=pars["dive_model"],
+                           smooth_par=pars["smooth_par"],
+                           knot_factor=pars["knot_factor"],
+                           descent_crit_q=pars["descent_crit_q"],
+                           ascent_crit_q=pars["ascent_crit_q"])
+
+   print(tdrX)
+
+Alternatively, all these steps can be performed together via the
+`calibrate` function:
+
+.. jupyter-execute::
+   :linenos:
+
+   help(skdive.calibrate)
+
+which is demonstrated in :ref:`boutsdemo-label`.
 
 
 Plot dive phases
 ----------------
+
+Once TDR data are properly calibrated and phases detected, results can be
+visualized:
 
 .. jupyter-execute::
    :linenos:
@@ -146,8 +201,35 @@ Plot dive phases
    tdrX.plot_dive_model(diveNo=20, figsize=(10, 10));
 
 
+Calibrate speed measurements
+----------------------------
+
+In addition to the calibration procedure described above, other variables
+in the data set may also need to be calibrated.  `skdiveMove` provides
+support for calibrating speed sensor data, by taking advantage of its
+relationship with the rate of change in depth in the vertical dimension.
+
+.. jupyter-execute::
+
+   fig, ax = plt.subplots(figsize=(7, 6))
+   # Consider only changes in depth larger than 2 m
+   tdrX.calibrate_speed(z=2, ax=ax)
+   print(tdrX.speed_calib_fit.summary())
+
+Notice processing steps have been appended to the `history` attribute of
+the `DataArray`:
+
+.. jupyter-execute::
+
+   print(tdrX.get_depth("zoc"))
+
+.. jupyter-execute::
+
+   print(tdrX.get_speed("calibrated"))
+
+
 Access attributes of `TDR` instance
------------------------------------
+===================================
 
 Following calibration, use the different accessor methods:
 
@@ -175,28 +257,6 @@ Following calibration, use the different accessor methods:
 .. jupyter-execute::
 
    print(tdrX.get_dives_details("crit_vals"))
-
-
-Calibrate speed measurements
-----------------------------
-
-.. jupyter-execute::
-
-   fig, ax = plt.subplots(figsize=(7, 6))
-   # Consider only changes in depth larger than 2 m
-   tdrX.calibrate_speed(z=2, ax=ax)
-   print(tdrX.speed_calib_fit.summary())
-
-Notice processing steps have been appended to the `history` attribute of
-the `DataArray`:
-
-.. jupyter-execute::
-
-   print(tdrX.get_depth("zoc"))
-
-.. jupyter-execute::
-
-   print(tdrX.get_speed("calibrated"))
 
 
 Time budgets
