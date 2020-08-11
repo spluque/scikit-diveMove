@@ -213,8 +213,8 @@ Therefore, there are two sets of bounds required.
    lda1_bnd = (-5, None)              # bounds for `lambda1`
    lda2_bnd = (-10, None)             # bounds for `lambda2`
    bnd1 = (p_bnd, lda1_bnd, lda2_bnd)
-   p_bnd = (1e-8, None)
-   lda1_bnd = (1e-8, None)
+   p_bnd = (1e-2, None)
+   lda1_bnd = (1e-4, None)
    lda2_bnd = (1e-8, None)
    bnd2 = (p_bnd, lda1_bnd, lda2_bnd)
    fit1, fit2 = postdives_mlebouts.fit(init_pars,

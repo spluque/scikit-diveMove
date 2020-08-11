@@ -9,7 +9,7 @@ Functions
 
 .. autosummary::
 
-   dump_template
+   dump_config_template
    assign_xr_attrs
 
 
@@ -20,7 +20,7 @@ API
 
 import json
 
-__all__ = ["dump_template", "assign_xr_attrs"]
+__all__ = ["dump_config_template", "assign_xr_attrs"]
 
 _SENSOR_DATA_CONFIG = {
     'sampling': "regular",
@@ -91,10 +91,10 @@ _DATASET_CONFIG = {
 }
 
 
-def dump_template(fname, config_type):
+def dump_config_template(fname, config_type):
     """Dump configuration file
 
-    Dump a json configuration template file to buil metadata for a Dataset
+    Dump a json configuration template file to build metadata for a Dataset
     or DataArray.
 
     Parameters
@@ -106,9 +106,9 @@ def dump_template(fname, config_type):
 
     Examples
     --------
-    >>> import skdiveMove.metadata as skmeta
-    >>> skmeta.dump_template("mydataset.json", "dataset")
-    >>> skmeta.dump_template("mysensor.json", "sensor")
+    >>> import skdiveMove.metadata as metadata
+    >>> metadata.dump_config_template("mydataset.json", "dataset")
+    >>> metadata.dump_config_template("mysensor.json", "sensor")
 
     edit the files to your specifications.
 
@@ -141,7 +141,7 @@ def assign_xr_attrs(obj, config_file):
     --------
     >>> import numpy as np
     >>> import xarray as xr
-    >>> import skdiveMove.metadata as skmeta
+    >>> import skdiveMove.metadata as metadata
 
     Synthetic dataset with depth and speed
 
@@ -155,9 +155,9 @@ def assign_xr_attrs(obj, config_file):
 
     Dump dataset and sensor templates
 
-    >>> skmeta.dump_template("mydataset.json", "dataset")
-    >>> skmeta.dump_template("P_sensor.json", "sensor")
-    >>> skmeta.dump_template("S_sensor.json", "sensor")
+    >>> metadata.dump_config_template("mydataset.json", "dataset")
+    >>> metadata.dump_config_template("P_sensor.json", "sensor")
+    >>> metadata.dump_config_template("S_sensor.json", "sensor")
 
     Edit the templates as appropriate, load and assign to objects
 

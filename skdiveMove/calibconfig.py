@@ -3,6 +3,8 @@
 """
 import json
 
+__all__ = ["dump_config_template", "dump_config", "read_config"]
+
 _DEFAULT_CONFIG = {
     'log_level': "INFO",
     'read': {
@@ -40,7 +42,7 @@ _DEFAULT_CONFIG = {
 _DUMP_INDENT = 4
 
 
-def dump_template(fname):
+def dump_config_template(fname):
     """Dump configuration template file
 
     Dump a json configuration template file to set up TDR calibration.
@@ -52,8 +54,7 @@ def dump_template(fname):
 
     Examples
     --------
-    >>> import skdiveMove.calibconfig as skconfig
-    >>> skconfig.dump_template("tdr_config.json")
+    >>> dump_template("tdr_config.json")
 
     Edit the file to your specifications.
 
@@ -100,5 +101,5 @@ def dump_config(fname, config_dict):
 
 
 if __name__ == '__main__':
-    dump_template("tdr_config.json")
+    dump_config_template("tdr_config.json")
     config = read_config("tdr_config.json")

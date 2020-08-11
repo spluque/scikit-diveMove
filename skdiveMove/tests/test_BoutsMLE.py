@@ -59,9 +59,9 @@ class TestBoutsMLE(ut.TestCase):
         self.mle_opts1 = dict(method="L-BFGS-B",
                               bounds=(p_bnd, lda0_bnd, lda1_bnd))
         # Fixed bounds fit 2
-        p_bnd = (1e-1, None)
-        lda0_bnd = (1e-3, None)
-        lda1_bnd = (1e-6, None)
+        p_bnd = (1e-2, None)
+        lda0_bnd = (1e-4, None)
+        lda1_bnd = (1e-8, None)
         self.mle_opts2 = dict(method="L-BFGS-B",
                               bounds=(p_bnd, lda0_bnd, lda1_bnd))
 

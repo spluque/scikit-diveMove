@@ -18,7 +18,8 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def calibrate(x, tau, contour_level, z=0, bad=[0, 0], plot=True, ax=None):
+def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
+                    plot=True, ax=None):
     """Calibration based on kernel density estimation
 
     Parameters

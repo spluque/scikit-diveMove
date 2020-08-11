@@ -19,6 +19,10 @@
 .. image:: https://codecov.io/gh/spluque/scikit-diveMove/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/spluque/scikit-diveMove
 
+.. image:: https://img.shields.io/pypi/dm/scikit-diveMove
+   :target: https://pypi.python.org/pypi/scikit-diveMove
+   :alt: PyPI - Downloads
+
 
 `scikit-diveMove` is a Python interface to R package `diveMove`_ for
 scientific data analysis, with a focus on diving behaviour analysis.  It

@@ -6,8 +6,7 @@ import os
 import unittest as ut
 import pkg_resources as pkg_rsrc
 from tempfile import NamedTemporaryFile
-from skdiveMove.tdr import TDR
-from skdiveMove.calibrate_tdr import calibrate
+import skdiveMove as skdive
 import skdiveMove.calibconfig as calibconfig
 
 
@@ -25,14 +24,14 @@ class TestCalibrate(ut.TestCase):
                             .resource_filename("skdiveMove", configfn))
 
     def test_calibrate(self):
-        tdr_calib = calibrate(self.tdr_file, self.config_file)
-        self.assertIsInstance(tdr_calib, TDR)
+        tdr_calib = skdive.calibrate(self.tdr_file, self.config_file)
+        self.assertIsInstance(tdr_calib, skdive.TDR)
 
     def test_config_template(self):
         conffile = NamedTemporaryFile("r+", prefix="skdiveMove_",
                                       delete=False)
 
-        calibconfig.dump_template(conffile.name)
+        calibconfig.dump_config_template(conffile.name)
         config = calibconfig.read_config(conffile.name)
         self.assertDictEqual(config, calibconfig._DEFAULT_CONFIG)
         os.remove(conffile.name)

@@ -7,10 +7,11 @@ import numpy as np
 import pandas as pd
 from skdiveMove.tdrphases import TDRPhases
 import skdiveMove.plotting as plotting
-import skdiveMove.calibrate_speed as speedcal
+import skdiveMove.calibspeed as speedcal
 from skdiveMove.helpers import (get_var_sampling_interval,
                                 _get_dive_indices, _add_xr_attr,
                                 _one_dive_stats, _speed_stats)
+import skdiveMove.calibconfig as calibconfig
 import xarray as xr
 
 
@@ -129,9 +130,9 @@ class TDR(TDRPhases):
 
         kde_data = pd.concat((rddepth.rename("depth_rate"),
                               curspeed), axis=1)
-        qfit, ax = speedcal.calibrate(kde_data, tau=tau,
-                                      contour_level=contour_level,
-                                      z=z, bad=bad, **kwargs)
+        qfit, ax = speedcal.calibrate_speed(kde_data, tau=tau,
+                                            contour_level=contour_level,
+                                            z=z, bad=bad, **kwargs)
         self.speed_calib_fit = qfit
         logger.info("Finished calibrating speed")
 
@@ -639,6 +640,59 @@ class TDR(TDRPhases):
         tdr_i = tdr[dict(date_time=idxs.astype(int))]
 
         return(tdr_i)
+
+
+def calibrate(tdr_file, config_file=None):
+    """Perform all major TDR calibration operations
+
+    Parameters
+    ----------
+    tdr_file : str, Path or xarray.backends.*DataStore
+        As first argument for :func:`xarray.load_dataset`.
+    config_file : str
+        A valid string path for TDR calibration configuration file.
+
+    Returns
+    -------
+    out : TDR
+
+    See Also
+    --------
+    dump_config_template : configuration template
+
+    """
+    if config_file is None:
+        config = calibconfig._DEFAULT_CONFIG
+    else:
+        config = calibconfig.read_config(config_file)
+
+    logger = logging.getLogger(__name__)
+    logger.setLevel(config["log_level"])
+
+    load_dataset_kwargs = config["read"].pop("load_dataset_kwargs")
+    logger.info("Reading config: {}, {}"
+                .format(config["read"], load_dataset_kwargs))
+    tdr = TDR(tdr_file, **config["read"], **load_dataset_kwargs)
+
+    do_zoc = config["zoc"].pop("required")
+    if do_zoc:
+        logger.info("ZOC config: {}".format(config["zoc"]))
+        tdr.zoc(config["zoc"]["method"], **config["zoc"]["parameters"])
+
+    logger.info("Wet/Dry config: {}".format(config["wet_dry"]))
+    tdr.detect_wet(**config["wet_dry"])
+
+    logger.info("Dives config: {}".format(config["dives"]))
+    tdr.detect_dives(config["dives"].pop("dive_thr"))
+    tdr.detect_dive_phases(**config["dives"])
+
+    do_speed_calib = bool(config["speed_calib"].pop("required"))
+    if do_speed_calib:
+        logger.info("Speed calibration config: {}"
+                    .format(config["speed_calib"]))
+        tdr.calibrate_speed(**config["speed_calib"], plot=False)
+
+    return(tdr)
 
 
 if __name__ == '__main__':

@@ -48,16 +48,17 @@ Functions
 .. autosummary::
 
    calibrate
+   dump_config_template
 
 API
 ---
 
 """
 
-from skdiveMove.tdr import TDR
-from skdiveMove.calibrate_tdr import calibrate
+from skdiveMove.tdr import TDR, calibrate
+from skdiveMove.calibconfig import dump_config_template
 
 __author__ = "Sebastian Luque <spluque@gmail.com>"
 __license__ = "AGPLv3"
-__version__ = "0.1.8"
-__all__ = ["TDR", "calibrate"]
+__version__ = "0.1.9"
+__all__ = ["TDR", "calibrate", "dump_config_template"]
