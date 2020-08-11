@@ -4,8 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bout analysis &#8212; skdiveMove 0.1.7 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bout analysis &#8212; skdiveMove 0.1.8 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -180,7 +180,7 @@ methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
 <dd><p>1D array with input data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>array_like</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -191,7 +191,7 @@ methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
 <dd><p>Method used for calculating the histogram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -203,7 +203,7 @@ methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
 log-frequencies of <cite>x</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -215,7 +215,7 @@ log-frequencies of <cite>x</cite>.</p>
 <p>Implementing default as from NLS method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns, and indexed by
+<dd class="field-odd"><p><strong>coefs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -223,7 +223,7 @@ parameter names “a” and “lambda”.</p>
 coefs.shape[1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ndarray, shape (n,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -235,12 +235,12 @@ coefs.shape[1]</p>
 <p>Default is non-linear least squares method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p>
+<dd class="field-odd"><p><strong>start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – DataFrame with coefficients for each process in columns.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – Coefficients of the model.</p></li>
-<li><p><strong>pcov</strong> (<em>2D array</em>) – Covariance of coefs.</p></li>
+<li><p><strong>coefs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – Coefficients of the model.</p></li>
+<li><p><strong>pcov</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">2D</span> <span class="pre">array</span></code>) – Covariance of coefs.</p></li>
 </ul>
 </p>
 </dd>
@@ -255,20 +255,20 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_break</strong> (<em>array_like</em>) – One- or two-element array with values determining the break(s)
+<li><p><strong>x_break</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – One- or two-element array with values determining the break(s)
 for broken stick model, such that x &lt; x_break[0] is first
 process, x &gt;= x_break[1] &amp; x &lt; x_break[2] is second process,
 and x &gt;= x_break[2] is third one.</p></li>
-<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to plot the broken stick model.</p></li>
-<li><p><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – An Axes instance to use as target.  Default is to create one.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to plotting function.</p></li>
+<li><p><strong>plot</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to plot the broken stick model.</p></li>
+<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.Axes</span></code>, <em>optional</em>) – An Axes instance to use as target.  Default is to create one.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Passed to plotting function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>out</strong> – DataFrame with coefficients for each process.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -280,9 +280,9 @@ and x &gt;= x_break[2] is third one.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns, and indexed by
+<li><p><strong>coefs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p></li>
-<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.Axes</span> <span class="pre">instance</span></code>) – An Axes instance to use as target.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -307,14 +307,14 @@ parameter names “a” and “lambda”.</p></li>
 <dd><p>Calculate bout ending criteria from model coefficients</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fit</strong> (<em>scipy.optimize.OptimizeResult</em>) – Object with the optimization result, having a <cite>x</cite> attribute
+<dd class="field-odd"><p><strong>fit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.optimize.OptimizeResult</span></code>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -329,11 +329,13 @@ of a single float is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with starting values for coefficients of each process
+<li><p><strong>start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – DataFrame with starting values for coefficients of each process
 in columns.  These can come from the “broken stick” method as
 in <a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Bouts.init_pars()</span></code></a>, and will be transformed to minimize
 the first log likelihood function.</p></li>
-<li><p><strong>fit2_opts</strong> (<em>fit1_opts</em><em>,</em>) – Dictionaries with keywords to be pass to
+<li><p><strong>fit1_opts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Dictionaries with keywords to be pass to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code>, for the first and second fits.</p></li>
+<li><p><strong>fit2_opts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Dictionaries with keywords to be pass to
 <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code>, for the first and second fits.</p></li>
 </ul>
 </dd>
@@ -342,7 +344,7 @@ the first log likelihood function.</p></li>
 fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.optimize.OptimizeResult</span></code></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -356,12 +358,12 @@ fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>array_like</em>) – 1-D array with parameters to fit.  Currently must be 3-length,
+<li><p><strong>params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – 1-D array with parameters to fit.  Currently must be 3-length,
 with mixing parameter <span class="math notranslate nohighlight">\(p\)</span>, density parameter
 <span class="math notranslate nohighlight">\(\lambda_f\)</span> and <span class="math notranslate nohighlight">\(\lambda_s\)</span>, in that order.</p></li>
-<li><p><strong>x</strong> (<em>array_like</em>) – Independent data array described by model with parameters <cite>p</cite>,
+<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – Independent data array described by model with parameters <cite>p</cite>,
 <span class="math notranslate nohighlight">\(\lambda_f\)</span>, and <span class="math notranslate nohighlight">\(\lambda_s\)</span>.</p></li>
-<li><p><strong>transformed</strong> (<em>bool</em>) – Whether <cite>params</cite> are transformed and need to be un-transformed
+<li><p><strong>transformed</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether <cite>params</cite> are transformed and need to be un-transformed
 to calculate the likelihood.</p></li>
 </ul>
 </dd>
@@ -381,9 +383,9 @@ to calculate the likelihood.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fit</strong> (<em>scipy.optimize.OptimizeResult</em>) – Object with the optimization result, having a <cite>x</cite> attribute
+<li><p><strong>fit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.optimize.OptimizeResult</span></code>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p></li>
-<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.Axes</span> <span class="pre">instance</span></code>) – An Axes instance to use as target.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -402,9 +404,9 @@ with coefficients of the solution.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fit</strong> (<em>scipy.optimize.OptimizeResult</em>) – Object with the optimization result, having a <cite>x</cite> attribute
+<li><p><strong>fit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.optimize.OptimizeResult</span></code>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p></li>
-<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.Axes</span> <span class="pre">instance</span></code>) – An Axes instance to use as target.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -430,14 +432,14 @@ with coefficients of the solution.</p></li>
 <p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns.</p>
+<dd class="field-odd"><p><strong>coefs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – DataFrame with model coefficients in columns.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
 coefs.shape[1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ndarray, shape (n,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -449,12 +451,12 @@ coefs.shape[1]</p>
 <p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p>
+<dd class="field-odd"><p><strong>start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – DataFrame with coefficients for each process in columns.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – Coefficients of the model.</p></li>
-<li><p><strong>pcov</strong> (<em>2D array</em>) – Covariance of coefs.</p></li>
+<li><p><strong>coefs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – Coefficients of the model.</p></li>
+<li><p><strong>pcov</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">2D</span> <span class="pre">array</span></code>) – Covariance of coefs.</p></li>
 </ul>
 </p>
 </dd>
@@ -468,9 +470,9 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<em>pandas.DataFrame</em>) – DataFrame with model coefficients in columns.</p></li>
-<li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
+<li><p><strong>coefs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – DataFrame with model coefficients in columns.</p></li>
+<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.Axes</span> <span class="pre">instance</span></code>) – An Axes instance to use as target.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -491,16 +493,16 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>pandas.Series</em>) – Series with data to classify according to <cite>bec</cite>.</p></li>
-<li><p><strong>bec</strong> (<em>array_like</em>) – Array with bout-ending criteria. It is assumed to be sorted.</p></li>
-<li><p><strong>as_diff</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to apply <cite>diff</cite> on <cite>x</cite> so it matches <cite>bec</cite>’s scale.</p></li>
+<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.Series</span></code>) – Series with data to classify according to <cite>bec</cite>.</p></li>
+<li><p><strong>bec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>) – Array with bout-ending criteria. It is assumed to be sorted.</p></li>
+<li><p><strong>as_diff</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to apply <cite>diff</cite> on <cite>x</cite> so it matches <cite>bec</cite>’s scale.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>out</strong> – Integer array with the same shape as <cite>x</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -573,14 +575,14 @@ coefs.shape[1]</p>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

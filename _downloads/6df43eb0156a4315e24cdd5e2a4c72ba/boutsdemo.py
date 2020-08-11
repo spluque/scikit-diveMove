@@ -1,6 +1,8 @@
 # Set up
+import pkg_resources as pkg_rsrc
 import pandas as pd
 import matplotlib.pyplot as plt
+from skdiveMove import calibrate
 from skdiveMove.tests import diveMove2skd
 import skdiveMove.bouts as skbouts
 
@@ -15,25 +17,15 @@ pd.set_option("display.precision", 3)
 np.set_printoptions(precision=3, sign="+")
 %matplotlib inline
 
-tdrX = diveMove2skd()
-pars = {"offset_zoc": 3,
-        "dry_thr": 70,
-        "wet_thr": 3610,
-        "dive_thr": 3,
-        "dive_model": "unimodal",
-        "smooth_par": 0.1,
-        "knot_factor": 20,
-        "descent_crit_q": 0.01,
-        "ascent_crit_q": 0}
-
-tdrX.calibrate(zoc_method="offset", offset=pars["offset_zoc"],
-               dry_thr=pars["dry_thr"], wet_thr=pars["dry_thr"],
-               dive_thr=pars["dive_thr"],
-               dive_model=pars["dive_model"],
-               smooth_par=pars["smooth_par"],
-               knot_factor=pars["knot_factor"],
-               descent_crit_q=pars["descent_crit_q"],
-               ascent_crit_q=pars["ascent_crit_q"])
+config_file = (pkg_rsrc
+               .resource_filename("skdiveMove",
+                                  ("config_examples/"
+                                   "ag_mk7_2002_022_config.json")))
+tdr_file = (pkg_rsrc
+            .resource_filename("skdiveMove",
+                               ("tests/data/"
+                                "ag_mk7_2002_022.nc")))
+tdrX = calibrate(tdr_file, config_file)
 stats = tdrX.dive_stats()
 stamps = tdrX.stamp_dives(ignore_z=True)
 stats_tab = pd.concat((stamps, stats), axis=1)

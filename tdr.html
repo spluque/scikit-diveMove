@@ -4,8 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TDR class &#8212; skdiveMove 0.1.7 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TDR class &#8212; skdiveMove 0.1.8 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="boutsimuldemo.html" title="Simulating bouts"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">TDR class</a></li> 
       </ul>
     </div>  
@@ -47,10 +47,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-tdr">
-<span id="tdr-class"></span><h1>TDR class<a class="headerlink" href="#module-tdr" title="Permalink to this headline">¶</a></h1>
-<p>TDR objects homologous to <cite>R</cite> package diveMove’s main classes</p>
-<p>The <a class="reference internal" href="#tdr.TDR" title="tdr.TDR"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDR</span></code></a> class aims to be a comprehensive class to encapsulate the
+  <div class="section" id="module-skdiveMove">
+<span id="tdr-class"></span><h1>TDR class<a class="headerlink" href="#module-skdiveMove" title="Permalink to this headline">¶</a></h1>
+<p>Top-level class for interacting with diveMove</p>
+<p>The <a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDR</span></code></a> class aims to be a comprehensive class to encapsulate the
 processing of <cite>TDR</cite> records from a data file.</p>
 <p>This module instantiates an <cite>R</cite> session to interact with low-level
 functions and methods of package <cite>diveMove</cite>.</p>
@@ -65,25 +65,22 @@ functions and methods of package <cite>diveMove</cite>.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR" title="tdr.TDR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Base class encapsulating TDR objects and processing</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tdr.TDR.zoc" title="tdr.TDR.zoc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.zoc</span></code></a>([method])</p></td>
-<td><p>Zero offset correction</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#skdiveMove.TDR.zoc" title="skdiveMove.TDR.zoc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.zoc</span></code></a>([method])</p></td>
+<td><p>Apply zero offset correction to depth measurements</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR.detect_wet" title="tdr.TDR.detect_wet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_wet</span></code></a>([interp_wet])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.detect_wet" title="skdiveMove.TDR.detect_wet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_wet</span></code></a>([dry_thr, wet_cond, wet_thr, …])</p></td>
 <td><p>Detect wet/dry activity phases</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tdr.TDR.detect_dives" title="tdr.TDR.detect_dives"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_dives</span></code></a>(dive_thr)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#skdiveMove.TDR.detect_dives" title="skdiveMove.TDR.detect_dives"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_dives</span></code></a>(dive_thr)</p></td>
 <td><p>Identify dive events</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR.detect_dive_phases" title="tdr.TDR.detect_dive_phases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_dive_phases</span></code></a>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.detect_dive_phases" title="skdiveMove.TDR.detect_dive_phases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_dive_phases</span></code></a>(dive_model[, …])</p></td>
 <td><p>Detect dive phases</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tdr.TDR.calibrate" title="tdr.TDR.calibrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.calibrate</span></code></a>([zoc_method, dry_thr, …])</p></td>
-<td><p>Calibrate TDR object</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR.calibrate_speed" title="tdr.TDR.calibrate_speed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.calibrate_speed</span></code></a>([tau, contour_level, z, bad])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#skdiveMove.TDR.calibrate_speed" title="skdiveMove.TDR.calibrate_speed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.calibrate_speed</span></code></a>([tau, contour_level, z, bad])</p></td>
 <td><p>Calibrate speed measurements</p></td>
 </tr>
 </tbody>
@@ -97,14 +94,14 @@ functions and methods of package <cite>diveMove</cite>.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR.dive_stats" title="tdr.TDR.dive_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.dive_stats</span></code></a>([depth_deriv])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.dive_stats" title="skdiveMove.TDR.dive_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.dive_stats</span></code></a>([depth_deriv])</p></td>
 <td><p>Calculate dive statistics in <cite>TDR</cite> records</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tdr.TDR.time_budget" title="tdr.TDR.time_budget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.time_budget</span></code></a>(**kwargs)</p></td>
-<td><p>Summary of wet/dry activities at the broadest scale</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#skdiveMove.TDR.time_budget" title="skdiveMove.TDR.time_budget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.time_budget</span></code></a>([ignore_z, ignore_du])</p></td>
+<td><p>Summary of wet/dry activities at the broadest time scale</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR.stamp_dives" title="tdr.TDR.stamp_dives"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.stamp_dives</span></code></a>(**kwargs)</p></td>
-<td><p>Identify the wet/dry activity phase corresponding to each dive</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.stamp_dives" title="skdiveMove.TDR.stamp_dives"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.stamp_dives</span></code></a>([ignore_z])</p></td>
+<td><p>Identify the wet activity phase corresponding to each dive</p></td>
 </tr>
 </tbody>
 </table>
@@ -117,115 +114,52 @@ functions and methods of package <cite>diveMove</cite>.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR.plot" title="tdr.TDR.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot</span></code></a>([concur_vars, concur_var_titles])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.plot" title="skdiveMove.TDR.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot</span></code></a>([concur_vars, concur_var_titles])</p></td>
 <td><p>Plot TDR object</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tdr.TDR.plot_zoc" title="tdr.TDR.plot_zoc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot_zoc</span></code></a>([xlim, ylim])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#skdiveMove.TDR.plot_zoc" title="skdiveMove.TDR.plot_zoc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot_zoc</span></code></a>([xlim, ylim])</p></td>
 <td><p>Plot zero offset correction filters</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tdr.TDR.plot_phases" title="tdr.TDR.plot_phases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot_phases</span></code></a>([diveNo, concur_vars, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.plot_phases" title="skdiveMove.TDR.plot_phases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot_phases</span></code></a>([diveNo, concur_vars, …])</p></td>
 <td><p>Plot major phases found on the object</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tdr.TDR.plot_dive_model" title="tdr.TDR.plot_dive_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot_dive_model</span></code></a>([diveNo])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#skdiveMove.TDR.plot_dive_model" title="skdiveMove.TDR.plot_dive_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot_dive_model</span></code></a>([diveNo])</p></td>
 <td><p>Plot dive model for selected dive</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.calibrate" title="skdiveMove.calibrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibrate</span></code></a>(tdr_file[, config_file])</p></td>
+<td><p>Perform all major TDR calibration operations</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="tdr.TDR">
-<em class="property">class </em><code class="sig-prename descclassname">tdr.</code><code class="sig-name descname">TDR</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR">
+<em class="property">class </em><code class="sig-prename descclassname">skdiveMove.</code><code class="sig-name descname">TDR</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class encapsulating TDR objects and processing</p>
-<p>TDR subclasses <cite>TDRSource</cite> to provide comprehensive TDR processing
+<p>TDR subclasses <cite>TDRPhases</cite> to provide comprehensive TDR processing
 capabilities.</p>
+<p>See help(TDR) for inherited attributes.</p>
 <dl class="py attribute">
-<dt id="tdr.TDR.tdr_file">
-<code class="sig-name descname">tdr_file</code><a class="headerlink" href="#tdr.TDR.tdr_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>String indicating the file where data comes from.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="tdr.TDR.tdr">
-<code class="sig-name descname">tdr</code><a class="headerlink" href="#tdr.TDR.tdr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dataset with input data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>xarray.Dataset</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="tdr.TDR.depth_name">
-<code class="sig-name descname">depth_name</code><a class="headerlink" href="#tdr.TDR.depth_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of Dataset variable with depth measurements.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="tdr.TDR.has_speed">
-<code class="sig-name descname">has_speed</code><a class="headerlink" href="#tdr.TDR.has_speed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether input data include speed measurements.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="tdr.TDR.speed_name">
-<code class="sig-name descname">speed_name</code><a class="headerlink" href="#tdr.TDR.speed_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of Dataset variable with the speed measurements.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="tdr.TDR.zoc_depth">
-<code class="sig-name descname">zoc_depth</code><a class="headerlink" href="#tdr.TDR.zoc_depth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instance to perform and store zero offset correction operations for
-depth.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ZOC</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="tdr.TDR.phases">
-<code class="sig-name descname">phases</code><a class="headerlink" href="#tdr.TDR.phases" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instance for performing wet/dry and dive phase detection.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>TDRPhases</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="tdr.TDR.speed_calib_fit">
-<code class="sig-name descname">speed_calib_fit</code><a class="headerlink" href="#tdr.TDR.speed_calib_fit" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.speed_calib_fit">
+<code class="sig-name descname">speed_calib_fit</code><a class="headerlink" href="#skdiveMove.TDR.speed_calib_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Model object fit by quantile regression for speed calibration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>quantreg model fit</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">quantreg</span> <span class="pre">model</span> <span class="pre">fit</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -245,79 +179,23 @@ depth.</p>
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="tdr.TDR.calibrate">
-<code class="sig-name descname">calibrate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zoc_method</span><span class="o">=</span><span class="default_value">'filter'</span></em>, <em class="sig-param"><span class="n">dry_thr</span><span class="o">=</span><span class="default_value">70</span></em>, <em class="sig-param"><span class="n">wet_cond</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wet_thr</span><span class="o">=</span><span class="default_value">3610</span></em>, <em class="sig-param"><span class="n">interp_wet</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dive_thr</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">dive_model</span><span class="o">=</span><span class="default_value">'unimodal'</span></em>, <em class="sig-param"><span class="n">smooth_par</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">knot_factor</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">descent_crit_q</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ascent_crit_q</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.calibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.calibrate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calibrate TDR object</p>
-<p>Convenience method to set all instance attributes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>zoc_method</strong> (<em>{&quot;filter&quot;</em><em>, </em><em>&quot;offset&quot;}</em><em>, </em><em>optional</em>) – Name of method to use for zero offset correction.</p></li>
-<li><p><strong>dry_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>wet_cond</strong> (<em>bool mask</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>wet_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>dive_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>dive_model</strong> (<em>{&quot;unimodal&quot;</em><em>, </em><em>&quot;smooth.spline&quot;}</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>smooth_par</strong> (<em>float</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>knot_factor</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>ascent_crit_q</strong> (<em>descent_crit_q</em><em>,</em>) – </p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – <p>Passed to <a class="reference internal" href="#tdr.TDR.zoc" title="tdr.TDR.zoc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TDR.zoc()</span></code></a> method:</p>
-<ul>
-<li><p>method ‘filter’: (‘k’, ‘probs’, ‘depth_bounds’ (defaults to
-range), ‘na_rm’ (defaults to True)).</p></li>
-<li><p>method ‘offset’: (‘offset’).</p></li>
-</ul>
-</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This method is homologous to diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code> function.</p>
-<p class="rubric">Examples</p>
-<p>ZOC using the “filter” method</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Window lengths and probabilities</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5760</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span>
-<span class="gp">... </span><span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">depth_bounds</span><span class="o">=</span><span class="n">DB</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-<span class="gp">... </span><span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Plot dive phases</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_phases</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Plot dive model for a dive</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt id="tdr.TDR.calibrate_speed">
-<code class="sig-name descname">calibrate_speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tau</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">contour_level</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">z</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">bad</span><span class="o">=</span><span class="default_value">[0, 0]</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.calibrate_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.calibrate_speed" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.calibrate_speed">
+<code class="sig-name descname">calibrate_speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tau</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">contour_level</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">z</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">bad</span><span class="o">=</span><span class="default_value">[0, 0]</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.calibrate_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.calibrate_speed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calibrate speed measurements</p>
 <p>Set the <cite>speed_calib_fit</cite> attribute</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tau</strong> (<em>float</em><em>, </em><em>optional</em>) – Quantile on which to regress speed on rate of depth change.</p></li>
-<li><p><strong>contour_level</strong> (<em>float</em><em>, </em><em>optional</em>) – The mesh obtained from the bivariate kernel density estimation
+<li><p><strong>tau</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – Quantile on which to regress speed on rate of depth change.</p></li>
+<li><p><strong>contour_level</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – The mesh obtained from the bivariate kernel density estimation
 corresponding to this contour will be used for the quantile
 regression to define the calibration line.</p></li>
-<li><p><strong>z</strong> (<em>float</em><em>, </em><em>optional</em>) – Only changes in depth larger than this value will be used for
+<li><p><strong>z</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – Only changes in depth larger than this value will be used for
 calibration.</p></li>
-<li><p><strong>bad</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Two-element <cite>array_like</cite> indicating that only rates of depth
+<li><p><strong>bad</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>, <em>optional</em>) – Two-element <cite>array_like</cite> indicating that only rates of depth
 change and speed greater than the given value should be used
 for calibration, respectively.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">calibrate_speed.calibrate()</span></code></p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">calibrate_speed.calibrate()</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -331,13 +209,19 @@ for calibration, respectively.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.detect_dive_phases">
-<code class="sig-name descname">detect_dive_phases</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.detect_dive_phases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.detect_dive_phases" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.detect_dive_phases">
+<code class="sig-name descname">detect_dive_phases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dive_model</span></em>, <em class="sig-param"><span class="n">smooth_par</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">knot_factor</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">descent_crit_q</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ascent_crit_q</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.detect_dive_phases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect dive phases</p>
 <p>Complete filling the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_dive_phases()</span></code></p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dive_model</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;unimodal&quot;,</span> <span class="pre">&quot;smooth.spline&quot;}</span></code>) – </p></li>
+<li><p><strong>smooth_par</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – </p></li>
+<li><p><strong>knot_factor</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>) – </p></li>
+<li><p><strong>descent_crit_q</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – </p></li>
+<li><p><strong>ascent_crit_q</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -345,7 +229,7 @@ for calibration, respectively.</p></li>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -363,14 +247,14 @@ parameters</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.detect_dives">
-<code class="sig-name descname">detect_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dive_thr</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.detect_dives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.detect_dives" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.detect_dives">
+<code class="sig-name descname">detect_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dive_thr</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.detect_dives" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identify dive events</p>
 <p>Set the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute’s “row_ids” dictionary element, and
 update the <code class="docutils literal notranslate"><span class="pre">wet_act</span></code> attribute’s “phases” dictionary element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dry_thr</strong> (<em>float</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_dives()</span></code>.</p>
+<dd class="field-odd"><p><strong>dive_thr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – </p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -378,7 +262,7 @@ update the <code class="docutils literal notranslate"><span class="pre">wet_act<
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -390,14 +274,17 @@ update the <code class="docutils literal notranslate"><span class="pre">wet_act<
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.detect_wet">
-<code class="sig-name descname">detect_wet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">interp_wet</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.detect_wet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.detect_wet" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.detect_wet">
+<code class="sig-name descname">detect_wet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dry_thr</span><span class="o">=</span><span class="default_value">70</span></em>, <em class="sig-param"><span class="n">wet_cond</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wet_thr</span><span class="o">=</span><span class="default_value">3610</span></em>, <em class="sig-param"><span class="n">interp_wet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.detect_wet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect wet/dry activity phases</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>interp_wet</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>**kwargs</strong> (<em>Keyword arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_wet()</span></code></p></li>
+<li><p><strong>dry_thr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – </p></li>
+<li><p><strong>wet_cond</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span> <span class="pre">mask</span></code>, <em>optional</em>) – A Pandas.Series bool mask indexed as <cite>depth</cite>.  Default is
+generated from testing for non-missing <cite>depth</cite>.</p></li>
+<li><p><strong>wet_thr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>optional</em>) – </p></li>
+<li><p><strong>interp_wet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -409,7 +296,7 @@ retrieved via the <cite>.time_budget</cite> method.</p>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -425,12 +312,12 @@ retrieved via the <cite>.time_budget</cite> method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.dive_stats">
-<code class="sig-name descname">dive_stats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth_deriv</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.dive_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.dive_stats" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.dive_stats">
+<code class="sig-name descname">dive_stats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">depth_deriv</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.dive_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.dive_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate dive statistics in <cite>TDR</cite> records</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>depth_deriv</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to compute depth derivative statistics.</p>
+<dd class="field-odd"><p><strong>depth_deriv</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to compute depth derivative statistics.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
@@ -451,23 +338,25 @@ retrieved via the <cite>.time_budget</cite> method.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5760</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span>
-<span class="gp">... </span>               <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">depth_bounds</span><span class="o">=</span><span class="n">DB</span><span class="p">,</span>
-<span class="gp">... </span>               <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">dive_stats</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.extract_dives">
-<code class="sig-name descname">extract_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.extract_dives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.extract_dives" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.extract_dives">
+<code class="sig-name descname">extract_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.extract_dives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.extract_dives" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract TDR data corresponding to a particular set of dives</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <a class="reference internal" href="#tdr.TDR.get_tdr" title="tdr.TDR.get_tdr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_tdr()</span></code></a></p></li>
+<li><p><strong>diveNo</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>, <em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Passed to <a class="reference internal" href="#skdiveMove.TDR.get_tdr" title="skdiveMove.TDR.get_tdr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_tdr()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -480,20 +369,23 @@ retrieved via the <cite>.time_budget</cite> method.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span>
-<span class="gp">... </span>               <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">extract_dive</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.get_depth">
-<code class="sig-name descname">get_depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kind</span><span class="o">=</span><span class="default_value">'measured'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.get_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.get_depth" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.get_depth">
+<code class="sig-name descname">get_depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kind</span><span class="o">=</span><span class="default_value">'measured'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.get_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.get_depth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve depth records</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;zoc&quot;}</em>) – Which depth to retrieve.</p>
+<dd class="field-odd"><p><strong>kind</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;measured&quot;,</span> <span class="pre">&quot;zoc&quot;}</span></code>) – Which depth to retrieve.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
@@ -505,57 +397,63 @@ retrieved via the <cite>.time_budget</cite> method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.get_dive_deriv">
-<code class="sig-name descname">get_dive_deriv</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.get_dive_deriv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.get_dive_deriv" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.get_dive_deriv">
+<code class="sig-name descname">get_dive_deriv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span></em>, <em class="sig-param"><span class="n">phase</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.get_dive_deriv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve depth spline derivative for a given dive</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*args</strong> (<em>arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dive_deriv()</span></code></p></li>
-<li><p><strong>**kwargs</strong> (<em>keyword arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dive_deriv()</span></code></p></li>
+<li><p><strong>diveNo</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Dive number to retrieve derivative for.</p></li>
+<li><p><strong>phase</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;descent&quot;,</span> <span class="pre">&quot;bottom&quot;,</span> <span class="pre">&quot;ascent&quot;}</span></code>) – If provided, the dive phase to retrieve data for.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="tdr.TDR.get_dives_details">
-<code class="sig-name descname">get_dives_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.get_dives_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.get_dives_details" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve wet/dry activity DataFrame</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>*args</strong> (<em>positional arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dives_details()</span></code></p></li>
-<li><p><strong>**kwargs</strong> (<em>keyword arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dives_details()</span></code></p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="tdr.TDR.get_phases_params">
-<code class="sig-name descname">get_phases_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.get_phases_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.get_phases_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve parameters used for identification of phases</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>key</strong> (<em>{'wet_dry'</em><em>, </em><em>'dives'}</em>) – Name of type of parameters to retrieve.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.get_speed">
-<code class="sig-name descname">get_speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kind</span><span class="o">=</span><span class="default_value">'measured'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.get_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.get_speed" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.get_dives_details">
+<code class="sig-name descname">get_dives_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">columns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.get_dives_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor for the <cite>dives</cite> attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;row_ids&quot;,</span> <span class="pre">&quot;model&quot;,</span> <span class="pre">&quot;splines&quot;,</span> <span class="pre">&quot;spline_derivs&quot;,</span> <span class="pre">crit_vals}</span></code>) – Name of the key to retrieve.</p></li>
+<li><p><strong>columns</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>, <em>optional</em>) – Names of the columns of the dataframe in <cite>key</cite>, when applicable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="skdiveMove.TDR.get_phases_params">
+<code class="sig-name descname">get_phases_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.get_phases_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return parameters used for identifying wet/dry or diving phases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<code class="docutils literal notranslate"><span class="pre">{'wet_dry',</span> <span class="pre">'dives'}</span></code>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="skdiveMove.TDR.get_speed">
+<code class="sig-name descname">get_speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kind</span><span class="o">=</span><span class="default_value">'measured'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.get_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.get_speed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve speed records</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;calibrated&quot;}</em>) – Which speed to retrieve.</p>
+<dd class="field-odd"><p><strong>kind</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;measured&quot;,</span> <span class="pre">&quot;calibrated&quot;}</span></code>) – Which speed to retrieve.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
@@ -567,14 +465,14 @@ retrieved via the <cite>.time_budget</cite> method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.get_tdr">
-<code class="sig-name descname">get_tdr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">calib_depth</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">calib_speed</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.get_tdr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.get_tdr" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.get_tdr">
+<code class="sig-name descname">get_tdr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">calib_depth</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">calib_speed</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.get_tdr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.get_tdr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of tdr Dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>calib_depth</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return calibrated depth measurements.</p></li>
-<li><p><strong>calib_speed</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return calibrated speed measurements.</p></li>
+<li><p><strong>calib_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to return calibrated depth measurements.</p></li>
+<li><p><strong>calib_speed</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to return calibrated speed measurements.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -587,16 +485,16 @@ retrieved via the <cite>.time_budget</cite> method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">concur_vars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">concur_var_titles</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.plot" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">concur_vars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">concur_var_titles</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot TDR object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>concur_vars</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
+<li><p><strong>concur_vars</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>optional</em>) – String or list of strings with names of columns in input to
 select additional data to plot.</p></li>
-<li><p><strong>concur_var_titles</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
+<li><p><strong>concur_var_titles</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Arguments passed to plotting function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -616,14 +514,14 @@ select additional data to plot.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.plot_dive_model">
-<code class="sig-name descname">plot_dive_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.plot_dive_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.plot_dive_model" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.plot_dive_model">
+<code class="sig-name descname">plot_dive_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot_dive_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.plot_dive_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot dive model for selected dive</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
+<li><p><strong>diveNo</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>, <em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Arguments passed to plotting function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -636,54 +534,28 @@ select additional data to plot.</p></li>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span>
-<span class="gp">... </span>               <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.plot_phases">
-<code class="sig-name descname">plot_phases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">concur_vars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">concur_var_titles</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">surface</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.plot_phases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.plot_phases" title="Permalink to this definition">¶</a></dt>
+<dt id="skdiveMove.TDR.plot_phases">
+<code class="sig-name descname">plot_phases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diveNo</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">concur_vars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">concur_var_titles</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">surface</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot_phases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.plot_phases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot major phases found on the object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
-<li><p><strong>concur_vars</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
+<li><p><strong>diveNo</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array_like</span></code>, <em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
+<li><p><strong>concur_vars</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>optional</em>) – String or list of strings with names of columns in input to
 select additional data to plot.</p></li>
-<li><p><strong>concur_var_titles</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><cite>matplotlib.pyplot</cite> Figure and Axes instances.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span>
-<span class="gp">... </span>               <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_phases</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">)),</span> <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt id="tdr.TDR.plot_zoc">
-<code class="sig-name descname">plot_zoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xlim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ylim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.plot_zoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.plot_zoc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot zero offset correction filters</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ylim</strong> (<em>xlim</em><em>,</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
-respectively.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.subplots</cite>.</p></li>
+<li><p><strong>concur_var_titles</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Arguments passed to plotting function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -697,92 +569,125 @@ respectively.</p></li>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_phases</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">)),</span> <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="skdiveMove.TDR.plot_zoc">
+<code class="sig-name descname">plot_zoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xlim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ylim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot_zoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.TDR.plot_zoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot zero offset correction filters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xlim</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">2-tuple/list</span></code>, <em>optional</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
+respectively.</p></li>
+<li><p><strong>ylim</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">2-tuple/list</span></code>, <em>optional</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
+respectively.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Passed to <cite>matplotlib.pyplot.subplots</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>matplotlib.pyplot</cite> Figure and Axes instances.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Window lengths and probabilities</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5760</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">depth_bounds</span><span class="o">=</span><span class="n">DB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.stamp_dives">
-<code class="sig-name descname">stamp_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.stamp_dives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.stamp_dives" title="Permalink to this definition">¶</a></dt>
-<dd><p>Identify the wet/dry activity phase corresponding to each dive</p>
+<dt id="skdiveMove.TDR.stamp_dives">
+<code class="sig-name descname">stamp_dives</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ignore_z</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.stamp_dives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identify the wet activity phase corresponding to each dive</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">stamp_dives()</span></code></p>
+<dd class="field-odd"><p><strong>ignore_z</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to ignore trivial aquatic periods.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>out</strong></p>
+<dd class="field-even"><p><strong>out</strong> – DataFrame indexed by dive ID, and three columns identifying
+which phase thy are in, and the beginning and ending time
+stamps.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span>
-<span class="gp">... </span>               <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">stamp_dives</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.time_budget">
-<code class="sig-name descname">time_budget</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.time_budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.time_budget" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary of wet/dry activities at the broadest scale</p>
+<dt id="skdiveMove.TDR.time_budget">
+<code class="sig-name descname">time_budget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ignore_z</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ignore_du</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.time_budget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary of wet/dry activities at the broadest time scale</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">time_budget()</span></code></p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ignore_z</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to ignore trivial aquatic periods.</p></li>
+<li><p><strong>ignore_du</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) – Whether to ignore diving and underwater periods.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>out</strong></p>
+<dd class="field-even"><p><strong>out</strong> – DataFrame indexed by phase id, with categorical activity label
+for each phase, and beginning and ending times.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zoc_method</span><span class="o">=</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span>
-<span class="gp">... </span>               <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="tdr.TDR.wet_dry">
-<em class="property">property </em><code class="sig-name descname">wet_dry</code><a class="headerlink" href="#tdr.TDR.wet_dry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wet/dry activity labels</p>
-<p>Extends <code class="xref py py-meth docutils literal notranslate"><span class="pre">TDRPhases.wet_dry()</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>DataFrame with columns: <cite>phase_id</cite> and <cite>phase_label</cite> for each
-measurement.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="tdr.TDR.zoc">
-<code class="sig-name descname">zoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'filter'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tdr.html#TDR.zoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tdr.TDR.zoc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Zero offset correction</p>
-<p>Set the <code class="docutils literal notranslate"><span class="pre">zoc_depth</span></code> attribute.</p>
+<dt id="skdiveMove.TDR.zoc">
+<code class="sig-name descname">zoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'filter'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.zoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply zero offset correction to depth measurements</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> (<em>{&quot;filter&quot;</em><em>, </em><em>&quot;offset&quot;}</em>) – Name of method to use for zero offset correction.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – <ul>
-<li><p>methods ‘filter’: (‘k’, ‘probs’, ‘depth_bounds’ (defaults to
-range), ‘na_rm’ (defaults to True)).</p></li>
-<li><p>method ‘offset’: (‘offset’).</p></li>
-</ul>
-</p></li>
+<li><p><strong>method</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;filter&quot;,</span> <span class="pre">&quot;offset&quot;}</span></code>) – Name of method to use for zero offset correction.</p></li>
+<li><p><strong>**kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">keyword</span> <span class="pre">arguments</span></code>) – Passed to the chosen method (<code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_depth()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">filter_depth()</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -809,22 +714,26 @@ range), ‘na_rm’ (defaults to True)).</p></li>
 </div>
 </dd></dl>
 
-<dl class="py method">
-<dt id="tdr.TDR.zoc_params">
-<em class="property">property </em><code class="sig-name descname">zoc_params</code><a class="headerlink" href="#tdr.TDR.zoc_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>ZOC procedure parameters</p>
-<p>Extends <code class="xref py py-attr docutils literal notranslate"><span class="pre">ZOC.params</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p><strong>method</strong> (<em>str</em>) – Method used for ZOC.</p></li>
-<li><p><strong>params</strong> (<em>dict</em>) – Dictionary with parameters and values used for ZOC.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="skdiveMove.calibrate">
+<code class="sig-prename descclassname">skdiveMove.</code><code class="sig-name descname">calibrate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tdr_file</span></em>, <em class="sig-param"><span class="n">config_file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/calibrate_tdr.html#calibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skdiveMove.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform all major TDR calibration operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tdr_file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.backends.*DataStore</span></code>) – As first argument for <code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code>.</p></li>
+<li><p><strong>config_file</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A valid string path for TDR calibration configuration file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDR</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -849,6 +758,7 @@ range), ‘na_rm’ (defaults to True)).</p></li>
 <li><a class="reference internal" href="#plotting">Plotting</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#api">API</a></li>
 </ul>
 </li>
@@ -896,14 +806,14 @@ range), ‘na_rm’ (defaults to True)).</p></li>
         <li class="right" >
           <a href="boutsimuldemo.html" title="Simulating bouts"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">TDR class</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín
