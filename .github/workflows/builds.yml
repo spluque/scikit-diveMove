@@ -9,10 +9,12 @@ on: [push, pull_request]
 jobs:
   build:
     name: Build Python package
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.7, 3.8, 3.9]
+    env:
+      PY_LATEST: 3.9
 
     steps:
       - name: Checkout
@@ -21,6 +23,10 @@ jobs:
       - name: Set up R (release)
         # They tell us to use master (ambiguously)
         uses: r-lib/actions/setup-r@master
+
+      - name: Install system requirements
+        run: |
+          sudo apt-get install libcurl4-openssl-dev
 
       - name: Install diveMove
         run: |
@@ -33,35 +39,31 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Python requirements
-        # Set LD_LIBRARY_PATH for subsequent steps
         run: |
           python -m pip install --upgrade pip setuptools wheel twine
           python -m pip install -r requirements.txt
-          LDLP=$(python -m rpy2.situation LD_LIBRARY_PATH)
-          export LD_LIBRARY_PATH=${LDLP}:${LD_LIBRARY_PATH}
-          echo "::set-env name=LD_LIBRARY_PATH::${LD_LIBRARY_PATH}"
-
-      - name: Test and coverage
-        run: |
-          python -m pip install --upgrade coverage
-          coverage run --branch -m pytest skdiveMove/tests
-          coverage xml
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v1
-        if: matrix.python-version == 3.8
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          fail_ci_if_error: true
 
       - name: Build binary wheel and source tarball
         run: |
           python setup.py build sdist bdist_wheel
           twine check dist/*
 
+      - name: Test and coverage
+        run: |
+          python -m pip install --upgrade pytest coverage
+          coverage run --branch -m pytest skdiveMove/tests
+          coverage xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+        if: matrix.python-version == env.PY_LATEST
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          fail_ci_if_error: true
+
       - name: Build Sphinx docs
-        if: matrix.python-version == 3.8
+        if: matrix.python-version == env.PY_LATEST
         run: |
           python -m pip install .['docs']
           make -C docs/ html
@@ -70,7 +72,7 @@ jobs:
       - name: Upload products
         uses: actions/upload-artifact@v2
         if:
-          (matrix.python-version == 3.8) &&
+          (matrix.python-version == env.PY_LATEST) &&
           startsWith(github.ref, 'refs/tags')
         with:
           name: dist-pkg
@@ -98,7 +100,7 @@ jobs:
           name: dist-pkg
 
       - name: Publish GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.5.7
+        uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages

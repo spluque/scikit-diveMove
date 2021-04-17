@@ -17,7 +17,6 @@ up a logger to monitor progress to this section.
    import pandas as pd
    import matplotlib.pyplot as plt
    from skdiveMove import calibrate
-   from skdiveMove.tests import diveMove2skd
    import skdiveMove.bouts as skbouts
 
    # Declare figure sizes

@@ -9,3 +9,5 @@ from rpy2.robjects import pandas2ri         # noqa: F401
 
 # Initialize R instance
 diveMove = importr("diveMove")
+# For accessing R base objects
+r_base = importr("base")

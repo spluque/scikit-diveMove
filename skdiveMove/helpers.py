@@ -2,9 +2,10 @@
 
 """
 
+import math
 import numpy as np
 import pandas as pd
-from skdiveMove.core import robjs, cv, pandas2ri
+from skdiveMove.core import robjs, cv, pandas2ri, r_base
 
 __all__ = ["_get_dive_indices", "_add_xr_attr",
            "get_var_sampling_interval", "_cut_dive",
@@ -102,7 +103,7 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
                         "descent.crit", "ascent.crit",
                         "descent.crit.rate", "ascent.crit.rate"]
 
-        lmtx = (robjs.r.slot(dmodel, dmodel_slots[0])
+        lmtx = (np.array(robjs.r.slot(dmodel, dmodel_slots[0]))
                 .reshape((xx.shape[0], 2), order="F"))
         spl = robjs.r.slot(dmodel, dmodel_slots[1])
         spl_der = robjs.r.slot(dmodel, dmodel_slots[2])
@@ -167,6 +168,8 @@ def _one_dive_stats(x, interval, has_speed=False):
 def _speed_stats(x, vdist=None):
     """Calculate total travel distance, mean speed, and angle from speed
 
+    Dive stats for a single segment of a dive.
+
     Parameters
     ----------
     x : pandas.Series
@@ -189,6 +192,16 @@ def _speed_stats(x, vdist=None):
     with cv.localconverter(robjs.default_converter +
                            pandas2ri.converter):
         res = speed_stats_fun(**kwargs)
+
+    # WARNING: block below may be temporary depending on how rpy2 decides
+    # how to handle different forms of NA from R -> I've reported the bug.
+    # In the meantime, diveMove yields a FloatMatrix in rpy2 as of diveMove
+    # 1.5.4.
+    if isinstance(res, robjs.vectors.BoolMatrix):
+        res_temp = pd.DataFrame(r_base.data_frame(res))
+        for tmpname in res_temp.keys():
+            res_temp.loc[res_temp[tmpname] == robjs.NA_Logical] = math.nan
+        res = res_temp.T.to_numpy()
 
     return(res)
 
