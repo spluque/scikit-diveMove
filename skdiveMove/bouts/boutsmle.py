@@ -42,27 +42,24 @@ def mle_fun(x, p, lambdas):
     """
     logmsg = "p={0}, lambdas={1}".format(p, lambdas)
     logger.info(logmsg)
-    ncoefs = lambdas.size
+    nproc = lambdas.size
 
     # We assume at least two processes
     p0 = p[0]
     lda0 = lambdas[0]
     term0 = p0 * lda0 * np.exp(-lda0 * x)
 
-    if ncoefs == 2:
+    if nproc == 2:
         lda1 = lambdas[1]
         term1 = (1 - p0) * lda1 * np.exp(-lda1 * x)
         res = term0 + term1
-    elif ncoefs == 3:
+    else:                # 3 processes; capabilities enforced in loglik_fun
         p1 = p[1]
         lda1 = lambdas[1]
         term1 = p1 * (1 - p0) * lda1 * np.exp(-lda1 * x)
         lda2 = lambdas[2]
         term2 = (1 - p1) * (1 - p0) * lda2 * np.exp(-lda2 * x)
         res = term0 + term1 + term2
-    else:
-        msg = "Only mixtures of <= 3 processes are implemented"
-        raise KeyError(msg)
 
     return(np.log(res))
 
@@ -78,12 +75,14 @@ class BoutsMLE(bouts.Bouts):
         Parameters
         ----------
         params : array_like
-            1-D array with parameters to fit.  Currently must be 3-length,
-            with mixing parameter :math:`p`, density parameter
-            :math:`\lambda_f` and :math:`\lambda_s`, in that order.
+            1-D array with parameters to fit.  Currently must be either
+            3-length, with mixing parameter :math:`p`, density parameter
+            :math:`\lambda_f` and :math:`\lambda_s`, in that order, or
+            5-length, with :math:`p_f`, :math:`p_fs`, :math:`\lambda_f`,
+            :math:`\lambda_m`, :math:`\lambda_s`.
         x : array_like
-            Independent data array described by model with parameters `p`,
-            :math:`\lambda_f`, and :math:`\lambda_s`.
+            Independent data array described by model with parameters
+            `params`.
         transformed : bool
             Whether `params` are transformed and need to be un-transformed
             to calculate the likelihood.
@@ -93,15 +92,22 @@ class BoutsMLE(bouts.Bouts):
         out :
 
         """
-        p = params[0]
-        lambdas = params[1:]
+        if len(params) == 3:
+            # Need list `p` for mle_fun
+            p = [params[0]]
+            lambdas = params[1:]
+        elif len(params) == 5:
+            p = params[:2]
+            lambdas = params[2:]
+        else:
+            msg = "Only mixtures of <= 3 processes are implemented"
+            raise KeyError(msg)
 
         if transformed:
             p = expit(p)
             lambdas = np.exp(lambdas)
 
-        # Need list `p` for mle_fun
-        ll = -sum(mle_fun(x, [p], lambdas))
+        ll = -sum(mle_fun(x, p, lambdas))
         logger.info("LL={}".format(ll))
         return(ll)
 
@@ -116,7 +122,7 @@ class BoutsMLE(bouts.Bouts):
             in :meth:`Bouts.init_pars`, and will be transformed to minimize
             the first log likelihood function.
         fit1_opts, fit2_opts : dict
-            Dictionaries with keywords to be pass to
+            Dictionaries with keywords to be passed to
             :func:`scipy.optimize.minimize`, for the first and second fits.
 
         Returns
@@ -136,6 +142,7 @@ class BoutsMLE(bouts.Bouts):
         lambda0 = np.log(lambda0)
         x0 = np.array([*logit(p0), *lambda0])
 
+        logger.info("Starting first fit")
         if fit1_opts:
             fit1 = minimize(self.loglik_fun, x0=x0, args=(self.x,),
                             **fit1_opts)
@@ -145,6 +152,7 @@ class BoutsMLE(bouts.Bouts):
         coef0 = fit1.x
 
         start2 = [expit(coef0[0]), *np.exp(coef0[1:])]
+        logger.info("Starting second fit")
         if fit2_opts:
             fit2 = minimize(self.loglik_fun, x0=start2,
                             args=(self.x, False), **fit2_opts)
@@ -177,11 +185,23 @@ class BoutsMLE(bouts.Bouts):
         """
         coefs = fit.x
 
-        p_hat = coefs[0]
-        lambda1_hat = coefs[1]
-        lambda2_hat = coefs[2]
-        bec = (np.log((p_hat * lambda1_hat) / ((1 - p_hat) * lambda2_hat)) /
-               (lambda1_hat - lambda2_hat))
+        if len(coefs) == 3:
+            p_hat = coefs[0]
+            lda1_hat = coefs[1]
+            lda2_hat = coefs[2]
+            bec = (np.log((p_hat * lda1_hat) /
+                          ((1 - p_hat) * lda2_hat)) /
+                   (lda1_hat - lda2_hat))
+        elif len(coefs) == 5:
+            p0_hat, p1_hat = coefs[:2]
+            lda0_hat, lda1_hat, lda2_hat = coefs[2:]
+            bec0 = (np.log((p0_hat * lda0_hat) /
+                           ((1 - p0_hat) * lda1_hat)) /
+                    (lda0_hat - lda1_hat))
+            bec1 = (np.log((p1_hat * lda1_hat) /
+                           ((1 - p1_hat) * lda2_hat)) /
+                    (lda1_hat - lda2_hat))
+            bec = [bec0, bec1]
 
         return(np.array(bec))
 
@@ -204,17 +224,21 @@ class BoutsMLE(bouts.Bouts):
         # Method is redefined from Bouts
         x = self.x
         coefs = fit.x
-        p_hat = coefs[0]
-        lambdas_hat = coefs[1:]
+        if len(coefs) == 3:
+            p_hat = [coefs[0]]
+            lda_hat = coefs[1:]
+        elif len(coefs) == 5:
+            p_hat = coefs[:2]
+            lda_hat = coefs[2:]
         xmin = x.min()
         xmax = x.max()
         # BEC
         becx = self.bec(fit)
-        becy = mle_fun(becx, [p_hat], lambdas_hat)
+        becy = mle_fun(becx, p_hat, lda_hat)
 
         x_pred = np.linspace(xmin, xmax, num=101)  # matches R's curve
         # Need to transpose to unpack columns rather than rows
-        y_pred = mle_fun(x_pred, [p_hat], lambdas_hat)
+        y_pred = mle_fun(x_pred, p_hat, lda_hat)
 
         if ax is None:
             ax = plt.gca()
@@ -227,10 +251,17 @@ class BoutsMLE(bouts.Bouts):
         # Plot BEC
         ylim = ax.get_ylim()
         ax.vlines(becx, ylim[0], becy, linestyle="--")
+        ax.scatter(becx, becy, c="r", marker="v")
 
         # Annotations
-        ax.annotate("bec = {0:.3f}".format(becx), (becx, ylim[0]),
-                    xytext=(5, 0), textcoords="offset points")
+        fmtstr = "bec_{0} = {1:.3f}"
+        if becx.size == 1:
+            ax.annotate(fmtstr.format(0, becx), (becx, becy),
+                        xytext=(5, 0), textcoords="offset points")
+        else:
+            for i, bec_i in enumerate(becx):
+                ax.annotate(fmtstr.format(i, bec_i), (bec_i, becy[i]),
+                            xytext=(5, 0), textcoords="offset points")
 
         ax.legend(loc=8, bbox_to_anchor=(0.5, 1), frameon=False,
                   borderaxespad=0.1, ncol=2)
@@ -272,22 +303,37 @@ class BoutsMLE(bouts.Bouts):
         ax.xaxis.set_major_formatter(ScalarFormatter())
         ax.set_xlim(np.exp(xx).min(), np.exp(xx).max())
         # Plot estimated CDF
-        p = [coefs[0]]          # list to bouts.ecdf()
-        lambdas = pd.Series([coefs[1], coefs[2]], name="lambda")
-        y_mod = bouts.ecdf(np.expm1(x_pred), p, lambdas)
+        if len(coefs) == 3:
+            p_hat = [coefs[0]]          # list to bouts.ecdf()
+            lda_hat = pd.Series(coefs[1:], name="lambda")
+        elif len(coefs) == 5:
+            p_hat = coefs[:2]
+            lda_hat = pd.Series(coefs[2:], name="lambda")
+        y_mod = bouts.ecdf(np.expm1(x_pred), p_hat, lda_hat)
         ax.plot(np.expm1(x_pred), y_mod, label="model")
         # Add a little offset to ylim for visibility
         yoffset = (0.05, 1.05)
         ax.set_ylim(*yoffset)       # add some spacing
         # Plot BEC
         becx = self.bec(fit)
-        becy = bouts.ecdf(becx, p, lambdas)
+        becy = bouts.ecdf(becx, p_hat, lda_hat)
         ax.vlines(becx, 0, becy, linestyle="--")
+        ax.scatter(becx, becy, c="r", marker="v")
         # Annotations
         ax.legend(loc="upper left")
-        ax.annotate("bec = {0:.3f}".format(becx),
-                    (becx, yoffset[0]), xytext=(5, 5),
-                    textcoords="offset points")
+        fmtstr = "bec_{0} = {1:.3f}"
+        if becx.size == 1:
+            ax.annotate(fmtstr.format(0, becx),
+                        (becx, becy), xytext=(-5, 5),
+                        textcoords="offset points",
+                        horizontalalignment="right")
+        else:
+            for i, bec_i in enumerate(becx):
+                ax.annotate(fmtstr.format(i, bec_i),
+                            (bec_i, becy[i]), xytext=(-5, 5),
+                            textcoords="offset points",
+                            horizontalalignment="right")
+
         ax.set_xlabel("x")
         ax.set_ylabel("ECDF [x]")
 

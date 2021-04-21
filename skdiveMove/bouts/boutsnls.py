@@ -13,7 +13,7 @@ class BoutsNLS(bouts.Bouts):
     """Nonlinear least squares bout identification
 
     """
-    def fit(self, start):
+    def fit(self, start, **kwargs):
         """Fit non-linear least squares to log frequencies
 
         The metaclass :class:`bouts.Bouts` implements this method.
@@ -22,6 +22,8 @@ class BoutsNLS(bouts.Bouts):
         ----------
         start : pandas.DataFrame
             DataFrame with coefficients for each process in columns.
+        **kwargs : optional keyword arguments
+            Passed to `scipy.optimize.curve_fit`.
 
         Returns
         -------
@@ -31,7 +33,7 @@ class BoutsNLS(bouts.Bouts):
             Covariance of coefs.
 
         """
-        return(bouts.Bouts.fit(self, start))
+        return(bouts.Bouts.fit(self, start, **kwargs))
 
     def bec(self, coefs):
         """Calculate bout ending criteria from model coefficients
@@ -96,13 +98,15 @@ class BoutsNLS(bouts.Bouts):
         becx = self.bec(coefs)
         becy = bouts.ecdf(becx, p, lambdas)
         ax.vlines(becx, 0, becy, linestyle="--")
+        ax.scatter(becx, becy, c="r", marker="v")
         # Annotations
         ax.legend(loc="upper left")
-        if becx.size == 1:
-            xcrd = becx[0]
-            ax.annotate("bec = {0:.3f}".format(xcrd),
-                        (xcrd, yoffset[0]), xytext=(5, 5),
-                        textcoords="offset points")
+        fmtstr = "bec_{0} = {1:.3f}"
+        for i, bec_i in enumerate(becx):  # becx is always an array
+            ax.annotate(fmtstr.format(i, bec_i),
+                        (bec_i, becy[i]), xytext=(-5, 5),
+                        textcoords="offset points",
+                        horizontalalignment="right")
         ax.set_xlabel("x")
         ax.set_ylabel("ECDF [x]")
 

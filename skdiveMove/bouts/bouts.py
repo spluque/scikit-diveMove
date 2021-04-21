@@ -5,6 +5,7 @@ This module also provides useful functions for other modules subclassing
 
 """
 
+import logging
 from abc import ABCMeta, abstractmethod
 import numpy as np
 import pandas as pd
@@ -12,6 +13,11 @@ import statsmodels.formula.api as smf
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 from skdiveMove.helpers import rle_key
+
+logger = logging.getLogger(__name__)
+# Add the null handler if importing as library; whatever using this library
+# should set up logging.basicConfig() as needed
+logger.addHandler(logging.NullHandler())
 
 
 def nls_fun(x, coefs):
@@ -37,7 +43,10 @@ def nls_fun(x, coefs):
         return(params[0] * params[1] * np.exp(-params[1] * x))
 
     terms = np.apply_along_axis(calc_term, 0, coefs)
-    return(np.log(terms.sum(1)))
+    terms_sum = terms.sum(1)
+    if np.any(terms_sum <= 0):
+        logger.warning("Negative values at: {}".format(coefs))
+    return(np.log(terms_sum))
 
 
 def calc_p(coefs):
@@ -306,7 +315,7 @@ class Bouts(metaclass=ABCMeta):
         return(pars)
 
     @abstractmethod
-    def fit(self, start):
+    def fit(self, start, **kwargs):
         """Fit Poisson mixture model to log frequencies
 
         Default is non-linear least squares method.
@@ -315,6 +324,8 @@ class Bouts(metaclass=ABCMeta):
         ----------
         start : pandas.DataFrame
             DataFrame with coefficients for each process in columns.
+        **kwargs : optional keyword arguments
+            Passed to `scipy.optimize.curve_fit`.
 
         Returns
         -------
@@ -336,7 +347,8 @@ class Bouts(metaclass=ABCMeta):
 
         # Rearrange starting values into a 1D array (needs to be flat)
         init_flat = start.to_numpy().T.reshape((start.size,))
-        popt, pcov = curve_fit(_nls_fun, xdata, ydata, p0=init_flat)
+        popt, pcov = curve_fit(_nls_fun, xdata, ydata,
+                               p0=init_flat, **kwargs)
         # Reshape coefs back into init shape
         coefs = pd.DataFrame(popt.reshape(start.shape, order="F"),
                              columns=start.columns, index=start.index)
@@ -409,18 +421,25 @@ class Bouts(metaclass=ABCMeta):
         if ax is None:
             ax = plt.gca()
         # Plot data
-        ax.scatter(x="x", y="lnfreq", data=lnfreq, label="histogram")
+        ax.scatter(x="x", y="lnfreq", data=lnfreq,
+                   alpha=0.5, label="histogram")
         # Plot predicted
         ax.plot(x_pred, y_pred, alpha=0.5, label="model")
         # Plot BEC (note this plots all BECs in becx)
         ylim = ax.get_ylim()
         ax.vlines(becx, ylim[0], becy, linestyle="--")
+        ax.scatter(becx, becy, c="r", marker="v")
 
         # Annotations
+        fmtstr = "bec_{0} = {1:.3f}"
         if becx.size == 1:
             xcrd = becx[0]
-            ax.annotate("bec = {0:.3f}".format(xcrd), (xcrd, ylim[0]),
+            ax.annotate(fmtstr.format(0, xcrd), (xcrd, ylim[0]),
                         xytext=(5, 0), textcoords="offset points")
+        else:
+            for i, bec_i in enumerate(becx):
+                ax.annotate(fmtstr.format(i, bec_i), (bec_i, becy[i]),
+                            xytext=(5, 5), textcoords="offset points")
 
         ax.legend(loc=8, bbox_to_anchor=(0.5, 1), frameon=False,
                   borderaxespad=0.1, ncol=2)
