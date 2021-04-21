@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 # Set up
 import numpy as np
 import pandas as pd
@@ -7,9 +13,17 @@ import skdiveMove.bouts as skbouts
 # For figure sizes
 _FIG3X1 = (9, 12)
 
+
+# In[2]:
+
+
 pd.set_option("display.precision", 3)
 np.set_printoptions(precision=3, sign="+")
-%matplotlib inline
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+
+# In[3]:
+
 
 def genx(n, p, lda0, lda1):
     chooser = np.random.uniform(size=n)
@@ -19,6 +33,10 @@ def genx(n, p, lda0, lda1):
     proc_mix = np.where(chooser < p, proc1, proc2)
     return(proc_mix)
 
+
+# In[4]:
+
+
 p_true = 0.7
 lda0_true = 0.05
 lda1_true = 0.005
@@ -26,10 +44,18 @@ pars_true = pd.Series({"lambda0": lda0_true,
                        "lambda1": lda1_true,
                        "p": p_true})
 
+
+# In[5]:
+
+
 # Number of simulations
 nsims = 500
 # Size of each sample
 nsamp = 1000
+
+
+# In[6]:
+
 
 # Set up NLS simulations
 coefs_nls = []
@@ -47,6 +73,10 @@ lda0_bnd = (1e-3, None)
 lda1_bnd = (1e-6, None)
 opts2 = dict(method="L-BFGS-B",
              bounds=(p_bnd, lda0_bnd, lda1_bnd))
+
+
+# In[7]:
+
 
 # Estimate parameters `nsims` times
 for i in range(nsims):
@@ -67,19 +97,39 @@ for i in range(nsims):
                             fit2_opts=opts2)
     coefs_mle.append(np.roll(fit2.x, -1))
 
+
+# In[8]:
+
+
 nls_coefs = pd.DataFrame(np.row_stack(coefs_nls),
                          columns=["lambda0", "lambda1", "p"])
 # Centrality and variance
 nls_coefs.describe()
+
+
+# In[9]:
+
 
 mle_coefs = pd.DataFrame(np.row_stack(coefs_mle),
                          columns=["lambda0", "lambda1", "p"])
 # Centrality and variance
 mle_coefs.describe()
 
+
+# In[10]:
+
+
 nls_coefs.mean() - pars_true
 
+
+# In[11]:
+
+
 mle_coefs.mean() - pars_true
+
+
+# In[12]:
+
 
 # Combine results
 coefs_merged = pd.concat((mle_coefs, nls_coefs), keys=["mle", "nls"],
@@ -105,3 +155,4 @@ axs[2].set_ylabel(r"Density $[p]$")
 axs[2].axvline(pars_true["p"], linestyle="dashed", color="k")
 axs[0].legend(["MLE", "NLS"], loc=8, bbox_to_anchor=(0.5, 1),
               frameon=False, borderaxespad=0.1, ncol=2);
+

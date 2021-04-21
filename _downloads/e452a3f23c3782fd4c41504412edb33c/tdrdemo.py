@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 # Set up
 import pkg_resources as pkg_rsrc
 import matplotlib.pyplot as plt
@@ -8,6 +14,10 @@ _FIG1X1 = (11, 5)
 _FIG2X1 = (10, 8)
 _FIG3X1 = (11, 11)
 
+
+# In[2]:
+
+
 import numpy as np   # only for setting print options here
 import pandas as pd  # only for setting print options here
 import xarray as xr  # only for setting print options here
@@ -15,7 +25,11 @@ import xarray as xr  # only for setting print options here
 pd.set_option("display.precision", 3)
 np.set_printoptions(precision=3, sign="+")
 xr.set_options(display_style="html")
-%matplotlib inline
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+
+# In[3]:
+
 
 ifile = (pkg_rsrc
          .resource_filename("skdiveMove",
@@ -24,17 +38,33 @@ ifile = (pkg_rsrc
 tdrX = skdive.TDR(ifile, depth_name="depth", has_speed=True)
 print(tdrX)
 
+
+# In[4]:
+
+
 tdrX.get_depth("measured")
 
 # Or simply use function ``skdive.tests.diveMove2skd`` to do the
 # same with this particular data set.
 
+
+# In[5]:
+
+
 tdrX.plot(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
           depth_lim=[-1, 95], figsize=_FIG1X1);
+
+
+# In[6]:
+
 
 ccvars = ["light", "speed"]
 tdrX.plot(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
           depth_lim=[-1, 95], concur_vars=ccvars, figsize=_FIG3X1);
+
+
+# In[7]:
+
 
 # Helper dict to set parameter values
 pars = {"offset_zoc": 3,
@@ -53,9 +83,21 @@ tdrX.zoc("offset", offset=pars["offset_zoc"])
 tdrX.plot_zoc(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
               figsize=(13, 6));
 
+
+# In[8]:
+
+
 tdrX.detect_wet(dry_thr=pars["dry_thr"], wet_thr=pars["wet_thr"])
 
+
+# In[9]:
+
+
 tdrX.detect_dives(dive_thr=pars["dive_thr"])
+
+
+# In[10]:
+
 
 tdrX.detect_dive_phases(dive_model=pars["dive_model"],
                         smooth_par=pars["smooth_par"],
@@ -65,39 +107,104 @@ tdrX.detect_dive_phases(dive_model=pars["dive_model"],
 
 print(tdrX)
 
+
+# In[11]:
+
+
 help(skdive.calibrate)
+
+
+# In[12]:
+
 
 tdrX.plot_phases(diveNo=list(range(250, 300)), surface=True, figsize=_FIG1X1);
 
+
+# In[13]:
+
+
 # Plot dive model for a dive
 tdrX.plot_dive_model(diveNo=20, figsize=(10, 10));
+
+
+# In[14]:
+
 
 fig, ax = plt.subplots(figsize=(7, 6))
 # Consider only changes in depth larger than 2 m
 tdrX.calibrate_speed(z=2, ax=ax)
 print(tdrX.speed_calib_fit.summary())
 
+
+# In[15]:
+
+
 print(tdrX.get_depth("zoc"))
 
+
+# In[16]:
+
+
 print(tdrX.get_speed("calibrated"))
+
+
+# In[17]:
+
 
 # Time series of the wet/dry phases
 print(tdrX.wet_dry)
 
+
+# In[18]:
+
+
 print(tdrX.get_phases_params("wet_dry")["dry_thr"])
+
+
+# In[19]:
+
 
 print(tdrX.get_phases_params("wet_dry")["wet_thr"])
 
+
+# In[20]:
+
+
 print(tdrX.get_dives_details("row_ids"))
+
+
+# In[21]:
+
 
 print(tdrX.get_dives_details("spline_derivs"))
 
+
+# In[22]:
+
+
 print(tdrX.get_dives_details("crit_vals"))
+
+
+# In[23]:
+
 
 print(tdrX.time_budget(ignore_z=True, ignore_du=False))
 
+
+# In[24]:
+
+
 print(tdrX.time_budget(ignore_z=True, ignore_du=True))
+
+
+# In[25]:
+
 
 print(tdrX.dive_stats())
 
+
+# In[26]:
+
+
 print(tdrX.stamp_dives())
+
