@@ -146,6 +146,10 @@ class TestBoutsMLE(ut.TestCase):
         self.assertEqual(fit1.x.size, 5)
         self.assertEqual(fit2.x.size, 5)
 
+        # loglik_fun expected failures
+        pars_bad = np.ones(6)
+        self.assertRaises(KeyError, xbouts.loglik_fun, pars_bad, x)
+
     def test_bec(self):
         # Two process
         # -----------
@@ -192,6 +196,11 @@ class TestBoutsMLE(ut.TestCase):
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
         plt.close()
+        # Without Axes
+        _ = xbouts.plot_fit(fit2)
+        lines = ax.get_lines()
+        self.assertEqual(len(lines), 2)
+        plt.close()
 
         # Three process
         # -------------
@@ -224,6 +233,11 @@ class TestBoutsMLE(ut.TestCase):
 
         fig, ax = plt.subplots()
         _ = xbouts.plot_ecdf(fit2, ax=ax)
+        lines = ax.get_lines()
+        self.assertEqual(len(lines), 2)
+        plt.close()
+        # Without Axes
+        _ = xbouts.plot_ecdf(fit2)
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
         plt.close()

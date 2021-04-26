@@ -6,6 +6,7 @@ import unittest as ut
 import numpy as np
 import pandas as pd
 import skdiveMove.bouts as skbouts
+from skdiveMove.bouts.bouts import ecdf
 import matplotlib as mpl
 mpl.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
@@ -129,6 +130,11 @@ class TestBoutsNLS(ut.TestCase):
         lines = ax.get_lines()
         self.assertEqual(len(lines), 3)
         plt.close()
+        # Without Axes
+        _ = xbouts.init_pars([80], plot=True)
+        lines = ax.get_lines()
+        self.assertEqual(len(lines), 3)
+        plt.close()
 
         # Three-process
         # -------------
@@ -144,6 +150,11 @@ class TestBoutsNLS(ut.TestCase):
         lines = ax.get_lines()
         self.assertEqual(len(lines), 4)
         plt.close()
+
+        # Not implemented
+        # ---------------
+        self.assertRaises(IndexError, xbouts.init_pars,
+                          [75, 220, 500], plot=False)
 
     def test_fit(self):
         # Two-process
@@ -191,6 +202,14 @@ class TestBoutsNLS(ut.TestCase):
         self.assertIsInstance(bec, np.ndarray)
         self.assertEqual(bec.size, 2)
 
+    def test_ecdf(self):
+        x = self.x3
+        p = self.pars_true3.loc["p0":].tolist()
+        lda = self.pars_true3.loc["lambda0":"lambda2"]
+        lda["lambda3"] = 0.1
+        # Not implemented
+        self.assertRaises(KeyError, ecdf, x, p, lda)
+
     def test_label_bouts(self):
         # Two-process
         # -----------
@@ -226,6 +245,11 @@ class TestBoutsNLS(ut.TestCase):
 
         fig, ax = plt.subplots()
         _ = xbouts.plot_fit(coefs, ax=ax)
+        line = ax.get_lines()
+        self.assertEqual(len(line), 1)
+        plt.close()
+        # Without Axes
+        _ = xbouts.plot_fit(coefs)
         line = ax.get_lines()
         self.assertEqual(len(line), 1)
         plt.close()
