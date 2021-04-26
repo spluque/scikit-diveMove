@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skdiveMove.tests &#8212; skdiveMove 0.2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">skdiveMove.tests</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for skdiveMove.tests</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;scikit-diveMove tests&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.get_sample_data</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>  <span class="c1"># noqa: F401</span>
+
+
+<div class="viewcode-block" id="simulate_mixexp"><a class="viewcode-back" href="../../bouts.html#bouts.simulate_mixexp">[docs]</a><span class="k">def</span> <span class="nf">simulate_mixexp</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lda</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate samples from mixture of exponential distributions</span>
+
+<span class="sd">    Simulate a mixture of two or three random exponential distributions.</span>
+<span class="sd">    This uses a special definition for the probabilities (:math:`p_i`).  In</span>
+<span class="sd">    the two-process case, :math:`p` represents the proportion of &quot;fast&quot; to</span>
+<span class="sd">    &quot;slow&quot; events in the mixture.  In the three-process case, :math:`p_0`</span>
+<span class="sd">    represents the proportion of &quot;fast&quot; to &quot;slow&quot; events, and :math:`p_1`</span>
+<span class="sd">    represents the proportion of &quot;slow&quot; to &quot;slow&quot; *and* &quot;very slow&quot; events.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Output sample size.</span>
+<span class="sd">    p : float or array_like</span>
+<span class="sd">        Probabilities for processes in the output mixture sample.</span>
+<span class="sd">    lda : array_like</span>
+<span class="sd">        array_like with lambda (scale) for each process.</span>
+<span class="sd">    rng : Generator</span>
+<span class="sd">        Random number generator object.  If not provided, a default one is</span>
+<span class="sd">        created.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `ndarray`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">rng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">p_full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># compute slow and very slow proc props</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p0</span><span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">p0</span> <span class="o">+</span> <span class="n">p1</span><span class="p">)</span>
+        <span class="n">p_full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Mixtures of more than three process not yet implemented&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+    <span class="n">chooser</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lda</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">p</span><span class="o">=</span><span class="n">p_full</span> <span class="o">/</span> <span class="n">p_full</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">rates</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lda</span><span class="p">)</span>
+    <span class="n">proc_mix</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">rates</span><span class="p">[</span><span class="n">chooser</span><span class="p">])</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">proc_mix</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">skdiveMove.tests</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>

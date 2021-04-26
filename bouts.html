@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bout analysis &#8212; skdiveMove 0.1.9 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -72,7 +72,7 @@ log-transformed frequencies.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.init_pars</span></code></a>(x_break[, plot, ax])</p></td>
 <td><p>Find starting values for mixtures of random Poisson processes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.Bouts.fit" title="bouts.Bouts.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.fit</span></code></a>(start)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bouts.Bouts.fit" title="bouts.Bouts.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.fit</span></code></a>(start, **kwargs)</p></td>
 <td><p>Fit Poisson mixture model to log frequencies</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#bouts.Bouts.bec" title="bouts.Bouts.bec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts.bec</span></code></a>(coefs)</p></td>
@@ -231,12 +231,15 @@ coefs.shape[1]</p>
 
 <dl class="py method">
 <dt id="bouts.Bouts.fit">
-<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts.fit" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/bouts.html#Bouts.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit Poisson mixture model to log frequencies</p>
 <p>Default is non-linear least squares method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
@@ -334,9 +337,9 @@ of a single float is returned.</p>
 in columns.  These can come from the “broken stick” method as
 in <a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Bouts.init_pars()</span></code></a>, and will be transformed to minimize
 the first log likelihood function.</p></li>
-<li><p><strong>fit1_opts</strong> (<em>dict</em>) – Dictionaries with keywords to be pass to
+<li><p><strong>fit1_opts</strong> (<em>dict</em>) – Dictionaries with keywords to be passed to
 <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code>, for the first and second fits.</p></li>
-<li><p><strong>fit2_opts</strong> (<em>dict</em>) – Dictionaries with keywords to be pass to
+<li><p><strong>fit2_opts</strong> (<em>dict</em>) – Dictionaries with keywords to be passed to
 <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code>, for the first and second fits.</p></li>
 </ul>
 </dd>
@@ -359,11 +362,13 @@ fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>array_like</em>) – 1-D array with parameters to fit.  Currently must be 3-length,
-with mixing parameter <span class="math notranslate nohighlight">\(p\)</span>, density parameter
-<span class="math notranslate nohighlight">\(\lambda_f\)</span> and <span class="math notranslate nohighlight">\(\lambda_s\)</span>, in that order.</p></li>
-<li><p><strong>x</strong> (<em>array_like</em>) – Independent data array described by model with parameters <cite>p</cite>,
-<span class="math notranslate nohighlight">\(\lambda_f\)</span>, and <span class="math notranslate nohighlight">\(\lambda_s\)</span>.</p></li>
+<li><p><strong>params</strong> (<em>array_like</em>) – 1-D array with parameters to fit.  Currently must be either
+3-length, with mixing parameter <span class="math notranslate nohighlight">\(p\)</span>, density parameter
+<span class="math notranslate nohighlight">\(\lambda_f\)</span> and <span class="math notranslate nohighlight">\(\lambda_s\)</span>, in that order, or
+5-length, with <span class="math notranslate nohighlight">\(p_f\)</span>, <span class="math notranslate nohighlight">\(p_fs\)</span>, <span class="math notranslate nohighlight">\(\lambda_f\)</span>,
+<span class="math notranslate nohighlight">\(\lambda_m\)</span>, <span class="math notranslate nohighlight">\(\lambda_s\)</span>.</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – Independent data array described by model with parameters
+<cite>params</cite>.</p></li>
 <li><p><strong>transformed</strong> (<em>bool</em>) – Whether <cite>params</cite> are transformed and need to be un-transformed
 to calculate the likelihood.</p></li>
 </ul>
@@ -447,12 +452,15 @@ coefs.shape[1]</p>
 
 <dl class="py method">
 <dt id="bouts.BoutsNLS.fit">
-<code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsNLS.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsnls.html#BoutsNLS.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsNLS.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit non-linear least squares to log frequencies</p>
 <p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>pandas.DataFrame</em>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
@@ -504,6 +512,35 @@ coefs.shape[1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="bouts.simulate_mixexp">
+<code class="sig-prename descclassname"><span class="pre">bouts.</span></code><code class="sig-name descname"><span class="pre">simulate_mixexp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tests.html#simulate_mixexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.simulate_mixexp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate samples from mixture of exponential distributions</p>
+<p>Simulate a mixture of two or three random exponential distributions.
+This uses a special definition for the probabilities (<span class="math notranslate nohighlight">\(p_i\)</span>).  In
+the two-process case, <span class="math notranslate nohighlight">\(p\)</span> represents the proportion of “fast” to
+“slow” events in the mixture.  In the three-process case, <span class="math notranslate nohighlight">\(p_0\)</span>
+represents the proportion of “fast” to “slow” events, and <span class="math notranslate nohighlight">\(p_1\)</span>
+represents the proportion of “slow” to “slow” <em>and</em> “very slow” events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Output sample size.</p></li>
+<li><p><strong>p</strong> (<em>float</em><em> or </em><em>array_like</em>) – Probabilities for processes in the output mixture sample.</p></li>
+<li><p><strong>lda</strong> (<em>array_like</em>) – array_like with lambda (scale) for each process.</p></li>
+<li><p><strong>rng</strong> (<em>Generator</em>) – Random number generator object.  If not provided, a default one is
+created.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>ndarray</cite></p>
 </dd>
 </dl>
 </dd></dl>
@@ -576,7 +613,7 @@ coefs.shape[1]</p>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.1.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>
