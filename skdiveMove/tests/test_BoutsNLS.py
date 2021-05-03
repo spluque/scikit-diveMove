@@ -49,10 +49,10 @@ class TestBoutsNLS(ut.TestCase):
         cls.pars_true = pars_true
         nsamp = 10000
         rng = np.random.default_rng()
-        x = skbouts.simulate_mixexp(nsamp,
-                                    pars_true.loc["p"],
-                                    (pars_true.loc[["lambda0", "lambda1"]]
-                                     .to_numpy()), rng=rng)
+        x = skbouts.random_mixexp(nsamp,
+                                  pars_true.loc["p"],
+                                  (pars_true.loc[["lambda0", "lambda1"]]
+                                   .to_numpy()), rng=rng)
         cls.nsamp = nsamp
         cls.x2 = pd.Series(x)
 
@@ -69,10 +69,10 @@ class TestBoutsNLS(ut.TestCase):
                                "p0": p0_true,
                                "p1": p1_true})
         cls.pars_true3 = pars_true
-        x = skbouts.simulate_mixexp(nsamp, pars_true.loc[["p0", "p1"]],
-                                    (pars_true.loc[["lambda0", "lambda1",
-                                                    "lambda2"]]
-                                     .to_numpy()), rng=rng)
+        x = skbouts.random_mixexp(nsamp, pars_true.loc[["p0", "p1"]],
+                                  (pars_true.loc[["lambda0", "lambda1",
+                                                  "lambda2"]]
+                                   .to_numpy()), rng=rng)
         cls.x3 = x
         # Bounds for NLS fit; flattened, two per process (a, lambda).
         # Two-tuple with lower and upper bounds for each parameter.
