@@ -70,9 +70,9 @@ opts2 = dict(method="L-BFGS-B",
 rng = np.random.default_rng()
 # Estimate parameters `nsims` times
 for i in range(nsims):
-    x = skbouts.simulate_mixexp(nsamp, pars_true["p"],
-                                (pars_true[["lambda0", "lambda1"]]
-                                 .to_numpy()), rng=rng)
+    x = skbouts.random_mixexp(nsamp, pars_true["p"],
+                              (pars_true[["lambda0", "lambda1"]]
+                               .to_numpy()), rng=rng)
     # NLS
     xbouts = skbouts.BoutsNLS(x, 5)
     init_pars = xbouts.init_pars([80], plot=False)
@@ -187,9 +187,9 @@ lda2_bnd = (1e-5, 1e-3)
 opts2 = dict(method="L-BFGS-B",
              bounds=(p0_bnd, p1_bnd, lda0_bnd, lda1_bnd, lda2_bnd))
 
-x = skbouts.simulate_mixexp(nsamp, [pars_true["p0"], pars_true["p1"]],
-                            [pars_true["lambda0"], pars_true["lambda1"],
-                             pars_true["lambda2"]], rng=rng)
+x = skbouts.random_mixexp(nsamp, [pars_true["p0"], pars_true["p1"]],
+                          [pars_true["lambda0"], pars_true["lambda1"],
+                           pars_true["lambda2"]], rng=rng)
 
 
 # In[14]:
@@ -217,6 +217,8 @@ x_mle.plot_fit(fit2, ax=axs[1]);
 
 
 fig, axs = plt.subplots(1, 2, figsize=(13, 5))
+axs[0].set_title("NLS")
 x_nls.plot_ecdf(coefs, ax=axs[0])
+axs[1].set_title("MLE")
 x_mle.plot_ecdf(fit2, ax=axs[1]);
 

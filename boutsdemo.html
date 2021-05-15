@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bout analysis &#8212; skdiveMove 0.2.0 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.2.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="tdrdemo.html" title="Diving behaviour analysis"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -352,10 +352,10 @@ lambda          0.136          0.011             0.001
 </td></tr></table></div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[[+5.457e+02 +5.911e-01 +1.012e+00 -5.469e-05 -8.834e-02 -1.191e-04]
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[[+5.457e+02 +5.911e-01 +1.012e+00 -5.468e-05 -8.834e-02 -1.191e-04]
  [+5.911e-01 +2.317e-03 +2.922e-02 +1.217e-04 +9.120e-03 +1.012e-05]
  [+1.012e+00 +2.922e-02 +6.778e+00 +4.515e-04 -8.611e-01 -1.570e-03]
- [-5.469e-05 +1.217e-04 +4.515e-04 +6.806e-05 +6.797e-03 +8.297e-06]
+ [-5.468e-05 +1.217e-04 +4.515e-04 +6.806e-05 +6.797e-03 +8.297e-06]
  [-8.834e-02 +9.120e-03 -8.611e-01 +6.797e-03 +2.934e+00 +6.962e-04]
  [-1.191e-04 +1.012e-05 -1.570e-03 +8.297e-06 +6.962e-04 +2.382e-06]]
 </pre></div>
@@ -391,7 +391,8 @@ models.</p>
 <img alt="_images/boutsdemo_14_0.png" src="_images/boutsdemo_14_0.png" />
 </div>
 </div>
-<p>The three-process model does not seem appropriate.</p>
+<p>The three-process model does not follow the observed data as well as the
+two-process model.</p>
 </div>
 </div>
 <div class="section" id="maximum-likelihood-estimation">
@@ -486,9 +487,9 @@ Therefore, there are two sets of bounds required.</p>
 </td></tr></table></div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>      fun: 917.8524699075529
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>      fun: 917.8524699062108
  hess_inv: &lt;3x3 LbfgsInvHessProduct with dtype=float64&gt;
-      jac: array([+0., -0., +0.])
+      jac: array([+3.411e-05, +1.364e-04, +2.160e-04])
   message: &#39;CONVERGENCE: REL_REDUCTION_OF_F_&lt;=_FACTR*EPSMCH&#39;
      nfev: 40
       nit: 8
@@ -509,9 +510,9 @@ Therefore, there are two sets of bounds required.</p>
 </td></tr></table></div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>      fun: 917.8524699073647
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>      fun: 917.8524699060299
  hess_inv: &lt;3x3 LbfgsInvHessProduct with dtype=float64&gt;
-      jac: array([+0.001, +0.001, +0.003])
+      jac: array([+0.001, +0.002, +0.003])
   message: &#39;CONVERGENCE: REL_REDUCTION_OF_F_&lt;=_FACTR*EPSMCH&#39;
      nfev: 16
       nit: 1
@@ -667,7 +668,7 @@ Name: postdive_dur, Length: 191, dtype: int64
         <li class="right" >
           <a href="tdrdemo.html" title="Diving behaviour analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>

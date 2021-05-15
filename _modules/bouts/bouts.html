@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.bouts &#8212; skdiveMove 0.2.0 documentation</title>
+    <title>bouts.bouts &#8212; skdiveMove 0.2.1 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.bouts</a></li> 
       </ul>
@@ -201,6 +201,45 @@
     <span class="n">xx_bouts</span> <span class="o">=</span> <span class="n">rle_key</span><span class="p">(</span><span class="n">xx_cat</span><span class="p">)</span>
 
     <span class="k">return</span><span class="p">(</span><span class="n">xx_bouts</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_plot_bec</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">xytext</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot bout-ending criteria on `Axes`</span>
+
+<span class="sd">    Private helper function only for convenience here.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bec_x : ndarray, shape (n,)</span>
+<span class="sd">        x coordinate for bout-ending criteria.</span>
+<span class="sd">    bec_y : ndarray, shape (n,)</span>
+<span class="sd">        y coordinate for bout-ending criteria.</span>
+<span class="sd">    ax : matplotlib.Axes</span>
+<span class="sd">        An Axes instance to use as target.</span>
+<span class="sd">    xytext : 2-tuple</span>
+<span class="sd">        Argument passed to `matplotlib.annotate`; interpreted with</span>
+<span class="sd">        textcoords=&quot;offset points&quot;.</span>
+<span class="sd">    horizontalalignment : str</span>
+<span class="sd">        Argument passed to `matplotlib.annotate`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ylims</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bec_y</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+    <span class="c1"># Annotations</span>
+    <span class="n">fmtstr</span> <span class="o">=</span> <span class="s2">&quot;bec_</span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1:.3f}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">bec_x</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">bec_x</span> <span class="o">=</span> <span class="n">bec_x</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bec_x</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">),</span> <span class="n">xytext</span><span class="o">=</span><span class="n">xytext</span><span class="p">,</span>
+                    <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
+                    <span class="n">horizontalalignment</span><span class="o">=</span><span class="n">horizontalalignment</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bec_x</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">bec_i</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">xytext</span><span class="o">=</span><span class="n">xytext</span><span class="p">,</span>
+                        <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
+                        <span class="n">horizontalalignment</span><span class="o">=</span><span class="n">horizontalalignment</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Bouts"><a class="viewcode-back" href="../../bouts.html#bouts.Bouts">[docs]</a><span class="k">class</span> <span class="nc">Bouts</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
@@ -454,9 +493,6 @@
         <span class="n">ctrs</span> <span class="o">=</span> <span class="n">lnfreq</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
         <span class="n">xmin</span> <span class="o">=</span> <span class="n">ctrs</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
         <span class="n">xmax</span> <span class="o">=</span> <span class="n">ctrs</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-        <span class="c1"># BEC</span>
-        <span class="n">becx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>  <span class="c1"># need an array for nls_fun</span>
-        <span class="n">becy</span> <span class="o">=</span> <span class="n">nls_fun</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
 
         <span class="n">x_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>  <span class="c1"># matches R&#39;s curve</span>
         <span class="n">y_pred</span> <span class="o">=</span> <span class="n">nls_fun</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
@@ -469,27 +505,33 @@
         <span class="c1"># Plot predicted</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
         <span class="c1"># Plot BEC (note this plots all BECs in becx)</span>
-        <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">becy</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">becy</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Annotations</span>
-        <span class="n">fmtstr</span> <span class="o">=</span> <span class="s2">&quot;bec_</span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1:.3f}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">becx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">xcrd</span> <span class="o">=</span> <span class="n">becx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xcrd</span><span class="p">),</span> <span class="p">(</span><span class="n">xcrd</span><span class="p">,</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">becx</span><span class="p">):</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span><span class="p">),</span> <span class="p">(</span><span class="n">bec_i</span><span class="p">,</span> <span class="n">becy</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
-                            <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">)</span>
+        <span class="n">bec_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>  <span class="c1"># need an array for nls_fun</span>
+        <span class="n">bec_y</span> <span class="o">=</span> <span class="n">nls_fun</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
+        <span class="n">_plot_bec</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                   <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;log frequency&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div></div>
+        <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_plot_ecdf</span><span class="p">(</span><span class="n">x_pred_expm1</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot Empirical Frequency Distribution</span>
+
+<span class="sd">        Plot the ECDF at predicted x and corresponding y locations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x_pred : ndarray, shape (n,)</span>
+<span class="sd">            Values of the variable at which to plot the ECDF.</span>
+<span class="sd">        y_pred : ndarray, shape (n,)</span>
+<span class="sd">            Values of the ECDF at `x_pred`.</span>
+<span class="sd">        ax : matplotlib.Axes</span>
+<span class="sd">            An Axes instance to use as target.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -524,7 +566,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.bouts</a></li> 
       </ul>

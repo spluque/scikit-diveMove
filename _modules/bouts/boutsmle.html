@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.boutsmle &#8212; skdiveMove 0.2.0 documentation</title>
+    <title>bouts.boutsmle &#8212; skdiveMove 0.2.1 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>
@@ -275,9 +275,6 @@
             <span class="n">lda_hat</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
         <span class="n">xmin</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
         <span class="n">xmax</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-        <span class="c1"># BEC</span>
-        <span class="n">becx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
-        <span class="n">becy</span> <span class="o">=</span> <span class="n">mle_fun</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">p_hat</span><span class="p">,</span> <span class="n">lda_hat</span><span class="p">)</span>
 
         <span class="n">x_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>  <span class="c1"># matches R&#39;s curve</span>
         <span class="c1"># Need to transpose to unpack columns rather than rows</span>
@@ -292,19 +289,9 @@
         <span class="c1"># Plot predicted</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
         <span class="c1"># Plot BEC</span>
-        <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">becy</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">becy</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Annotations</span>
-        <span class="n">fmtstr</span> <span class="o">=</span> <span class="s2">&quot;bec_</span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1:.3f}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">becx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">becx</span><span class="p">),</span> <span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">becy</span><span class="p">),</span>
-                        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">becx</span><span class="p">):</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span><span class="p">),</span> <span class="p">(</span><span class="n">bec_i</span><span class="p">,</span> <span class="n">becy</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
-                            <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">)</span>
+        <span class="n">bec_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
+        <span class="n">bec_y</span> <span class="o">=</span> <span class="n">mle_fun</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">p_hat</span><span class="p">,</span> <span class="n">lda_hat</span><span class="p">)</span>
+        <span class="n">bouts</span><span class="o">.</span><span class="n">_plot_bec</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                   <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -313,7 +300,7 @@
 
         <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BoutsMLE.plot_ecdf"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.plot_ecdf">[docs]</a>    <span class="k">def</span> <span class="nf">plot_ecdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BoutsMLE.plot_ecdf"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.plot_ecdf">[docs]</a>    <span class="k">def</span> <span class="nf">plot_ecdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot observed and modelled empirical cumulative frequencies</span>
 
 <span class="sd">        Parameters</span>
@@ -323,6 +310,8 @@
 <span class="sd">            with coefficients of the solution.</span>
 <span class="sd">        ax : matplotlib.Axes instance</span>
 <span class="sd">            An Axes instance to use as target.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Passed to `matplotlib.pyplot.gca`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -331,51 +320,39 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
 
-        <span class="n">coefs</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">x</span>
         <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">x_ecdf</span> <span class="o">=</span> <span class="n">ECDF</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>
         <span class="n">x_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>
+        <span class="n">x_pred_expm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x_pred</span><span class="p">)</span>
         <span class="n">y_pred</span> <span class="o">=</span> <span class="n">x_ecdf</span><span class="p">(</span><span class="n">x_pred</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Plot ECDF of data</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x_pred</span><span class="p">),</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observed&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">x_pred_expm1</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observed&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ScalarFormatter</span><span class="p">())</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
         <span class="c1"># Plot estimated CDF</span>
+        <span class="n">coefs</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">x</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">p_hat</span> <span class="o">=</span> <span class="p">[</span><span class="n">coefs</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>          <span class="c1"># list to bouts.ecdf()</span>
             <span class="n">lda_hat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;lambda&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
             <span class="n">p_hat</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
             <span class="n">lda_hat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">coefs</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;lambda&quot;</span><span class="p">)</span>
-        <span class="n">y_mod</span> <span class="o">=</span> <span class="n">bouts</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x_pred</span><span class="p">),</span> <span class="n">p_hat</span><span class="p">,</span> <span class="n">lda_hat</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x_pred</span><span class="p">),</span> <span class="n">y_mod</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+        <span class="n">y_mod</span> <span class="o">=</span> <span class="n">bouts</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span><span class="n">x_pred_expm1</span><span class="p">,</span> <span class="n">p_hat</span><span class="p">,</span> <span class="n">lda_hat</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pred_expm1</span><span class="p">,</span> <span class="n">y_mod</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
         <span class="c1"># Add a little offset to ylim for visibility</span>
         <span class="n">yoffset</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">*</span><span class="n">yoffset</span><span class="p">)</span>       <span class="c1"># add some spacing</span>
         <span class="c1"># Plot BEC</span>
-        <span class="n">becx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
-        <span class="n">becy</span> <span class="o">=</span> <span class="n">bouts</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">p_hat</span><span class="p">,</span> <span class="n">lda_hat</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">becy</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">becy</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
-        <span class="c1"># Annotations</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
-        <span class="n">fmtstr</span> <span class="o">=</span> <span class="s2">&quot;bec_</span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1:.3f}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">becx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">becx</span><span class="p">),</span>
-                        <span class="p">(</span><span class="n">becx</span><span class="p">,</span> <span class="n">becy</span><span class="p">),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-                        <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
+        <span class="n">bec_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
+        <span class="n">bec_y</span> <span class="o">=</span> <span class="n">bouts</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p_hat</span><span class="p">,</span> <span class="n">lambdas</span><span class="o">=</span><span class="n">lda_hat</span><span class="p">)</span>
+        <span class="n">bouts</span><span class="o">.</span><span class="n">_plot_bec</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="o">=</span><span class="n">bec_y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
                         <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">becx</span><span class="p">):</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">fmtstr</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">bec_i</span><span class="p">),</span>
-                            <span class="p">(</span><span class="n">bec_i</span><span class="p">,</span> <span class="n">becy</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-                            <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
-                            <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;ECDF [x]&quot;</span><span class="p">)</span>
@@ -474,7 +451,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>

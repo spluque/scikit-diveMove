@@ -172,7 +172,8 @@ models.
    postdives_nlsbouts.plot_ecdf(coefs2, ax=axs[0])
    postdives_nlsbouts.plot_ecdf(coefs3, ax=axs[1]);
 
-The three-process model does not seem appropriate.
+The three-process model does not follow the observed data as well as the
+two-process model.
 
 
 Maximum likelihood estimation

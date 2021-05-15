@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bout analysis &#8212; skdiveMove 0.2.0 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.2.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -384,7 +384,7 @@ to calculate the likelihood.</p></li>
 
 <dl class="py method">
 <dt id="bouts.BoutsMLE.plot_ecdf">
-<code class="sig-name descname"><span class="pre">plot_ecdf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.plot_ecdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsMLE.plot_ecdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">plot_ecdf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.plot_ecdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsMLE.plot_ecdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot observed and modelled empirical cumulative frequencies</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -392,6 +392,7 @@ to calculate the likelihood.</p></li>
 <li><p><strong>fit</strong> (<em>scipy.optimize.OptimizeResult</em>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -517,8 +518,8 @@ coefs.shape[1]</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="bouts.simulate_mixexp">
-<code class="sig-prename descclassname"><span class="pre">bouts.</span></code><code class="sig-name descname"><span class="pre">simulate_mixexp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tests.html#simulate_mixexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.simulate_mixexp" title="Permalink to this definition">¶</a></dt>
+<dt id="bouts.random_mixexp">
+<code class="sig-prename descclassname"><span class="pre">bouts.</span></code><code class="sig-name descname"><span class="pre">random_mixexp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tests.html#random_mixexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.random_mixexp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate samples from mixture of exponential distributions</p>
 <p>Simulate a mixture of two or three random exponential distributions.
 This uses a special definition for the probabilities (<span class="math notranslate nohighlight">\(p_i\)</span>).  In
@@ -613,7 +614,7 @@ created.</p></li>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>
