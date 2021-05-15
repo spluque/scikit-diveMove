@@ -160,6 +160,45 @@ def label_bouts(x, bec, as_diff=False):
     return(xx_bouts)
 
 
+def _plot_bec(bec_x, bec_y, ax, xytext, horizontalalignment="left"):
+    """Plot bout-ending criteria on `Axes`
+
+    Private helper function only for convenience here.
+
+    Parameters
+    ----------
+    bec_x : ndarray, shape (n,)
+        x coordinate for bout-ending criteria.
+    bec_y : ndarray, shape (n,)
+        y coordinate for bout-ending criteria.
+    ax : matplotlib.Axes
+        An Axes instance to use as target.
+    xytext : 2-tuple
+        Argument passed to `matplotlib.annotate`; interpreted with
+        textcoords="offset points".
+    horizontalalignment : str
+        Argument passed to `matplotlib.annotate`.
+
+    """
+    ylims = ax.get_ylim()
+    ax.vlines(bec_x, ylims[0], bec_y, linestyle="--")
+    ax.scatter(bec_x, bec_y, c="r", marker="v")
+    # Annotations
+    fmtstr = "bec_{0} = {1:.3f}"
+    if bec_x.size == 1:
+        bec_x = bec_x.item()
+        ax.annotate(fmtstr.format(0, bec_x),
+                    (bec_x, bec_y), xytext=xytext,
+                    textcoords="offset points",
+                    horizontalalignment=horizontalalignment)
+    else:
+        for i, bec_i in enumerate(bec_x):
+            ax.annotate(fmtstr.format(i, bec_i),
+                        (bec_i, bec_y[i]), xytext=xytext,
+                        textcoords="offset points",
+                        horizontalalignment=horizontalalignment)
+
+
 class Bouts(metaclass=ABCMeta):
     """Abstract base class for models of log-transformed frequencies
 
@@ -411,9 +450,6 @@ class Bouts(metaclass=ABCMeta):
         ctrs = lnfreq["x"]
         xmin = ctrs.min()
         xmax = ctrs.max()
-        # BEC
-        becx = self.bec(coefs)  # need an array for nls_fun
-        becy = nls_fun(becx, coefs)
 
         x_pred = np.linspace(xmin, xmax, num=101)  # matches R's curve
         y_pred = nls_fun(x_pred, coefs)
@@ -426,20 +462,9 @@ class Bouts(metaclass=ABCMeta):
         # Plot predicted
         ax.plot(x_pred, y_pred, alpha=0.5, label="model")
         # Plot BEC (note this plots all BECs in becx)
-        ylim = ax.get_ylim()
-        ax.vlines(becx, ylim[0], becy, linestyle="--")
-        ax.scatter(becx, becy, c="r", marker="v")
-
-        # Annotations
-        fmtstr = "bec_{0} = {1:.3f}"
-        if becx.size == 1:
-            xcrd = becx[0]
-            ax.annotate(fmtstr.format(0, xcrd), (xcrd, ylim[0]),
-                        xytext=(5, 0), textcoords="offset points")
-        else:
-            for i, bec_i in enumerate(becx):
-                ax.annotate(fmtstr.format(i, bec_i), (bec_i, becy[i]),
-                            xytext=(5, 5), textcoords="offset points")
+        bec_x = self.bec(coefs)  # need an array for nls_fun
+        bec_y = nls_fun(bec_x, coefs)
+        _plot_bec(bec_x, bec_y, ax=ax, xytext=(5, 5))
 
         ax.legend(loc=8, bbox_to_anchor=(0.5, 1), frameon=False,
                   borderaxespad=0.1, ncol=2)
@@ -447,3 +472,20 @@ class Bouts(metaclass=ABCMeta):
         ax.set_ylabel("log frequency")
 
         return(ax)
+
+    def _plot_ecdf(x_pred_expm1, y_pred, ax):
+        """Plot Empirical Frequency Distribution
+
+        Plot the ECDF at predicted x and corresponding y locations.
+
+        Parameters
+        ----------
+        x_pred : ndarray, shape (n,)
+            Values of the variable at which to plot the ECDF.
+        y_pred : ndarray, shape (n,)
+            Values of the ECDF at `x_pred`.
+        ax : matplotlib.Axes
+            An Axes instance to use as target.
+
+        """
+        pass

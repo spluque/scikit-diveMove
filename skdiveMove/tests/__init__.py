@@ -4,7 +4,7 @@ import numpy as np
 from .get_sample_data import diveMove2skd  # noqa: F401
 
 
-def simulate_mixexp(n, p, lda, rng=None):
+def random_mixexp(n, p, lda, rng=None):
     """Generate samples from mixture of exponential distributions
 
     Simulate a mixture of two or three random exponential distributions.
@@ -46,7 +46,6 @@ def simulate_mixexp(n, p, lda, rng=None):
         msg = ("Mixtures of more than three process not yet implemented")
         raise NotImplementedError(msg)
 
-    rng = np.random.default_rng()
     chooser = rng.choice(len(lda), size=n, replace=True,
                          p=p_full / p_full.sum())
     rates = 1 / np.array(lda)

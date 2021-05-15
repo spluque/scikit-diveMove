@@ -2,10 +2,9 @@
 
 """
 
-import math
 import numpy as np
 import pandas as pd
-from skdiveMove.core import robjs, cv, pandas2ri, r_base
+from skdiveMove.core import robjs, cv, pandas2ri
 
 __all__ = ["_get_dive_indices", "_add_xr_attr",
            "get_var_sampling_interval", "_cut_dive",
@@ -192,16 +191,6 @@ def _speed_stats(x, vdist=None):
     with cv.localconverter(robjs.default_converter +
                            pandas2ri.converter):
         res = speed_stats_fun(**kwargs)
-
-    # WARNING: block below may be temporary depending on how rpy2 decides
-    # how to handle different forms of NA from R -> I've reported the bug.
-    # In the meantime, diveMove yields a FloatMatrix in rpy2 as of diveMove
-    # 1.5.4.
-    if isinstance(res, robjs.vectors.BoolMatrix):
-        res_temp = pd.DataFrame(r_base.data_frame(res))
-        for tmpname in res_temp.keys():
-            res_temp.loc[res_temp[tmpname] == robjs.NA_Logical] = math.nan
-        res = res_temp.T.to_numpy()
 
     return(res)
 

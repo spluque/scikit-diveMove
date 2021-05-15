@@ -111,7 +111,7 @@ API
 from .bouts import Bouts, label_bouts
 from .boutsnls import BoutsNLS
 from .boutsmle import BoutsMLE
-from skdiveMove.tests import simulate_mixexp
+from skdiveMove.tests import random_mixexp
 
 __all__ = ["Bouts", "BoutsNLS", "BoutsMLE", "label_bouts",
-           "simulate_mixexp"]
+           "random_mixexp"]

@@ -232,9 +232,6 @@ class BoutsMLE(bouts.Bouts):
             lda_hat = coefs[2:]
         xmin = x.min()
         xmax = x.max()
-        # BEC
-        becx = self.bec(fit)
-        becy = mle_fun(becx, p_hat, lda_hat)
 
         x_pred = np.linspace(xmin, xmax, num=101)  # matches R's curve
         # Need to transpose to unpack columns rather than rows
@@ -249,19 +246,9 @@ class BoutsMLE(bouts.Bouts):
         # Plot predicted
         ax.plot(x_pred, y_pred, label="model")
         # Plot BEC
-        ylim = ax.get_ylim()
-        ax.vlines(becx, ylim[0], becy, linestyle="--")
-        ax.scatter(becx, becy, c="r", marker="v")
-
-        # Annotations
-        fmtstr = "bec_{0} = {1:.3f}"
-        if becx.size == 1:
-            ax.annotate(fmtstr.format(0, becx), (becx, becy),
-                        xytext=(5, 0), textcoords="offset points")
-        else:
-            for i, bec_i in enumerate(becx):
-                ax.annotate(fmtstr.format(i, bec_i), (bec_i, becy[i]),
-                            xytext=(5, 0), textcoords="offset points")
+        bec_x = self.bec(fit)
+        bec_y = mle_fun(bec_x, p_hat, lda_hat)
+        bouts._plot_bec(bec_x, bec_y, ax=ax, xytext=(5, 5))
 
         ax.legend(loc=8, bbox_to_anchor=(0.5, 1), frameon=False,
                   borderaxespad=0.1, ncol=2)
@@ -270,7 +257,7 @@ class BoutsMLE(bouts.Bouts):
 
         return(ax)
 
-    def plot_ecdf(self, fit, ax=None):
+    def plot_ecdf(self, fit, ax=None, **kwargs):
         """Plot observed and modelled empirical cumulative frequencies
 
         Parameters
@@ -280,6 +267,8 @@ class BoutsMLE(bouts.Bouts):
             with coefficients of the solution.
         ax : matplotlib.Axes instance
             An Axes instance to use as target.
+        **kwargs : optional keyword arguments
+            Passed to `matplotlib.pyplot.gca`.
 
         Returns
         -------
@@ -288,51 +277,39 @@ class BoutsMLE(bouts.Bouts):
         """
         x = self.x
 
-        coefs = fit.x
         xx = np.log1p(x)
         x_ecdf = ECDF(xx)
         x_pred = np.linspace(0, xx.max(), num=101)
+        x_pred_expm1 = np.expm1(x_pred)
         y_pred = x_ecdf(x_pred)
 
         if ax is None:
-            ax = plt.gca()
+            ax = plt.gca(**kwargs)
 
         # Plot ECDF of data
-        ax.step(np.expm1(x_pred), y_pred, label="observed")
+        ax.step(x_pred_expm1, y_pred, label="observed")
         ax.set_xscale("log")
         ax.xaxis.set_major_formatter(ScalarFormatter())
         ax.set_xlim(np.exp(xx).min(), np.exp(xx).max())
         # Plot estimated CDF
+        coefs = fit.x
         if len(coefs) == 3:
             p_hat = [coefs[0]]          # list to bouts.ecdf()
             lda_hat = pd.Series(coefs[1:], name="lambda")
         elif len(coefs) == 5:
             p_hat = coefs[:2]
             lda_hat = pd.Series(coefs[2:], name="lambda")
-        y_mod = bouts.ecdf(np.expm1(x_pred), p_hat, lda_hat)
-        ax.plot(np.expm1(x_pred), y_mod, label="model")
+        y_mod = bouts.ecdf(x_pred_expm1, p_hat, lda_hat)
+        ax.plot(x_pred_expm1, y_mod, label="model")
         # Add a little offset to ylim for visibility
         yoffset = (0.05, 1.05)
         ax.set_ylim(*yoffset)       # add some spacing
         # Plot BEC
-        becx = self.bec(fit)
-        becy = bouts.ecdf(becx, p_hat, lda_hat)
-        ax.vlines(becx, 0, becy, linestyle="--")
-        ax.scatter(becx, becy, c="r", marker="v")
-        # Annotations
-        ax.legend(loc="upper left")
-        fmtstr = "bec_{0} = {1:.3f}"
-        if becx.size == 1:
-            ax.annotate(fmtstr.format(0, becx),
-                        (becx, becy), xytext=(-5, 5),
-                        textcoords="offset points",
+        bec_x = self.bec(fit)
+        bec_y = bouts.ecdf(bec_x, p=p_hat, lambdas=lda_hat)
+        bouts._plot_bec(bec_x, bec_y=bec_y, ax=ax, xytext=(-5, 5),
                         horizontalalignment="right")
-        else:
-            for i, bec_i in enumerate(becx):
-                ax.annotate(fmtstr.format(i, bec_i),
-                            (bec_i, becy[i]), xytext=(-5, 5),
-                            textcoords="offset points",
-                            horizontalalignment="right")
+        ax.legend(loc="upper left")
 
         ax.set_xlabel("x")
         ax.set_ylabel("ECDF [x]")

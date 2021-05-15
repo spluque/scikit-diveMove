@@ -77,36 +77,31 @@ class BoutsNLS(bouts.Bouts):
         xx = np.log1p(x)
         x_ecdf = ECDF(xx)
         x_pred = np.linspace(0, xx.max(), num=101)
+        x_pred_expm1 = np.expm1(x_pred)
         y_pred = x_ecdf(x_pred)
 
         if ax is None:
             ax = plt.gca(**kwargs)
 
         # Plot ECDF of data
-        ax.step(np.expm1(x_pred), y_pred, label="observed")
+        ax.step(x_pred_expm1, y_pred, label="observed")
         ax.set_xscale("log")
         ax.xaxis.set_major_formatter(ScalarFormatter())
         ax.set_xlim(np.exp(xx).min(), np.exp(xx).max())
         # Plot estimated CDF
         p, lambdas = bouts.calc_p(coefs)
-        y_mod = bouts.ecdf(np.expm1(x_pred), p, lambdas)
-        ax.plot(np.expm1(x_pred), y_mod, label="model")
+        y_mod = bouts.ecdf(x_pred_expm1, p, lambdas)
+        ax.plot(x_pred_expm1, y_mod, label="model")
         # Add a little offset to ylim for visibility
         yoffset = (0.05, 1.05)
         ax.set_ylim(*yoffset)       # add some spacing
         # Plot BEC
-        becx = self.bec(coefs)
-        becy = bouts.ecdf(becx, p, lambdas)
-        ax.vlines(becx, 0, becy, linestyle="--")
-        ax.scatter(becx, becy, c="r", marker="v")
-        # Annotations
-        ax.legend(loc="upper left")
-        fmtstr = "bec_{0} = {1:.3f}"
-        for i, bec_i in enumerate(becx):  # becx is always an array
-            ax.annotate(fmtstr.format(i, bec_i),
-                        (bec_i, becy[i]), xytext=(-5, 5),
-                        textcoords="offset points",
+        bec_x = self.bec(coefs)
+        bec_y = bouts.ecdf(bec_x, p=p, lambdas=lambdas)
+        bouts._plot_bec(bec_x, bec_y=bec_y, ax=ax, xytext=(-5, 5),
                         horizontalalignment="right")
+        ax.legend(loc="upper left")
+
         ax.set_xlabel("x")
         ax.set_ylabel("ECDF [x]")
 

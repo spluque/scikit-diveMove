@@ -37,7 +37,7 @@ Generate two-process mixture
 
 For a mixed distribution of two random Poisson processes with a mixing
 parameter :math:`p=0.7`, and density parameters :math:`\lambda_f=0.05`, and
-:math:`\lambda_s=0.005`, we use the `simulate_mixexp` function to generate
+:math:`\lambda_s=0.005`, we use the `random_mixexp` function to generate
 samples.
 
 Define the true values described above, grouping the parameters into a
@@ -97,9 +97,9 @@ iteration.
    rng = np.random.default_rng()
    # Estimate parameters `nsims` times
    for i in range(nsims):
-       x = skbouts.simulate_mixexp(nsamp, pars_true["p"],
-                                   (pars_true[["lambda0", "lambda1"]]
-				    .to_numpy()), rng=rng)
+       x = skbouts.random_mixexp(nsamp, pars_true["p"],
+                                 (pars_true[["lambda0", "lambda1"]]
+			          .to_numpy()), rng=rng)
        # NLS
        xbouts = skbouts.BoutsNLS(x, 5)
        init_pars = xbouts.init_pars([80], plot=False)
@@ -239,9 +239,9 @@ help.
    opts2 = dict(method="L-BFGS-B",
                 bounds=(p0_bnd, p1_bnd, lda0_bnd, lda1_bnd, lda2_bnd))
 
-   x = skbouts.simulate_mixexp(nsamp, [pars_true["p0"], pars_true["p1"]],
-                               [pars_true["lambda0"], pars_true["lambda1"],
-                                pars_true["lambda2"]], rng=rng)
+   x = skbouts.random_mixexp(nsamp, [pars_true["p0"], pars_true["p1"]],
+                             [pars_true["lambda0"], pars_true["lambda1"],
+                              pars_true["lambda2"]], rng=rng)
 
 We fit the three-process data with the two models:
 
@@ -269,7 +269,9 @@ Compare cumulative frequency distributions:
 .. jupyter-execute::
 
    fig, axs = plt.subplots(1, 2, figsize=(13, 5))
+   axs[0].set_title("NLS")
    x_nls.plot_ecdf(coefs, ax=axs[0])
+   axs[1].set_title("MLE")
    x_mle.plot_ecdf(fit2, ax=axs[1]);
 
 Feel free to download a copy of this demo

@@ -34,7 +34,7 @@ setup(
     install_requires=REQUIREMENTS,
     extras_require={
         "dev": DEV_REQUIRES,
-        "docs": ["jupyter-sphinx"]
+        "docs": ["jupyter-sphinx", "matplotlib-inline"]
     },
     # metadata for upload to PyPI
     author="Sebastian Luque",
