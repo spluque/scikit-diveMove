@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def mle_fun(x, p, lambdas):
+def mleLL(x, p, lambdas):
     r"""Random Poisson processes function
 
     The current implementation takes two or three random Poisson processes.
@@ -53,7 +53,7 @@ def mle_fun(x, p, lambdas):
         lda1 = lambdas[1]
         term1 = (1 - p0) * lda1 * np.exp(-lda1 * x)
         res = term0 + term1
-    else:                # 3 processes; capabilities enforced in loglik_fun
+    else:                # 3 processes; capabilities enforced in mleLL
         p1 = p[1]
         lda1 = lambdas[1]
         term1 = p1 * (1 - p0) * lda1 * np.exp(-lda1 * x)
@@ -65,11 +65,73 @@ def mle_fun(x, p, lambdas):
 
 
 class BoutsMLE(bouts.Bouts):
-    """Nonlinear least squares bout identification
+    r"""Maximum Likelihood estimation for models of Poisson process mixtures
+
+    Methods for modelling log-frequency data as a mixture of Poisson
+    processes via maximum likelihood estimation [2]_, [3]_.  Mixtures of
+    two or three Poisson processes are supported.
+
+    Even in these relatively simple cases, it is very important to provide
+    good starting values for the parameters.
+
+    One useful strategy to get good starting parameter values is to proceed
+    in 4 steps.  First, fit a broken stick model to the log frequencies of
+    binned data (see :meth:`~Bouts.init_pars`), to obtain estimates of 4
+    parameters in a 2-process model [1]_, or 6 in a 3-process model.
+    Second, calculate parameter(s) :math:`p` from the :math:`\alpha`
+    parameters obtained by fitting the broken stick model, to get tentative
+    initial values as in [2]_.  Third, obtain MLE estimates for these
+    parameters, but using a reparameterized version of the -log L2
+    function.  Lastly, obtain the final MLE estimates for the three
+    parameters by using the estimates from step 3, un-transformed back to
+    their original scales, maximizing the original parameterization of the
+    -log L2 function.
+
+    :meth:`~Bouts.init_pars` can be used to perform step 1.  Calculation of
+    the mixing parameters :math:`p` in step 2 is trivial from these
+    estimates.  Method :meth:`negMLEll` calculates the negative
+    log-likelihood for a reparameterized version of the -log L2 function
+    given by [1]_, so can be used for step 3.  This uses a logit
+    transformation of the mixing parameter :math:`p`, and log
+    transformations for density parameters :math:`\lambda`.  Method
+    :meth:`negMLEll` is used again to compute the -log L2 function
+    corresponding to the un-transformed model for step 4.
+
+    The :meth:`fit` method performs the main job of maximizing the -log L2
+    functions, and is essentially a wrapper around
+    :func:`~scipy.optimize.minimize`.  It only takes the -log L2 function,
+    a `DataFrame` of starting values, and the variable to be modelled, all
+    of which are passed to :func:`~scipy.optimize.minimize` for
+    optimization.  Additionally, any other arguments are also passed to
+    :func:`~scipy.optimize.minimize`, hence great control is provided for
+    fitting any of the -log L2 functions.
+
+    In practice, step 3 does not pose major problems using the
+    reparameterized -log L2 function, but it might be useful to use method
+    'L-BFGS-B' with appropriate lower and upper bounds.  Step 4 can be a
+    bit more problematic, because the parameters are usually on very
+    different scales and there can be multiple minima.  Therefore, it is
+    almost always the rule to use method 'L-BFGS-B', again bounding the
+    parameter search, as well as other settings for controlling the
+    optimization.
+
+    References
+    ----------
+    .. [2] Langton, S.; Collett, D. and Sibly, R. (1995) Splitting
+       behaviour into bouts; a maximum likelihood approach.  Behaviour 132,
+       9-10.
+
+    .. [3] Luque, S.P. and Guinet, C. (2007) A maximum likelihood approach
+       for identifying dive bouts improves accuracy, precision, and
+       objectivity. Behaviour, 144, 1315-1332.
+
+    Examples
+    --------
+    See :doc:`boutsimuldemo` for a detailed example.
 
     """
 
-    def loglik_fun(self, params, x, transformed=True):
+    def negMLEll(self, params, x, istransformed=True):
         r"""Log likelihood function of parameters given observed data
 
         Parameters
@@ -83,7 +145,7 @@ class BoutsMLE(bouts.Bouts):
         x : array_like
             Independent data array described by model with parameters
             `params`.
-        transformed : bool
+        istransformed : bool
             Whether `params` are transformed and need to be un-transformed
             to calculate the likelihood.
 
@@ -103,11 +165,11 @@ class BoutsMLE(bouts.Bouts):
             msg = "Only mixtures of <= 3 processes are implemented"
             raise KeyError(msg)
 
-        if transformed:
+        if istransformed:
             p = expit(p)
             lambdas = np.exp(lambdas)
 
-        ll = -sum(mle_fun(x, p, lambdas))
+        ll = -sum(mleLL(x, p, lambdas))
         logger.info("LL={}".format(ll))
         return(ll)
 
@@ -144,20 +206,20 @@ class BoutsMLE(bouts.Bouts):
 
         logger.info("Starting first fit")
         if fit1_opts:
-            fit1 = minimize(self.loglik_fun, x0=x0, args=(self.x,),
+            fit1 = minimize(self.negMLEll, x0=x0, args=(self.x,),
                             **fit1_opts)
         else:
-            fit1 = minimize(self.loglik_fun, x0=x0, args=(self.x,))
+            fit1 = minimize(self.negMLEll, x0=x0, args=(self.x,))
 
         coef0 = fit1.x
 
         start2 = [expit(coef0[0]), *np.exp(coef0[1:])]
         logger.info("Starting second fit")
         if fit2_opts:
-            fit2 = minimize(self.loglik_fun, x0=start2,
+            fit2 = minimize(self.negMLEll, x0=start2,
                             args=(self.x, False), **fit2_opts)
         else:
-            fit2 = minimize(self.loglik_fun, x0=start2,
+            fit2 = minimize(self.negMLEll, x0=start2,
                             args=(self.x, False))
         logger.info("N iter fit 1: {0}, fit 2: {1}"
                     .format(fit1.nit, fit2.nit))
@@ -235,7 +297,7 @@ class BoutsMLE(bouts.Bouts):
 
         x_pred = np.linspace(xmin, xmax, num=101)  # matches R's curve
         # Need to transpose to unpack columns rather than rows
-        y_pred = mle_fun(x_pred, p_hat, lda_hat)
+        y_pred = mleLL(x_pred, p_hat, lda_hat)
 
         if ax is None:
             ax = plt.gca()
@@ -247,7 +309,7 @@ class BoutsMLE(bouts.Bouts):
         ax.plot(x_pred, y_pred, label="model")
         # Plot BEC
         bec_x = self.bec(fit)
-        bec_y = mle_fun(bec_x, p_hat, lda_hat)
+        bec_y = mleLL(bec_x, p_hat, lda_hat)
         bouts._plot_bec(bec_x, bec_y, ax=ax, xytext=(5, 5))
 
         ax.legend(loc=8, bbox_to_anchor=(0.5, 1), frameon=False,

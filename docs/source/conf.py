@@ -19,7 +19,7 @@ sys.path.append("../skdiveMove")
 # -- Project information -----------------------------------------------------
 
 project = 'skdiveMove'
-copyright = '2020, Sebastian Luque'
+copyright = '2021, Sebastian Luque'
 author = 'Sebastian Luque'
 
 # The short X.Y version
@@ -38,6 +38,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
     'jupyter_sphinx'
@@ -118,4 +119,14 @@ htmlhelp_basename = 'skdiveMove_doc'
 #    u'Sebastian Luque', 'manual'),
 # ]
 
-# -- Extension configuration -------------------------------------------------
+# -- Extension configurations ---------------------------------------------
+
+# Intersphinx
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'numpy': ('https://numpy.org/doc/stable', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/reference', None),
+    'pandas': ('https://pandas.pydata.org/docs', None),
+    'matplotlib': ('https://matplotlib.org/stable', None),
+    'xarray': ('http://xarray.pydata.org/en/stable/', None),
+}

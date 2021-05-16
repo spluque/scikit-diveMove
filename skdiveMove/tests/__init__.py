@@ -5,7 +5,7 @@ from .get_sample_data import diveMove2skd  # noqa: F401
 
 
 def random_mixexp(n, p, lda, rng=None):
-    """Generate samples from mixture of exponential distributions
+    r"""Generate samples from mixture of exponential distributions
 
     Simulate a mixture of two or three random exponential distributions.
     This uses a special definition for the probabilities (:math:`p_i`).  In
@@ -21,14 +21,26 @@ def random_mixexp(n, p, lda, rng=None):
     p : float or array_like
         Probabilities for processes in the output mixture sample.
     lda : array_like
-        array_like with lambda (scale) for each process.
+        array_like with :math:`\lambda` (scale) for each process.
     rng : Generator
         Random number generator object.  If not provided, a default one is
-        created.
+        used.
 
     Returns
     -------
     `ndarray`
+
+    Examples
+    --------
+    Draw 1000 samples from a mixture where the first process occurs with
+    :math:`p < 0.7` and the second process occurs with the remaining
+    probability.
+
+    >>> rng = np.random.default_rng(123)
+    >>> random_mixexp(1000, p=0.7, lda=np.array([0.05, 0.005]),
+    ...               rng=rng)  # doctest: +ELLIPSIS
+    array([7.27468930e+00, 2.69331091e+00, 5.29542594e+00, 1.02697947e+01,
+           ...])
 
     """
     if rng is None:

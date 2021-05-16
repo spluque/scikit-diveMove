@@ -149,7 +149,7 @@ class TestBoutsMLE(ut.TestCase):
 
         # loglik_fun expected failures
         pars_bad = np.ones(6)
-        self.assertRaises(KeyError, xbouts.loglik_fun, pars_bad, x)
+        self.assertRaises(KeyError, xbouts.negMLEll, pars_bad, x)
 
     def test_bec(self):
         # Two process

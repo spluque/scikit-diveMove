@@ -49,7 +49,7 @@ jobs:
 
       - name: Test
         run: |
-          pytest -v skdiveMove/tests
+          pytest -v skdiveMove
 
       - name: Build Sphinx docs
         run: |

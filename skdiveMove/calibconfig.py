@@ -49,12 +49,12 @@ def dump_config_template(fname):
 
     Parameters
     ----------
-    fname : str or file_like
-        A valid string path, or file_like object, for output file.
+    fname : str or file-like
+        A valid string path, or `file-like` object, for output file.
 
     Examples
     --------
-    >>> dump_template("tdr_config.json")
+    >>> dump_config_template("tdr_config.json")  # doctest: +SKIP
 
     Edit the file to your specifications.
 
@@ -68,8 +68,8 @@ def read_config(config_file):
 
     Parameters
     ----------
-    config_file : str or file_like
-        A valid string path, or file_like object, for input file.
+    config_file : str or file-like
+        A valid string path, or `file-like` object, for input file.
 
     Returns
     -------
@@ -90,8 +90,8 @@ def dump_config(fname, config_dict):
 
     Parameters
     ----------
-    fname : str or file_like
-        A valid string path, or file_like object, for output file.
+    fname : str or file-like
+        A valid string path, or `file-like` object, for output file.
     config_dict : dict
         Dictionary to dump.
 

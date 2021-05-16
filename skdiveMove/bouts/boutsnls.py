@@ -10,11 +10,55 @@ from . import bouts
 
 
 class BoutsNLS(bouts.Bouts):
-    """Nonlinear least squares bout identification
+    """Nonlinear Least Squares fitting for models of Poisson process mixtures
+
+    Methods for modelling log-frequency data as a mixture of Poisson
+    processes via nonlinear least squares [1]_.
+
+    References
+    ----------
+    .. [1] Sibly, R.; Nott, H. and Fletcher, D. (1990) Splitting behaviour
+       into bouts Animal Behaviour 39, 63-69.
+
+    Examples
+    --------
+    Draw 1000 samples from a mixture where the first process occurs with
+    :math:`p < 0.7` and the second process occurs with the remaining
+    probability.
+
+    >>> from skdiveMove.tests import random_mixexp
+    >>> rng = np.random.default_rng(123)
+    >>> x2 = random_mixexp(1000, p=0.7, lda=np.array([0.05, 0.005]),
+    ...                    rng=rng)
+    >>> xbouts2 = BoutsNLS(x2, bw=5)
+    >>> init_pars = xbouts2.init_pars([80], plot=False)
+
+    Fit the model and retrieve coefficients:
+
+    >>> coefs, pcov = xbouts2.fit(init_pars)
+    >>> print(np.round(coefs, 4))
+            (2.519, 80.0]  (80.0, 1297.52]
+    a           3648.8547        1103.4423
+    lambda         0.0388           0.0032
+
+    Calculate bout-ending criterion (returns array):
+
+    >>> print(np.round(xbouts2.bec(coefs), 4))
+    [103.8648]
+
+    Plot observed and predicted data:
+
+    >>> xbouts2.plot_fit(coefs)  # doctest: +ELLIPSIS
+    <AxesSubplot:...>
+
+    Plot ECDF:
+
+    >>> xbouts2.plot_ecdf(coefs)  # doctest: +ELLIPSIS
+    <AxesSubplot:...>
 
     """
     def fit(self, start, **kwargs):
-        """Fit non-linear least squares to log frequencies
+        """Fit non-linear least squares model to log frequencies
 
         The metaclass :class:`bouts.Bouts` implements this method.
 

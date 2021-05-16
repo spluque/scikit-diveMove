@@ -107,8 +107,10 @@ def dump_config_template(fname, config_type):
     Examples
     --------
     >>> import skdiveMove.metadata as metadata
-    >>> metadata.dump_config_template("mydataset.json", "dataset")
-    >>> metadata.dump_config_template("mysensor.json", "sensor")
+    >>> metadata.dump_config_template("mydataset.json",
+    ...                               "dataset")  # doctest: +SKIP
+    >>> metadata.dump_config_template("mysensor.json",
+    ...                               "sensor")  # doctest: +SKIP
 
     edit the files to your specifications.
 
@@ -139,6 +141,7 @@ def assign_xr_attrs(obj, config_file):
 
     Examples
     --------
+    >>> import pandas as pd
     >>> import numpy as np
     >>> import xarray as xr
     >>> import skdiveMove.metadata as metadata
@@ -155,15 +158,18 @@ def assign_xr_attrs(obj, config_file):
 
     Dump dataset and sensor templates
 
-    >>> metadata.dump_config_template("mydataset.json", "dataset")
-    >>> metadata.dump_config_template("P_sensor.json", "sensor")
-    >>> metadata.dump_config_template("S_sensor.json", "sensor")
+    >>> metadata.dump_config_template("mydataset.json",
+    ...                               "dataset")  # doctest: +SKIP
+    >>> metadata.dump_config_template("P_sensor.json",
+    ...                               "sensor")  # doctest: +SKIP
+    >>> metadata.dump_config_template("S_sensor.json",
+    ...                               "sensor")  # doctest: +SKIP
 
     Edit the templates as appropriate, load and assign to objects
 
-    >>> assign_xr_attrs(ds, "mydataset.json")
-    >>> assign_xr_attrs(ds.depth, "P_sensor.json")
-    >>> assign_xr_attrs(ds.speed, "S_sensor.json")
+    >>> assign_xr_attrs(ds, "mydataset.json")       # doctest: +SKIP
+    >>> assign_xr_attrs(ds.depth, "P_sensor.json")  # doctest: +SKIP
+    >>> assign_xr_attrs(ds.speed, "S_sensor.json")  # doctest: +SKIP
 
     """
     with open(config_file) as ifile:

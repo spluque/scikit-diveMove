@@ -1,8 +1,9 @@
 [run]
 source = skdiveMove
 omit =
-    skdiveMove/tests/*
+    skdiveMove/__main__.py
     skdiveMove/metadata.py
+    skdiveMove/tests/*
 
 [report]
 exclude_lines =

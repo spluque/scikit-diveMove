@@ -286,7 +286,7 @@ def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
 
     Notes
     -----
-    The function is homologous to diveMove's plotDiveModel.
+    The function is homologous to diveMove's `plotDiveModel`.
 
     """
     d_crit_time = x.index[d_crit]

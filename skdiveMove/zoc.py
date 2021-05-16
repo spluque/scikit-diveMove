@@ -145,7 +145,9 @@ class ZOC(TDRSource):
 
         Plot the filters that were applied
 
-        >>> tdrX.plot_zoc(ylim=[-1, 10])
+        >>> tdrX.plot_zoc(ylim=[-1, 10])  # doctest: +ELLIPSIS
+        (<Figure ... with 3 Axes>, array([<AxesSubplot:...>,
+            <AxesSubplot:...>, <AxesSubplot:...>], dtype=object))
 
         """
         if method == "offset":
