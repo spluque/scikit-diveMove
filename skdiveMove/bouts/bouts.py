@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def nls_fun(x, coefs):
-    r"""Random Poisson processes function
+def nlsLL(x, coefs):
+    r"""Generalized log-likelihood for Random Poisson mixtures
 
     This is a generalized form taking any number of Poisson processes.
 
@@ -36,7 +36,7 @@ def nls_fun(x, coefs):
     Returns
     -------
     out : array_like
-        Same shape as `x` with the evaluated function.
+        Same shape as `x` with the evaluated log-likelihood.
 
     """
     def calc_term(params):
@@ -83,7 +83,9 @@ def calc_p(coefs):
 
 
 def ecdf(x, p, lambdas):
-    r"""Estimated cumulative frequency for two- or three-process models
+    r"""Estimated cumulative frequency for Poisson mixture models
+
+    ECDF for two- or three-process mixture models.
 
     Parameters
     ----------
@@ -345,7 +347,7 @@ class Bouts(metaclass=ABCMeta):
                 ax.plot(ctrs[ok], y_stick[ok], linestyle="--")
 
             x_pred = np.linspace(xmin, xmax, num=101)  # matches R's curve
-            y_pred = nls_fun(x_pred, pars)
+            y_pred = nlsLL(x_pred, pars)
             ax.plot(x_pred, y_pred, alpha=0.5, label="model")
             ax.legend(loc="upper right")
             ax.set_xlabel("x")
@@ -378,15 +380,15 @@ class Bouts(metaclass=ABCMeta):
         xdata = lnfreq["x"]
         ydata = lnfreq["lnfreq"]
 
-        def _nls_fun(x, *args):
-            """Wrapper to nls_fun to allow for array argument"""
+        def _nlsLL(x, *args):
+            """Wrapper to nlsLL to allow for array argument"""
             # Pass in original shape, damn it!  Note order="F" needed
             coefs = np.array(args).reshape(start.shape, order="F")
-            return(nls_fun(x, coefs))
+            return(nlsLL(x, coefs))
 
         # Rearrange starting values into a 1D array (needs to be flat)
         init_flat = start.to_numpy().T.reshape((start.size,))
-        popt, pcov = curve_fit(_nls_fun, xdata, ydata,
+        popt, pcov = curve_fit(_nlsLL, xdata, ydata,
                                p0=init_flat, **kwargs)
         # Reshape coefs back into init shape
         coefs = pd.DataFrame(popt.reshape(start.shape, order="F"),
@@ -452,7 +454,7 @@ class Bouts(metaclass=ABCMeta):
         xmax = ctrs.max()
 
         x_pred = np.linspace(xmin, xmax, num=101)  # matches R's curve
-        y_pred = nls_fun(x_pred, coefs)
+        y_pred = nlsLL(x_pred, coefs)
 
         if ax is None:
             ax = plt.gca()
@@ -462,8 +464,8 @@ class Bouts(metaclass=ABCMeta):
         # Plot predicted
         ax.plot(x_pred, y_pred, alpha=0.5, label="model")
         # Plot BEC (note this plots all BECs in becx)
-        bec_x = self.bec(coefs)  # need an array for nls_fun
-        bec_y = nls_fun(bec_x, coefs)
+        bec_x = self.bec(coefs)  # need an array for nlsLL
+        bec_y = nlsLL(bec_x, coefs)
         _plot_bec(bec_x, bec_y, ax=ax, xytext=(5, 5))
 
         ax.legend(loc=8, bbox_to_anchor=(0.5, 1), frameon=False,

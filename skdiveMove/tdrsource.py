@@ -29,8 +29,9 @@ class TDRSource:
     Examples
     --------
     >>> from skdiveMove.tests import diveMove2skd
-    >>> tdrX = diveMove2skd(True)
-    >>> print(tdrX)
+    >>> tdrX = diveMove2skd()
+    >>> print(tdrX)  # doctest: +ELLIPSIS
+    Time-Depth Recorder -- Class TDR object ...
 
     """
     def __init__(self, tdr_file, depth_name="depth",

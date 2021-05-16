@@ -51,7 +51,7 @@ jobs:
       - name: Test and coverage
         run: |
           python -m pip install --upgrade pytest coverage
-          coverage run --branch -m pytest skdiveMove/tests
+          coverage run --branch -m pytest skdiveMove
           coverage xml
 
       - name: Upload coverage

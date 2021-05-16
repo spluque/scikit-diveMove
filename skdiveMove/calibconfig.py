@@ -54,7 +54,7 @@ def dump_config_template(fname):
 
     Examples
     --------
-    >>> dump_template("tdr_config.json")
+    >>> dump_config_template("tdr_config.json")  # doctest: +SKIP
 
     Edit the file to your specifications.
 

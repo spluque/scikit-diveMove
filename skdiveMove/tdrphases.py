@@ -115,8 +115,11 @@ class TDRPhases(ZOC):
 
         Access the "phases" and "dry_thr" attributes
 
-        >>> tdrX.get_wet_activity("phases")
-        >>> tdrX.get_wet_activity("dry_thr")
+        >>> tdrX.wet_dry  # doctest: +ELLIPSIS
+                             phase_id phase_label
+        date_time
+        2002-01-05 11:32:00         1           L
+        ...
 
         """
         # Retrieve copy of depth from our own property
@@ -521,7 +524,12 @@ class TDRPhases(ZOC):
         >>> tdrX.detect_dives(3)
         >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
         ...                         ascent_crit_q=0, knot_factor=20)
-        >>> tdrX.time_budget(ignore_z=True, ignore_du=True)
+        >>> tdrX.time_budget(ignore_z=True,
+        ...                  ignore_du=True)  # doctest: +ELLIPSIS
+                                 beg phase_label                 end
+        phase_id
+        1        2002-01-05 11:32:00           L 2002-01-05 11:39:40
+        ...
 
         """
         labels = self.wet_dry["phase_label"].reset_index()
@@ -562,7 +570,11 @@ class TDRPhases(ZOC):
         >>> tdrX.detect_dives(3)
         >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
         ...                         ascent_crit_q=0, knot_factor=20)
-        >>> tdrX.stamp_dives(ignore_z=True)
+        >>> tdrX.stamp_dives(ignore_z=True)  # doctest: +ELLIPSIS
+                 phase_id                 beg                 end
+        dive_id
+        1               2 2002-01-05 12:20:15 2002-01-06 03:50:40
+        ...
 
         """
         phase_lab = self.wet_dry["phase_label"]

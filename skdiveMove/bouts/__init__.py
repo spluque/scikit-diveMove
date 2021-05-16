@@ -50,7 +50,7 @@ The bout-ending criterion (BEC) corresponding to equation :eq:`1` is:
 Note that there is one BEC per transition between Poisson processes.
 
 The methods of this subclass are provided by the abstract super class
-:class:`Bouts`, and adds the methods below.
+:class:`Bouts`, and defining those listed below.
 
 Methods summary
 ---------------
@@ -96,7 +96,7 @@ Class & methods summary
 
 .. autosummary::
 
-   BoutsMLE.loglik_fun
+   BoutsMLE.negMLEll
    BoutsMLE.fit
    BoutsMLE.bec
    BoutsMLE.plot_fit
