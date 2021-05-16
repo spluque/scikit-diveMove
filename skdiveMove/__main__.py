@@ -1,6 +1,6 @@
 import sys
 import argparse
-from skdiveMove.calibrate_tdr import calibrate
+from skdiveMove import calibrate
 
 
 def main():
