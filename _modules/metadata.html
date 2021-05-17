@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metadata &#8212; skdiveMove 0.2.1 documentation</title>
+    <title>metadata &#8212; skdiveMove 0.2.2 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">metadata</a></li> 
       </ul>
@@ -150,8 +150,10 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import skdiveMove.metadata as metadata</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mydataset.json&quot;, &quot;dataset&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mysensor.json&quot;, &quot;sensor&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mydataset.json&quot;,</span>
+<span class="sd">    ...                               &quot;dataset&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mysensor.json&quot;,</span>
+<span class="sd">    ...                               &quot;sensor&quot;)  # doctest: +SKIP</span>
 
 <span class="sd">    edit the files to your specifications.</span>
 
@@ -182,6 +184,7 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
 <span class="sd">    &gt;&gt;&gt; import skdiveMove.metadata as metadata</span>
@@ -198,15 +201,18 @@
 
 <span class="sd">    Dump dataset and sensor templates</span>
 
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mydataset.json&quot;, &quot;dataset&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;P_sensor.json&quot;, &quot;sensor&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;S_sensor.json&quot;, &quot;sensor&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mydataset.json&quot;,</span>
+<span class="sd">    ...                               &quot;dataset&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;P_sensor.json&quot;,</span>
+<span class="sd">    ...                               &quot;sensor&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;S_sensor.json&quot;,</span>
+<span class="sd">    ...                               &quot;sensor&quot;)  # doctest: +SKIP</span>
 
 <span class="sd">    Edit the templates as appropriate, load and assign to objects</span>
 
-<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds, &quot;mydataset.json&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.depth, &quot;P_sensor.json&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.speed, &quot;S_sensor.json&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds, &quot;mydataset.json&quot;)       # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.depth, &quot;P_sensor.json&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.speed, &quot;S_sensor.json&quot;)  # doctest: +SKIP</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifile</span><span class="p">:</span>
@@ -260,14 +266,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">metadata</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Sebastian Luque.
+        &#169; Copyright 2021, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
 <div class="footer">

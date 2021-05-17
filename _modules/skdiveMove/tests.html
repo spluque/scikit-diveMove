@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tests &#8212; skdiveMove 0.2.1 documentation</title>
+    <title>skdiveMove.tests &#8212; skdiveMove 0.2.2 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tests</a></li> 
       </ul>
@@ -48,7 +48,7 @@
 
 
 <div class="viewcode-block" id="random_mixexp"><a class="viewcode-back" href="../../bouts.html#bouts.random_mixexp">[docs]</a><span class="k">def</span> <span class="nf">random_mixexp</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lda</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate samples from mixture of exponential distributions</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate samples from mixture of exponential distributions</span>
 
 <span class="sd">    Simulate a mixture of two or three random exponential distributions.</span>
 <span class="sd">    This uses a special definition for the probabilities (:math:`p_i`).  In</span>
@@ -64,14 +64,26 @@
 <span class="sd">    p : float or array_like</span>
 <span class="sd">        Probabilities for processes in the output mixture sample.</span>
 <span class="sd">    lda : array_like</span>
-<span class="sd">        array_like with lambda (scale) for each process.</span>
+<span class="sd">        array_like with :math:`\lambda` (scale) for each process.</span>
 <span class="sd">    rng : Generator</span>
 <span class="sd">        Random number generator object.  If not provided, a default one is</span>
-<span class="sd">        created.</span>
+<span class="sd">        used.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `ndarray`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Draw 1000 samples from a mixture where the first process occurs with</span>
+<span class="sd">    :math:`p &lt; 0.7` and the second process occurs with the remaining</span>
+<span class="sd">    probability.</span>
+
+<span class="sd">    &gt;&gt;&gt; rng = np.random.default_rng(123)</span>
+<span class="sd">    &gt;&gt;&gt; random_mixexp(1000, p=0.7, lda=np.array([0.05, 0.005]),</span>
+<span class="sd">    ...               rng=rng)  # doctest: +ELLIPSIS</span>
+<span class="sd">    array([7.27468930e+00, 2.69331091e+00, 5.29542594e+00, 1.02697947e+01,</span>
+<span class="sd">           ...])</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -128,14 +140,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tests</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Sebastian Luque.
+        &#169; Copyright 2021, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
 <div class="footer">

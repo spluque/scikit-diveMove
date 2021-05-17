@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdr &#8212; skdiveMove 0.2.1 documentation</title>
+    <title>skdiveMove.tdr &#8212; skdiveMove 0.2.2 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdr</a></li> 
       </ul>
@@ -84,17 +84,13 @@
 <span class="sd">    --------</span>
 <span class="sd">    Construct an instance from diveMove example dataset</span>
 
-<span class="sd">    &gt;&gt;&gt; rstr = (&#39;system.file(file.path(&quot;data&quot;, &quot;dives.csv&quot;), &#39;</span>
-<span class="sd">    ...         &#39;package=&quot;diveMove&quot;, mustWork=TRUE)&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; data_path = robjs.r(rstr)[0]</span>
-<span class="sd">    &gt;&gt;&gt; tdrX = TDR(data_path, sep=&quot;;&quot;, compression=&quot;bz2&quot;)</span>
-
-<span class="sd">    For convenience, the above operation is wrapped in the function</span>
-<span class="sd">    `get_diveMove_sample_data`.</span>
+<span class="sd">    &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
+<span class="sd">    &gt;&gt;&gt; tdrX = diveMove2skd()</span>
 
 <span class="sd">    Plot the `TDR` object</span>
 
-<span class="sd">    &gt;&gt;&gt; tdrX.plot()</span>
+<span class="sd">    &gt;&gt;&gt; tdrX.plot()  # doctest: +ELLIPSIS</span>
+<span class="sd">    (&lt;Figure ... 1 Axes&gt;, &lt;AxesSubplot:...&gt;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -152,7 +148,7 @@
 <span class="sd">            change and speed greater than the given value should be used</span>
 <span class="sd">            for calibration, respectively.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to :func:`calibrate_speed.calibrate`</span>
+<span class="sd">            Passed to :func:`~speedcal.calibrate_speed`</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -211,7 +207,10 @@
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dives(3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dive_phases(&quot;unimodal&quot;, descent_crit_q=0.01,</span>
 <span class="sd">        ...                         ascent_crit_q=0, knot_factor=20)</span>
-<span class="sd">        &gt;&gt;&gt; tdrX.dive_stats()</span>
+<span class="sd">        &gt;&gt;&gt; tdrX.dive_stats()  # doctest: +ELLIPSIS</span>
+<span class="sd">                        begdesc  ... postdive_mean_speed</span>
+<span class="sd">        1   2002-01-05 ...                      1.398859</span>
+<span class="sd">        2   ...</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">phases_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">)</span>
@@ -296,14 +295,16 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
-<span class="sd">            ``matplotlib.pyplot`` Figure and Axes instances.</span>
+<span class="sd">            :class:`~matplotlib.figure.Figure`,</span>
+<span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
 <span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd()</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.plot(xlim=[&quot;2002-01-05 21:00:00&quot;, &quot;2002-01-06 04:10:00&quot;],</span>
-<span class="sd">        ...           depth_lim=[95, -1])</span>
+<span class="sd">        ...           depth_lim=[95, -1])  # doctest: +ELLIPSIS</span>
+<span class="sd">        (&lt;Figure ... with 1 Axes&gt;, &lt;AxesSubplot:...&#39;&gt;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -343,12 +344,13 @@
 <span class="sd">            Minimum and maximum limits for ``x``- and ``y``-axis,</span>
 <span class="sd">            respectively.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to `matplotlib.pyplot.subplots`.</span>
+<span class="sd">            Passed to :func:`~matplotlib.pyplot.subplots`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
-<span class="sd">            `matplotlib.pyplot` Figure and Axes instances.</span>
+<span class="sd">            :class:`~matplotlib.figure.Figure`,</span>
+<span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -363,7 +365,9 @@
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dives(3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dive_phases(&quot;unimodal&quot;, descent_crit_q=0.01,</span>
 <span class="sd">        ...                         ascent_crit_q=0, knot_factor=20)</span>
-<span class="sd">        &gt;&gt;&gt; tdrX.plot_zoc()</span>
+<span class="sd">        &gt;&gt;&gt; tdrX.plot_zoc()  # doctest: +ELLIPSIS</span>
+<span class="sd">        (&lt;Figure ... with 3 Axes&gt;, array([&lt;AxesSubplot:...&#39;&gt;,</span>
+<span class="sd">            &lt;AxesSubplot:...&#39;&gt;, &lt;AxesSubplot:...&gt;], dtype=object))</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">zoc_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoc_method</span>
@@ -416,7 +420,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
-<span class="sd">            `matplotlib.pyplot` Figure and Axes instances.</span>
+<span class="sd">            :class:`~matplotlib.figure.Figure`,</span>
+<span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -427,7 +432,9 @@
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dives(3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dive_phases(&quot;unimodal&quot;, descent_crit_q=0.01,</span>
 <span class="sd">        ...                         ascent_crit_q=0, knot_factor=20)</span>
-<span class="sd">        &gt;&gt;&gt; tdrX.plot_phases(list(range(250, 300)), surface=True)</span>
+<span class="sd">        &gt;&gt;&gt; tdrX.plot_phases(list(range(250, 300)),</span>
+<span class="sd">        ...                  surface=True)  # doctest: +ELLIPSIS</span>
+<span class="sd">        (&lt;Figure ... with 1 Axes&gt;, &lt;AxesSubplot:...&gt;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">row_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">)</span>
@@ -500,7 +507,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
-<span class="sd">            Pyplot Figure and Axes instances.</span>
+<span class="sd">            :class:`~matplotlib.figure.Figure`,</span>
+<span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -511,7 +519,9 @@
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dives(3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dive_phases(&quot;unimodal&quot;, descent_crit_q=0.01,</span>
 <span class="sd">        ...                         ascent_crit_q=0, knot_factor=20)</span>
-<span class="sd">        &gt;&gt;&gt; tdrX.plot_dive_model(diveNo=20, figsize=(10, 10))</span>
+<span class="sd">        &gt;&gt;&gt; tdrX.plot_dive_model(diveNo=20,</span>
+<span class="sd">        ...                      figsize=(10, 10))  # doctest: +ELLIPSIS</span>
+<span class="sd">        (&lt;Figure ... with 2 Axes&gt;, (&lt;AxesSubplot:...&gt;, &lt;AxesSubplot:...&gt;))</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dive_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
@@ -668,13 +678,15 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
-<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd()</span>
+<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd(has_speed=False)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.zoc(&quot;offset&quot;, offset=3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_wet()</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dives(3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dive_phases(&quot;unimodal&quot;, descent_crit_q=0.01,</span>
 <span class="sd">        ...                         ascent_crit_q=0, knot_factor=20)</span>
-<span class="sd">        &gt;&gt;&gt; tdrX.extract_dive(diveNo=20)</span>
+<span class="sd">        &gt;&gt;&gt; tdrX.extract_dives(diveNo=20)  # doctest: +ELLIPSIS</span>
+<span class="sd">        &lt;xarray.Dataset&gt;</span>
+<span class="sd">        Dimensions: ...</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dive_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
@@ -687,6 +699,21 @@
 
 <div class="viewcode-block" id="calibrate"><a class="viewcode-back" href="../../tdr.html#skdiveMove.calibrate">[docs]</a><span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="n">tdr_file</span><span class="p">,</span> <span class="n">config_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Perform all major TDR calibration operations</span>
+
+<span class="sd">    Detect periods of major activities in a `TDR` object, calibrate depth</span>
+<span class="sd">    readings, and speed if appropriate, in preparation for subsequent</span>
+<span class="sd">    summaries of diving behaviour.</span>
+
+<span class="sd">    This function is a convenience wrapper around :meth:`TDR.detect_wet`,</span>
+<span class="sd">    :meth:`TDR.detect_dives`, :meth:`TDR.detect_dive_phases`,</span>
+<span class="sd">    :meth:`TDR.zoc`, and :meth:`TDR.calibrate_speed`.  It performs wet/dry</span>
+<span class="sd">    phase detection, zero-offset correction of depth, detection of dives,</span>
+<span class="sd">    as well as proper labelling of the latter, and calibrates speed data if</span>
+<span class="sd">    appropriate.</span>
+
+<span class="sd">    Due to the complexity of this procedure, and the number of settings</span>
+<span class="sd">    required for it, a calibration configuration file (JSON) is used to</span>
+<span class="sd">    guide the operations.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -780,14 +807,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdr</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Sebastian Luque.
+        &#169; Copyright 2021, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
 <div class="footer">

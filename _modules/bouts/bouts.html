@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.bouts &#8212; skdiveMove 0.2.1 documentation</title>
+    <title>bouts.bouts &#8212; skdiveMove 0.2.2 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.bouts</a></li> 
       </ul>
@@ -63,8 +63,8 @@
 <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
 
 
-<span class="k">def</span> <span class="nf">nls_fun</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Random Poisson processes function</span>
+<span class="k">def</span> <span class="nf">nlsLL</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generalized log-likelihood for Random Poisson mixtures</span>
 
 <span class="sd">    This is a generalized form taking any number of Poisson processes.</span>
 
@@ -79,7 +79,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    out : array_like</span>
-<span class="sd">        Same shape as `x` with the evaluated function.</span>
+<span class="sd">        Same shape as `x` with the evaluated log-likelihood.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">calc_term</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
@@ -126,7 +126,9 @@
 
 
 <span class="k">def</span> <span class="nf">ecdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Estimated cumulative frequency for two- or three-process models</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Estimated cumulative frequency for Poisson mixture models</span>
+
+<span class="sd">    ECDF for two- or three-process mixture models.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -388,7 +390,7 @@
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ctrs</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">y_stick</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
 
             <span class="n">x_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>  <span class="c1"># matches R&#39;s curve</span>
-            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">nls_fun</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">pars</span><span class="p">)</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">nlsLL</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">pars</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
@@ -421,15 +423,15 @@
         <span class="n">xdata</span> <span class="o">=</span> <span class="n">lnfreq</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
         <span class="n">ydata</span> <span class="o">=</span> <span class="n">lnfreq</span><span class="p">[</span><span class="s2">&quot;lnfreq&quot;</span><span class="p">]</span>
 
-        <span class="k">def</span> <span class="nf">_nls_fun</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Wrapper to nls_fun to allow for array argument&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">_nlsLL</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Wrapper to nlsLL to allow for array argument&quot;&quot;&quot;</span>
             <span class="c1"># Pass in original shape, damn it!  Note order=&quot;F&quot; needed</span>
             <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
-            <span class="k">return</span><span class="p">(</span><span class="n">nls_fun</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">))</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">nlsLL</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">))</span>
 
         <span class="c1"># Rearrange starting values into a 1D array (needs to be flat)</span>
         <span class="n">init_flat</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">start</span><span class="o">.</span><span class="n">size</span><span class="p">,))</span>
-        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">_nls_fun</span><span class="p">,</span> <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span>
+        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">_nlsLL</span><span class="p">,</span> <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span>
                                <span class="n">p0</span><span class="o">=</span><span class="n">init_flat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Reshape coefs back into init shape</span>
         <span class="n">coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">popt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">),</span>
@@ -495,7 +497,7 @@
         <span class="n">xmax</span> <span class="o">=</span> <span class="n">ctrs</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
         <span class="n">x_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>  <span class="c1"># matches R&#39;s curve</span>
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">nls_fun</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">nlsLL</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -505,8 +507,8 @@
         <span class="c1"># Plot predicted</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pred</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
         <span class="c1"># Plot BEC (note this plots all BECs in becx)</span>
-        <span class="n">bec_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>  <span class="c1"># need an array for nls_fun</span>
-        <span class="n">bec_y</span> <span class="o">=</span> <span class="n">nls_fun</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
+        <span class="n">bec_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>  <span class="c1"># need an array for nlsLL</span>
+        <span class="n">bec_y</span> <span class="o">=</span> <span class="n">nlsLL</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
         <span class="n">_plot_bec</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -566,14 +568,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.bouts</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Sebastian Luque.
+        &#169; Copyright 2021, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
 <div class="footer">

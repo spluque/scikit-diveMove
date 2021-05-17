@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Read and write metadata &#8212; skdiveMove 0.2.1 documentation</title>
+    <title>Read and write metadata &#8212; skdiveMove 0.2.2 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="bouts.html" title="Bout analysis"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Read and write metadata</a></li> 
       </ul>
     </div>  
@@ -76,7 +76,7 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<em>{xarray.Dataset</em><em>, </em><em>xarray.DataArray}</em>) – Object to assign attributes to.</p></li>
-<li><p><strong>config_file</strong> (<em>str</em>) – A valid string path for input json file with metadata attributes.</p></li>
+<li><p><strong>config_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – A valid string path for input json file with metadata attributes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -87,7 +87,8 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">skdiveMove.metadata</span> <span class="k">as</span> <span class="nn">metadata</span>
 </pre></div>
@@ -103,15 +104,18 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 </pre></div>
 </div>
 <p>Dump dataset and sensor templates</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;mydataset.json&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;P_sensor.json&quot;</span><span class="p">,</span> <span class="s2">&quot;sensor&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;S_sensor.json&quot;</span><span class="p">,</span> <span class="s2">&quot;sensor&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;mydataset.json&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="s2">&quot;dataset&quot;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;P_sensor.json&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="s2">&quot;sensor&quot;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;S_sensor.json&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="s2">&quot;sensor&quot;</span><span class="p">)</span>  
 </pre></div>
 </div>
 <p>Edit the templates as appropriate, load and assign to objects</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">assign_xr_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="s2">&quot;mydataset.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_xr_attrs</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span> <span class="s2">&quot;P_sensor.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_xr_attrs</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span> <span class="s2">&quot;S_sensor.json&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">assign_xr_attrs</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="s2">&quot;mydataset.json&quot;</span><span class="p">)</span>       
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_xr_attrs</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span> <span class="s2">&quot;P_sensor.json&quot;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_xr_attrs</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span> <span class="s2">&quot;S_sensor.json&quot;</span><span class="p">)</span>  
 </pre></div>
 </div>
 </dd></dl>
@@ -125,15 +129,17 @@ or DataArray.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – A valid string path for output file.</p></li>
+<li><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – A valid string path for output file.</p></li>
 <li><p><strong>config_type</strong> (<em>{&quot;dataset&quot;</em><em>, </em><em>&quot;sensor&quot;}</em>) – The type of config to dump.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">skdiveMove.metadata</span> <span class="k">as</span> <span class="nn">metadata</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;mydataset.json&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;mysensor.json&quot;</span><span class="p">,</span> <span class="s2">&quot;sensor&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;mydataset.json&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="s2">&quot;dataset&quot;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span><span class="o">.</span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;mysensor.json&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="s2">&quot;sensor&quot;</span><span class="p">)</span>  
 </pre></div>
 </div>
 <p>edit the files to your specifications.</p>
@@ -197,13 +203,13 @@ or DataArray.</p>
         <li class="right" >
           <a href="bouts.html" title="Bout analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Read and write metadata</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Sebastian Luque.
+        &#169; Copyright 2021, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
 <div class="footer">

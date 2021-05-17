@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.boutsnls &#8212; skdiveMove 0.2.1 documentation</title>
+    <title>bouts.boutsnls &#8212; skdiveMove 0.2.2 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsnls</a></li> 
       </ul>
@@ -53,11 +53,55 @@
 
 
 <div class="viewcode-block" id="BoutsNLS"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsNLS">[docs]</a><span class="k">class</span> <span class="nc">BoutsNLS</span><span class="p">(</span><span class="n">bouts</span><span class="o">.</span><span class="n">Bouts</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Nonlinear least squares bout identification</span>
+    <span class="sd">&quot;&quot;&quot;Nonlinear Least Squares fitting for models of Poisson process mixtures</span>
+
+<span class="sd">    Methods for modelling log-frequency data as a mixture of Poisson</span>
+<span class="sd">    processes via nonlinear least squares [1]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Sibly, R.; Nott, H. and Fletcher, D. (1990) Splitting behaviour</span>
+<span class="sd">       into bouts Animal Behaviour 39, 63-69.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Draw 1000 samples from a mixture where the first process occurs with</span>
+<span class="sd">    :math:`p &lt; 0.7` and the second process occurs with the remaining</span>
+<span class="sd">    probability.</span>
+
+<span class="sd">    &gt;&gt;&gt; from skdiveMove.tests import random_mixexp</span>
+<span class="sd">    &gt;&gt;&gt; rng = np.random.default_rng(123)</span>
+<span class="sd">    &gt;&gt;&gt; x2 = random_mixexp(1000, p=0.7, lda=np.array([0.05, 0.005]),</span>
+<span class="sd">    ...                    rng=rng)</span>
+<span class="sd">    &gt;&gt;&gt; xbouts2 = BoutsNLS(x2, bw=5)</span>
+<span class="sd">    &gt;&gt;&gt; init_pars = xbouts2.init_pars([80], plot=False)</span>
+
+<span class="sd">    Fit the model and retrieve coefficients:</span>
+
+<span class="sd">    &gt;&gt;&gt; coefs, pcov = xbouts2.fit(init_pars)</span>
+<span class="sd">    &gt;&gt;&gt; print(np.round(coefs, 4))</span>
+<span class="sd">            (2.519, 80.0]  (80.0, 1297.52]</span>
+<span class="sd">    a           3648.8547        1103.4423</span>
+<span class="sd">    lambda         0.0388           0.0032</span>
+
+<span class="sd">    Calculate bout-ending criterion (returns array):</span>
+
+<span class="sd">    &gt;&gt;&gt; print(np.round(xbouts2.bec(coefs), 4))</span>
+<span class="sd">    [103.8648]</span>
+
+<span class="sd">    Plot observed and predicted data:</span>
+
+<span class="sd">    &gt;&gt;&gt; xbouts2.plot_fit(coefs)  # doctest: +ELLIPSIS</span>
+<span class="sd">    &lt;AxesSubplot:...&gt;</span>
+
+<span class="sd">    Plot ECDF:</span>
+
+<span class="sd">    &gt;&gt;&gt; xbouts2.plot_ecdf(coefs)  # doctest: +ELLIPSIS</span>
+<span class="sd">    &lt;AxesSubplot:...&gt;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="BoutsNLS.fit"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsNLS.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit non-linear least squares to log frequencies</span>
+        <span class="sd">&quot;&quot;&quot;Fit non-linear least squares model to log frequencies</span>
 
 <span class="sd">        The metaclass :class:`bouts.Bouts` implements this method.</span>
 
@@ -236,14 +280,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsnls</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Sebastian Luque.
+        &#169; Copyright 2021, Sebastian Luque.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
 <div class="footer">
