@@ -143,7 +143,7 @@ def label_bouts(x, bec, as_diff=False):
 
     Returns
     -------
-    out : ndarray
+    out : numpy.ndarray
         Integer array with the same shape as `x`.
 
     """
@@ -169,9 +169,9 @@ def _plot_bec(bec_x, bec_y, ax, xytext, horizontalalignment="left"):
 
     Parameters
     ----------
-    bec_x : ndarray, shape (n,)
+    bec_x : numpy.ndarray, shape (n,)
         x coordinate for bout-ending criteria.
-    bec_y : ndarray, shape (n,)
+    bec_y : numpy.ndarray, shape (n,)
         y coordinate for bout-ending criteria.
     ax : matplotlib.Axes
         An Axes instance to use as target.
@@ -409,7 +409,7 @@ class Bouts(metaclass=ABCMeta):
 
         Returns
         -------
-        out : ndarray, shape (n,)
+        out : numpy.ndarray, shape (n,)
             1-D array with BECs implied by `coefs`.  Length is
             coefs.shape[1]
 
@@ -482,11 +482,11 @@ class Bouts(metaclass=ABCMeta):
 
         Parameters
         ----------
-        x_pred : ndarray, shape (n,)
+        x_pred : numpy.ndarray, shape (n,)
             Values of the variable at which to plot the ECDF.
-        y_pred : ndarray, shape (n,)
+        y_pred : numpy.ndarray, shape (n,)
             Values of the ECDF at `x_pred`.
-        ax : matplotlib.Axes
+        ax : matplotlib.axes.Axes
             An Axes instance to use as target.
 
         """

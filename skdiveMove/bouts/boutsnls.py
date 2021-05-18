@@ -91,7 +91,7 @@ class BoutsNLS(bouts.Bouts):
 
         Returns
         -------
-        out : ndarray, shape (n,)
+        out : numpy.ndarray, shape (n,)
             1-D array with BECs implied by `coefs`.  Length is
             coefs.shape[1]
 
@@ -106,14 +106,15 @@ class BoutsNLS(bouts.Bouts):
         ----------
         coefs : pandas.DataFrame
             DataFrame with model coefficients in columns.
-        ax : matplotlib.Axes instance
+        ax : matplotlib.axes.Axes instance
             An Axes instance to use as target.
         **kwargs : optional keyword arguments
             Passed to `matplotlib.pyplot.gca`.
 
         Returns
         -------
-        ax : `matplotlib.Axes`
+        ax :
+            :class:`~matplotlib.axes.Axes` instances.
 
         """
         x = self.x
