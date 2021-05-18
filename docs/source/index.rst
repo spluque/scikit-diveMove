@@ -20,7 +20,7 @@ Type the following at a terminal command line:
 
 .. code-block:: sh
 
-   pip install scikit-kinematics
+   pip install scikit-diveMove
 
 Or install from source tree by typing the following at the command line:
 
@@ -68,7 +68,7 @@ or `pytest`:
 Development
 ===========
 
-Developers and hackers can clone the project from Github:
+Developers can clone the project from Github:
 
 .. code-block:: sh
 

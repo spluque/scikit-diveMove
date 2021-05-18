@@ -99,7 +99,7 @@ class TDRPhases(ZOC):
         See details for arguments in diveMove's ``calibrateDepth``.  Unlike
         `diveMove`, the beginning/ending times for each phase are not
         stored with the class instance, as this information can be
-        retrieved via the `.time_budget` method.
+        retrieved via the :meth:`~TDR.time_budget` method.
 
         Examples
         --------

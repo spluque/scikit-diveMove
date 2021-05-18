@@ -661,12 +661,12 @@ def calibrate(tdr_file, config_file=None):
     readings, and speed if appropriate, in preparation for subsequent
     summaries of diving behaviour.
 
-    This function is a convenience wrapper around :meth:`TDR.detect_wet`,
-    :meth:`TDR.detect_dives`, :meth:`TDR.detect_dive_phases`,
-    :meth:`TDR.zoc`, and :meth:`TDR.calibrate_speed`.  It performs wet/dry
-    phase detection, zero-offset correction of depth, detection of dives,
-    as well as proper labelling of the latter, and calibrates speed data if
-    appropriate.
+    This function is a convenience wrapper around :meth:`~TDR.detect_wet`,
+    :meth:`~TDR.detect_dives`, :meth:`~TDR.detect_dive_phases`,
+    :meth:`~TDR.zoc`, and :meth:`~TDR.calibrate_speed`.  It performs
+    wet/dry phase detection, zero-offset correction of depth, detection of
+    dives, as well as proper labelling of the latter, and calibrates speed
+    data if appropriate.
 
     Due to the complexity of this procedure, and the number of settings
     required for it, a calibration configuration file (JSON) is used to

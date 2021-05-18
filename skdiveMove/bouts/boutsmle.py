@@ -237,7 +237,7 @@ class BoutsMLE(bouts.Bouts):
 
         Returns
         -------
-        out : ndarray
+        out : numpy.ndarray
 
         Notes
         -----
@@ -275,12 +275,13 @@ class BoutsMLE(bouts.Bouts):
         fit : scipy.optimize.OptimizeResult
             Object with the optimization result, having a `x` attribute
             with coefficients of the solution.
-        ax : matplotlib.Axes instance
+        ax : matplotlib.axes.Axes instance
             An Axes instance to use as target.
 
         Returns
         -------
-        ax : `matplotlib.Axes`
+        ax :
+            :class:`~matplotlib.axes.Axes` instances.
 
         """
         # Method is redefined from Bouts
@@ -327,14 +328,15 @@ class BoutsMLE(bouts.Bouts):
         fit : scipy.optimize.OptimizeResult
             Object with the optimization result, having a `x` attribute
             with coefficients of the solution.
-        ax : matplotlib.Axes instance
+        ax : matplotlib.axes.Axes instance
             An Axes instance to use as target.
         **kwargs : optional keyword arguments
             Passed to `matplotlib.pyplot.gca`.
 
         Returns
         -------
-        ax : `matplotlib.Axes`
+        ax :
+            :class:`~matplotlib.axes.Axes` instances.
 
         """
         x = self.x
