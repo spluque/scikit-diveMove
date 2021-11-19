@@ -4,13 +4,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Diving behaviour analysis &#8212; skdiveMove 0.2.2 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Diving behaviour analysis &#8212; skdiveMove 0.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -37,7 +38,7 @@
         <li class="right" >
           <a href="index.html" title="scikit-diveMove Documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Diving behaviour analysis</a></li> 
       </ul>
     </div>  
@@ -47,7 +48,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="diving-behaviour-analysis">
+  <section id="diving-behaviour-analysis">
 <span id="tdrdemo-label"></span><h1>Diving behaviour analysis<a class="headerlink" href="#diving-behaviour-analysis" title="Permalink to this headline">¶</a></h1>
 <p>Here is a bird’s-eye view of the functionality of <cite>scikit-diveMove</cite>,
 loosely following <cite>diveMove</cite>’s <a class="reference external" href="https://cran.r-project.org/web/packages/diveMove/vignettes/diveMove.pdf">vignette</a>.</p>
@@ -55,25 +56,17 @@ loosely following <cite>diveMove</cite>’s <a class="reference external" href="
 up a logger to monitor progress to this section.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Set up</span>
-<span class="kn">import</span> <span class="nn">pkg_resources</span> <span class="k">as</span> <span class="nn">pkg_rsrc</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">skdiveMove</span> <span class="k">as</span> <span class="nn">skdive</span>
-
-<span class="c1"># Declare figure sizes</span>
-<span class="n">_FIG1X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">_FIG2X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># Set up</span>
+<span class="linenos">2</span><span class="kn">import</span> <span class="nn">pkg_resources</span> <span class="k">as</span> <span class="nn">pkg_rsrc</span>
+<span class="linenos">3</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos">4</span><span class="kn">import</span> <span class="nn">skdiveMove</span> <span class="k">as</span> <span class="nn">skdive</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1"># Declare figure sizes</span>
+<span class="linenos">7</span><span class="n">_FIG1X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="linenos">8</span><span class="n">_FIG2X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="linenos">9</span><span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 </div>
@@ -82,28 +75,25 @@ up a logger to monitor progress to this section.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
-<div class="section" id="reading-data-files">
+<section id="reading-data-files">
 <h2>Reading data files<a class="headerlink" href="#reading-data-files" title="Permalink to this headline">¶</a></h2>
 <p>Load <cite>diveMove</cite>’s example data, using <code class="docutils literal notranslate"><span class="pre">TDR.__init__</span></code> method, and print:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">ifile</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
-         <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s2">&quot;tests/data/&quot;</span>
-                             <span class="s2">&quot;ag_mk7_2002_022.nc&quot;</span><span class="p">)))</span>
-<span class="n">tdrX</span> <span class="o">=</span> <span class="n">skdive</span><span class="o">.</span><span class="n">TDR</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">18</span><span class="n">ifile</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
+<span class="linenos">19</span>         <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
+<span class="linenos">20</span>                            <span class="p">(</span><span class="s2">&quot;tests/data/&quot;</span>
+<span class="linenos">21</span>                             <span class="s2">&quot;ag_mk7_2002_022.nc&quot;</span><span class="p">)))</span>
+<span class="linenos">22</span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">skdive</span><span class="o">.</span><span class="n">TDR</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">23</span><span class="c1"># Or simply use function ``skdive.tests.diveMove2skd`` to do the</span>
+<span class="linenos">24</span><span class="c1"># same with this particular data set.</span>
+<span class="linenos">25</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Time-Depth Recorder -- Class TDR object
-Source File          /opt/hostedtoolcache/Python/3.9.5/x64/lib/python3.9/site-packages/skdiveMove/tests/data/ag_mk7_2002_022.nc
+Source File          /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/skdiveMove/tests/data/ag_mk7_2002_022.nc
 Sampling interval    0 days 00:00:05
 Number of Samples    34199
 Sampling Begins      2002-01-05 11:32:00
@@ -157,15 +147,9 @@ towards building metadata standards.</p>
 <p>Access measured data:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;measured&quot;</span><span class="p">)</span>
-
-<span class="c1"># Or simply use function ``skdive.tests.diveMove2skd`` to do the</span>
-<span class="c1"># same with this particular data set.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">26</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;measured&quot;</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
@@ -535,19 +519,18 @@ Attributes:
     units_label:         meters
     column_name:         depth
     axes:                D
-    files:               dives.csv</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'>'depth'</div><ul class='xr-dim-list'><li><span class='xr-has-index'>date_time</span>: 34199</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-0e7edd74-d34a-4930-b8a1-12fae0402c67' class='xr-array-in' type='checkbox' checked><label for='section-0e7edd74-d34a-4930-b8a1-12fae0402c67' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>nan nan nan nan nan nan nan nan ... nan nan nan nan nan nan nan nan</span></div><div class='xr-array-data'><pre>array([+nan, +nan, +nan, ..., +nan, +nan, +nan])</pre></div></div></li><li class='xr-section-item'><input id='section-091b5625-9690-4238-a63c-c2b4e8202488' class='xr-section-summary-in' type='checkbox'  checked><label for='section-091b5625-9690-4238-a63c-c2b4e8202488' class='xr-section-summary' >Coordinates: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>date_time</span></div><div class='xr-var-dims'>(date_time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2002-01-05T11:32:00 ... 2002-01-...</div><input id='attrs-91853105-ab41-433d-9e1d-7e5340af201b' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-91853105-ab41-433d-9e1d-7e5340af201b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-342b6f2f-406a-4d31-a729-dc8447370f65' class='xr-var-data-in' type='checkbox'><label for='data-342b6f2f-406a-4d31-a729-dc8447370f65' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;2002-01-05T11:32:00.000000000&#x27;, &#x27;2002-01-05T11:32:05.000000000&#x27;,
+    files:               dives.csv</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'>'depth'</div><ul class='xr-dim-list'><li><span class='xr-has-index'>date_time</span>: 34199</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-068b5c71-cd1f-40f8-ab25-f80c0ae83fe2' class='xr-array-in' type='checkbox' checked><label for='section-068b5c71-cd1f-40f8-ab25-f80c0ae83fe2' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>nan nan nan nan nan nan nan nan ... nan nan nan nan nan nan nan nan</span></div><div class='xr-array-data'><pre>array([+nan, +nan, +nan, ..., +nan, +nan, +nan])</pre></div></div></li><li class='xr-section-item'><input id='section-e49a2303-dc5d-449d-84fb-da1314008257' class='xr-section-summary-in' type='checkbox'  checked><label for='section-e49a2303-dc5d-449d-84fb-da1314008257' class='xr-section-summary' >Coordinates: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>date_time</span></div><div class='xr-var-dims'>(date_time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2002-01-05T11:32:00 ... 2002-01-...</div><input id='attrs-d80a6500-3f78-4ffa-8827-70172e070651' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-d80a6500-3f78-4ffa-8827-70172e070651' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1a3a8c82-4a64-4133-bae4-7a68985529ba' class='xr-var-data-in' type='checkbox'><label for='data-1a3a8c82-4a64-4133-bae4-7a68985529ba' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;2002-01-05T11:32:00.000000000&#x27;, &#x27;2002-01-05T11:32:05.000000000&#x27;,
        &#x27;2002-01-05T11:32:10.000000000&#x27;, ..., &#x27;2002-01-07T11:01:40.000000000&#x27;,
        &#x27;2002-01-07T11:01:45.000000000&#x27;, &#x27;2002-01-07T11:01:50.000000000&#x27;],
-      dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-488aaecf-520d-487f-8771-eca338a7d144' class='xr-section-summary-in' type='checkbox'  ><label for='section-488aaecf-520d-487f-8771-eca338a7d144' class='xr-section-summary' >Attributes: <span>(12)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>sampling :</span></dt><dd>regular</dd><dt><span>sampling_rate :</span></dt><dd>5</dd><dt><span>sampling_rate_unit :</span></dt><dd>s</dd><dt><span>name :</span></dt><dd>P</dd><dt><span>full_name :</span></dt><dd>Depth</dd><dt><span>description :</span></dt><dd>dive depth</dd><dt><span>units :</span></dt><dd>m H2O</dd><dt><span>units_name :</span></dt><dd>meters H2O (salt)</dd><dt><span>units_label :</span></dt><dd>meters</dd><dt><span>column_name :</span></dt><dd>depth</dd><dt><span>axes :</span></dt><dd>D</dd><dt><span>files :</span></dt><dd>dives.csv</dd></dl></div></li></ul></div></div></div></div>
+      dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-9bdc9d7b-2d71-4bcb-bbe2-6c87a5326c23' class='xr-section-summary-in' type='checkbox'  ><label for='section-9bdc9d7b-2d71-4bcb-bbe2-6c87a5326c23' class='xr-section-summary' >Attributes: <span>(12)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>sampling :</span></dt><dd>regular</dd><dt><span>sampling_rate :</span></dt><dd>5</dd><dt><span>sampling_rate_unit :</span></dt><dd>s</dd><dt><span>name :</span></dt><dd>P</dd><dt><span>full_name :</span></dt><dd>Depth</dd><dt><span>description :</span></dt><dd>dive depth</dd><dt><span>units :</span></dt><dd>m H2O</dd><dt><span>units_name :</span></dt><dd>meters H2O (salt)</dd><dt><span>units_label :</span></dt><dd>meters</dd><dt><span>column_name :</span></dt><dd>depth</dd><dt><span>axes :</span></dt><dd>D</dd><dt><span>files :</span></dt><dd>dives.csv</dd></dl></div></li></ul></div></div></div></div>
 </div>
 <p>Plot measured data:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">28</span>
-<span class="normal">29</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
-          <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG1X1</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">27</span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
+<span class="linenos">28</span>          <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG1X1</span><span class="p">);</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/tdrdemo_4_0.png" src="_images/tdrdemo_4_0.png" />
@@ -556,77 +539,60 @@ Attributes:
 <p>Plot concurrent data:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">ccvars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;light&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">]</span>
-<span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
-          <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">concur_vars</span><span class="o">=</span><span class="n">ccvars</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG3X1</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">29</span><span class="n">ccvars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;light&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">]</span>
+<span class="linenos">30</span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
+<span class="linenos">31</span>          <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">concur_vars</span><span class="o">=</span><span class="n">ccvars</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG3X1</span><span class="p">);</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/tdrdemo_5_0.png" src="_images/tdrdemo_5_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="calibrate-measurements">
+</section>
+<section id="calibrate-measurements">
 <h2>Calibrate measurements<a class="headerlink" href="#calibrate-measurements" title="Permalink to this headline">¶</a></h2>
 <p>Calibration of TDR measurements involves the following steps, which rely on
 data from pressure sensors (barometers):</p>
-<div class="section" id="zero-offset-correction-zoc-of-depth-measurements">
+<section id="zero-offset-correction-zoc-of-depth-measurements">
 <h3>Zero offset correction (ZOC) of depth measurements<a class="headerlink" href="#zero-offset-correction-zoc-of-depth-measurements" title="Permalink to this headline">¶</a></h3>
 <p>Using the “offset” method here for speed performance reasons:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Helper dict to set parameter values</span>
-<span class="n">pars</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;dry_thr&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
-        <span class="s2">&quot;wet_thr&quot;</span><span class="p">:</span> <span class="mi">3610</span><span class="p">,</span>
-        <span class="s2">&quot;dive_thr&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;dive_model&quot;</span><span class="p">:</span> <span class="s2">&quot;unimodal&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;smooth_par&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;knot_factor&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;descent_crit_q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-
-<span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">])</span>
-
-<span class="c1"># Plot ZOC job</span>
-<span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
-              <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">));</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">32</span><span class="c1"># Helper dict to set parameter values</span>
+<span class="linenos">33</span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="linenos">34</span>        <span class="s2">&quot;dry_thr&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+<span class="linenos">35</span>        <span class="s2">&quot;wet_thr&quot;</span><span class="p">:</span> <span class="mi">3610</span><span class="p">,</span>
+<span class="linenos">36</span>        <span class="s2">&quot;dive_thr&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="linenos">37</span>        <span class="s2">&quot;dive_model&quot;</span><span class="p">:</span> <span class="s2">&quot;unimodal&quot;</span><span class="p">,</span>
+<span class="linenos">38</span>        <span class="s2">&quot;smooth_par&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">39</span>        <span class="s2">&quot;knot_factor&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="linenos">40</span>        <span class="s2">&quot;descent_crit_q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">41</span>        <span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">])</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="c1"># Plot ZOC job</span>
+<span class="linenos">46</span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
+<span class="linenos">47</span>              <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">));</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/tdrdemo_6_0.png" src="_images/tdrdemo_6_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="detection-of-wet-vs-dry-phases">
+</section>
+<section id="detection-of-wet-vs-dry-phases">
 <h3>Detection of wet vs dry phases<a class="headerlink" href="#detection-of-wet-vs-dry-phases" title="Permalink to this headline">¶</a></h3>
 <p>Periods of missing depth measurements longer than <cite>dry_thr</cite> are considered
 dry phases, whereas periods that are briefer than <cite>wet_thr</cite> are not
 considered to represent a transition to a wet phase.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">49</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">(</span><span class="n">dry_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">],</span> <span class="n">wet_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;wet_thr&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">48</span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">(</span><span class="n">dry_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">],</span> <span class="n">wet_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;wet_thr&quot;</span><span class="p">])</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 </div>
@@ -635,46 +601,40 @@ considered to represent a transition to a wet phase.</p>
 to indicate which periods to consider wet phases (argument <cite>wet_cond</cite>), and
 whether to linearly interpolate depth through wet phases with duration
 below <cite>wet_thr</cite> (argument <cite>interp_wet</cite>).</p>
-</div>
-<div class="section" id="detection-of-dive-events">
+</section>
+<section id="detection-of-dive-events">
 <h3>Detection of dive events<a class="headerlink" href="#detection-of-dive-events" title="Permalink to this headline">¶</a></h3>
 <p>When depth measurements are greater than <cite>dive_thr</cite>, a dive event is deemed
 to have started, ending when measurements cross that threshold again.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">50</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_thr&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">49</span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_thr&quot;</span><span class="p">])</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 </div>
 </div>
-</div>
-<div class="section" id="detection-of-dive-phases">
+</section>
+<section id="detection-of-dive-phases">
 <h3>Detection of dive phases<a class="headerlink" href="#detection-of-dive-phases" title="Permalink to this headline">¶</a></h3>
 <p>Two methods for dive phase detection are available (“unimodal” and
 “smooth_spline”), and this demo uses the default “unimodal” method:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="n">dive_model</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_model&quot;</span><span class="p">],</span>
-                        <span class="n">smooth_par</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;smooth_par&quot;</span><span class="p">],</span>
-                        <span class="n">knot_factor</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;knot_factor&quot;</span><span class="p">],</span>
-                        <span class="n">descent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;descent_crit_q&quot;</span><span class="p">],</span>
-                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">])</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">50</span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="n">dive_model</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_model&quot;</span><span class="p">],</span>
+<span class="linenos">51</span>                        <span class="n">smooth_par</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;smooth_par&quot;</span><span class="p">],</span>
+<span class="linenos">52</span>                        <span class="n">knot_factor</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;knot_factor&quot;</span><span class="p">],</span>
+<span class="linenos">53</span>                        <span class="n">descent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;descent_crit_q&quot;</span><span class="p">],</span>
+<span class="linenos">54</span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">])</span>
+<span class="linenos">55</span>
+<span class="linenos">56</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Time-Depth Recorder -- Class TDR object
-Source File          /opt/hostedtoolcache/Python/3.9.5/x64/lib/python3.9/site-packages/skdiveMove/tests/data/ag_mk7_2002_022.nc
+Source File          /opt/hostedtoolcache/Python/3.9.8/x64/lib/python3.9/site-packages/skdiveMove/tests/data/ag_mk7_2002_022.nc
 Sampling interval    0 days 00:00:05
 Number of Samples    34199
 Sampling Begins      2002-01-05 11:32:00
@@ -722,9 +682,9 @@ Speed calibration coefficients: (a=None, b=None)
 <cite>calibrate</cite> function:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">58</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">skdive</span><span class="o">.</span><span class="n">calibrate</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">57</span><span class="n">help</span><span class="p">(</span><span class="n">skdive</span><span class="o">.</span><span class="n">calibrate</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Help on function calibrate in module skdiveMove.tdr:
@@ -736,12 +696,12 @@ calibrate(tdr_file, config_file=None)
     readings, and speed if appropriate, in preparation for subsequent
     summaries of diving behaviour.
     
-    This function is a convenience wrapper around :meth:`TDR.detect_wet`,
-    :meth:`TDR.detect_dives`, :meth:`TDR.detect_dive_phases`,
-    :meth:`TDR.zoc`, and :meth:`TDR.calibrate_speed`.  It performs wet/dry
-    phase detection, zero-offset correction of depth, detection of dives,
-    as well as proper labelling of the latter, and calibrates speed data if
-    appropriate.
+    This function is a convenience wrapper around :meth:`~TDR.detect_wet`,
+    :meth:`~TDR.detect_dives`, :meth:`~TDR.detect_dive_phases`,
+    :meth:`~TDR.zoc`, and :meth:`~TDR.calibrate_speed`.  It performs
+    wet/dry phase detection, zero-offset correction of depth, detection of
+    dives, as well as proper labelling of the latter, and calibrates speed
+    data if appropriate.
     
     Due to the complexity of this procedure, and the number of settings
     required for it, a calibration configuration file (JSON) is used to
@@ -767,16 +727,16 @@ calibrate(tdr_file, config_file=None)
 </div>
 </div>
 <p>which is demonstrated in <a class="reference internal" href="boutsdemo.html#boutsdemo-label"><span class="std std-ref">Bout analysis</span></a>.</p>
-</div>
-<div class="section" id="plot-dive-phases">
+</section>
+<section id="plot-dive-phases">
 <h3>Plot dive phases<a class="headerlink" href="#plot-dive-phases" title="Permalink to this headline">¶</a></h3>
 <p>Once TDR data are properly calibrated and phases detected, results can be
 visualized:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">59</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_phases</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">)),</span> <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG1X1</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">58</span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_phases</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">)),</span> <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG1X1</span><span class="p">);</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/tdrdemo_11_0.png" src="_images/tdrdemo_11_0.png" />
@@ -784,18 +744,17 @@ visualized:</p>
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">60</span>
-<span class="normal">61</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Plot dive model for a dive</span>
-<span class="n">tdrX</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">59</span><span class="c1"># Plot dive model for a dive</span>
+<span class="linenos">60</span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/tdrdemo_12_0.png" src="_images/tdrdemo_12_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="calibrate-speed-measurements">
+</section>
+<section id="calibrate-speed-measurements">
 <h3>Calibrate speed measurements<a class="headerlink" href="#calibrate-speed-measurements" title="Permalink to this headline">¶</a></h3>
 <p>In addition to the calibration procedure described above, other variables
 in the data set may also need to be calibrated.  <cite>skdiveMove</cite> provides
@@ -803,15 +762,12 @@ support for calibrating speed sensor data, by taking advantage of its
 relationship with the rate of change in depth in the vertical dimension.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="c1"># Consider only changes in depth larger than 2 m</span>
-<span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate_speed</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">speed_calib_fit</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">61</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="linenos">62</span><span class="c1"># Consider only changes in depth larger than 2 m</span>
+<span class="linenos">63</span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate_speed</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="linenos">64</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">speed_calib_fit</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>                         QuantReg Regression Results                          
@@ -819,8 +775,8 @@ relationship with the rate of change in depth in the vertical dimension.</p>
 Dep. Variable:                      y   Pseudo R-squared:              0.07433
 Model:                       QuantReg   Bandwidth:                      0.2129
 Method:                 Least Squares   Sparsity:                        2.682
-Date:                Mon, 17 May 2021   No. Observations:                 2108
-Time:                        22:06:45   Df Residuals:                     2106
+Date:                Fri, 19 Nov 2021   No. Observations:                 2108
+Time:                        18:56:22   Df Residuals:                     2106
                                         Df Model:                            1
 ==============================================================================
                  coef    std err          t      P&gt;|t|      [0.025      0.975]
@@ -837,23 +793,23 @@ x              0.6872      0.049     13.902      0.000       0.590       0.784
 the <cite>DataArray</cite>:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">66</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;zoc&quot;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">65</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;zoc&quot;</span><span class="p">))</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray &#39;depth&#39; (date_time: 34199)&gt;
 array([+nan, +nan, +nan, ..., +nan, +nan, +nan])
 Coordinates:
   * date_time  (date_time) datetime64[ns] 2002-01-05T11:32:00 ... 2002-01-07T...
-Attributes: (12/13)
+Attributes:
     sampling:            regular
     sampling_rate:       5
     sampling_rate_unit:  s
     name:                P
     full_name:           Depth
     description:         dive depth
-    ...                  ...
+    units:               m H2O
     units_name:          meters H2O (salt)
     units_label:         meters
     column_name:         depth
@@ -866,23 +822,23 @@ Attributes: (12/13)
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">67</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_speed</span><span class="p">(</span><span class="s2">&quot;calibrated&quot;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">66</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_speed</span><span class="p">(</span><span class="s2">&quot;calibrated&quot;</span><span class="p">))</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DataArray &#39;speed&#39; (date_time: 34199)&gt;
 array([+nan, +nan, +nan, ..., +nan, +nan, +nan])
 Coordinates:
   * date_time  (date_time) datetime64[ns] 2002-01-05T11:32:00 ... 2002-01-07T...
-Attributes: (12/13)
+Attributes:
     sampling:            regular
     sampling_rate:       5
     sampling_rate_unit:  s
     name:                S
     full_name:           Speed
     description:         speed with respect to medium
-    ...                  ...
+    units:               m/s
     units_name:          meters per second
     units_label:         meters m/s
     column_name:         speed
@@ -893,18 +849,17 @@ Attributes: (12/13)
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="access-attributes-of-tdr-instance">
+</section>
+</section>
+<section id="access-attributes-of-tdr-instance">
 <h2>Access attributes of <cite>TDR</cite> instance<a class="headerlink" href="#access-attributes-of-tdr-instance" title="Permalink to this headline">¶</a></h2>
 <p>Following calibration, use the different accessor methods:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">68</span>
-<span class="normal">69</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Time series of the wet/dry phases</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">67</span><span class="c1"># Time series of the wet/dry phases</span>
+<span class="linenos">68</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>                     phase_id phase_label
@@ -928,9 +883,9 @@ date_time
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">70</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">)[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">69</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">)[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">])</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>70
@@ -940,9 +895,9 @@ date_time
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">71</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">)[</span><span class="s2">&quot;wet_thr&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">70</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">)[</span><span class="s2">&quot;wet_thr&quot;</span><span class="p">])</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>3610
@@ -952,9 +907,9 @@ date_time
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">72</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">71</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">))</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>                     dive_id  postdive_id dive_phase
@@ -978,9 +933,9 @@ date_time
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">73</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;spline_derivs&quot;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">72</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;spline_derivs&quot;</span><span class="p">))</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>                                   y
@@ -1003,9 +958,9 @@ date_time
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">74</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;crit_vals&quot;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">73</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;crit_vals&quot;</span><span class="p">))</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>         descent_crit  ascent_crit  descent_crit_rate  ascent_crit_rate
@@ -1027,14 +982,14 @@ dive_id
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="time-budgets">
+</section>
+<section id="time-budgets">
 <h2>Time budgets<a class="headerlink" href="#time-budgets" title="Permalink to this headline">¶</a></h2>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">75</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">74</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>                         beg phase_label                 end
@@ -1058,9 +1013,9 @@ phase_id
 </div>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">76</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">75</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>                         beg phase_label                 end
@@ -1076,14 +1031,14 @@ phase_id
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="dive-statistics">
+</section>
+<section id="dive-statistics">
 <h2>Dive statistics<a class="headerlink" href="#dive-statistics" title="Permalink to this headline">¶</a></h2>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">77</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">dive_stats</span><span class="p">())</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">76</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">dive_stats</span><span class="p">())</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>                begdesc             enddesc              begasc  desctim  \
@@ -1143,14 +1098,14 @@ phase_id
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="dive-stamps">
+</section>
+<section id="dive-stamps">
 <h2>Dive stamps<a class="headerlink" href="#dive-stamps" title="Permalink to this headline">¶</a></h2>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">78</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">stamp_dives</span><span class="p">())</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">77</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">stamp_dives</span><span class="p">())</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>         phase_id                 beg                 end
@@ -1174,8 +1129,8 @@ dive_id
 </div>
 <p>Feel free to download a copy of this demo
 (<a class="reference download internal" download="" href="_downloads/e452a3f23c3782fd4c41504412edb33c/tdrdemo.py"><code class="xref download docutils literal notranslate"><span class="pre">tdrdemo.py</span></code></a>).</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -1225,7 +1180,7 @@ dive_id
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -1250,14 +1205,14 @@ dive_id
         <li class="right" >
           <a href="index.html" title="scikit-diveMove Documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Diving behaviour analysis</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

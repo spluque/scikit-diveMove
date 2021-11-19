@@ -5,12 +5,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.boutsmle &#8212; skdiveMove 0.2.2 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <title>bouts.boutsmle &#8212; skdiveMove 0.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinxdoc.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -29,7 +29,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>
@@ -280,7 +280,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        out : ndarray</span>
+<span class="sd">        out : numpy.ndarray</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -318,12 +318,13 @@
 <span class="sd">        fit : scipy.optimize.OptimizeResult</span>
 <span class="sd">            Object with the optimization result, having a `x` attribute</span>
 <span class="sd">            with coefficients of the solution.</span>
-<span class="sd">        ax : matplotlib.Axes instance</span>
+<span class="sd">        ax : matplotlib.axes.Axes instance</span>
 <span class="sd">            An Axes instance to use as target.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ax : `matplotlib.Axes`</span>
+<span class="sd">        ax :</span>
+<span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Method is redefined from Bouts</span>
@@ -370,14 +371,15 @@
 <span class="sd">        fit : scipy.optimize.OptimizeResult</span>
 <span class="sd">            Object with the optimization result, having a `x` attribute</span>
 <span class="sd">            with coefficients of the solution.</span>
-<span class="sd">        ax : matplotlib.Axes instance</span>
+<span class="sd">        ax : matplotlib.axes.Axes instance</span>
 <span class="sd">            An Axes instance to use as target.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Passed to `matplotlib.pyplot.gca`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ax : `matplotlib.Axes`</span>
+<span class="sd">        ax :</span>
+<span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
@@ -494,7 +496,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -513,7 +515,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>
@@ -521,7 +523,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

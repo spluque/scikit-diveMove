@@ -36,6 +36,8 @@ ifile = (pkg_rsrc
                             ("tests/data/"
                              "ag_mk7_2002_022.nc")))
 tdrX = skdive.TDR(ifile, depth_name="depth", has_speed=True)
+# Or simply use function ``skdive.tests.diveMove2skd`` to do the
+# same with this particular data set.
 print(tdrX)
 
 
@@ -43,9 +45,6 @@ print(tdrX)
 
 
 tdrX.get_depth("measured")
-
-# Or simply use function ``skdive.tests.diveMove2skd`` to do the
-# same with this particular data set.
 
 
 # In[5]:
