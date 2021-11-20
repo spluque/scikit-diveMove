@@ -25,7 +25,7 @@ __all__ = ["dump_config_template", "assign_xr_attrs"]
 _SENSOR_DATA_CONFIG = {
     'sampling': "regular",
     'sampling_rate': "1",
-    'sampling_rate_unit': "Hz",
+    'sampling_rate_units': "Hz",
     'history': "",
     'name': "",
     'full_name': "",

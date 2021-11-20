@@ -66,26 +66,28 @@ class TDRSource:
 
     def __str__(self):
         x = self.tdr
-        xdf = x.to_dataframe()
+        depth_xr = x[self.depth_name]
+        depth_ser = depth_xr.to_series()
         objcls = ("Time-Depth Recorder -- Class {} object\n"
                   .format(self.__class__.__name__))
         src = "{0:<20} {1}\n".format("Source File", self.tdr_file)
         itv = ("{0:<20} {1}\n"
                .format("Sampling interval",
-                       get_var_sampling_interval(x[self.depth_name])))
+                       get_var_sampling_interval(depth_xr)))
         nsamples = "{0:<20} {1}\n".format("Number of Samples",
-                                          xdf.shape[0])
+                                          depth_xr.shape[0])
         beg = "{0:<20} {1}\n".format("Sampling Begins",
-                                     xdf.index[0])
+                                     depth_ser.index[0])
         end = "{0:<20} {1}\n".format("Sampling Ends",
-                                     xdf.index[-1])
+                                     depth_ser.index[-1])
         dur = "{0:<20} {1}\n".format("Total duration",
-                                     xdf.index[-1] - xdf.index[0])
+                                     depth_ser.index[-1] -
+                                     depth_ser.index[0])
         drange = "{0:<20} [{1},{2}]\n".format("Measured depth range",
-                                              xdf[self.depth_name].min(),
-                                              xdf[self.depth_name].max())
+                                              depth_ser.min(),
+                                              depth_ser.max())
         others = "{0:<20} {1}\n".format("Other variables",
-                                        [x for x in xdf.columns
+                                        [x for x in list(x.keys())
                                          if x != self.depth_name])
         attr_list = "Attributes:\n"
         for key, val in sorted(x.attrs.items()):

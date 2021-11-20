@@ -53,8 +53,13 @@ def get_var_sampling_interval(x):
 
     """
     attrs = x.attrs
-    intvl = (pd.Timedelta(attrs["sampling_rate"] +
-                          attrs["sampling_rate_unit"]))
+    sampling_rate = attrs["sampling_rate"]
+    sampling_rate_units = attrs["sampling_rate_units"]
+    if sampling_rate_units.lower() == "hz":
+        sampling_rate = 1 / sampling_rate
+        sampling_rate_units = "s"
+    intvl = pd.Timedelta("{}{}"
+                         .format(sampling_rate, sampling_rate_units))
 
     return(intvl)
 
