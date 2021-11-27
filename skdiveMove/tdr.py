@@ -57,9 +57,9 @@ class TDR(TDRPhases):
         Parameters
         ----------
         *args : positional arguments
-            Passed to :meth:`TDRSource.__init__`
+            Passed to :meth:`TDRPhases.__init__`
         **kwargs : keyword arguments
-            Passed to :meth:`TDRSource.__init__`
+            Passed to :meth:`TDRPhases.__init__`
 
         """
         TDRPhases.__init__(self, *args, **kwargs)
@@ -699,7 +699,7 @@ def calibrate(tdr_file, config_file=None):
     load_dataset_kwargs = config["read"].pop("load_dataset_kwargs")
     logger.info("Reading config: {}, {}"
                 .format(config["read"], load_dataset_kwargs))
-    tdr = TDR(tdr_file, **config["read"], **load_dataset_kwargs)
+    tdr = TDR.read_netcdf(tdr_file, **config["read"], **load_dataset_kwargs)
 
     do_zoc = config["zoc"].pop("required")
     if do_zoc:
@@ -727,6 +727,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
 
     ifile = r"tests/data/ag_mk7_2002_022.nc"
-    tdrX = TDR(ifile, has_speed=True)
+    tdrX = TDR.read_netcdf(ifile, has_speed=True)
     # tdrX = TDRSource(ifile, has_speed=True)
     # print(tdrX)

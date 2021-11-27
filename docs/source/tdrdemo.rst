@@ -50,7 +50,7 @@ Load `diveMove`'s example data, using ``TDR.__init__`` method, and print:
             .resource_filename("skdiveMove",
                                ("tests/data/"
                                 "ag_mk7_2002_022.nc")))
-   tdrX = skdive.TDR(ifile, depth_name="depth", has_speed=True)
+   tdrX = skdive.TDR.read_netcdf(ifile, depth_name="depth", has_speed=True)
    # Or simply use function ``skdive.tests.diveMove2skd`` to do the
    # same with this particular data set.
    print(tdrX)

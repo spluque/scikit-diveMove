@@ -8,6 +8,25 @@ from skdiveMove.helpers import get_var_sampling_interval
 _SPEED_NAMES = ["velocity", "speed"]
 
 
+def _load_dataset(filename_or_obj, **kwargs):
+    """Private function to load Dataset object from file name or object
+
+    Parameters
+    ----------
+    filename_or_obj : str, Path or xarray.backends.*DataStore
+        String indicating the file where the data comes from.
+    **kwargs :
+        Arguments passed to ``xarray.load_dataset``.
+
+    Returns
+    -------
+    dataset : Dataset
+        The output Dataset.
+
+    """
+    return(xr.load_dataset(filename_or_obj, **kwargs))
+
+
 class TDRSource:
     """Define TDR data source
 
@@ -34,24 +53,24 @@ class TDRSource:
     Time-Depth Recorder -- Class TDR object ...
 
     """
-    def __init__(self, tdr_file, depth_name="depth",
-                 has_speed=False, **kwargs):
+    def __init__(self, dataset, depth_name="depth",
+                 has_speed=False, tdr_filename=None):
         """Set up attributes for TDRSource objects
 
         Parameters
         ----------
-        tdr_file : str, Path or xarray.backends.*DataStore
-            As first argument for :func:`xarray.load_dataset`.
+        dataset : xarray.Dataset
+            Dataset containing depth, and optionally other DataArrays.
         depth_name : str, optional
             Name of data variable with depth measurements. Default: "depth".
         has_speed : bool, optional
             Weather data includes speed measurements. Column name must be
             one of ["velocity", "speed"].  Default: False.
-        **kwargs : optional keyword arguments
-            Arguments passed to ``xarray.load_dataset``.
+        tdr_filename : str
+            Name of the file from which `dataset` originated.
 
         """
-        self.tdr = xr.load_dataset(tdr_file, **kwargs)
+        self.tdr = dataset
         self.depth_name = depth_name
         speed_var = [x for x in list(self.tdr.data_vars.keys())
                      if x in _SPEED_NAMES]
@@ -62,7 +81,34 @@ class TDRSource:
             self.has_speed = False
             self.speed_name = None
 
-        self.tdr_file = tdr_file
+        self.tdr_file = tdr_filename
+
+    @classmethod
+    def read_netcdf(cls, tdr_file, depth_name="depth",
+                    has_speed=False, **kwargs):
+        """Instantiate object by loading Dataset from NetCDF file
+
+        Parameters
+        ----------
+        tdr_file : str
+            As first argument for :func:`xarray.load_dataset`.
+        depth_name : str, optional
+            Name of data variable with depth measurements. Default: "depth".
+        has_speed : bool, optional
+            Weather data includes speed measurements. Column name must be
+            one of ["velocity", "speed"].  Default: False.
+        **kwargs : optional keyword arguments
+            Arguments passed to :func:`xarray.load_dataset`.
+
+        Returns
+        -------
+        obj : TDRSource, ZOC, TDRPhases, or TDR
+            Class matches the caller.
+
+        """
+        dataset = _load_dataset(tdr_file, **kwargs)
+        return(cls(dataset, depth_name=depth_name, has_speed=has_speed,
+                   tdr_filename=tdr_file))
 
     def __str__(self):
         x = self.tdr

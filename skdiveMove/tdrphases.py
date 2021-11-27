@@ -60,9 +60,9 @@ class TDRPhases(ZOC):
         Parameters
         ----------
         *args : positional arguments
-            Passed to :meth:`TDRSource.__init__`
+            Passed to :meth:`ZOC.__init__`
         **kwargs : keyword arguments
-            Passed to :meth:`TDRSource.__init__`
+            Passed to :meth:`ZOC.__init__`
 
         """
         ZOC.__init__(self, *args, **kwargs)
