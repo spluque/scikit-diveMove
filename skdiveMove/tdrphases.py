@@ -532,7 +532,9 @@ class TDRPhases(ZOC):
         ...
 
         """
-        labels = self.wet_dry["phase_label"].reset_index()
+        phase_lab = self.wet_dry["phase_label"]
+        idx_name = phase_lab.index.name
+        labels = phase_lab.reset_index()
         if ignore_z:
             labels = labels.mask(labels == "Z", "L")
         if ignore_du:
@@ -541,8 +543,8 @@ class TDRPhases(ZOC):
         grp_key = rle_key(labels["phase_label"]).rename("phase_id")
         labels_grp = labels.groupby(grp_key)
 
-        begs = labels_grp.first().rename(columns={"date_time": "beg"})
-        ends = labels_grp.last()["date_time"].rename("end")
+        begs = labels_grp.first().rename(columns={idx_name: "beg"})
+        ends = labels_grp.last()[idx_name].rename("end")
 
         return(pd.concat((begs, ends), axis=1))
 
@@ -577,6 +579,7 @@ class TDRPhases(ZOC):
 
         """
         phase_lab = self.wet_dry["phase_label"]
+        idx_name = phase_lab.index.name
         # "U" and "D" considered as "W" here
         phase_lab = phase_lab.mask(phase_lab.isin(["U", "D"]), "W")
         if ignore_z:
@@ -596,8 +599,8 @@ class TDRPhases(ZOC):
         for name, group in merged_grp:
             dives_uniq = pd.Series(group["dive_id"].unique(),
                                    name="dive_id")
-            beg = [group["date_time"].iloc[0]] * dives_uniq.size
-            end = [group["date_time"].iloc[-1]] * dives_uniq.size
+            beg = [group[idx_name].iloc[0]] * dives_uniq.size
+            end = [group[idx_name].iloc[-1]] * dives_uniq.size
             dive_df = pd.DataFrame({'phase_id': [name] * dives_uniq.size,
                                     'beg': beg,
                                     'end': end}, index=dives_uniq)

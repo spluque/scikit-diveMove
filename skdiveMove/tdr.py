@@ -118,7 +118,7 @@ class TDR(TDRPhases):
         depth = self.get_depth("zoc").to_series()
         ddiffs = depth.reset_index().diff().set_index(depth.index)
         ddepth = ddiffs["depth"].abs()
-        rddepth = ddepth / ddiffs["date_time"].dt.total_seconds()
+        rddepth = ddepth / ddiffs[depth.index.name].dt.total_seconds()
         curspeed = self.get_speed("measured").to_series()
         ok = (ddepth > z) & (rddepth > bad[0]) & (curspeed > bad[1])
         rddepth = rddepth[ok]
@@ -171,6 +171,7 @@ class TDR(TDRPhases):
 
         """
         phases_df = self.get_dives_details("row_ids")
+        idx_name = phases_df.index.name
 
         # calib_speed=False if no fit object
         tdr = self.get_tdr(calib_depth=True,
@@ -194,7 +195,7 @@ class TDR(TDRPhases):
                            tdr[ok]), axis=1).reset_index())
 
         # Ugly hack to re-order columns for `diveMove` convention
-        names0 = ["dive_id", "dive_phase", "date_time", self.depth_name]
+        names0 = ["dive_id", "dive_phase", idx_name, self.depth_name]
         colnames = tdrf.columns.to_list()
         if self.has_speed:
             names0.append(self.speed_name)
@@ -218,7 +219,7 @@ class TDR(TDRPhases):
         ones_df = pd.concat(ones_list, ignore_index=True)
         ones_df.set_index(dive_ids[ok].unique(), inplace=True)
         ones_df.index.rename("dive_id", inplace=True)
-        ones_df["postdive_dur"] = postdive_dur["date_time"]
+        ones_df["postdive_dur"] = postdive_dur[idx_name]
 
         # For postdive total distance and mean speed (if available)
         if self.has_speed:
@@ -371,6 +372,8 @@ class TDR(TDRPhases):
             select additional data to plot.
         concur_var_titles : str or list, optional
             String or list of strings with y-axis labels for `concur_vars`.
+        surface : bool, optional
+            Whether to plot surface readings.
         **kwargs : optional keyword arguments
             Arguments passed to plotting function.
 
@@ -647,9 +650,10 @@ class TDR(TDRPhases):
 
         """
         dive_ids = self.get_dives_details("row_ids", "dive_id")
+        idx_name = dive_ids.index.name
         idxs = _get_dive_indices(dive_ids, diveNo)
         tdr = self.get_tdr(**kwargs)
-        tdr_i = tdr[dict(date_time=idxs.astype(int))]
+        tdr_i = tdr[{idx_name: idxs.astype(int)}]
 
         return(tdr_i)
 
