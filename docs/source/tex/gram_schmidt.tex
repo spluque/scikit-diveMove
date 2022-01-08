@@ -1,0 +1,56 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{angles,arrows,backgrounds}
+\tikzstyle{background grid}=[draw, step=2mm, gray, very thin]
+
+% Colors
+\colorlet{fillcol}{black!25}     % fill color
+\colorlet{veccol}{black!60}      % input vectors
+% Reference frame axis styles
+\tikzstyle{vec}=[-stealth,veccol,scale=2,line cap=round]
+\tikzstyle{plane}=[very thin,fill=fillcol,draw=veccol,line cap=round]
+\tikzstyle{rightangle}=[draw=veccol,very thin,angle radius=4mm,
+pic text=.,pic text options={veccol},anchor=west]
+\tikzstyle{pline}=[very thin,veccol,dash pattern=on 2pt off 1pt,
+line cap=round]
+
+\begin{document}
+
+\tdplotsetmaincoords{70}{135}
+\begin{tikzpicture}[tdplot_main_coords, scale=1.5, % show background grid,
+  every node/.style={scale=0.4}, every circle/.style={radius=0.25pt}]
+  % Macros for key quantities
+  \pgfmathsetmacro{\psiangle}{50}
+  \pgfmathsetmacro{\px}{1.25}     % P1 x component
+  \pgfmathsetmacro{\py}{0}     % P1 y component
+  \pgfmathsetmacro{\pz}{0}     % P1 z component
+  % Coordinates
+  \coordinate (O) at (0,0,0);
+  \coordinate (IX) at (0.75,0,0);
+  \coordinate (IY) at (0,0.75,0);
+  \coordinate (IZ) at (0,0,0.75);
+  \coordinate (P1) at (\px,\py,\pz);
+
+  % Create rotated frame and rotated vector
+  \tdplotsetrotatedcoords{\psiangle}{0}{0}
+  % Get coordinates of P2 in main coordinate system
+  \tdplottransformrotmain{\px}{\py}{\pz}
+  \coordinate (P2) at (\tdplotresx,\tdplotresy,\tdplotresz);
+  % Main frame
+  \draw[vec,black] (O) -- (IX) node[anchor=south]{\(x\)};
+  \draw[vec,black] (O) -- (IY) node[anchor=south]{\(y\)};
+  \draw[vec,black] (O) -- (IZ) node[anchor=east]{\(z\)};
+  % Points
+  \filldraw[vec] (O) circle node [anchor=south west]{\(P_{0}\)}
+  (P1) circle node [anchor=south]{\(P_{1}\)}
+  (P2) circle node [anchor=south west]{\(P_{2}\)};
+  \draw[pline] (O) -- (P1) (O) -- (P2);
+\end{tikzpicture}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

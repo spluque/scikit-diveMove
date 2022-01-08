@@ -19,7 +19,7 @@ sys.path.append("../skdiveMove")
 # -- Project information -----------------------------------------------------
 
 project = 'skdiveMove'
-copyright = '2021, Sebastian Luque'
+copyright = '2022, Sebastian Luque'
 author = 'Sebastian Luque'
 
 # The short X.Y version
@@ -64,7 +64,8 @@ jupyter_sphinx_continue_linenos = True
 
 # autodoc
 autodoc_default_options = {
-    'members': True
+    'members': True,
+    'member-order': 'groupwise'
 }
 
 # -- Options for HTML output -------------------------------------------------
@@ -72,7 +73,8 @@ autodoc_default_options = {
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinxdoc'
+# html_theme = 'sphinxdoc'
+html_theme = 'bizstyle'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -111,13 +113,13 @@ htmlhelp_basename = 'skdiveMove_doc'
 #     # 'preamble': '',
 # }
 
-# # Grouping the document tree into LaTeX files. List of tuples
-# # (source start file, target name, title,
-# #  author, documentclass [howto/manual]).
-# latex_documents = [
-#   (master_doc, 'index', 'skdiveMove.tex', u'skdiveMove Documentation',
-#    u'Sebastian Luque', 'manual'),
-# ]
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title,
+#  author, documentclass [howto/manual]).
+latex_documents = [
+    (master_doc, 'index', 'skdiveMove.tex', u'skdiveMove Documentation',
+     u'Sebastian Luque', 'manual'),
+]
 
 # -- Extension configurations ---------------------------------------------
 

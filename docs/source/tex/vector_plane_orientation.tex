@@ -1,0 +1,57 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{angles,arrows,backgrounds}
+\tikzstyle{background grid}=[draw, step=2mm, gray, very thin]
+
+% Colors
+\colorlet{fillcol}{black!25}     % fill color
+\colorlet{veccol}{black!60}      % input vectors
+% Reference frame axis styles
+\tikzstyle{vec}=[-stealth,veccol,scale=2,line cap=round]
+\tikzstyle{plane}=[very thin,fill=fillcol,draw=veccol,line cap=round]
+\tikzstyle{rightangle}=[draw=veccol,very thin,angle radius=4mm,
+pic text=.,pic text options={veccol},anchor=west]
+
+\begin{document}
+
+\tdplotsetmaincoords{70}{135}
+\begin{tikzpicture}[tdplot_main_coords, scale=1.5, % show background grid,
+  every node/.style={scale=0.4}, every circle/.style={radius=0.25pt}]
+  % Macros for key quantities
+  \pgfmathsetmacro{\psiangle}{50}
+  \pgfmathsetmacro{\qlen}{0.5}
+  \pgfmathsetmacro{\px}{1}     % P2 x component
+  \pgfmathsetmacro{\py}{0}     % P2 y component
+  \pgfmathsetmacro{\pz}{0}     % P2 z component
+  % Coordinates
+  \coordinate (O) at (0,0,0);
+  \coordinate (N) at (0,0,\qlen);
+  \coordinate (P1) at (1,0,0);
+
+  % Create rotated frame and rotated vector
+  \tdplotsetrotatedcoords{\psiangle}{0}{0}
+  % Get coordinates of P2 in main coordinate system
+  \tdplottransformrotmain{\px}{\py}{\pz}
+  \coordinate (P2) at (\tdplotresx,\tdplotresy,\tdplotresz);
+  % Fill polygon for plane
+  \filldraw[tdplot_main_coords,plane]
+  (O) -- (P1) -- (P2) -- cycle;
+  % Main frame
+  \draw[vec,black] (O) -- (N) node[anchor=east]{\(n\)};
+  % Points
+  \filldraw[vec] (O) circle node [anchor=west]{\(P_{0}\)}
+  (P1) circle node [anchor=east]{\(P_{1}\)}
+  (P2) circle node [anchor=west]{\(P_{2}\)};
+  \coordinate (P3) at (barycentric cs:O=1,P1=0.3,P2=0.4);
+  % Right angle indicator
+  \path (N) -- (O) -- (P3)
+  pic [rightangle] {right angle=N--O--P3};
+\end{tikzpicture}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

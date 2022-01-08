@@ -1,0 +1,59 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{arrows}
+
+% Colors for axes
+\colorlet{xaxcolor}{red}
+\colorlet{yaxcolor}{green!50!black}
+\colorlet{zaxcolor}{blue}
+% Colors for reference planes
+\colorlet{xzcolor}{xaxcolor!50!zaxcolor}
+\colorlet{yzcolor}{yaxcolor!50!zaxcolor}
+\colorlet{xycolor}{xaxcolor!50!yaxcolor}
+% Reference frame axis styles
+\tikzstyle{axis}=[thick,-latex,line cap=round,scale=2]
+\tikzstyle{xaxis}=[axis,xaxcolor]
+\tikzstyle{yaxis}=[axis,yaxcolor]
+\tikzstyle{zaxis}=[axis,zaxcolor]
+% Reference plane styles
+\tikzstyle{cguide}=[very thin,lightgray,fill opacity=0.3,scale=2]
+\tikzstyle{xzguide}=[cguide,canvas is xz plane at y=0,fill=xzcolor]
+\tikzstyle{yzguide}=[cguide,canvas is yz plane at x=0,fill=yzcolor]
+\tikzstyle{xyguide}=[cguide,canvas is xy plane at z=0,fill=xycolor]
+
+\begin{document}
+
+\tdplotsetmaincoords{70}{135}
+\begin{tikzpicture}[tdplot_main_coords,
+  every node/.append style={scale=0.5}]
+  % Reference planes
+  \filldraw[xzguide] (0.15,0.15) rectangle (0,0);
+  \filldraw[yzguide] (0.15,0.15) rectangle (0,0);
+  \filldraw[xyguide] (0.15,0.15) rectangle (0,0);
+  % Animal frame
+  \draw[xaxis] (0,0,0) -- (1,0,0) node[anchor=north east]{\(x^{b}\)};
+  \draw[yaxis] (0,0,0) -- (0,1,0) node[anchor=north west]{\(y^{b}\)};
+  \draw[zaxis] (0,0,0) -- (0,0,1) node[anchor=south]{\(z^{b}\)};
+  % Create rotated frame
+  \tdplotsetrotatedcoords{15}{25}{-20}
+  % Reference planes
+  \filldraw[tdplot_rotated_coords,xzguide] (0.15,0.15) rectangle (0,0);
+  \filldraw[tdplot_rotated_coords,yzguide] (0.15,0.15) rectangle (0,0);
+  \filldraw[tdplot_rotated_coords,xyguide] (0.15,0.15) rectangle (0,0);
+  % Device frame
+  \draw[tdplot_rotated_coords,xaxis,dashed] (0,0,0) -- (1,0,0) %
+  node[anchor=north east]{\(x^{s}\)};
+  \draw[tdplot_rotated_coords,yaxis,dashed] (0,0,0) -- (0,1,0) %
+  node[anchor=north west]{\(y^{s}\)};
+  \draw[tdplot_rotated_coords,zaxis,dashed] (0,0,0) -- (0,0,1) %
+  node[anchor=south]{\(z^{s}\)};
+  \shade [ball color=black] (0,0,0) circle [radius=0.03cm];
+\end{tikzpicture}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

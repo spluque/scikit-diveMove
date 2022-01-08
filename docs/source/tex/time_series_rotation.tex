@@ -1,0 +1,52 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{arrows.meta,chains,positioning,shapes}
+
+% Colors for segments
+\colorlet{surfcol}{black!30}
+% Node styles
+\tikzstyle{surf}=[on chain,shape=rectangle,minimum width=1.5cm,
+draw,fill=surfcol]
+\tikzstyle{end}=[on chain,shape=circle,draw,scale=0.5]
+\tikzstyle{rotseg}=[Bar-latex]
+
+\begin{document}
+
+\tdplotsetmaincoords{70}{135}
+\begin{tikzpicture}[tdplot_main_coords,
+  every node/.append style={scale=0.5}, start chain]
+  % Segments
+  \node (beg) [end] {};
+  \node (s1) [surf,join] {$s_{1}$};
+  \node (s2) [surf,join] {$s_{2}$};
+  \node (sn-1) [surf,join=by {dashed}] {$s_{n-1}$};
+  \node (sn) [surf,join] {$s_{n}$};
+  \node (end) [end,fill,join] {};
+  % Labels on
+  \node [above=1mm of beg] {$t_{0}$};
+  \node [above=1mm of s1.north west] {$t_{0}^{s_{1}}$};
+  \node [above=1mm of s1.north east] {$t_{1}^{s_{1}}$};
+  \node [above=1mm of s2.north west] {$t_{0}^{s_{2}}$};
+  \node [above=1mm of s2.north east] {$t_{1}^{s_{2}}$};
+  \node [above=1mm of sn-1.north west] {$t_{0}^{s_{n-1}}$};
+  \node [above=1mm of sn-1.north east] {$t_{1}^{s_{n-1}}$};
+  \node [above=1mm of sn.north west] {$t_{0}^{s_{n}}$};
+  \node [above=1mm of sn.north east] {$t_{1}^{s_{n}}$};
+  \node [above=1mm of end] {$t_{k}$};
+  % Time series rotation segments
+  \draw [rotseg] (0,-4mm) -- node [below] {$R_{s_{1}}$} +(s1.east |- 0,0);
+  \draw [rotseg] (s1.east |- 0,-4mm) -- node [below] {$R_{s_{2}}$}
+  ([yshift=-4mm]s2.east);
+  \draw [rotseg,dashed] (s2.east |- 0,-4mm) -- node [below] {$R_{s_{n-1}}$}
+  ([yshift=-4mm]sn-1.east);
+  \draw [rotseg] (sn-1.east |- 0,-4mm) -- node [below] {$R_{s_{n}}$}
+  (end |- 0,-4mm);
+\end{tikzpicture}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

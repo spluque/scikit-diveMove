@@ -81,16 +81,16 @@ and then install with:
    pip install -e .["dev"]
 
 
-
 Demos
 =====
 
 .. toctree::
    :maxdepth: 2
 
-   tdrdemo
-   boutsdemo
-   boutsimuldemo
+   demo_tdr
+   demo_bouts
+   demo_simulbouts
+   imutools_demos
 
 
 Modules
@@ -102,6 +102,7 @@ Modules
    tdr
    bouts
    metadata
+   imutools
 
 
 Indices and tables

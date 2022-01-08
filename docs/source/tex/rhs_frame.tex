@@ -1,0 +1,44 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{arrows}
+
+% Colors for axes
+\colorlet{xaxcolor}{red}
+\colorlet{yaxcolor}{green!50!black}
+\colorlet{zaxcolor}{blue}
+% Reference frame axis styles
+\tikzstyle{axis}=[thick,-latex,line cap=round,scale=2]
+\tikzstyle{rot}=[thin,->,line cap=round,scale=2]
+
+\begin{document}
+
+\tdplotsetmaincoords{70}{135}
+\begin{tikzpicture}[tdplot_main_coords,
+  every node/.append style={scale=0.5}]
+  % Frame axes
+  \draw[axis,xaxcolor] (0,0,0) -- (1,0,0) node[anchor=north east]{\(x,N\)};
+  \draw[axis,yaxcolor] (0,0,0) -- (0,1,0) node[anchor=north west]{\(y,W\)};
+  \draw[axis,zaxcolor] (0,0,0) -- (0,0,1) node[anchor=south]{\(z,U\)};
+  % Place a ball at the origin
+  \shade [ball color=black] (0,0,0) circle [radius=0.03cm];
+  % Draw rotation arrow around z-axis
+  \tdplotdrawarc[rot,zaxcolor,inner sep=1em] %
+  {(0,0,0.7)}{0.1}{-90}{210} {anchor=west}{\(\psi,yaw\)};
+  % Rotate main frame around z- and y-axis (intermediate)
+  \tdplotsetrotatedcoords{90}{90}{0}
+  \tdplotdrawarc[tdplot_rotated_coords,rot,yaxcolor] %
+  {(0,0,0.7)}{0.1}{90}{390}{anchor=north east}{\(\theta,pitch\)};
+  % Rotate main frame around intermediate y-axis
+  \tdplotsetrotatedcoords{0}{90}{0}
+  \tdplotdrawarc[tdplot_rotated_coords,rot,xaxcolor] %
+  {(0,0,0.7)}{0.1}{-30}{270}{anchor=north west} %
+  {\(\phi,roll\)};
+\end{tikzpicture}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

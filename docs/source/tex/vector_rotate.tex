@@ -1,0 +1,58 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{angles,arrows,backgrounds}
+\tikzstyle{background grid}=[draw, step=0.2cm, gray, very thin]
+
+% Colors
+\colorlet{veccol}{black!30}     % unrotated vectors
+% Reference frame axis styles
+\tikzstyle{vec}=[-stealth,veccol,line cap=round]
+\tikzstyle{rightangle}=[draw=veccol,very thin,angle radius=4mm,
+pic text=.,pic text options={veccol},anchor=west]
+\tikzstyle{dimline}=[Bar-Bar,dash pattern=on 2pt off 1pt,very thin,
+veccol,line cap=round]
+
+\begin{document}
+
+\tdplotsetmaincoords{70}{135}
+\begin{tikzpicture}[tdplot_main_coords, scale=1.5,
+  every node/.style={scale=0.4}] % show background grid]
+  % Macros for key quantities
+  \pgfmathsetmacro{\psiangle}{50}
+  \pgfmathsetmacro{\qlen}{0.5}
+  \pgfmathsetmacro{\px}{1}     % V x component
+  \pgfmathsetmacro{\py}{0}     % V y component
+  \pgfmathsetmacro{\pz}{0}     % V z component
+  % Coordinates
+  \coordinate (O) at (0,0,0);
+  \coordinate (Q) at (0,0,\qlen);
+  \coordinate (V) at (\px,\py,\pz);
+
+  % Create rotated frame and rotated vector
+  \tdplotsetrotatedcoords{\psiangle}{0}{0}
+  % Get coordinates of rotated V in main coordinate system
+  \tdplottransformrotmain{\px}{\py}{\pz}
+  \coordinate (Vr) at (\tdplotresx,\tdplotresy,\tdplotresz);
+  % Main frame
+  \draw[vec] (O) -- (Q) node[anchor=east]{\(q\)};
+  \draw[vec] (O) -- (V) node[anchor=south]{\(v\)};
+  \draw[vec,black] (O) -- (Vr) node[anchor=south west]{\(\hat{v}\)};
+  \coordinate (ctr) at (barycentric cs:O=1,V=0.3,Vr=0.4);
+  % Right angle indicator
+  \path (Q) -- (O) -- (ctr)
+  pic [rightangle] {right angle=Q--O--ctr};
+  % Angle arc between vector and rotated vector
+  \tdplotdrawarc[->,veccol,very thin]{(O)}{0.5}{0}{\psiangle}
+  {anchor=south west}{\(\alpha\)};
+  % q dimension line
+  \draw[dimline] (O) ++(1.5mm,0) --
+  node [anchor=west] {\(\sin(\alpha/2)\)} +(0,0,\qlen);
+\end{tikzpicture}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

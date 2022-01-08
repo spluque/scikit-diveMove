@@ -28,8 +28,9 @@
 scientific data analysis, with a focus on diving behaviour analysis.  It
 has utilities to represent, visualize, filter, analyse, and summarize
 time-depth recorder (TDR) data.  Miscellaneous functions for handling
-location data are also provided.  `scikit-diveMove` communicates with a
-single `R` instance for access to low-level tools of package `diveMove`.
+position and 3D kinematics data are also provided.  `scikit-diveMove`
+communicates with a single `R` instance for access to low-level tools of
+package `diveMove`.
 
 .. _diveMove: https://github.com/spluque/diveMove
 
