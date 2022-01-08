@@ -53,6 +53,7 @@ jobs:
 
       - name: Build Sphinx docs
         run: |
+          sudo apt-get install ffmpeg
           python -m pip install .['docs']
           make -C docs/ html
 

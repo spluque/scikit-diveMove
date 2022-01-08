@@ -65,6 +65,7 @@ jobs:
       - name: Build Sphinx docs
         if: matrix.python-version == env.PY_LATEST
         run: |
+          sudo apt-get install ffmpeg
           python -m pip install .['docs']
           make -C docs/ html
           touch docs/build/html/.nojekyll
@@ -100,7 +101,7 @@ jobs:
           name: dist-pkg
 
       - name: Publish GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.7
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages

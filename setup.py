@@ -18,8 +18,11 @@ def get_requirements():
 
 
 REQUIREMENTS = get_requirements()
-DEV_REQUIRES = ["ipython", "jupyter", "jupyter-sphinx"]
-PACKAGES = ["skdiveMove", "skdiveMove.bouts", "skdiveMove.tests"]
+DEV_REQUIRES = ["ipython", "jupyter", "jupyter-sphinx", "mistune<2.0"]
+PACKAGES = ["skdiveMove",
+            "skdiveMove.bouts",
+            "skdiveMove.imutools",
+            "skdiveMove.tests"]
 
 setup(
     name="scikit-diveMove",

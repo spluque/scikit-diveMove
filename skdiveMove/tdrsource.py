@@ -2,29 +2,9 @@
 
 """
 
-import xarray as xr
-from skdiveMove.helpers import get_var_sampling_interval
+from skdiveMove.helpers import get_var_sampling_interval, _load_dataset
 
 _SPEED_NAMES = ["velocity", "speed"]
-
-
-def _load_dataset(filename_or_obj, **kwargs):
-    """Private function to load Dataset object from file name or object
-
-    Parameters
-    ----------
-    filename_or_obj : str, Path or xarray.backends.*DataStore
-        String indicating the file where the data comes from.
-    **kwargs :
-        Arguments passed to ``xarray.load_dataset``.
-
-    Returns
-    -------
-    dataset : Dataset
-        The output Dataset.
-
-    """
-    return(xr.load_dataset(filename_or_obj, **kwargs))
 
 
 class TDRSource:

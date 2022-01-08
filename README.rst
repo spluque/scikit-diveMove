@@ -28,8 +28,9 @@
 scientific data analysis, with a focus on diving behaviour analysis.  It
 has utilities to represent, visualize, filter, analyse, and summarize
 time-depth recorder (TDR) data.  Miscellaneous functions for handling
-location data are also provided.  `scikit-diveMove` communicates with a
-single `R` instance for access to low-level tools of package `diveMove`.
+position and 3D kinematics data are also provided.  `scikit-diveMove`
+communicates with a single `R` instance for access to low-level tools of
+package `diveMove`.
 
 .. _diveMove: https://github.com/spluque/diveMove
 
@@ -103,6 +104,18 @@ The table below shows which features of `diveMove` are accessible from
 +---------------+------------------+--------------------------+--------------------------------+
 |               |``extractDive``   |                          |Fully implemented               |
 +---------------+------------------+--------------------------+--------------------------------+
+
+`scikit-diveMove` also provides useful tools for processing signals from
+tri-axial Inertial Measurement Units (`IMU`_), such as thermal calibration,
+corrections for shifts in coordinate frames, as well as computation of
+orientation using a variety of current methods.  Analyses are fully
+tractable by encouraging the use of `xarray`_ data structures that can be
+read from and written to NetCDF file format.  Using these data structures,
+meta-data attributes can be easily appended at all layers as analyses
+progress.
+
+.. _xarray: https://xarray.pydata.org
+.. _IMU: https://en.wikipedia.org/wiki/Inertial_measurement_unit
 
 
 Installation

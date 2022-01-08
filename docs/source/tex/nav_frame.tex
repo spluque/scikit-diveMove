@@ -1,0 +1,99 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.text}
+
+% Colors for axes
+\colorlet{xaxcolor}{red}
+\colorlet{yaxcolor}{green!50!black}
+\colorlet{zaxcolor}{blue}
+% Colors for reference planes
+\colorlet{xzcolor}{xaxcolor!50!zaxcolor}
+\colorlet{yzcolor}{yaxcolor!50!zaxcolor}
+\colorlet{xycolor}{xaxcolor!50!yaxcolor}
+% Reference frame axis styles
+\tikzstyle{axis}=[thick,-stealth,line cap=round,scale=2]
+\tikzstyle{xaxis}=[axis,xaxcolor]
+\tikzstyle{yaxis}=[axis,yaxcolor]
+\tikzstyle{zaxis}=[axis,zaxcolor]
+% Reference plane styles
+\tikzstyle{earthref}=[black!50]
+\tikzstyle{eqlabel}=[postaction={decorate,
+decoration={text along path,text={Equator},raise=-8pt,text align=center}}]
+\tikzstyle{zerolonlabel}=[postaction={decorate,
+  decoration={text along path,text={Prime meridian},reverse path,
+    raise=1pt,text align=center}}]
+\tikzstyle{tonav}=[very thin,orange,dash pattern=on 2pt off 1pt]
+\tikzstyle{navplane}=[thin,fill=orange,fill opacity=0.3,
+canvas is xy plane at z=0]
+
+\begin{document}
+
+% Macros for key quantities
+\pgfmathsetmacro{\deltaang}{45}
+\pgfmathsetmacro{\gammaang}{105}
+\pgfmathsetlengthmacro{\Re}{1.4}
+
+\tdplotsetmaincoords{65}{135}
+\begin{tikzpicture}[tdplot_main_coords, scale=2]
+  % Coordinates
+  \coordinate (O) at (0,0,0);
+  \coordinate (Ex) at (\Re,0,0);
+  \coordinate (Ey) at (0,\Re,0);
+  \coordinate (Ez) at (0,0,\Re);
+  % Location of navigation frame
+  \tdplotsetcoord{P}{\Re}{\deltaang}{\gammaang};
+  % Location of intersection between meridian passing through
+  % navigation frame and equator
+  \tdplotsetcoord{Q}{\Re}{90}{\gammaang};
+  % Equator circle
+  \draw [earthref,dashed] (O) circle (1.4);
+  % Equator front arc
+  \draw [tdplot_screen_coords,earthref,eqlabel]
+  (-1.4,0) arc (180:360:1.4 and 0.59); % can we compute second radius?
+  % Draw prime meridian arc on the xz plane
+  \tdplotsetthetaplanecoords{0}
+  \draw [tdplot_rotated_coords,earthref,zerolonlabel] (Ez) arc (0:90:1.4);
+  % Main frame
+  \draw[xaxis] (O) -- (1,0,0) node[anchor=north east]{\(x^{e}\)};
+  \draw[yaxis] (O) -- (0,1,0) node[anchor=north west]{\(y^{e}\)};
+  \draw[zaxis] (O) -- (0,0,1) node[anchor=south]{\(z^{e}\)};
+  % Draw guide lines to navigation frame
+  \draw[tonav,thin] (O) -- (P);
+  \draw[tonav] (P) -- (Pxy);
+  \draw[tonav] (O) -- (Qxy);
+  \tdplotdrawarc[tonav]{(O)}{0.5}{0}{\gammaang}%
+  {scale=0.8,anchor=south,tonav}{$\gamma$};
+  \tdplotsetthetaplanecoords{\gammaang}
+  \tdplotdrawarc[tdplot_rotated_coords,tonav]{(O)}{0.5}{0}{\deltaang}%
+  {scale=0.8,anchor=north east,tonav}{$\delta$};
+  % Meridian arc through navigation origin
+  \tdplotdrawarc[tdplot_rotated_coords,tonav]{(O)}{1.4}{0}{90}{}{};
+  % Draw navigation frame origin
+  \filldraw[fill=black!50] (P) circle (0.5pt);
+  % Earth sphere and origin
+  \shade [ball color=gray!10, opacity=0.5] (O) circle (1.4cm);
+  \shade [ball color=black] (0,0,0) circle [radius=0.03cm];
+
+  % Create rotated frame
+  \tdplotsetrotatedcoords{\gammaang}{\deltaang}{180}
+  \tdplotsetrotatedcoordsorigin{(P)}
+  % Rotated frame basis
+  \draw[tdplot_rotated_coords,xaxis,thin]
+  (0,0,0) -- (0.2,0,0) node[scale=0.8,anchor=south]{\(x^{n}\)};
+  \draw[tdplot_rotated_coords,yaxis,thin]
+  (0,0,0) -- (0,0.2,0) node[scale=0.8,anchor=south]{\(y^{n}\)};
+  \draw[tdplot_rotated_coords,zaxis,thin]
+  (0,0,0) -- (0,0,0.2) node[scale=0.8,anchor=south]{\(z^{n}\)};
+  % Navigation plane
+  \filldraw[tdplot_rotated_coords,navplane]
+  (0.15,0.15) rectangle (-0.15,-0.15);
+\end{tikzpicture}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

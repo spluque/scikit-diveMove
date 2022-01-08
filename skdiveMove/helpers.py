@@ -4,11 +4,31 @@
 
 import numpy as np
 import pandas as pd
+import xarray as xr
 from skdiveMove.core import robjs, cv, pandas2ri
 
-__all__ = ["_get_dive_indices", "_add_xr_attr",
+__all__ = ["_load_dataset", "_get_dive_indices", "_add_xr_attr",
            "get_var_sampling_interval", "_cut_dive",
            "_one_dive_stats", "_speed_stats", "rle_key"]
+
+
+def _load_dataset(filename_or_obj, **kwargs):
+    """Private function to load Dataset object from file name or object
+
+    Parameters
+    ----------
+    filename_or_obj : str, Path or xarray.backends.*DataStore
+        String indicating the file where the data comes from.
+    **kwargs :
+        Arguments passed to `xarray.load_dataset`.
+
+    Returns
+    -------
+    dataset : Dataset
+        The output Dataset.
+
+    """
+    return(xr.load_dataset(filename_or_obj, **kwargs))
 
 
 def _get_dive_indices(indices, diveNo):
@@ -35,7 +55,7 @@ def _add_xr_attr(x, attr, val):
         Attribute value
     """
     if attr in x.attrs:
-        x.attrs[attr] += ",{}".format(val)
+        x.attrs[attr] += "{}".format(val)
     else:
         x.attrs["history"] = "{}".format(val)
 
