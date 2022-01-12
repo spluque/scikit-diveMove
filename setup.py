@@ -18,7 +18,7 @@ def get_requirements():
 
 
 REQUIREMENTS = get_requirements()
-DEV_REQUIRES = ["ipython", "jupyter", "jupyter-sphinx", "mistune<2.0"]
+DEV_REQUIRES = ["ipython", "jupyter", "jupyter-sphinx"]
 PACKAGES = ["skdiveMove",
             "skdiveMove.bouts",
             "skdiveMove.imutools",
@@ -27,7 +27,7 @@ PACKAGES = ["skdiveMove",
 setup(
     name="scikit-diveMove",
     version=__version__,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     packages=PACKAGES,
     include_package_data=True,
     # Below is redundant but safe

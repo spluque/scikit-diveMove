@@ -389,26 +389,63 @@ class IMU2Body(IMUBase):
 
     Examples
     --------
-    Construct IMU2Body from two accessible DataFrame objects
+    Construct IMU2Body from NetCDF file with IMU signals, and
+    comma-separated file with timestamps for surface periods:
 
     >>> import pkg_resources as pkg_rsrc
     >>> import os.path as osp
     >>> import skdiveMove.imutools as imutools
-    >>> icdf = (pkg_rsrc.
-    ...         resource_filename("skdiveMove",
-    ...                           osp.join("tests", "data", "gertrude",
-    ...                                    "gert_imu_frame.nc")))
-    >>> icsv = (pkg_rsrc.
-    ...         resource_filename("skdiveMove",
-    ...                           osp.join("tests", "data", "gertrude",
-    ...                                    "gert_long_srfc.csv")))
+    >>> icdf = (pkg_rsrc
+    ...         .resource_filename("skdiveMove",
+    ...                            osp.join("tests", "data", "gertrude",
+    ...                                     "gert_imu_frame.nc")))
+    >>> icsv = (pkg_rsrc
+    ...         .resource_filename("skdiveMove",
+    ...                            osp.join("tests", "data", "gertrude",
+    ...                                     "gert_long_srfc.csv")))
 
     Apply Savitzky-Golay filter to acceleration to use as source data for
     Singular Value Decomposition.  The required parameters for the filter
     are (in a tuple): 1) window length and 2) polynomial order, in that
     order.
 
-    >>> imu = imutools.IMU2Body.from_csv_nc(icsv, icdf, savgol_parms=(99, 2))
+    >>> imu = imutools.IMU2Body.from_csv_nc(icsv, icdf,
+    ...                                     savgol_parms=(99, 2))
+    >>> print(imu)  # doctest: +ELLIPSIS
+    IMU -- Class IMU2Body object
+    Source File          ...
+    IMU: <xarray.Dataset>
+    Dimensions:           ...
+    Coordinates:
+      * timestamp         (timestamp) datetime64[ns] ...
+      * accelerometer     (accelerometer) object 'x' 'y' 'z'
+      * magnetometer      (magnetometer) object 'x' 'y' 'z'
+      * gyroscope         (gyroscope) object 'x' 'y' 'z'
+    Data variables:
+        depth             (timestamp) float64 ...
+        acceleration      (timestamp, accelerometer) float64 ...
+        magnetic_density  (timestamp, magnetometer) float64 ...
+        angular_velocity  (timestamp, gyroscope) float64 ...
+    Attributes:...
+        animal_id:              Unknown
+        animal_species_common:  Humpback whale
+        animal_species_name:    Megaptera novaeangliae
+        deployment_id:          gert01
+        source_files:           gertrude_2017.csv,...
+    Surface segment duration summary:
+    count                           68
+    mean     0 days 00:02:01.764705882
+    std      0 days 00:02:15.182918382
+    min                0 days 00:00:11
+    25%         0 days 00:00:29.750000
+    50%                0 days 00:00:59
+    75%         0 days 00:02:26.250000
+    max                0 days 00:08:43
+    dtype: object
+
+
+    See :doc:`demo_imu2body` demo for an extended example of typical usage
+    of the methods in this class.
 
     """
 
@@ -635,7 +672,8 @@ class IMU2Body(IMUBase):
         plot : bool, optional
             Whether to generate a plot of the estimate
         **kwargs : optional keyword arguments
-            Arguments passed to :meth:`scatterIMU_svd`.
+            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and
+            ``animate`` are taken.
 
         Returns
         -------
@@ -701,6 +739,9 @@ class IMU2Body(IMUBase):
             animate_file = kwargs.pop("animate_file",
                                       ("imu2whale_{}.mp4"
                                        .format(surface_idx_str)))
+            normalize = kwargs.pop("normalize", False)
+            if normalize:
+                logger.info("Vectors are already normalized")
             scatterIMU_svd(sfci_acc_ctr, (uu, ss, vv), Rfull, title=title,
                            animate=animate, animate_file=animate_file,
                            **kwargs)
@@ -1102,7 +1143,8 @@ class _TagTools(IMU2Body):
         plot : bool, optional
             Whether to generate a plot of the estimate
         **kwargs : optional keyword arguments
-            Arguments passed to `_scatterIMU_svd`.
+            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and
+            ``animate`` are taken.
 
         Returns
         -------

@@ -26,6 +26,11 @@ _ICDF1 = (pkg_rsrc
                              osp.join("tests", "data", "gertrude",
                                       "magnt_accel_calib.nc")))
 
+_ICDF2 = (pkg_rsrc
+          .resource_filename("skdiveMove",
+                             osp.join("tests", "data", "gertrude",
+                                      "gert_imu_frame.nc")))
+
 
 class TestUtils(ut.TestCase):
     """Test `allan` functions
@@ -50,8 +55,13 @@ class TestUtils(ut.TestCase):
 
         # Ellipsoid data
         magnt_accel_xr = xr.load_dataset(_ICDF1)
-        self.magnt_uncalib = magnt_accel_xr["magnetic_density"].values
-        self.accel_uncalib = magnt_accel_xr["acceleration"].values
+        self.magnt_uncalib = magnt_accel_xr["magnetic_density"].to_numpy()
+        self.accel_uncalib = magnt_accel_xr["acceleration"].to_numpy()
+
+    def test_IMUBase(self):
+        imu = skimu.IMUBase.read_netcdf(_ICDF2, has_depth=True)
+        self.assertIsInstance(imu, skimu.IMUBase)
+        self.assertIn("Class IMUBase object", imu.__str__())
 
     def test_get_devs(self):
         imu = self.imu
@@ -116,6 +126,17 @@ class TestUtils(ut.TestCase):
         # Default Madgwick, uses default AHRS gain parameter
         imu.compute_orientation()
         vel, pos = imu.dead_reckon()
+        npt.assert_equal(vel.shape, pos.shape)
+
+        # Test with depth using _ICDF2, but resample for speed
+        icdf = (xr.load_dataset(_ICDF2)
+                .resample(timestamp="5s").interpolate("linear")
+                .bfill("timestamp"))
+        for var in icdf.data_vars:
+            icdf[var].attrs["sampling_rate"] = 1 / 5
+        imu = skimu.IMUBase(icdf, has_depth=True, imu_filename=_ICDF2)
+        imu.compute_orientation()
+        vel, pos = imu.dead_reckon(Wn=0.09)  # 0 < Wn < (fs / 2)
         npt.assert_equal(vel.shape, pos.shape)
 
 

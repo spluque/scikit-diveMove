@@ -53,9 +53,9 @@ class IMUBase:
     >>> import xarray as xr
     >>> import skdiveMove.imutools as imutools
     >>> icdf = (pkg_rsrc
-    ...            .resource_filename("skdiveMove",
-    ...                               osp.join("tests", "data",
-    ...         		               "samsung_galaxy_s5.nc")))
+    ...         .resource_filename("skdiveMove",
+    ...                            osp.join("tests", "data",
+    ...                                     "samsung_galaxy_s5.nc")))
 
     The angular velocity and magnetic density arrays have two sets of
     measurements: output and measured, which, along with the sensor axis
@@ -70,6 +70,9 @@ class IMUBase:
     >>> imu = imutools.IMUBase(s5ds.sel(gyroscope="output",
     ...                                 magnetometer="output"),
     ...                        imu_filename=icdf)
+
+    See :doc:`demo_allan` demo for an extended example of typical usage of
+    the methods in this class.
 
     """
     def __init__(self, dataset,
@@ -121,8 +124,8 @@ class IMUBase:
                     has_depth=False, **kwargs):
         """Instantiate object by loading Dataset from NetCDF file
 
-        Provided all ``DataArray``s in the NetCDF file have the same
-        dimensions (N, 3), then this is an efficient way to instantiate.
+        Provided all ``DataArray`` in the NetCDF file have the same
+        dimensions (N, 3), this is an efficient way to instantiate.
 
         Parameters
         ----------
@@ -159,12 +162,9 @@ class IMUBase:
         objcls = ("IMU -- Class {} object\n"
                   .format(self.__class__.__name__))
         src = "{0:<20} {1}\n".format("Source File", self.imu_file)
-        attr_list = "Attributes:\n"
-        for key, val in sorted(x.attrs.items()):
-            attr_list += "{0:>35}: {1}\n".format(key, val)
-        attr_list = attr_list.rstrip("\n")
+        imu_desc = "IMU: {}".format(x.__str__())
 
-        return(objcls + src + attr_list)
+        return(objcls + src + imu_desc)
 
     def _allan_deviation(self, sensor, taus):
         """Compute Allan deviation for all axes of a given sensor

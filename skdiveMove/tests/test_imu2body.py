@@ -4,12 +4,14 @@
 
 import pkg_resources as pkg_rsrc
 import os.path as osp
+import tempfile
 import unittest as ut
 import numpy as np
 import numpy.testing as npt
+import skdiveMove.imutools as skimu
 from skdiveMove.imutools import vector as skvector
 from skdiveMove.imutools import imu2body as i2b
-from skdiveMove.imutools.imu import _ACCEL_NAME, _OMEGA_NAME
+from skdiveMove.imutools.imu import _ACCEL_NAME, _OMEGA_NAME, _MAGNT_NAME
 
 
 _ICDF = (pkg_rsrc
@@ -28,7 +30,7 @@ class TestIMU2Body(ut.TestCase):
     """
     def setUp(self):
         # An instance with good accelerometer filtering
-        self.imu2body = (i2b.IMU2Body
+        self.imu2body = (skimu.IMU2Body
                          .from_csv_nc(_ICSV, imu_nc=_ICDF,
                                       endasc_col=0,
                                       beg_surface_col=5,
@@ -172,6 +174,14 @@ class TestIMU2Body(ut.TestCase):
         ax = imu2body.scatterIMU3D(idx, _ACCEL_NAME, animate=False,
                                    smoothed_accel=True)
         self.assertIsInstance(ax, i2b.plt.Axes)
+        # Test plotting and animation
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            anim_file = osp.join(tmpdirname, "gert_imu_{}.mp4".format(idx))
+            ax = imu2body.scatterIMU3D(idx, _MAGNT_NAME,
+                                       normalize=False, animate=True,
+                                       animate_file=anim_file)
+            self.assertIsInstance(ax, i2b.plt.Axes)
+            assert osp.exists(anim_file)
 
     def test_tsplotIMU_depth(self):
         imu2body = self.imu2body
@@ -186,6 +196,26 @@ class TestIMU2Body(ut.TestCase):
         axs = imu2body.tsplotIMU_depth(_OMEGA_NAME)
         for ax in axs:
             self.assertIsInstance(ax, i2b.plt.Axes)
+
+    def test_scatterIMU_svd(self):
+        imu2body = self.imu2body
+        idx = imu2body.surface_details.index[33]  # choose surface period
+        acc_imu = imu2body.get_surface_vectors(idx, _ACCEL_NAME,
+                                               smoothed_accel=True)
+        Rctr2i, svd = imu2body.get_orientation(idx, plot=False,
+                                               animate=False)
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            anim_file = osp.join(tmpdirname, "gert_imu_{}.mp4".format(idx))
+            ax = skimu.scatterIMU_svd(acc_imu, svd, Rctr2i, normalize=True,
+                                      center=True, animate=True,
+                                      animate_file=anim_file)
+            self.assertIsInstance(ax, i2b.plt.Axes)
+            assert osp.exists(anim_file)
+            # Test the method
+            Rctr2i, svd = imu2body.get_orientation(idx, plot=True,
+                                                   animate=True,
+                                                   animate_file=anim_file)
 
 
 class TestTagTools(ut.TestCase):
@@ -225,6 +255,12 @@ class TestTagTools(ut.TestCase):
         # Plotting but not animating
         Rctr2i, svd = imu2body.get_orientation(idx, plot=True,
                                                animate=False)
+        # Plotting with animation
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            anim_file = osp.join(tmpdirname, "gert_imu_{}.mp4".format(idx))
+            Rctr2i, svd = imu2body.get_orientation(idx, plot=True,
+                                                   animate=True,
+                                                   animate_file=anim_file)
 
 
 if __name__ == '__main__':

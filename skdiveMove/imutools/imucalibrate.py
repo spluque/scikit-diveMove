@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import scipy.signal as signal
 import xarray as xr
+from skdiveMove.tdrsource import _load_dataset
 from .imu import (IMUBase,
                   _ACCEL_NAME, _OMEGA_NAME, _MAGNT_NAME, _DEPTH_NAMES)
 
@@ -25,7 +26,33 @@ logger.addHandler(logging.NullHandler())
 
 
 class IMUcalibrate(IMUBase):
-    """Calibration framework for IMU measurements
+    r"""Calibration framework for IMU measurements
+
+    Measurements from most IMU sensors are influenced by temperature, among
+    other artifacts.  The IMUcalibrate class implements the following
+    procedure to remove the effects of temperature from IMU signals:
+
+    - For each axis, fit a piecewise or simple linear regression of
+      measured (lowpass-filtered) data against temperature.
+    - Compute predicted signal from the model.
+    - Select a reference temperature :math:`T_{\alpha}` to standardize all
+      measurements at.
+    - The standardized measurement (:math:`x_\sigma`) at :math:`T_{\alpha}`
+      is calculated as:
+
+      .. math::
+         :label: 1
+
+         x_\sigma = x - (\hat{x} - \hat{x}_{\alpha})
+
+      where :math:`\hat{x}` is the value predicted from the model at the
+      measured temperature, and :math:`\hat{x}_{\alpha}` is the predicted
+      value at :math:`T_{\alpha}`.
+
+    The models fit to signals from a *motionless* (i.e. experimental) IMU
+    device in the first step can subsequently be used to remove or minimize
+    temperature effects from an IMU device measuring motions of interest,
+    provided the temperature is within the range observed in experiments.
 
     In addition to attributes in :class:`IMUBase`, ``IMUcalibrate`` adds
     the attributes listed below.
@@ -36,33 +63,84 @@ class IMUcalibrate(IMUBase):
         List of slices with the beginning and ending timestamps defining
         periods in ``x_calib`` where valid calibration data are available.
         Periods are assumed to be ordered chronologically.
-    obs_l : list
-        List of :class:`xarray.Dataset`, where each one is a subset of the
-        input :class:`Dataset`, bounded by the slices in the `periods`
-        attribute.
     models_l : list
-        List of tuples as long as there are periods, with tuple elements:
-
-        - Dictionary with regression model objects for each sensor
-          axis.
-        - DataFrame with hierarchical column index with sensor axis
-          label at the first level.  The following columns are in the
-          second level:
-
-          - temperature
-          - var_name
-          - var_name_pred
-          - var_name_temp_refC
-          - var_name_adj
-
+        List of dictionaries as long as there are periods, with each
+        element corresponding to a sensor, in turn containing another
+        dictionary with each element corresponding to each sensor axis.
     axis_order : list
         List of characters specifying which axis ``x``, ``y``, or ``z`` was
         pointing in the same direction as gravity in each period in
         ``periods``.
+    time_name : str
+        Name of the dataset coordinate representing a timestamp consistent
+        with timestamps in ``periods``.
+
+    Examples
+    --------
+    Construct IMUcalibrate from NetCDF file with samples of IMU signals and
+    a list with begining and ending timestamps for experimental periods:
+
+    >>> import pkg_resources as pkg_rsrc
+    >>> import os.path as osp
+    >>> import skdiveMove.imutools as imutools
+    >>> icdf = (pkg_rsrc
+    ...         .resource_filename("skdiveMove",
+    ...                            osp.join("tests", "data",
+    ...                                     "cats_temperature_calib.nc")))
+    >>> pers = [slice("2021-09-20T09:00:00", "2021-09-21T10:33:00"),
+    ...         slice("2021-09-21T10:40:00", "2021-09-22T11:55:00"),
+    ...         slice("2021-09-22T12:14:00", "2021-09-23T11:19:00")]
+    >>> imucal = (imutools.IMUcalibrate
+    ...           .read_netcdf(icdf, periods=pers,
+    ...                        axis_order=list("zxy"),
+    ...                        time_name="timestamp_utc"))
+    >>> print(imucal)  # doctest: +ELLIPSIS
+    IMU -- Class IMUcalibrate object
+    Source File          None
+    IMU: <xarray.Dataset>
+    Dimensions:           (timestamp_utc: 268081, axis: 3)
+    Coordinates:
+      * axis              (axis) object 'x' 'y' 'z'
+      * timestamp_utc     (timestamp_utc) datetime64[ns] ...
+    Data variables:
+        acceleration      (timestamp_utc, axis) float64 ...
+        angular_velocity  (timestamp_utc, axis) float64 ...
+        magnetic_density  (timestamp_utc, axis) float64 ...
+        depth             (timestamp_utc) float64 ...
+        temperature       (timestamp_utc) float64 ...
+    Attributes:...
+        history:  Resampled from 20 Hz to 1 Hz
+    Periods:
+    0:['2021-09-20T09:00:00', '2021-09-21T10:33:00']
+    1:['2021-09-21T10:40:00', '2021-09-22T11:55:00']
+    2:['2021-09-22T12:14:00', '2021-09-23T11:19:00']
+
+    Plot signals from a given period:
+
+    >>> fig, axs, axs_temp = imucal.plot_experiment(0, var="acceleration")
+
+    Build temperature models for a given variable and chosen
+    :math:`T_{\alpha}`, without low-pass filtering the input signals:
+
+    >>> fs = 1.0
+    >>> acc_cal = imucal.build_tmodels("acceleration", T_alpha=8,
+    ...                                use_axis_order=True,
+    ...                                 win_len=int(2 * 60 * fs) - 1)
+
+    Plot model of IMU variable against temperature:
+
+    >>> fig, axs = imucal.plot_var_model("acceleration",
+    ...                                  use_axis_order=True)
+
+
+    Notes
+    -----
+    This class redefines :meth:`IMUBase.read_netcdf`.
 
     """
 
-    def __init__(self, x_calib, periods, axis_order=list("xyz"), **kwargs):
+    def __init__(self, x_calib, periods, axis_order=list("xyz"),
+                 time_name="timestamp", **kwargs):
         """Set up attributes required for calibration
 
         Parameters
@@ -79,35 +157,75 @@ class IMUcalibrate(IMUBase):
             List of characters specifying which axis ``x``, ``y``, or ``z``
             was pointing in the same direction as gravity in each period in
             ``periods``.
+        time_name : str
+            Name of the dataset coordinate representing a timestamp
+            consistent with timestamps in ``periods``.
         **kwargs : optional keyword arguments
             Arguments passed to the `IMUBase.__init__` for instantiation.
 
         """
         super(IMUcalibrate, self).__init__(x_calib, **kwargs)
         self.periods = periods
-        obs_l = []
         models_l = []
         for period in periods:
-            obs_l.append(x_calib.loc[dict(timestamp_utc=period)])
             models_1d = {i: dict() for i in _MONOAXIAL_VARS}
             models_2d = dict.fromkeys(_TRIAXIAL_VARS)
             for k in models_2d:
                 models_2d[k] = dict.fromkeys(axis_order)
             models_l.append(dict(**models_1d, **models_2d))
 
-        self.obs_l = obs_l
+        self.time_name = time_name
         self.models_l = models_l
         self.axis_order = axis_order
+        # Private attribute collecting DataArrays with standardized data
+        self._stdda_l = []
 
-    def savgol_filter(self, var, period, win_len, polyorder=1):
+    @classmethod
+    def read_netcdf(cls, imu_nc, load_dataset_kwargs=dict(), **kwargs):
+        """Create IMUcalibrate from NetCDF file and list of slices
+
+        This method redefines :meth:`IMUBase.read_netcdf`.
+
+        Parameters
+        ----------
+        imu_nc : str
+            Path to NetCDF file.
+        load_dataset_kwargs : dict, optional
+            Dictionary of optional keyword arguments passed to
+            :func:`xarray.load_dataset`.
+        **kwargs : optional keyword arguments
+            Additional arguments passed to :meth:`IMUcalibrate.__init__`
+            method, except ``has_depth`` or ``imu_filename``.  The input
+            ``Dataset`` is assumed to have a depth ``DataArray``.
+
+        Returns
+        -------
+        out :
+
+        """
+        imu = _load_dataset(imu_nc, **load_dataset_kwargs)
+        ocls = cls(imu, **kwargs)
+
+        return ocls
+
+    def __str__(self):
+        super_str = super(IMUcalibrate, self).__str__()
+        pers_ends = []
+        for per in self.periods:
+            pers_ends.append([per.start, per.stop])
+        msg = ("\n".join("{}:{}".format(i, per)
+                         for i, per in enumerate(pers_ends)))
+        return(super_str + "\nPeriods:\n{}".format(msg))
+
+    def savgol_filter(self, var, period_idx, win_len, polyorder=1):
         """Apply Savitzky-Golay filter on tri-axial IMU signals
 
         Parameters
         ----------
         var : str
             Name of the variable in ``x`` with tri-axial signals.
-        period : int
-            Period to plot (zero-based).
+        period_idx : int
+            Index of period to plot (zero-based).
         win_len : int
             Window length for the low pass filter.
         polyorder : int, optional
@@ -120,7 +238,7 @@ class IMUcalibrate(IMUBase):
             dimensions, and updated attributes.
 
         """
-        darray = self.obs_l[period][var]
+        darray = self.subset_imu(period_idx)[var]
         var_df = darray.to_dataframe().unstack()
         var_sg = signal.savgol_filter(var_df, window_length=win_len,
                                       polyorder=polyorder, axis=0)
@@ -200,7 +318,7 @@ class IMUcalibrate(IMUBase):
 
         Notes
         -----
-        A new DataArray with signal standardized at :math:`T_alpha` is
+        A new DataArray with signal standardized at :math:`T_{\alpha}` is
         added to the instance Dataset.  These signals correspond to the
         lowpass-filtered form of the input used to build the models.
 
@@ -211,7 +329,8 @@ class IMUcalibrate(IMUBase):
         """
         # Iterate through periods
         per_l = []              # output list as long as periods
-        for idx, per in enumerate(self.obs_l):
+        for idx in range(len(self.periods)):
+            per = self.subset_imu(idx)
             # Subset the requested variable, smoothing if necessary
             if filter_sig:
                 per_var = self.savgol_filter(var, idx, **kwargs)
@@ -309,18 +428,20 @@ class IMUcalibrate(IMUBase):
                                    .strftime("%Y-%m-%d")))
             std_data.attrs["history"] = (std_data.attrs["history"] +
                                          new_history)
-            # Update instance obs_l attribute
-            self.obs_l[idx] = xr.merge([per, std_data])
+            # Update instance _std_da_l attribute with DataArray having an
+            # additional dimension for the period index
+            std_data = std_data.expand_dims(period=[idx])
+            self._stdda_l.append(std_data)
 
         return per_l
 
-    def plot_experiment(self, period, var, units_label=None, **kwargs):
+    def plot_experiment(self, period_idx, var, units_label=None, **kwargs):
         """Plot experimental IMU
 
         Parameters
         ----------
-        period : int
-            Period to plot (zero-based).
+        period_idx : int
+            Index of period to plot (zero-based).
         var : str
             Name of the variable in with tri-axial data.
         units_label : str, optional
@@ -346,8 +467,9 @@ class IMUcalibrate(IMUBase):
         plot_standardized
 
         """
-        per_var = self.obs_l[period][var]
-        per_temp = self.obs_l[period]["temperature"]
+        per_da = self.subset_imu(period_idx)
+        per_var = per_da[var]
+        per_temp = per_da["temperature"]
 
         def _plot(var, temp, ax):
             """Plot variable and temperature"""
@@ -465,16 +587,14 @@ class IMUcalibrate(IMUBase):
             ax.plot(xpred, ypred_u, color="k", linestyle="dashed",
                     linewidth=1, alpha=0.5)
 
+        per0 = self.subset_imu(0)
         if units_label is None:
-            units_label = self.obs_l[0][var].attrs["units_label"]
-        xlabel = "{} [{}]".format(self.obs_l[0]["temperature"]
-                                  .attrs["full_name"],
-                                  self.obs_l[0]["temperature"]
-                                  .attrs["units_label"])
-        ylabel_pre = "{} [{}]".format(self.obs_l[0][var]
-                                      .attrs["full_name"],
+            units_label = per0[var].attrs["units_label"]
+        xlabel = "{} [{}]".format(per0["temperature"].attrs["full_name"],
+                                  per0["temperature"].attrs["units_label"])
+        ylabel_pre = "{} [{}]".format(per0[var].attrs["full_name"],
                                       units_label)
-        nperiods = len(self.obs_l)
+        nperiods = len(self.periods)
         if axs is not None:
             fig = plt.gcf()
 
@@ -483,8 +603,9 @@ class IMUcalibrate(IMUBase):
                 fig, axs = plt.subplots(1, nperiods, **kwargs)
 
             for per_i in range(nperiods):
-                per_var = self.obs_l[per_i][var]
-                per_temp = self.obs_l[per_i]["temperature"]
+                peri = self.subset_imu(per_i)
+                per_var = peri[var]
+                per_temp = peri["temperature"]
                 xdata = per_temp.to_numpy()
                 ydata = per_var.to_numpy()
                 # Linear model
@@ -501,8 +622,9 @@ class IMUcalibrate(IMUBase):
             axs[-1].set_xlabel(xlabel)
             for i, axis in enumerate(_AXIS_NAMES):
                 idx = self.axis_order.index(axis)
-                xdata = self.obs_l[idx]["temperature"].to_numpy()
-                ydata = self.obs_l[idx][var].sel(axis=axis).to_numpy()
+                peri = self.subset_imu(idx)
+                xdata = peri["temperature"].to_numpy()
+                ydata = peri[var].sel(axis=axis).to_numpy()
                 # Linear model
                 model_fit = self.get_model(var, period=idx, axis=axis)
                 ax_i = axs[i]
@@ -515,11 +637,11 @@ class IMUcalibrate(IMUBase):
             if axs is None:
                 fig, axs = plt.subplots(3, nperiods, **kwargs)
             for vert_i in range(nperiods):
-                xdata = self.obs_l[vert_i]["temperature"].to_numpy()
+                peri = self.subset_imu(vert_i)
+                xdata = peri["temperature"].to_numpy()
                 axs_xyz = axs[:, vert_i]
                 for i, axis in enumerate(_AXIS_NAMES):
-                    ydata = (self.obs_l[vert_i][var]
-                             .sel(axis=axis).to_numpy())
+                    ydata = (peri[var].sel(axis=axis).to_numpy())
                     # Linear model
                     model_fit = self.get_model(var, period=vert_i,
                                                axis=axis)
@@ -620,24 +742,27 @@ class IMUcalibrate(IMUBase):
 
             return ax_temp
 
+        per0 = self.subset_imu(0)
         if units_label is None:
-            units_label = self.obs_l[0][var].attrs["units_label"]
-        ylabel_pre = "{} [{}]".format(self.obs_l[0][var]
-                                      .attrs["full_name"],
+            units_label = per0[var].attrs["units_label"]
+        ylabel_pre = "{} [{}]".format(per0[var].attrs["full_name"],
                                       units_label)
         var_std = var + "_std"
-        nperiods = len(self.obs_l)
+        nperiods = len(self.periods)
         if axs is not None:
             fig = plt.gcf()
+
+        std_ds = xr.merge(self._stdda_l)
 
         if var in _MONOAXIAL_VARS:
             if axs is None:
                 fig, axs = plt.subplots(1, nperiods, **kwargs)
             axs_temp = np.empty_like(axs)
             for per_i in range(nperiods):
-                per_var = self.obs_l[per_i][var]
-                per_std = self.obs_l[per_i][var_std]
-                per_temp = self.obs_l[per_i]["temperature"]
+                peri = self.subset_imu(per_i)
+                per_var = peri[var]
+                per_std = std_ds.loc[dict(period=per_i)][var_std]
+                per_temp = peri["temperature"]
                 ax_i = axs[per_i]
                 ax_temp = _plot_signal(per_var, ystd=per_std,
                                        temp=per_temp, ax=ax_i)
@@ -655,9 +780,11 @@ class IMUcalibrate(IMUBase):
             axs_temp = np.empty_like(axs)
             for i, axis in enumerate(_AXIS_NAMES):
                 idx = self.axis_order.index(axis)
-                per_var = self.obs_l[idx][var].sel(axis=axis, drop=True)
-                per_std = self.obs_l[idx][var_std].sel(axis=axis, drop=True)
-                per_temp = self.obs_l[idx]["temperature"]
+                peri = self.subset_imu(idx)
+                per_var = peri[var].sel(axis=axis, drop=True)
+                per_std = (std_ds.loc[dict(period=idx)][var_std]
+                           .sel(axis=axis, drop=True))
+                per_temp = peri["temperature"]
                 ax_i = axs[i]
                 if axis == "x":
                     neg_ref = True
@@ -682,11 +809,11 @@ class IMUcalibrate(IMUBase):
             for vert_i in range(nperiods):
                 axs_xyz = axs[:, vert_i]
                 for i, axis in enumerate(_AXIS_NAMES):
-                    per_var = (self.obs_l[vert_i][var]
+                    peri = self.subset_imu(vert_i)
+                    per_var = peri[var].sel(axis=axis, drop=True)
+                    per_std = (std_ds.loc[dict(period=vert_i)][var_std]
                                .sel(axis=axis, drop=True))
-                    per_std = (self.obs_l[vert_i][var_std]
-                               .sel(axis=axis, drop=True))
-                    per_temp = self.obs_l[vert_i]["temperature"]
+                    per_temp = peri["temperature"]
                     ax_i = axs_xyz[i]
                     ax_temp = _plot_signal(per_var, ystd=per_std,
                                            temp=per_temp, ax=ax_i)
@@ -780,8 +907,8 @@ class IMUcalibrate(IMUBase):
         """Apply fitted temperature compensation model to Dataset
 
         The selected models for tri-axial sensor data are applied to input
-        Dataset, standardizing signals at :math:`T_{alpha}`, optionally
-        subtracting the offset at :math:`T_{alpha}`.
+        Dataset, standardizing signals at :math:`T_{\alpha}`, optionally
+        subtracting the offset at :math:`T_{\alpha}`.
 
         Parameters
         ----------
@@ -879,3 +1006,22 @@ class IMUcalibrate(IMUBase):
                                        new_history)
 
         return darray_new
+
+    def subset_imu(self, period_idx):
+        """Subset IMU dataset given a period index
+
+        The dataset is subset using the slice corresponding to the period
+        index.
+
+        Parameters
+        ----------
+        period_idx : int
+            Index of the experiment period to subset.
+
+        Returns
+        -------
+        xarray.Dataset
+
+        """
+        time_name = self.time_name
+        return self.imu.loc[{time_name: self.periods[period_idx]}]

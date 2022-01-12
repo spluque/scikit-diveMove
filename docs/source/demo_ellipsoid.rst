@@ -1,3 +1,5 @@
+.. _demo_ellipsoid-label:
+
 ==============================================
  Ellipsoid modelling for calibration purposes
 ==============================================

@@ -1,3 +1,5 @@
+.. _demo_imu2body-label:
+
 =========================================
  IMU-frame to body-frame transformations
 =========================================

@@ -1,3 +1,5 @@
+.. _demo_allan-label:
+
 ==========================
  Allan deviation analysis
 ==========================
