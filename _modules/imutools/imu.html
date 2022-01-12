@@ -103,9 +103,9 @@
 <span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
 <span class="sd">    &gt;&gt;&gt; import skdiveMove.imutools as imutools</span>
 <span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc</span>
-<span class="sd">    ...            .resource_filename(&quot;skdiveMove&quot;,</span>
-<span class="sd">    ...                               osp.join(&quot;tests&quot;, &quot;data&quot;,</span>
-<span class="sd">    ...         		               &quot;samsung_galaxy_s5.nc&quot;)))</span>
+<span class="sd">    ...         .resource_filename(&quot;skdiveMove&quot;,</span>
+<span class="sd">    ...                            osp.join(&quot;tests&quot;, &quot;data&quot;,</span>
+<span class="sd">    ...                                     &quot;samsung_galaxy_s5.nc&quot;)))</span>
 
 <span class="sd">    The angular velocity and magnetic density arrays have two sets of</span>
 <span class="sd">    measurements: output and measured, which, along with the sensor axis</span>
@@ -171,8 +171,8 @@
                     <span class="n">has_depth</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate object by loading Dataset from NetCDF file</span>
 
-<span class="sd">        Provided all ``DataArray``s in the NetCDF file have the same</span>
-<span class="sd">        dimensions (N, 3), then this is an efficient way to instantiate.</span>
+<span class="sd">        Provided all ``DataArray`` in the NetCDF file have the same</span>
+<span class="sd">        dimensions (N, 3), this is an efficient way to instantiate.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -209,12 +209,9 @@
         <span class="n">objcls</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;IMU -- Class </span><span class="si">{}</span><span class="s2"> object</span><span class="se">\n</span><span class="s2">&quot;</span>
                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
         <span class="n">src</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Source File&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu_file</span><span class="p">)</span>
-        <span class="n">attr_list</span> <span class="o">=</span> <span class="s2">&quot;Attributes:</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-            <span class="n">attr_list</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{0:&gt;35}</span><span class="s2">: </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-        <span class="n">attr_list</span> <span class="o">=</span> <span class="n">attr_list</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">imu_desc</span> <span class="o">=</span> <span class="s2">&quot;IMU: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="fm">__str__</span><span class="p">())</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">objcls</span> <span class="o">+</span> <span class="n">src</span> <span class="o">+</span> <span class="n">attr_list</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">objcls</span> <span class="o">+</span> <span class="n">src</span> <span class="o">+</span> <span class="n">imu_desc</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_allan_deviation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">taus</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute Allan deviation for all axes of a given sensor</span>

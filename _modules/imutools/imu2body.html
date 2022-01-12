@@ -444,14 +444,14 @@
 <span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
 <span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
 <span class="sd">    &gt;&gt;&gt; import skdiveMove.imutools as imutools</span>
-<span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc.</span>
-<span class="sd">    ...         resource_filename(&quot;skdiveMove&quot;,</span>
-<span class="sd">    ...                           osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
-<span class="sd">    ...                                    &quot;gert_imu_frame.nc&quot;)))</span>
-<span class="sd">    &gt;&gt;&gt; icsv = (pkg_rsrc.</span>
-<span class="sd">    ...         resource_filename(&quot;skdiveMove&quot;,</span>
-<span class="sd">    ...                           osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
-<span class="sd">    ...                                    &quot;gert_long_srfc.csv&quot;)))</span>
+<span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc</span>
+<span class="sd">    ...         .resource_filename(&quot;skdiveMove&quot;,</span>
+<span class="sd">    ...                            osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
+<span class="sd">    ...                                     &quot;gert_imu_frame.nc&quot;)))</span>
+<span class="sd">    &gt;&gt;&gt; icsv = (pkg_rsrc</span>
+<span class="sd">    ...         .resource_filename(&quot;skdiveMove&quot;,</span>
+<span class="sd">    ...                            osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
+<span class="sd">    ...                                     &quot;gert_long_srfc.csv&quot;)))</span>
 
 <span class="sd">    Apply Savitzky-Golay filter to acceleration to use as source data for</span>
 <span class="sd">    Singular Value Decomposition.  The required parameters for the filter</span>

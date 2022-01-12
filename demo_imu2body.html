@@ -127,12 +127,24 @@ front-left-up frame) data:</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>IMU -- Class IMU2Body object
 Source File          /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/skdiveMove/tests/data/gertrude/gert_imu_frame.nc
+IMU: &lt;xarray.Dataset&gt;
+Dimensions:           (timestamp: 171135, accelerometer: 3, magnetometer: 3, gyroscope: 3)
+Coordinates:
+  * timestamp         (timestamp) datetime64[ns] 2017-08-10T10:07:14 ... 2017...
+  * accelerometer     (accelerometer) object &#39;x&#39; &#39;y&#39; &#39;z&#39;
+  * magnetometer      (magnetometer) object &#39;x&#39; &#39;y&#39; &#39;z&#39;
+  * gyroscope         (gyroscope) object &#39;x&#39; &#39;y&#39; &#39;z&#39;
+Data variables:
+    depth             (timestamp) float64 0.0 0.0 0.0 0.0 ... 2.5 2.329 2.646
+    acceleration      (timestamp, accelerometer) float64 0.02165 ... 0.9328
+    magnetic_density  (timestamp, magnetometer) float64 2.259 -5.962 ... -51.01
+    angular_velocity  (timestamp, gyroscope) float64 0.7571 -0.05171 ... -0.3873
 Attributes:
-                          animal_id: Unknown
-              animal_species_common: Humpback whale
-                animal_species_name: Megaptera novaeangliae
-                      deployment_id: gert01
-                       source_files: gertrude_2017.csv,gertrude_2017_long_surfacings.csv
+    animal_id:              Unknown
+    animal_species_common:  Humpback whale
+    animal_species_name:    Megaptera novaeangliae
+    deployment_id:          gert01
+    source_files:           gertrude_2017.csv,gertrude_2017_long_surfacings.csv
 Surface segment duration summary:
 count                           68
 mean     0 days 00:02:01.764705882
