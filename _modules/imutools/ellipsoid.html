@@ -1,0 +1,213 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>imutools.ellipsoid &#8212; skdiveMove 0.2.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="../../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">imutools.ellipsoid</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for imutools.ellipsoid</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions for fitting an ellipsoid to IMU data</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Types of ellipsoid accepted fits</span>
+<span class="n">_ELLIPSOID_FTYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rxyz&quot;</span><span class="p">,</span> <span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;xz&quot;</span><span class="p">,</span> <span class="s2">&quot;yz&quot;</span><span class="p">,</span> <span class="s2">&quot;sxyz&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="fit_ellipsoid"><a class="viewcode-back" href="../../imutools.html#imutools.fit_ellipsoid">[docs]</a><span class="k">def</span> <span class="nf">fit_ellipsoid</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="s2">&quot;rxyz&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fit a (non) rotated ellipsoid or sphere to 3D vector data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors: (N,3) array</span>
+<span class="sd">        Array of measured x, y, z vector components.</span>
+<span class="sd">    f: str</span>
+<span class="sd">        String indicating the model to fit (one of &#39;rxyz&#39;, &#39;xyz&#39;, &#39;xy&#39;,</span>
+<span class="sd">        &#39;xz&#39;, &#39;yz&#39;, or &#39;sxyz&#39;):</span>
+<span class="sd">        rxyz : rotated ellipsoid (any axes)</span>
+<span class="sd">        xyz  : non-rotated ellipsoid</span>
+<span class="sd">        xy   : radius x=y</span>
+<span class="sd">        xz   : radius x=z</span>
+<span class="sd">        yz   : radius y=z</span>
+<span class="sd">        sxyz : radius x=y=z sphere</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    otuple: tuple</span>
+<span class="sd">        Tuple with offset, gain, and rotation matrix, in that order.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_ELLIPSOID_FTYPES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;f must be one of: </span><span class="si">{}</span><span class="s2">&quot;</span>
+                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_ELLIPSOID_FTYPES</span><span class="p">))</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;rxyz&quot;</span><span class="p">:</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">z</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">z</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;xyz&quot;</span><span class="p">:</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;xz&quot;</span><span class="p">:</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;yz&quot;</span><span class="p">:</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>                       <span class="c1"># sxyz</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">))</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;rxyz&quot;</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">6</span><span class="p">]],</span>
+                      <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">7</span><span class="p">]],</span>
+                      <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">8</span><span class="p">]],</span>
+                      <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">ofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="o">-</span><span class="n">A</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]],</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Tmtx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">Tmtx</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ofs</span>
+        <span class="n">AT</span> <span class="o">=</span> <span class="n">Tmtx</span> <span class="o">@</span> <span class="n">A</span> <span class="o">@</span> <span class="n">Tmtx</span><span class="o">.</span><span class="n">T</span>    <span class="c1"># ellipsoid translated to 0, 0, 0</span>
+        <span class="n">ev</span><span class="p">,</span> <span class="n">rotM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">AT</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="o">-</span><span class="n">AT</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="n">rotM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">rotM</span><span class="p">)</span>
+        <span class="n">ev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>
+        <span class="n">gain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">ev</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;xyz&quot;</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">5</span><span class="p">]])</span>
+        <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">]])</span>
+        <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;xz&quot;</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">]])</span>
+        <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="s2">&quot;yz&quot;</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+
+        <span class="n">ofs</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span> <span class="o">/</span> <span class="n">v</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">rotM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">gain</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">g</span> <span class="o">/</span> <span class="n">v</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">ofs</span><span class="p">,</span> <span class="n">gain</span><span class="p">,</span> <span class="n">rotM</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_refine_ellipsoid_fit</span><span class="p">(</span><span class="n">gain</span><span class="p">,</span> <span class="n">rotM</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Refine ellipsoid fit&quot;&quot;&quot;</span>
+    <span class="c1"># m = 0</span>
+    <span class="c1"># rm = 0</span>
+    <span class="c1"># cm = 0</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="apply_ellipsoid"><a class="viewcode-back" href="../../imutools.html#imutools.apply_ellipsoid">[docs]</a><span class="k">def</span> <span class="nf">apply_ellipsoid</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">gain</span><span class="p">,</span> <span class="n">rotM</span><span class="p">,</span> <span class="n">ref_r</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply ellipsoid fit to vector array&quot;&quot;&quot;</span>
+    <span class="n">vectors_new</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="o">-</span> <span class="n">offset</span>
+    <span class="n">vectors_new</span> <span class="o">=</span> <span class="n">vectors_new</span> <span class="o">@</span> <span class="n">rotM</span>
+    <span class="c1"># Scale to sphere</span>
+    <span class="n">vectors_new</span> <span class="o">=</span> <span class="n">vectors_new</span> <span class="o">/</span> <span class="n">gain</span> <span class="o">*</span> <span class="n">ref_r</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">vectors_new</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">imutools.ellipsoid</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,507 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>IMU-frame to body-frame transformations &#8212; skdiveMove 0.2.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Allan deviation analysis" href="demo_allan.html" />
+    <link rel="prev" title="Working with tri-axial IMUs" href="imutools_demos.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="demo_allan.html" title="Allan deviation analysis"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="imutools_demos.html" title="Working with tri-axial IMUs"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="imutools_demos.html" accesskey="U">Working with tri-axial IMUs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">IMU-frame to body-frame transformations</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="imu-frame-to-body-frame-transformations">
+<h1>IMU-frame to body-frame transformations<a class="headerlink" href="#imu-frame-to-body-frame-transformations" title="Permalink to this headline">¶</a></h1>
+<p>Consider loading the <cite>logging</cite> module and setting up a logger to monitor
+progress:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Set up</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">pkg_resources</span> <span class="k">as</span> <span class="nn">pkg_rsrc</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+<span class="linenos"> 4</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 5</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos"> 6</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos"> 7</span><span class="kn">import</span> <span class="nn">skdiveMove.imutools</span> <span class="k">as</span> <span class="nn">imutools</span>
+<span class="linenos"> 8</span><span class="kn">from</span> <span class="nn">scipy.spatial.transform</span> <span class="kn">import</span> <span class="n">Rotation</span> <span class="k">as</span> <span class="n">R</span>
+<span class="linenos"> 9</span><span class="kn">from</span> <span class="nn">skdiveMove.imutools.imu</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_ACCEL_NAME</span><span class="p">,</span>
+<span class="linenos">10</span>                                     <span class="n">_OMEGA_NAME</span><span class="p">,</span>
+<span class="linenos">11</span>                                     <span class="n">_MAGNT_NAME</span><span class="p">)</span>
+<span class="linenos">12</span><span class="kn">from</span> <span class="nn">skdiveMove.imutools.imu2body</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_LEG3X1_ANCHOR</span><span class="p">,</span>
+<span class="linenos">13</span>                                          <span class="n">_euler_ctr2body</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="n">_FIG1X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="linenos">16</span><span class="n">_FIG3D1X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="linenos">17</span><span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">_FIG4X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.precision&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="linenos">21</span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+<span class="linenos">22</span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Load saved pre-processed (properly calibrated and in a right-handed,
+front-left-up frame) data:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">23</span><span class="n">icdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
+<span class="linenos">24</span>        <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
+<span class="linenos">25</span>                           <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;gertrude&quot;</span><span class="p">,</span>
+<span class="linenos">26</span>                                    <span class="s2">&quot;gert_imu_frame.nc&quot;</span><span class="p">)))</span>
+<span class="linenos">27</span><span class="n">icsv</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
+<span class="linenos">28</span>        <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
+<span class="linenos">29</span>                           <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;gertrude&quot;</span><span class="p">,</span>
+<span class="linenos">30</span>                                    <span class="s2">&quot;gert_long_srfc.csv&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Set up an instance to use throughout:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">31</span><span class="c1"># If data are in NetCDF and CSV files, one can take advantage of the</span>
+<span class="linenos">32</span><span class="c1"># class method `IMU2Body.from_csv_nc` to instantiate directly from</span>
+<span class="linenos">33</span><span class="c1"># the file names:</span>
+<span class="linenos">34</span><span class="n">imu2whale</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">IMU2Body</span><span class="o">.</span><span class="n">from_csv_nc</span><span class="p">(</span><span class="n">icsv</span><span class="p">,</span> <span class="n">icdf</span><span class="p">,</span>
+<span class="linenos">35</span>                                          <span class="n">savgol_parms</span><span class="o">=</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="linenos">36</span><span class="c1"># Print summary info</span>
+<span class="linenos">37</span><span class="nb">print</span><span class="p">(</span><span class="n">imu2whale</span><span class="p">)</span>
+<span class="linenos">38</span><span class="c1"># Choose an index from surface details table</span>
+<span class="linenos">39</span><span class="n">idx</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">surface_details</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">33</span><span class="p">]</span>
+<span class="linenos">40</span><span class="n">idx_title</span> <span class="o">=</span> <span class="n">idx</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>IMU -- Class IMU2Body object
+Source File          /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/skdiveMove/tests/data/gertrude/gert_imu_frame.nc
+Attributes:
+                          animal_id: Unknown
+              animal_species_common: Humpback whale
+                animal_species_name: Megaptera novaeangliae
+                      deployment_id: gert01
+                       source_files: gertrude_2017.csv,gertrude_2017_long_surfacings.csv
+Surface segment duration summary:
+count                           68
+mean     0 days 00:02:01.764705882
+std      0 days 00:02:15.182918382
+min                0 days 00:00:11
+25%         0 days 00:00:29.750000
+50%                0 days 00:00:59
+75%         0 days 00:02:26.250000
+max                0 days 00:08:43
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Visualize low-pass filter (Savitzky-Golay filter) job:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/demo_imu2body_3_0.png" src="_images/demo_imu2body_3_0.png" />
+</div>
+</div>
+<p>Quick plots of smoothed acceleration and magnetic density from the
+segment:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">57</span><span class="n">acc_imu</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">_ACCEL_NAME</span><span class="p">,</span>
+<span class="linenos">58</span>                                        <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">59</span><span class="n">depth</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">)</span>
+<span class="linenos">60</span><span class="c1"># Alternatively, use the function of the same name as method below</span>
+<span class="linenos">61</span><span class="n">ax</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">scatterIMU3D</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">_MAGNT_NAME</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos">62</span>                            <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG3D1X1</span><span class="p">)</span>
+<span class="linenos">63</span><span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">azim</span><span class="o">=-</span><span class="mi">30</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/demo_imu2body_4_0.png" src="_images/demo_imu2body_4_0.png" />
+</div>
+</div>
+<p>Below shows that the IMU was deployed facing forward and on the left side
+of the whale, so in the above plot negative <cite>x</cite> is forward and negative <cite>y</cite>
+is left as per our right-handed coordinate system.  As above, we can use
+the method of the same name to produce the plot:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">64</span><span class="n">imu2whale</span><span class="o">.</span><span class="n">tsplotIMU_depth</span><span class="p">(</span><span class="n">_ACCEL_NAME</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos">65</span>                          <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG4X1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/demo_imu2body_5_0.png" src="_images/demo_imu2body_5_0.png" />
+</div>
+</div>
+<p>Calculate orientation for the segment above, and produce an animated plot
+of the orientation.  This can be done in a single step with
+<cite>IMU2Body.get_orientation</cite>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">66</span><span class="n">Rctr2i</span><span class="p">,</span> <span class="n">svd</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">67</span><span class="n">anim_file</span> <span class="o">=</span> <span class="s2">&quot;source/.static/video/gert_imu_</span><span class="si">{}</span><span class="s2">.mp4&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx_title</span><span class="p">)</span>
+<span class="linenos">68</span><span class="n">imutools</span><span class="o">.</span><span class="n">scatterIMU_svd</span><span class="p">(</span><span class="n">acc_imu</span><span class="p">,</span> <span class="n">svd</span><span class="p">,</span> <span class="n">Rctr2i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos">69</span>                        <span class="n">animate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="n">anim_file</span><span class="p">,</span>
+<span class="linenos">70</span>                        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;IMU-Frame Centered Acceleration [g]&quot;</span><span class="p">,</span>
+<span class="linenos">71</span>                        <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG3D1X1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<video controls width="800" height="420">
+<source src="_static/video/gert_imu_20170810T120654.mp4" type="video/mp4">
+</video><p>Apply the inverse transformation to get to the animal frame:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">72</span><span class="c1"># Orient the surface segment using the estimated rotation</span>
+<span class="linenos">73</span><span class="n">imu_bodyi</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orient_surfacing</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">Rctr2i</span><span class="p">)</span>
+<span class="linenos">74</span><span class="c1"># Have a look at corrected acceleration</span>
+<span class="linenos">75</span><span class="n">acci</span> <span class="o">=</span> <span class="n">imu_bodyi</span><span class="p">[</span><span class="n">_ACCEL_NAME</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>An animation may be useful to visualize the normalized animal-frame data:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">76</span><span class="n">anim_file</span> <span class="o">=</span> <span class="s2">&quot;source/.static/video/gert_body_</span><span class="si">{}</span><span class="s2">.mp4&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx_title</span><span class="p">)</span>
+<span class="linenos">77</span><span class="n">imutools</span><span class="o">.</span><span class="n">scatterIMU3D</span><span class="p">(</span><span class="n">acci</span><span class="p">,</span> <span class="n">imu_bodyi</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos">78</span>                      <span class="n">animate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="n">anim_file</span><span class="p">,</span>
+<span class="linenos">79</span>                      <span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Normalized Animal-Frame Acceleration [$g$]&quot;</span><span class="p">,</span>
+<span class="linenos">80</span>                      <span class="n">cbar_label</span><span class="o">=</span><span class="s2">&quot;Depth [m]&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG3D1X1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<video controls width="800" height="420">
+<source src="_static/video/gert_body_20170810T120654.mp4" type="video/mp4">
+</video><p>Obtain orientations for all surface periods, and retrieve the quality
+indices for each estimate:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">81</span><span class="n">orientations</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">get_orientations</span><span class="p">()</span>
+<span class="linenos">82</span><span class="c1"># Unpack quality of the estimates</span>
+<span class="linenos">83</span><span class="n">qual</span> <span class="o">=</span> <span class="n">orientations</span><span class="p">[</span><span class="s2">&quot;quality&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span>
+<span class="linenos">84</span><span class="n">qual</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;q_index&quot;</span><span class="p">,</span> <span class="s2">&quot;phi_std&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Look at the quality of the orientation estimates:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/demo_imu2body_10_0.png" src="_images/demo_imu2body_10_0.png" />
+</div>
+</div>
+<p>Remove bad quality estimates:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">97</span><span class="n">imu2whale</span><span class="o">.</span><span class="n">filter_surfacings</span><span class="p">((</span><span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Plot “ok” Euler angles:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>phi</th>
+      <th>theta</th>
+      <th>psi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>16.000</td>
+      <td>16.000</td>
+      <td>16.000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-5.993</td>
+      <td>7.107</td>
+      <td>-7.211</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>6.580</td>
+      <td>1.774</td>
+      <td>4.870</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-20.363</td>
+      <td>3.214</td>
+      <td>-15.714</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-8.653</td>
+      <td>6.630</td>
+      <td>-9.368</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-5.438</td>
+      <td>6.924</td>
+      <td>-7.706</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>-3.652</td>
+      <td>8.199</td>
+      <td>-5.768</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>6.448</td>
+      <td>9.339</td>
+      <td>5.329</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="_images/demo_imu2body_12_1.png" src="_images/demo_imu2body_12_1.png" />
+</div>
+</div>
+<p>Can we use an average (median?) rotation matrix?  This requires retrieving
+the direction cosine matrices of the centered data, which can be expressed
+as Euler angles with respect to the centered-data frame:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">109</span><span class="n">euler_xyz</span> <span class="o">=</span> <span class="p">(</span><span class="n">imu2whale</span><span class="o">.</span><span class="n">orientations</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">]</span>
+<span class="linenos">110</span>             <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="linenos">111</span>             <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">))</span>
+<span class="linenos">112</span><span class="n">euler_xyz</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;phi_ctr&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;theta_ctr&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;psi_ctr&quot;</span><span class="p">},</span>
+<span class="linenos">113</span>                 <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">114</span><span class="n">euler_avg</span> <span class="o">=</span> <span class="n">euler_xyz</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="linenos">115</span><span class="n">Rctr2i_avg</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">,</span> <span class="n">euler_avg</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">116</span><span class="n">Rctr2i_avg</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">117</span><span class="n">_euler_ctr2body</span><span class="p">(</span><span class="n">Rctr2i_avg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([-5.993, +7.107, -7.211])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check the effect of using this common transformation with the first
+remaining period:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">118</span><span class="n">idx0</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">surface_details</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">119</span><span class="n">imu_bodyi</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orient_surfacing</span><span class="p">(</span><span class="n">idx0</span><span class="p">,</span> <span class="n">Rctr2i_avg</span><span class="p">)</span>
+<span class="linenos">120</span><span class="c1"># Plot the time series; not bad</span>
+<span class="linenos">121</span><span class="n">imutools</span><span class="o">.</span><span class="n">tsplotIMU_depth</span><span class="p">(</span><span class="n">imu_bodyi</span><span class="p">[</span><span class="n">_ACCEL_NAME</span><span class="p">],</span> <span class="n">imu_bodyi</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">],</span>
+<span class="linenos">122</span>                         <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG4X1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/demo_imu2body_14_0.png" src="_images/demo_imu2body_14_0.png" />
+</div>
+</div>
+<p>Orient all surface periods with average rotation – note we get a
+hierarchical dataframe output:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">123</span><span class="n">imu_bodys</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orient_surfacings</span><span class="p">(</span><span class="n">R_all</span><span class="o">=</span><span class="n">Rctr2i_avg</span><span class="p">)</span>
+<span class="linenos">124</span><span class="c1"># Check out plot of a random sample</span>
+<span class="linenos">125</span><span class="n">idxs</span> <span class="o">=</span> <span class="n">imu_bodys</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endasc&quot;</span><span class="p">)</span>  <span class="c1"># values in topmost level</span>
+<span class="linenos">126</span><span class="n">idx_rnd</span> <span class="o">=</span> <span class="n">idxs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">idxs</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+<span class="linenos">127</span><span class="n">idx_rnd_title</span> <span class="o">=</span> <span class="n">idx_rnd</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="linenos">128</span><span class="c1"># Compare with period-specific orientation</span>
+<span class="linenos">129</span><span class="n">Rctr2i</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx_rnd</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()][</span><span class="s2">&quot;R&quot;</span><span class="p">]</span>
+<span class="linenos">130</span><span class="n">imu_bodyi</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orient_surfacing</span><span class="p">(</span><span class="n">idx_rnd</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(),</span> <span class="n">Rctr2i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/demo_imu2body_16_0.png" src="_images/demo_imu2body_16_0.png" />
+</div>
+</div>
+<p>Orient the entire <cite>IMU</cite> object with common rotation:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">148</span><span class="n">gert_frame</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orient_IMU</span><span class="p">(</span><span class="n">Rctr2i_avg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Or with segment-specific rotations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">149</span><span class="n">gert_frames</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orient_IMU</span><span class="p">()</span>
+<span class="linenos">150</span><span class="c1"># Check out IMUs</span>
+<span class="linenos">151</span><span class="n">idx</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">surface_details</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">152</span><span class="n">imu_i</span> <span class="o">=</span> <span class="n">gert_frames</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">endasc</span><span class="o">=</span><span class="n">idx</span><span class="p">)</span>
+<span class="linenos">153</span><span class="n">imutools</span><span class="o">.</span><span class="n">tsplotIMU_depth</span><span class="p">(</span><span class="n">imu_i</span><span class="p">[</span><span class="n">_ACCEL_NAME</span><span class="p">],</span> <span class="n">imu_i</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">],</span>
+<span class="linenos">154</span>                         <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG4X1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/demo_imu2body_18_0.png" src="_images/demo_imu2body_18_0.png" />
+</div>
+</div>
+<p>Feel free to download a copy of this demo
+(<a class="reference download internal" download="" href="_downloads/084f2005f8cb7be501bb635e9c707646/demo_imu2body.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_imu2body.py</span></code></a>).</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="imutools_demos.html"
+                        title="previous chapter">Working with tri-axial IMUs</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="demo_allan.html"
+                        title="next chapter">Allan deviation analysis</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/demo_imu2body.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="demo_allan.html" title="Allan deviation analysis"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="imutools_demos.html" title="Working with tri-axial IMUs"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="imutools_demos.html" >Working with tri-axial IMUs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">IMU-frame to body-frame transformations</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>

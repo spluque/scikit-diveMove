@@ -1,15 +1,17 @@
 
-<!DOCTYPE html>
+
+<!doctype html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdr &#8212; skdiveMove 0.2.4 documentation</title>
+    <title>skdiveMove.tdr &#8212; skdiveMove 0.2.5 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
@@ -17,8 +19,13 @@
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="../../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdr</a></li> 
       </ul>
@@ -100,9 +107,9 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        *args : positional arguments</span>
-<span class="sd">            Passed to :meth:`TDRSource.__init__`</span>
+<span class="sd">            Passed to :meth:`TDRPhases.__init__`</span>
 <span class="sd">        **kwargs : keyword arguments</span>
-<span class="sd">            Passed to :meth:`TDRSource.__init__`</span>
+<span class="sd">            Passed to :meth:`TDRPhases.__init__`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">TDRPhases</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -161,7 +168,7 @@
         <span class="n">depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;zoc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
         <span class="n">ddiffs</span> <span class="o">=</span> <span class="n">depth</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">depth</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
         <span class="n">ddepth</span> <span class="o">=</span> <span class="n">ddiffs</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
-        <span class="n">rddepth</span> <span class="o">=</span> <span class="n">ddepth</span> <span class="o">/</span> <span class="n">ddiffs</span><span class="p">[</span><span class="s2">&quot;date_time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">rddepth</span> <span class="o">=</span> <span class="n">ddepth</span> <span class="o">/</span> <span class="n">ddiffs</span><span class="p">[</span><span class="n">depth</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
         <span class="n">curspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_speed</span><span class="p">(</span><span class="s2">&quot;measured&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">ddepth</span> <span class="o">&gt;</span> <span class="n">z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">rddepth</span> <span class="o">&gt;</span> <span class="n">bad</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">curspeed</span> <span class="o">&gt;</span> <span class="n">bad</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">rddepth</span> <span class="o">=</span> <span class="n">rddepth</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>
@@ -214,6 +221,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">phases_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">)</span>
+        <span class="n">idx_name</span> <span class="o">=</span> <span class="n">phases_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span>
 
         <span class="c1"># calib_speed=False if no fit object</span>
         <span class="n">tdr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tdr</span><span class="p">(</span><span class="n">calib_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -237,7 +245,7 @@
                            <span class="n">tdr</span><span class="p">[</span><span class="n">ok</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
 
         <span class="c1"># Ugly hack to re-order columns for `diveMove` convention</span>
-        <span class="n">names0</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dive_id&quot;</span><span class="p">,</span> <span class="s2">&quot;dive_phase&quot;</span><span class="p">,</span> <span class="s2">&quot;date_time&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">]</span>
+        <span class="n">names0</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dive_id&quot;</span><span class="p">,</span> <span class="s2">&quot;dive_phase&quot;</span><span class="p">,</span> <span class="n">idx_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">]</span>
         <span class="n">colnames</span> <span class="o">=</span> <span class="n">tdrf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_speed</span><span class="p">:</span>
             <span class="n">names0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span><span class="p">)</span>
@@ -261,7 +269,7 @@
         <span class="n">ones_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">ones_list</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">ones_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">dive_ids</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">ones_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;dive_id&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ones_df</span><span class="p">[</span><span class="s2">&quot;postdive_dur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">postdive_dur</span><span class="p">[</span><span class="s2">&quot;date_time&quot;</span><span class="p">]</span>
+        <span class="n">ones_df</span><span class="p">[</span><span class="s2">&quot;postdive_dur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">postdive_dur</span><span class="p">[</span><span class="n">idx_name</span><span class="p">]</span>
 
         <span class="c1"># For postdive total distance and mean speed (if available)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_speed</span><span class="p">:</span>
@@ -414,6 +422,8 @@
 <span class="sd">            select additional data to plot.</span>
 <span class="sd">        concur_var_titles : str or list, optional</span>
 <span class="sd">            String or list of strings with y-axis labels for `concur_vars`.</span>
+<span class="sd">        surface : bool, optional</span>
+<span class="sd">            Whether to plot surface readings.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Arguments passed to plotting function.</span>
 
@@ -690,9 +700,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dive_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;dive_id&quot;</span><span class="p">)</span>
+        <span class="n">idx_name</span> <span class="o">=</span> <span class="n">dive_ids</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span>
         <span class="n">idxs</span> <span class="o">=</span> <span class="n">_get_dive_indices</span><span class="p">(</span><span class="n">dive_ids</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">)</span>
         <span class="n">tdr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tdr</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">tdr_i</span> <span class="o">=</span> <span class="n">tdr</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">date_time</span><span class="o">=</span><span class="n">idxs</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))]</span>
+        <span class="n">tdr_i</span> <span class="o">=</span> <span class="n">tdr</span><span class="p">[{</span><span class="n">idx_name</span><span class="p">:</span> <span class="n">idxs</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)}]</span>
 
         <span class="k">return</span><span class="p">(</span><span class="n">tdr_i</span><span class="p">)</span></div></div>
 
@@ -742,7 +753,7 @@
     <span class="n">load_dataset_kwargs</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;load_dataset_kwargs&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reading config: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span>
                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">],</span> <span class="n">load_dataset_kwargs</span><span class="p">))</span>
-    <span class="n">tdr</span> <span class="o">=</span> <span class="n">TDR</span><span class="p">(</span><span class="n">tdr_file</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">load_dataset_kwargs</span><span class="p">)</span>
+    <span class="n">tdr</span> <span class="o">=</span> <span class="n">TDR</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">tdr_file</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">load_dataset_kwargs</span><span class="p">)</span>
 
     <span class="n">do_zoc</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;zoc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;required&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">do_zoc</span><span class="p">:</span>
@@ -770,7 +781,7 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
     <span class="n">ifile</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;tests/data/ag_mk7_2002_022.nc&quot;</span>
-    <span class="n">tdrX</span> <span class="o">=</span> <span class="n">TDR</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tdrX</span> <span class="o">=</span> <span class="n">TDR</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># tdrX = TDRSource(ifile, has_speed=True)</span>
     <span class="c1"># print(tdrX)</span>
 </pre></div>
@@ -807,15 +818,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdr</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

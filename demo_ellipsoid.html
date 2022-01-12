@@ -1,0 +1,263 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Ellipsoid modelling for calibration purposes &#8212; skdiveMove 0.2.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TDR class" href="tdr.html" />
+    <link rel="prev" title="Allan deviation analysis" href="demo_allan.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdr.html" title="TDR class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="demo_allan.html" title="Allan deviation analysis"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="imutools_demos.html" accesskey="U">Working with tri-axial IMUs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Ellipsoid modelling for calibration purposes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ellipsoid-modelling-for-calibration-purposes">
+<h1>Ellipsoid modelling for calibration purposes<a class="headerlink" href="#ellipsoid-modelling-for-calibration-purposes" title="Permalink to this headline">¶</a></h1>
+<p>Magnetometers are highly sensitive to local deviations of the magnetic
+field, affecting the desired measurement of the Earth geomagnetic field.
+Triaxial accelerometers, however, can have slight offsets in and
+misalignments of their axes which need to be corrected to properly
+interpret their output.  One commonly used method for performing these
+corrections is done by fitting an ellipsoid model to data collected while
+the sensor’s axes are exposed to the forces of the fields they measure.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># Set up</span>
+<span class="linenos">2</span><span class="kn">import</span> <span class="nn">pkg_resources</span> <span class="k">as</span> <span class="nn">pkg_rsrc</span>
+<span class="linenos">3</span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+<span class="linenos">4</span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="linenos">5</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos">6</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos">7</span><span class="kn">import</span> <span class="nn">skdiveMove.imutools</span> <span class="k">as</span> <span class="nn">imutools</span>
+<span class="linenos">8</span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>To demonstrate this procedure with utilities from the <cite>allan</cite> submodule,
+measurements from a triaxial accelerometer and magnetometer were recorded
+at 100 Hz sampling frequency with an <cite>IMU</cite> that was rotated around the main
+axes to cover a large surface of the sphere.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">24</span><span class="n">icdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
+<span class="linenos">25</span>        <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
+<span class="linenos">26</span>                           <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;gertrude&quot;</span><span class="p">,</span>
+<span class="linenos">27</span>                                    <span class="s2">&quot;magnt_accel_calib.nc&quot;</span><span class="p">)))</span>
+<span class="linenos">28</span><span class="n">magnt_accel</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="n">icdf</span><span class="p">)</span>
+<span class="linenos">29</span><span class="n">magnt</span> <span class="o">=</span> <span class="n">magnt_accel</span><span class="p">[</span><span class="s2">&quot;magnetic_density&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="linenos">30</span><span class="n">accel</span> <span class="o">=</span> <span class="n">magnt_accel</span><span class="p">[</span><span class="s2">&quot;acceleration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The function <cite>fit_ellipsoid</cite> returns the offset, gain, and rotation matrix
+(if requested) necessary to correct the sensor’s data.  There are six types
+of constraint to impose on the result, including which radii should be
+equal, and whether the data should be rotated.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">31</span><span class="c1"># Here, a symmetrical constraint whereby any plane passing through the</span>
+<span class="linenos">32</span><span class="c1"># origin is used, with all radii equal to each other</span>
+<span class="linenos">33</span><span class="n">magnt_off</span><span class="p">,</span> <span class="n">magnt_gain</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">fit_ellipsoid</span><span class="p">(</span><span class="n">magnt</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="s2">&quot;sxyz&quot;</span><span class="p">)</span>
+<span class="linenos">34</span><span class="n">accel_off</span><span class="p">,</span> <span class="n">accel_gain</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">fit_ellipsoid</span><span class="p">(</span><span class="n">accel</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="s2">&quot;sxyz&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Inspect the offsets and gains in the uncorrected data:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Magnetometer offsets [uT]: x=13.46, y=-7.55, z=9.68; gains [uT]: x=48.67, y=48.67, z=48.67
+Accelerometer offsets [g]: x=0.027, y=-0.031, z=0.007; gains [g]: x=1.001, y=1.001, z=1.001
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calibrate the sensors using these estimates:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">41</span><span class="n">magnt_refr</span> <span class="o">=</span> <span class="mf">56.9</span>
+<span class="linenos">42</span><span class="n">magnt_corr</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">apply_ellipsoid</span><span class="p">(</span><span class="n">magnt</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">magnt_off</span><span class="p">,</span>
+<span class="linenos">43</span>                                      <span class="n">gain</span><span class="o">=</span><span class="n">magnt_gain</span><span class="p">,</span>
+<span class="linenos">44</span>                                      <span class="n">rotM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span>
+<span class="linenos">45</span>                                      <span class="n">ref_r</span><span class="o">=</span><span class="n">magnt_refr</span><span class="p">)</span>
+<span class="linenos">46</span><span class="n">accel_corr</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">apply_ellipsoid</span><span class="p">(</span><span class="n">accel</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">accel_off</span><span class="p">,</span>
+<span class="linenos">47</span>                                      <span class="n">gain</span><span class="o">=</span><span class="n">accel_gain</span><span class="p">,</span>
+<span class="linenos">48</span>                                      <span class="n">rotM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span>
+<span class="linenos">49</span>                                      <span class="n">ref_r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>An appreciation of the effect of the calibration can be observed by
+comparing the difference between maxima/minima and the reference value for
+the magnetic field at the geographic location and time of the
+measurements, or 1 $g$ in the case of the accelerometers.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">50</span><span class="n">magnt_refr_diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnt</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">magnt_refr</span><span class="p">,</span>
+<span class="linenos">51</span>                   <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnt</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">magnt_refr</span><span class="p">]</span>
+<span class="linenos">52</span><span class="n">magnt_corr_refr_diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnt_corr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">magnt_refr</span><span class="p">,</span>
+<span class="linenos">53</span>                        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">magnt_corr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">magnt_refr</span><span class="p">]</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="n">accel_refr_diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">accel</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos">56</span>                   <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">accel</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="linenos">57</span><span class="n">accel_corr_refr_diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">accel_corr</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos">58</span>                        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">accel_corr</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Uncorrected magnetometer difference to reference [uT]:
+maxima: x=5.78, y=-17.06, z=2.24; minima: x=-24.07, y=-0.56, z=-19.21
+Corrected magnetometer difference to reference [uT]:
+maxima: x=0.64, y=-1.51, z=0.91; minima: x=-2.78, y=0.14, z=-1.52
+Uncorrected accelerometer difference to reference [g]:
+maxima: x=0.06, y=-0.01, z=0.02; minima: x=0.01, y=0.03, z=0.02
+Corrected accelerometer difference to reference [g]:
+maxima: x=0.04, y=0.02, z=0.01; minima: x=0.04, y=-0.00, z=0.03
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or compare visually on a 3D plot:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/demo_ellipsoid_8_0.png" src="_images/demo_ellipsoid_8_0.png" />
+</div>
+</div>
+<p>Feel free to download a copy of this demo
+(<a class="reference download internal" download="" href="_downloads/0e7def991bc9e538fc8efda5837df4c5/demo_ellipsoid.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_ellipsoid.py</span></code></a>).</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="demo_allan.html"
+                        title="previous chapter">Allan deviation analysis</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tdr.html"
+                        title="next chapter">TDR class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/demo_ellipsoid.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tdr.html" title="TDR class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="demo_allan.html" title="Allan deviation analysis"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="imutools_demos.html" >Working with tri-axial IMUs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Ellipsoid modelling for calibration purposes</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>

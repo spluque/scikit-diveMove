@@ -1,16 +1,18 @@
 
-<!DOCTYPE html>
+
+<!doctype html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>scikit-diveMove Documentation &#8212; skdiveMove 0.2.4 documentation</title>
+    <title>scikit-diveMove Documentation &#8212; skdiveMove 0.2.5 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -18,9 +20,14 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Diving behaviour analysis" href="tdrdemo.html" /> 
+    <link rel="next" title="Diving behaviour analysis" href="demo_tdr.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -32,9 +39,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tdrdemo.html" title="Diving behaviour analysis"
+          <a href="demo_tdr.html" title="Diving behaviour analysis"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">scikit-diveMove Documentation</a></li> 
       </ul>
     </div>  
@@ -52,6 +59,14 @@ has utilities to represent, visualize, filter, analyse, and summarize
 time-depth recorder (TDR) data.  Miscellaneous functions for handling
 location data are also provided.</p>
 <p><cite>scikit-diveMove</cite> is hosted at <a class="reference external" href="https://github.com/spluque/scikit-diveMove">https://github.com/spluque/scikit-diveMove</a></p>
+<p><cite>scikit-diveMove</cite> also provides useful tools for processing signals from
+tri-axial Inertial Measurement Units (<a class="reference external" href="https://en.wikipedia.org/wiki/Inertial_measurement_unit">IMU</a>), such as thermal calibration,
+corrections for shifts in coordinate frames, as well as computation of
+orientation using a variety of current methods.  Analyses are fully
+tractable by encouraging the use of <a class="reference external" href="https://xarray.pydata.org">xarray</a> data structures that can be
+read from and written to NetCDF file format.  Using these data structures,
+meta-data attributes can be easily appended at all layers as analyses
+progress.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>Type the following at a terminal command line:</p>
@@ -103,27 +118,33 @@ installed and available to the user running Python.  If needed, install
 <h2>Demos<a class="headerlink" href="#demos" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tdrdemo.html">Diving behaviour analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tdrdemo.html#reading-data-files">Reading data files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tdrdemo.html#calibrate-measurements">Calibrate measurements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tdrdemo.html#access-attributes-of-tdr-instance">Access attributes of <cite>TDR</cite> instance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tdrdemo.html#time-budgets">Time budgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tdrdemo.html#dive-statistics">Dive statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tdrdemo.html#dive-stamps">Dive stamps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_tdr.html">Diving behaviour analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_tdr.html#reading-data-files">Reading data files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_tdr.html#calibrate-measurements">Calibrate measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_tdr.html#access-attributes-of-tdr-instance">Access attributes of <cite>TDR</cite> instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_tdr.html#time-budgets">Time budgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_tdr.html#dive-statistics">Dive statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_tdr.html#dive-stamps">Dive stamps</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="boutsdemo.html">Bout analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="boutsdemo.html#calculate-postdive-duration">Calculate postdive duration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boutsdemo.html#non-linear-least-squares-via-broken-stick-model">Non-linear least squares via “broken-stick” model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boutsdemo.html#maximum-likelihood-estimation">Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_bouts.html">Bout analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_bouts.html#calculate-postdive-duration">Calculate postdive duration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_bouts.html#non-linear-least-squares-via-broken-stick-model">Non-linear least squares via “broken-stick” model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_bouts.html#maximum-likelihood-estimation">Maximum likelihood estimation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="boutsimuldemo.html">Simulating bouts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="boutsimuldemo.html#generate-two-process-mixture">Generate two-process mixture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boutsimuldemo.html#non-linear-least-squares-nls">Non-linear least squares (NLS)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boutsimuldemo.html#maximum-likelihood-estimation-mle">Maximum likelihood estimation (MLE)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boutsimuldemo.html#comparing-nls-vs-mle">Comparing NLS vs MLE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boutsimuldemo.html#three-process-mixture">Three-process mixture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_simulbouts.html">Simulating bouts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_simulbouts.html#generate-two-process-mixture">Generate two-process mixture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_simulbouts.html#non-linear-least-squares-nls">Non-linear least squares (NLS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_simulbouts.html#maximum-likelihood-estimation-mle">Maximum likelihood estimation (MLE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_simulbouts.html#comparing-nls-vs-mle">Comparing NLS vs MLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_simulbouts.html#three-process-mixture">Three-process mixture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="imutools_demos.html">Working with tri-axial IMUs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_imu2body.html">IMU-frame to body-frame transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_allan.html">Allan deviation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_ellipsoid.html">Ellipsoid modelling for calibration purposes</a></li>
 </ul>
 </li>
 </ul>
@@ -151,6 +172,13 @@ installed and available to the user running Python.  If needed, install
 <li class="toctree-l1"><a class="reference internal" href="metadata.html">Read and write metadata</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="metadata.html#functions">Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metadata.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="imutools.html">Utilities for working with IMU data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="imutools.html#base-class-methods-summary">Base class &amp; methods summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imutools.html#instrument-frame-to-body-frame-transformations">Instrument frame to body frame transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imutools.html#calibration-and-error-analysis">Calibration and error analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imutools.html#api">API</a></li>
 </ul>
 </li>
 </ul>
@@ -193,7 +221,7 @@ installed and available to the user running Python.  If needed, install
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="tdrdemo.html"
+  <p class="topless"><a href="demo_tdr.html"
                         title="next chapter">Diving behaviour analysis</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -226,16 +254,16 @@ installed and available to the user running Python.  If needed, install
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tdrdemo.html" title="Diving behaviour analysis"
+          <a href="demo_tdr.html" title="Diving behaviour analysis"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">scikit-diveMove Documentation</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

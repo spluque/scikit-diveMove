@@ -1,0 +1,514 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>imutools.imu &#8212; skdiveMove 0.2.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="../../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">imutools.imu</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for imutools.imu</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Representation of Inertial Measurement Unit data</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">allantools</span> <span class="k">as</span> <span class="nn">allan</span>
+<span class="kn">import</span> <span class="nn">ahrs.filters</span> <span class="k">as</span> <span class="nn">filters</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">integrate</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.tdrsource</span> <span class="kn">import</span> <span class="n">_load_dataset</span>
+<span class="kn">from</span> <span class="nn">.allan</span> <span class="kn">import</span> <span class="n">allan_coefs</span>
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">rotate_vector</span>
+
+<span class="n">_DEPTH_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">_ACCEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;acceleration&quot;</span>
+<span class="n">_OMEGA_NAME</span> <span class="o">=</span> <span class="s2">&quot;angular_velocity&quot;</span>
+<span class="n">_MAGNT_NAME</span> <span class="o">=</span> <span class="s2">&quot;magnetic_density&quot;</span>
+
+
+<div class="viewcode-block" id="IMUBase"><a class="viewcode-back" href="../../imutools.html#imutools.IMUBase">[docs]</a><span class="k">class</span> <span class="nc">IMUBase</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Define IMU data source</span>
+
+<span class="sd">    Use :class:`xarray.Dataset` to ensure pseudo-standard metadata.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    imu_file : str</span>
+<span class="sd">        String indicating the file where the data comes from.</span>
+<span class="sd">    imu : xarray.Dataset</span>
+<span class="sd">        Dataset with input data.</span>
+<span class="sd">    imu_var_names : list</span>
+<span class="sd">        Names of the data variables with accelerometer, angular velocity,</span>
+<span class="sd">        and magnetic density measurements.</span>
+<span class="sd">    has_depth : bool</span>
+<span class="sd">        Whether input data include depth measurements.</span>
+<span class="sd">    depth_name : str</span>
+<span class="sd">        Name of the data variable with depth measurements.</span>
+<span class="sd">    quats : numpy.ndarray</span>
+<span class="sd">        Array of quaternions representing the orientation relative to the</span>
+<span class="sd">        frame of the IMU object data.  Note that the scalar component is</span>
+<span class="sd">        last, following `scipy`&#39;s convention.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span>
+                 <span class="n">acceleration_name</span><span class="o">=</span><span class="n">_ACCEL_NAME</span><span class="p">,</span>
+                 <span class="n">angular_velocity_name</span><span class="o">=</span><span class="n">_OMEGA_NAME</span><span class="p">,</span>
+                 <span class="n">magnetic_density_name</span><span class="o">=</span><span class="n">_MAGNT_NAME</span><span class="p">,</span>
+                 <span class="n">has_depth</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">imu_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up attributes for IMU objects</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset : xarray.Dataset</span>
+<span class="sd">            Dataset containing IMU sensor DataArrays, and optionally other</span>
+<span class="sd">            DataArrays.</span>
+<span class="sd">        acceleration_name : str, optional</span>
+<span class="sd">            Name of the acceleration ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">        angular_velocity_name : str, optional</span>
+<span class="sd">            Name of the angular velocity ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">        magnetic_density_name : str, optional</span>
+<span class="sd">            Name of the magnetic density ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">        has_depth : bool, optional</span>
+<span class="sd">            Whether input data include depth measurements.  Variable must</span>
+<span class="sd">            be named &quot;depth&quot;.</span>
+<span class="sd">        imu_filename : str, optional</span>
+<span class="sd">            Name of the file from which ``dataset`` originated.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imu</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imu_var_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">acceleration_name</span><span class="p">,</span>
+                              <span class="n">angular_velocity_name</span><span class="p">,</span>
+                              <span class="n">magnetic_density_name</span><span class="p">]</span>
+        <span class="n">depth_var</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                     <span class="k">if</span> <span class="n">has_depth</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_DEPTH_NAMES</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">depth_var</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">has_depth</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_depth</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span> <span class="o">=</span> <span class="n">depth_var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_depth</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">imu_file</span> <span class="o">=</span> <span class="n">imu_filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quats</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="IMUBase.read_netcdf"><a class="viewcode-back" href="../../imutools.html#imutools.IMUBase.read_netcdf">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">read_netcdf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">imu_file</span><span class="p">,</span>
+                    <span class="n">acceleration_name</span><span class="o">=</span><span class="n">_ACCEL_NAME</span><span class="p">,</span>
+                    <span class="n">angular_velocity_name</span><span class="o">=</span><span class="n">_OMEGA_NAME</span><span class="p">,</span>
+                    <span class="n">magnetic_density_name</span><span class="o">=</span><span class="n">_MAGNT_NAME</span><span class="p">,</span>
+                    <span class="n">has_depth</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate object by loading Dataset from NetCDF file</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        imu_file : str</span>
+<span class="sd">            As first argument for :func:`xarray.load_dataset`.</span>
+<span class="sd">        acceleration_name : str, optional</span>
+<span class="sd">            Name of the acceleration ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">        angular_velocity_name : str, optional</span>
+<span class="sd">            Name of the angular velocity ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">        magnetic_density_name : str, optional</span>
+<span class="sd">            Name of the magnetic density ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">        dimension_names : list, optional</span>
+<span class="sd">            Names of the dimensions of the data in each of the sensors.</span>
+<span class="sd">        has_depth : bool, optional</span>
+<span class="sd">            Whether input data include depth measurements.  Variable must</span>
+<span class="sd">            be named &quot;depth&quot;.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to :func:`xarray.load_dataset`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        obj : IMUBase</span>
+<span class="sd">            Class matches the caller.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">_load_dataset</span><span class="p">(</span><span class="n">imu_file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">cls</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">acceleration_name</span><span class="o">=</span><span class="n">acceleration_name</span><span class="p">,</span>
+                   <span class="n">angular_velocity_name</span><span class="o">=</span><span class="n">angular_velocity_name</span><span class="p">,</span>
+                   <span class="n">magnetic_density_name</span><span class="o">=</span><span class="n">magnetic_density_name</span><span class="p">,</span>
+                   <span class="n">has_depth</span><span class="o">=</span><span class="n">has_depth</span><span class="p">,</span> <span class="n">imu_filename</span><span class="o">=</span><span class="n">imu_file</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu</span>
+        <span class="n">objcls</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;IMU -- Class </span><span class="si">{}</span><span class="s2"> object</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Source File&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu_file</span><span class="p">)</span>
+        <span class="n">attr_list</span> <span class="o">=</span> <span class="s2">&quot;Attributes:</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">attr_list</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{0:&gt;35}</span><span class="s2">: </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="n">attr_list</span> <span class="o">=</span> <span class="n">attr_list</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">objcls</span> <span class="o">+</span> <span class="n">src</span> <span class="o">+</span> <span class="n">attr_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_allan_deviation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">taus</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute Allan deviation for all axes of a given sensor</span>
+
+<span class="sd">        Currently uses the modified Allan deviation in package</span>
+<span class="sd">        `allantools`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sensor : str</span>
+<span class="sd">            Attribute name of the sensor of interest</span>
+<span class="sd">        taus : float, str</span>
+<span class="sd">            Tau value, in seconds, for which to compute statistic.  Can be</span>
+<span class="sd">            one of &quot;octave&quot; or &quot;decade&quot; for automatic generation of the</span>
+<span class="sd">            value.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            Allan deviation and error for each sensor axis.  DataFrame</span>
+<span class="sd">            index is the averaging time `tau` for each estimate.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sensor_obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor</span><span class="p">)</span>
+        <span class="n">sampling_rate</span> <span class="o">=</span> <span class="n">sensor_obj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">]</span>
+        <span class="n">sensor_std</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">sensor_obj</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">allan_l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">sensor_std</span><span class="o">.</span><span class="n">T</span><span class="p">:</span>
+            <span class="n">taus</span><span class="p">,</span> <span class="n">adevs</span><span class="p">,</span> <span class="n">errs</span><span class="p">,</span> <span class="n">ns</span> <span class="o">=</span> <span class="n">allan</span><span class="o">.</span><span class="n">mdev</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="n">sampling_rate</span><span class="p">,</span>
+                                               <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;freq&quot;</span><span class="p">,</span>
+                                               <span class="n">taus</span><span class="o">=</span><span class="n">taus</span><span class="p">)</span>
+            <span class="c1"># taus is common to all sensor axes</span>
+            <span class="n">adevs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">adevs</span><span class="p">,</span> <span class="n">errs</span><span class="p">)),</span>
+                                    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;allan_dev&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">],</span>
+                                    <span class="n">index</span><span class="o">=</span><span class="n">taus</span><span class="p">)</span>
+            <span class="n">allan_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adevs_df</span><span class="p">)</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">sensor</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">)]</span>
+        <span class="n">devs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">allan_l</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">devs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IMUBase.allan_coefs"><a class="viewcode-back" href="../../imutools.html#imutools.IMUBase.allan_coefs">[docs]</a>    <span class="k">def</span> <span class="nf">allan_coefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">taus</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estimate Allan deviation coefficients for each error type</span>
+
+<span class="sd">        This procedure implements the autonomous regression method for</span>
+<span class="sd">        Allan variance described in [1]_.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sensor : str</span>
+<span class="sd">            Attribute name of the sensor of interest</span>
+<span class="sd">        taus : float, str</span>
+<span class="sd">            Tau value, in seconds, for which to compute statistic.  Can be</span>
+<span class="sd">            one of &quot;octave&quot; or &quot;decade&quot; for automatic generation of the</span>
+<span class="sd">            value.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        coefs_all : pandas.DataFrame</span>
+<span class="sd">            Allan deviation coefficient and corresponding averaging time</span>
+<span class="sd">            for each sensor axis and error type.</span>
+<span class="sd">        adevs : pandas.DataFrame</span>
+<span class="sd">            `MultiIndex` DataFrame with Allan deviation, corresponding</span>
+<span class="sd">            averaging time, and fitted ARMAV model estimates of the</span>
+<span class="sd">            coefficients for each sensor axis and error type.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Currently uses a modified Allan deviation formula.</span>
+
+<span class="sd">        .. [1] Jurado, J, Schubert Kabban, CM, Raquet, J (2019).  A</span>
+<span class="sd">               regression-based methodology to improve estimation of</span>
+<span class="sd">               inertial sensor errors using Allan variance data. Navigation</span>
+<span class="sd">               66:251-263.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">adevs_errs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allan_deviation</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">taus</span><span class="p">)</span>
+        <span class="n">taus</span> <span class="o">=</span> <span class="n">adevs_errs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">adevs</span> <span class="o">=</span> <span class="n">adevs_errs</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s2">&quot;allan_dev&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+        <span class="n">coefs_l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">fitted_l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">adevs_i</span> <span class="ow">in</span> <span class="n">adevs</span><span class="o">.</span><span class="n">T</span><span class="p">:</span>
+            <span class="n">coefs_i</span><span class="p">,</span> <span class="n">adevs_fitted</span> <span class="o">=</span> <span class="n">allan_coefs</span><span class="p">(</span><span class="n">taus</span><span class="p">,</span> <span class="n">adevs_i</span><span class="p">)</span>
+            <span class="c1"># Parse output for dataframe</span>
+            <span class="n">coefs_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">coefs_i</span><span class="p">))</span>
+            <span class="n">fitted_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adevs_fitted</span><span class="p">)</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">sensor</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">)]</span>
+        <span class="n">coefs_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">coefs_l</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">fitted_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">fitted_l</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">keys</span><span class="p">,</span>
+                                  <span class="n">index</span><span class="o">=</span><span class="n">taus</span><span class="p">)</span>
+        <span class="n">fitted_all</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span>
+                              <span class="o">.</span><span class="n">from_tuples</span><span class="p">([(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;fitted&quot;</span><span class="p">)</span>
+                                            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">fitted_all</span><span class="p">]))</span>
+        <span class="n">adevs</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">adevs_errs</span><span class="p">,</span> <span class="n">fitted_all</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                 <span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">coefs_all</span><span class="p">,</span> <span class="n">adevs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IMUBase.compute_orientation"><a class="viewcode-back" href="../../imutools.html#imutools.IMUBase.compute_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">compute_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Madgwick&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the orientation of IMU tri-axial signals</span>
+
+<span class="sd">        The method must be one of the following estimators implemented in</span>
+<span class="sd">        Python module :mod:`ahrs.filters`:</span>
+
+<span class="sd">        - ``AngularRate``: Attitude from angular rate</span>
+<span class="sd">        - ``AQUA``: Algebraic quaternion algorithm</span>
+<span class="sd">        - ``Complementary``: Complementary filter</span>
+<span class="sd">        - ``Davenport``: Davenport&#39;s q-method</span>
+<span class="sd">        - ``EKF``: Extended Kalman filter</span>
+<span class="sd">        - ``FAAM``: Fast accelerometer-magnetometer combination</span>
+<span class="sd">        - ``FLAE``: Fast linear attitude estimator</span>
+<span class="sd">        - ``Fourati``: Fourati&#39;s nonlinear attitude estimation</span>
+<span class="sd">        - ``FQA``: Factored quaternion algorithm</span>
+<span class="sd">        - ``Madgwick``: Madgwick orientation filter</span>
+<span class="sd">        - ``Mahony``: Mahony orientation filter</span>
+<span class="sd">        - ``OLEQ``: Optimal linear estimator quaternion</span>
+<span class="sd">        - ``QUEST``</span>
+<span class="sd">        - ``ROLEQ``: Recursive optimal linear estimator of quaternion</span>
+<span class="sd">        - ``SAAM``: Super-fast attitude from accelerometer and magnetometer</span>
+<span class="sd">        - ``Tilt``: Attitude from gravity</span>
+
+<span class="sd">        The estimated quaternions are stored in the ``quats`` attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        method : str, optional</span>
+<span class="sd">            Name of the filtering method to use.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to filtering method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orienter_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+        <span class="n">orienter</span> <span class="o">=</span> <span class="n">orienter_cls</span><span class="p">(</span><span class="n">acc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">acceleration</span><span class="p">,</span>
+                                <span class="n">gyr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">angular_velocity</span><span class="p">,</span>
+                                <span class="n">mag</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">magnetic_density</span><span class="p">,</span>
+                                <span class="n">Dt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling_interval</span><span class="p">,</span>
+                                <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">quats</span> <span class="o">=</span> <span class="n">orienter</span><span class="o">.</span><span class="n">Q</span></div>
+
+<div class="viewcode-block" id="IMUBase.dead_reckon"><a class="viewcode-back" href="../../imutools.html#imutools.IMUBase.dead_reckon">[docs]</a>    <span class="k">def</span> <span class="nf">dead_reckon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">constants</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">Wn</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate position assuming orientation is already known</span>
+
+<span class="sd">        Integrate dynamic acceleration in the body frame to calculate</span>
+<span class="sd">        velocity and position.  If the IMU instance has a depth signal, it</span>
+<span class="sd">        is used in the integration instead of acceleration in the vertical</span>
+<span class="sd">        dimension.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        g : float, optional</span>
+<span class="sd">            Assume gravity (:math:`m / s^2`) is equal to this value.</span>
+<span class="sd">            Default to standard gravity.</span>
+<span class="sd">        Wn : float, optional</span>
+<span class="sd">            Cutoff frequency for second-order Butterworth lowpass filter.</span>
+<span class="sd">        k : float, optional</span>
+<span class="sd">            Scalar to apply to scale lowpass-filtered dynamic acceleration.</span>
+<span class="sd">            This scaling has the effect of making position estimates</span>
+<span class="sd">            realistic for dead-reckoning tracking purposes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        vel, pos : numpy.ndarray</span>
+<span class="sd">            Velocity and position 2D arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Acceleration, velocity, and position from q and the measured</span>
+        <span class="c1"># acceleration, get the \frac{d^2x}{dt^2}.  Retrieved sampling</span>
+        <span class="c1"># frequency assumes common frequency</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceleration</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">]</span>
+        <span class="c1"># Shift quaternions to scalar last to match convention</span>
+        <span class="n">quats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quats</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">g_v</span> <span class="o">=</span> <span class="n">rotate_vector</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">g</span><span class="p">]),</span> <span class="n">quats</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">acc_sensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceleration</span> <span class="o">-</span> <span class="n">g_v</span>
+        <span class="n">acc_space</span> <span class="o">=</span> <span class="n">rotate_vector</span><span class="p">(</span><span class="n">acc_sensor</span><span class="p">,</span> <span class="n">quats</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Low-pass Butterworth filter design</span>
+        <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">butter</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">Wn</span><span class="p">,</span> <span class="n">btype</span><span class="o">=</span><span class="s2">&quot;lowpass&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;ba&quot;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">)</span>
+        <span class="n">acc_space_f</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">filtfilt</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">acc_space</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Position and Velocity through integration, assuming 0-velocity at t=0</span>
+        <span class="n">vel</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">acc_space_f</span> <span class="o">/</span> <span class="n">k</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span>
+                                             <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Use depth derivative (on FLU) for the vertical dimension</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_depth</span><span class="p">:</span>
+            <span class="n">pos_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span>
+            <span class="n">zdiff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">pos_z</span><span class="p">))</span>
+            <span class="n">vel</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">zdiff</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">acc_space</span><span class="p">)</span>
+            <span class="n">pos</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_z</span>
+            <span class="n">pos</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">integrate</span>
+                          <span class="o">.</span><span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">vel</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dx</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span>
+                                                <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span>
+                                                 <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vel</span><span class="p">,</span> <span class="n">pos</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_acceleration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Acceleration name is the first</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">imu_var_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+    <span class="n">acceleration</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_acceleration</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return acceleration array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_angular_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Angular velocity name is the second</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">imu_var_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="n">angular_velocity</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_angular_velocity</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return angular velocity array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_magnetic_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Magnetic density name is the last one</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">imu_var_names</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="n">magnetic_density</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_magnetic_density</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return magnetic_density array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">))</span>
+
+    <span class="n">depth</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_depth</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return depth array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_sampling_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Retrieve sampling rate from one DataArray</span>
+        <span class="n">sampling_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceleration</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">]</span>
+        <span class="n">sampling_rate_units</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">acceleration</span>
+                               <span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sampling_rate_units&quot;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">sampling_rate_units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;hz&quot;</span><span class="p">:</span>
+            <span class="n">itvl</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">sampling_rate</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">itvl</span> <span class="o">=</span> <span class="n">sampling_rate</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">itvl</span><span class="p">)</span>
+
+    <span class="n">sampling_interval</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_sampling_interval</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return sampling interval</span>
+
+<span class="sd">    Assuming all `DataArray`s have the same interval, the sampling interval</span>
+<span class="sd">    is retrieved from the acceleration `DataArray`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+
+<span class="sd">    Warnings</span>
+<span class="sd">    --------</span>
+<span class="sd">    The sampling rate is retrieved from the attribute named `sampling_rate`</span>
+<span class="sd">    in the NetCDF file, which is assumed to be in Hz units.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">imutools.imu</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>

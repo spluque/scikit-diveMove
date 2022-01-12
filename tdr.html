@@ -1,16 +1,18 @@
 
-<!DOCTYPE html>
+
+<!doctype html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>TDR class &#8212; skdiveMove 0.2.4 documentation</title>
+    <title>TDR class &#8212; skdiveMove 0.2.5 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -18,10 +20,15 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bout analysis" href="bouts.html" />
-    <link rel="prev" title="Simulating bouts" href="boutsimuldemo.html" /> 
+    <link rel="prev" title="Ellipsoid modelling for calibration purposes" href="demo_ellipsoid.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -36,9 +43,9 @@
           <a href="bouts.html" title="Bout analysis"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="boutsimuldemo.html" title="Simulating bouts"
+          <a href="demo_ellipsoid.html" title="Ellipsoid modelling for calibration purposes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">TDR class</a></li> 
       </ul>
     </div>  
@@ -327,7 +334,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -370,7 +377,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -400,7 +407,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -420,7 +427,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -468,7 +475,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -488,7 +495,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -507,8 +514,8 @@ select additional data to plot.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
@@ -536,8 +543,8 @@ select additional data to plot.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
@@ -569,12 +576,13 @@ select additional data to plot.</p></li>
 <li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
 select additional data to plot.</p></li>
 <li><p><strong>concur_var_titles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
+<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot surface readings.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
@@ -606,12 +614,12 @@ select additional data to plot.</p></li>
 respectively.</p></li>
 <li><p><strong>ylim</strong> (<em>2-tuple/list</em><em>, </em><em>optional</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
 respectively.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.5.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.5.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
@@ -637,6 +645,29 @@ respectively.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="skdiveMove.TDR.read_netcdf">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tdr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'depth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.read_netcdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate object by loading Dataset from NetCDF file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>depth_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of data variable with depth measurements. Default: “depth”.</p></li>
+<li><p><strong>has_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Weather data includes speed measurements. Column name must be
+one of [“velocity”, “speed”].  Default: False.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong> – Class matches the caller.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TDRSource, ZOC, TDRPhases, or <a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR">TDR</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="skdiveMove.TDR.stamp_dives">
 <span class="sig-name descname"><span class="pre">stamp_dives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore_z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.stamp_dives" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identify the wet activity phase corresponding to each dive</p>
@@ -650,7 +681,7 @@ which phase thy are in, and the beginning and ending time
 stamps.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -685,7 +716,7 @@ stamps.</p>
 for each phase, and beginning and ending times.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -765,7 +796,7 @@ guide the operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>config_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A valid string path for TDR calibration configuration file.</p></li>
 </ul>
 </dd>
@@ -831,8 +862,8 @@ guide the operations.</p>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="boutsimuldemo.html"
-                        title="previous chapter">Simulating bouts</a></p>
+  <p class="topless"><a href="demo_ellipsoid.html"
+                        title="previous chapter">Ellipsoid modelling for calibration purposes</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="bouts.html"
                         title="next chapter">Bout analysis</a></p>
@@ -870,16 +901,16 @@ guide the operations.</p>
           <a href="bouts.html" title="Bout analysis"
              >next</a> |</li>
         <li class="right" >
-          <a href="boutsimuldemo.html" title="Simulating bouts"
+          <a href="demo_ellipsoid.html" title="Ellipsoid modelling for calibration purposes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">TDR class</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

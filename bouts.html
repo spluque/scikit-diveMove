@@ -1,16 +1,18 @@
 
-<!DOCTYPE html>
+
+<!doctype html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Bout analysis &#8212; skdiveMove 0.2.4 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.2.5 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -18,11 +20,16 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Read and write metadata" href="metadata.html" />
-    <link rel="prev" title="TDR class" href="tdr.html" /> 
+    <link rel="prev" title="TDR class" href="tdr.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -39,7 +46,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -205,7 +212,7 @@ methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
 log-frequencies of <cite>x</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -217,7 +224,7 @@ log-frequencies of <cite>x</cite>.</p>
 <p>Implementing default as from NLS method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
+<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -225,7 +232,7 @@ parameter names “a” and “lambda”.</p>
 coefs.shape[1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a>, shape (n,)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a>, shape (n,)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -238,7 +245,7 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
 </ul>
 </dd>
@@ -273,7 +280,7 @@ and x &gt;= x_break[2] is third one.</p></li>
 <dd class="field-even"><p><strong>out</strong> – DataFrame with coefficients for each process.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -285,7 +292,7 @@ and x &gt;= x_break[2] is third one.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
+<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
 </ul>
@@ -362,7 +369,7 @@ objectivity. Behaviour, 144, 1315-1332.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>See <a class="reference internal" href="boutsimuldemo.html"><span class="doc">Simulating bouts</span></a> for a detailed example.</p>
+<p>See <a class="reference internal" href="demo_simulbouts.html"><span class="doc">Simulating bouts</span></a> for a detailed example.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bouts.BoutsMLE.bec">
 <span class="sig-name descname"><span class="pre">bec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bouts/boutsmle.html#BoutsMLE.bec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsMLE.bec" title="Permalink to this definition">¶</a></dt>
@@ -376,7 +383,7 @@ with coefficients of the solution.</p>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -391,7 +398,7 @@ of a single float is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><em>pandas.DataFrame</em></a>) – DataFrame with starting values for coefficients of each process
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with starting values for coefficients of each process
 in columns.  These can come from the “broken stick” method as
 in <a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Bouts.init_pars()</span></code></a>, and will be transformed to minimize
 the first log likelihood function.</p></li>
@@ -454,7 +461,7 @@ with coefficients of the solution.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ax</p>
@@ -475,7 +482,7 @@ with coefficients of the solution.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ax</p>
@@ -541,14 +548,14 @@ probability.</p>
 <p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p>
+<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
 coefs.shape[1]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a>, shape (n,)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a>, shape (n,)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -561,7 +568,7 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
 </ul>
 </dd>
@@ -582,13 +589,13 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.4)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p></li>
+<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – An Axes instance to use as target.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ax</p>
@@ -605,7 +612,7 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v1.3.4)"><em>pandas.Series</em></a>) – Series with data to classify according to <cite>bec</cite>.</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v1.3.5)"><em>pandas.Series</em></a>) – Series with data to classify according to <cite>bec</cite>.</p></li>
 <li><p><strong>bec</strong> (<em>array_like</em>) – Array with bout-ending criteria. It is assumed to be sorted.</p></li>
 <li><p><strong>as_diff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to apply <cite>diff</cite> on <cite>x</cite> so it matches <cite>bec</cite>’s scale.</p></li>
 </ul>
@@ -614,7 +621,7 @@ coefs.shape[1]</p>
 <dd class="field-even"><p><strong>out</strong> – Integer array with the same shape as <cite>x</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -727,14 +734,14 @@ probability.</p>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

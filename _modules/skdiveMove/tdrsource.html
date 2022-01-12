@@ -1,0 +1,249 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>skdiveMove.tdrsource &#8212; skdiveMove 0.2.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="../../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">skdiveMove.tdrsource</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for skdiveMove.tdrsource</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base definition of the TDR input data</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="n">get_var_sampling_interval</span><span class="p">,</span> <span class="n">_load_dataset</span>
+
+<span class="n">_SPEED_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;velocity&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">TDRSource</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Define TDR data source</span>
+
+<span class="sd">    Use xarray.Dataset to ensure pseudo-standard metadata</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tdr_file : str</span>
+<span class="sd">        String indicating the file where the data comes from.</span>
+<span class="sd">    tdr : xarray.Dataset</span>
+<span class="sd">        Dataset with input data.</span>
+<span class="sd">    depth_name : str</span>
+<span class="sd">        Name of data variable with depth measurements.</span>
+<span class="sd">    has_speed : bool</span>
+<span class="sd">        Whether input data include speed measurements.</span>
+<span class="sd">    speed_name : str</span>
+<span class="sd">        Name of data variable with the speed measurements.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
+<span class="sd">    &gt;&gt;&gt; tdrX = diveMove2skd()</span>
+<span class="sd">    &gt;&gt;&gt; print(tdrX)  # doctest: +ELLIPSIS</span>
+<span class="sd">    Time-Depth Recorder -- Class TDR object ...</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+                 <span class="n">has_speed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tdr_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up attributes for TDRSource objects</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset : xarray.Dataset</span>
+<span class="sd">            Dataset containing depth, and optionally other DataArrays.</span>
+<span class="sd">        depth_name : str, optional</span>
+<span class="sd">            Name of data variable with depth measurements. Default: &quot;depth&quot;.</span>
+<span class="sd">        has_speed : bool, optional</span>
+<span class="sd">            Weather data includes speed measurements. Column name must be</span>
+<span class="sd">            one of [&quot;velocity&quot;, &quot;speed&quot;].  Default: False.</span>
+<span class="sd">        tdr_filename : str</span>
+<span class="sd">            Name of the file from which `dataset` originated.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span> <span class="o">=</span> <span class="n">depth_name</span>
+        <span class="n">speed_var</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                     <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_SPEED_NAMES</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">speed_var</span> <span class="ow">and</span> <span class="n">has_speed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_speed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span> <span class="o">=</span> <span class="n">speed_var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_speed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tdr_file</span> <span class="o">=</span> <span class="n">tdr_filename</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">read_netcdf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tdr_file</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+                    <span class="n">has_speed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate object by loading Dataset from NetCDF file</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tdr_file : str</span>
+<span class="sd">            As first argument for :func:`xarray.load_dataset`.</span>
+<span class="sd">        depth_name : str, optional</span>
+<span class="sd">            Name of data variable with depth measurements. Default: &quot;depth&quot;.</span>
+<span class="sd">        has_speed : bool, optional</span>
+<span class="sd">            Weather data includes speed measurements. Column name must be</span>
+<span class="sd">            one of [&quot;velocity&quot;, &quot;speed&quot;].  Default: False.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to :func:`xarray.load_dataset`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        obj : TDRSource, ZOC, TDRPhases, or TDR</span>
+<span class="sd">            Class matches the caller.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">_load_dataset</span><span class="p">(</span><span class="n">tdr_file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">cls</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="n">depth_name</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="n">has_speed</span><span class="p">,</span>
+                   <span class="n">tdr_filename</span><span class="o">=</span><span class="n">tdr_file</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span>
+        <span class="n">depth_xr</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">]</span>
+        <span class="n">depth_ser</span> <span class="o">=</span> <span class="n">depth_xr</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+        <span class="n">objcls</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Time-Depth Recorder -- Class </span><span class="si">{}</span><span class="s2"> object</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Source File&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdr_file</span><span class="p">)</span>
+        <span class="n">itv</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span>
+               <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Sampling interval&quot;</span><span class="p">,</span>
+                       <span class="n">get_var_sampling_interval</span><span class="p">(</span><span class="n">depth_xr</span><span class="p">)))</span>
+        <span class="n">nsamples</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Number of Samples&quot;</span><span class="p">,</span>
+                                          <span class="n">depth_xr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">beg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Sampling Begins&quot;</span><span class="p">,</span>
+                                     <span class="n">depth_ser</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Sampling Ends&quot;</span><span class="p">,</span>
+                                     <span class="n">depth_ser</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">dur</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Total duration&quot;</span><span class="p">,</span>
+                                     <span class="n">depth_ser</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
+                                     <span class="n">depth_ser</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">drange</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> [</span><span class="si">{1}</span><span class="s2">,</span><span class="si">{2}</span><span class="s2">]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Measured depth range&quot;</span><span class="p">,</span>
+                                              <span class="n">depth_ser</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+                                              <span class="n">depth_ser</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">others</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Other variables&quot;</span><span class="p">,</span>
+                                        <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                                         <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">])</span>
+        <span class="n">attr_list</span> <span class="o">=</span> <span class="s2">&quot;Attributes:</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">attr_list</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{0:&gt;35}</span><span class="s2">: </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="n">attr_list</span> <span class="o">=</span> <span class="n">attr_list</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">objcls</span> <span class="o">+</span> <span class="n">src</span> <span class="o">+</span> <span class="n">itv</span> <span class="o">+</span> <span class="n">nsamples</span> <span class="o">+</span> <span class="n">beg</span> <span class="o">+</span> <span class="n">end</span> <span class="o">+</span> <span class="n">dur</span> <span class="o">+</span> <span class="n">drange</span> <span class="o">+</span>
+               <span class="n">others</span> <span class="o">+</span> <span class="n">attr_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">])</span>
+
+    <span class="n">depth</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_depth</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return depth array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span><span class="p">])</span>
+
+    <span class="n">speed</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_speed</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return speed array</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.DataArray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">skdiveMove.tdrsource</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>

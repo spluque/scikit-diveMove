@@ -1,15 +1,17 @@
 
-<!DOCTYPE html>
+
+<!doctype html>
 
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; skdiveMove 0.2.4 documentation</title>
+    <title>Index &#8212; skdiveMove 0.2.5 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -17,8 +19,13 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,7 +36,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
     </div>  
@@ -50,11 +57,14 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -65,7 +75,27 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMU2Body.accel_sg">accel_sg (imutools.IMU2Body attribute)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUBase.acceleration">acceleration (imutools.IMUBase property)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUBase.allan_coefs">allan_coefs() (imutools.IMUBase method)</a>
+
+      <ul>
+        <li><a href="imutools.html#imutools.allan_coefs">(in module imutools)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.angular_velocity">angular_velocity (imutools.IMUBase property)</a>
+</li>
+      <li><a href="imutools.html#imutools.apply_ellipsoid">apply_ellipsoid() (in module imutools)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.apply_model">apply_model() (imutools.IMUcalibrate method)</a>
+</li>
       <li><a href="metadata.html#metadata.assign_xr_attrs">assign_xr_attrs() (in module metadata)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.axis_order">axis_order (imutools.IMUcalibrate attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -96,6 +126,8 @@
 </li>
       <li><a href="bouts.html#bouts.BoutsNLS">BoutsNLS (class in bouts)</a>
 </li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.build_tmodels">build_tmodels() (imutools.IMUcalibrate method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -108,20 +140,30 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tdr.html#skdiveMove.TDR.calibrate_speed">calibrate_speed() (skdiveMove.TDR method)</a>
 </li>
+      <li><a href="imutools.html#imutools.IMUBase.compute_orientation">compute_orientation() (imutools.IMUBase method)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.dead_reckon">dead_reckon() (imutools.IMUBase method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUBase.depth">depth (imutools.IMUBase property)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUBase.depth_name">depth_name (imutools.IMUBase attribute)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.describe_surfacing_durations">describe_surfacing_durations() (imutools.IMU2Body method)</a>
+</li>
       <li><a href="tdr.html#skdiveMove.TDR.detect_dive_phases">detect_dive_phases() (skdiveMove.TDR method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tdr.html#skdiveMove.TDR.detect_dives">detect_dives() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="tdr.html#skdiveMove.TDR.detect_wet">detect_wet() (skdiveMove.TDR method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tdr.html#skdiveMove.TDR.dive_stats">dive_stats() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="metadata.html#metadata.dump_config_template">dump_config_template() (in module metadata)</a>
@@ -144,6 +186,8 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMU2Body.filter_surfacings">filter_surfacings() (imutools.IMU2Body method)</a>
+</li>
       <li><a href="bouts.html#bouts.Bouts.fit">fit() (bouts.Bouts method)</a>
 
       <ul>
@@ -152,6 +196,12 @@
         <li><a href="bouts.html#bouts.BoutsNLS.fit">(bouts.BoutsNLS method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.fit_ellipsoid">fit_ellipsoid() (in module imutools)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.from_csv_nc">from_csv_nc() (imutools.IMU2Body class method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -164,13 +214,31 @@
 </li>
       <li><a href="tdr.html#skdiveMove.TDR.get_dives_details">get_dives_details() (skdiveMove.TDR method)</a>
 </li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.get_model">get_model() (imutools.IMUcalibrate method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.get_offset">get_offset() (imutools.IMUcalibrate method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMU2Body.get_orientation">get_orientation() (imutools.IMU2Body method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.get_orientations">get_orientations() (imutools.IMU2Body method)</a>
+</li>
       <li><a href="tdr.html#skdiveMove.TDR.get_phases_params">get_phases_params() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="tdr.html#skdiveMove.TDR.get_speed">get_speed() (skdiveMove.TDR method)</a>
 </li>
+      <li><a href="imutools.html#imutools.IMU2Body.get_surface_vectors">get_surface_vectors() (imutools.IMU2Body method)</a>
+</li>
       <li><a href="tdr.html#skdiveMove.TDR.get_tdr">get_tdr() (skdiveMove.TDR method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.has_depth">has_depth (imutools.IMUBase attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -178,6 +246,27 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.imu">imu (imutools.IMUBase attribute)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body">IMU2Body (class in imutools)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUBase.imu_file">imu_file (imutools.IMUBase attribute)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUBase.imu_var_names">imu_var_names (imutools.IMUBase attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase">IMUBase (class in imutools)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUcalibrate">IMUcalibrate (class in imutools)</a>
+</li>
+      <li>
+    imutools
+
+      <ul>
+        <li><a href="imutools.html#module-imutools">module</a>
+</li>
+      </ul></li>
       <li><a href="bouts.html#bouts.Bouts.init_pars">init_pars() (bouts.Bouts method)</a>
 </li>
   </ul></td>
@@ -198,6 +287,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.magnetic_density">magnetic_density (imutools.IMUBase property)</a>
+</li>
       <li>
     metadata
 
@@ -207,6 +298,8 @@
       </ul></li>
       <li><a href="bouts.html#bouts.Bouts.method">method (bouts.Bouts attribute)</a>
 </li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.models_l">models_l (imutools.IMUcalibrate attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
@@ -214,6 +307,8 @@
 
       <ul>
         <li><a href="bouts.html#module-bouts">bouts</a>
+</li>
+        <li><a href="imutools.html#module-imutools">imutools</a>
 </li>
         <li><a href="metadata.html#module-metadata">metadata</a>
 </li>
@@ -231,9 +326,29 @@
   </ul></td>
 </tr></table>
 
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUcalibrate.obs_l">obs_l (imutools.IMUcalibrate attribute)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.orient_IMU">orient_IMU() (imutools.IMU2Body method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMU2Body.orient_surfacing">orient_surfacing() (imutools.IMU2Body method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.orient_surfacings">orient_surfacings() (imutools.IMU2Body method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.orientations">orientations (imutools.IMU2Body attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUcalibrate.periods">periods (imutools.IMUcalibrate attribute)</a>
+</li>
       <li><a href="tdr.html#skdiveMove.TDR.plot">plot() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="tdr.html#skdiveMove.TDR.plot_dive_model">plot_dive_model() (skdiveMove.TDR method)</a>
@@ -244,6 +359,8 @@
         <li><a href="bouts.html#bouts.BoutsNLS.plot_ecdf">(bouts.BoutsNLS method)</a>
 </li>
       </ul></li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.plot_experiment">plot_experiment() (imutools.IMUcalibrate method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bouts.html#bouts.Bouts.plot_fit">plot_fit() (bouts.Bouts method)</a>
@@ -254,7 +371,19 @@
       </ul></li>
       <li><a href="tdr.html#skdiveMove.TDR.plot_phases">plot_phases() (skdiveMove.TDR method)</a>
 </li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.plot_standardized">plot_standardized() (imutools.IMUcalibrate method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.plot_var_model">plot_var_model() (imutools.IMUcalibrate method)</a>
+</li>
       <li><a href="tdr.html#skdiveMove.TDR.plot_zoc">plot_zoc() (skdiveMove.TDR method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.quats">quats (imutools.IMUBase attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -265,10 +394,32 @@
       <li><a href="bouts.html#bouts.random_mixexp">random_mixexp() (in module bouts)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.read_netcdf">read_netcdf() (imutools.IMUBase class method)</a>
+
+      <ul>
+        <li><a href="tdr.html#skdiveMove.TDR.read_netcdf">(skdiveMove.TDR class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMUBase.sampling_interval">sampling_interval (imutools.IMUBase property)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMUcalibrate.savgol_filter">savgol_filter() (imutools.IMUcalibrate method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.scatterIMU3D">scatterIMU3D() (imutools.IMU2Body method)</a>
+
+      <ul>
+        <li><a href="imutools.html#imutools.scatterIMU3D">(in module imutools)</a>
+</li>
+      </ul></li>
+      <li><a href="imutools.html#imutools.scatterIMU_svd">scatterIMU_svd() (in module imutools)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     skdiveMove
@@ -277,11 +428,11 @@
         <li><a href="tdr.html#module-skdiveMove">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tdr.html#skdiveMove.TDR.speed_calib_fit">speed_calib_fit (skdiveMove.TDR attribute)</a>
 </li>
       <li><a href="tdr.html#skdiveMove.TDR.stamp_dives">stamp_dives() (skdiveMove.TDR method)</a>
+</li>
+      <li><a href="imutools.html#imutools.IMU2Body.surface_details">surface_details (imutools.IMU2Body attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -291,10 +442,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tdr.html#skdiveMove.TDR">TDR (class in skdiveMove)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tdr.html#skdiveMove.TDR.time_budget">time_budget() (skdiveMove.TDR method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="imutools.html#imutools.IMU2Body.tsplotIMU_depth">tsplotIMU_depth() (imutools.IMU2Body method)</a>
+
+      <ul>
+        <li><a href="imutools.html#imutools.tsplotIMU_depth">(in module imutools)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -348,14 +505,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

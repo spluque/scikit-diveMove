@@ -1,0 +1,1300 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>imutools.imu2body &#8212; skdiveMove 0.2.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="../../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for imutools.imu2body</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Estimation of IMU orientation on body frame</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.signal</span> <span class="k">as</span> <span class="nn">sig</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>        <span class="c1"># noqa:F401</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
+<span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">animation</span>
+
+<span class="kn">from</span> <span class="nn">scipy.spatial.transform</span> <span class="kn">import</span> <span class="n">Rotation</span> <span class="k">as</span> <span class="n">R</span>  <span class="c1"># for zyx covention</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span><span class="p">,</span> <span class="n">proj3d</span>  <span class="c1"># noqa:F401</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">FancyArrowPatch</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.tdrsource</span> <span class="kn">import</span> <span class="n">_load_dataset</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="n">_add_xr_attr</span>
+<span class="kn">from</span> <span class="nn">.imu</span> <span class="kn">import</span> <span class="n">IMUBase</span><span class="p">,</span> <span class="n">_ACCEL_NAME</span><span class="p">,</span> <span class="n">_MAGNT_NAME</span>
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">normalize</span> <span class="k">as</span> <span class="n">normalize_vectors</span>
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">vangle</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;scatterIMU_svd&quot;</span><span class="p">,</span> <span class="s2">&quot;scatterIMU3D&quot;</span><span class="p">,</span> <span class="s2">&quot;tsplotIMU_depth&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;IMU2Body&quot;</span><span class="p">]</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># Add the null handler if importing as library; whatever using this library</span>
+<span class="c1"># should set up logging.basicConfig() as needed</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
+
+<span class="c1"># Plot constants</span>
+<span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">_LEG2X1_ANCHOR</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.23</span><span class="p">)</span>
+<span class="n">_LEG3X1_ANCHOR</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.23</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Arrow3D</span><span class="p">(</span><span class="n">FancyArrowPatch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subclass extending FancyArrowPatch to 3D&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Arrow3D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verts3d</span> <span class="o">=</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
+        <span class="n">xs3d</span><span class="p">,</span> <span class="n">ys3d</span><span class="p">,</span> <span class="n">zs3d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verts3d</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span> <span class="o">=</span> <span class="n">proj3d</span><span class="o">.</span><span class="n">proj_transform</span><span class="p">(</span><span class="n">xs3d</span><span class="p">,</span> <span class="n">ys3d</span><span class="p">,</span> <span class="n">zs3d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_positions</span><span class="p">((</span><span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Arrow3D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">do_3d_projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># TODO: watch for matplotlib update reinstating this method</span>
+        <span class="n">xs3d</span><span class="p">,</span> <span class="n">ys3d</span><span class="p">,</span> <span class="n">zs3d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verts3d</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span> <span class="o">=</span> <span class="n">proj3d</span><span class="o">.</span><span class="n">proj_transform</span><span class="p">(</span><span class="n">xs3d</span><span class="p">,</span> <span class="n">ys3d</span><span class="p">,</span> <span class="n">zs3d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_positions</span><span class="p">((</span><span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="scatterIMU_svd"><a class="viewcode-back" href="../../imutools.html#imutools.scatterIMU_svd">[docs]</a><span class="k">def</span> <span class="nf">scatterIMU_svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">svd</span><span class="p">,</span> <span class="n">R_ctr2i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;3D plotting of vectors and singular vector matrices</span>
+
+<span class="sd">    Plots a surface of the 2 top-most singular vectors computed from SVD</span>
+<span class="sd">    overlaid on the scatter of vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : array_like, shape (N, 3) or (3,)</span>
+<span class="sd">        Array with vectors to plot.</span>
+<span class="sd">    svd : tuple</span>
+<span class="sd">        The 3 arrays from Singular Value Decomposition (left singular</span>
+<span class="sd">        vectors, sigma, right singular vectors).</span>
+<span class="sd">    R_ctr2i : Rotation</span>
+<span class="sd">        :class:`~scipy.spatial.transforms.Rotation` object describing the</span>
+<span class="sd">        rotation from the *centered* body frame to the ``IMU`` frame.</span>
+<span class="sd">    normalize : bool, optional</span>
+<span class="sd">        Whether to normalize vectors.  Default assumes input is normalized.</span>
+<span class="sd">    center : bool, optional</span>
+<span class="sd">        Whether to center vectors (i.e. subtract the mean).  Default</span>
+<span class="sd">        assumes input is centered.</span>
+<span class="sd">    title : str, optional</span>
+<span class="sd">        Title for the plot.</span>
+<span class="sd">    animate : bool, optional</span>
+<span class="sd">        Whether to animate the plot.</span>
+<span class="sd">    animate_file : str, optional</span>
+<span class="sd">        Output file for the animation.</span>
+<span class="sd">    **kwargs : optional keyword arguments</span>
+<span class="sd">        Arguments passed to `pyplot.figure` (e.g. ``figsize``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matplotlib.axes.Axes</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">vectors_n</span> <span class="o">=</span> <span class="n">normalize_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vectors_n</span> <span class="o">=</span> <span class="n">vectors</span>
+
+    <span class="k">if</span> <span class="n">center</span><span class="p">:</span>
+        <span class="n">vectors_c</span> <span class="o">=</span> <span class="n">vectors_n</span> <span class="o">-</span> <span class="n">vectors_n</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vectors_c</span> <span class="o">=</span> <span class="n">vectors_n</span>
+
+    <span class="n">view_elev</span> <span class="o">=</span> <span class="mi">15</span>              <span class="c1"># elevation for 3D view</span>
+    <span class="c1"># Unpack SVD</span>
+    <span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span> <span class="o">=</span> <span class="n">svd</span>
+    <span class="c1"># Rows across `uu` define the eigenvectors or axes of the</span>
+    <span class="c1"># orthonormal basis</span>
+    <span class="n">sss</span> <span class="o">=</span> <span class="n">ss</span> <span class="o">*</span> <span class="mi">15</span>   <span class="c1"># scale eigenvectors by singular values</span>
+    <span class="n">xx_ax</span><span class="p">,</span> <span class="n">yy_ax</span><span class="p">,</span> <span class="n">zz_ax</span> <span class="o">=</span> <span class="n">uu</span> <span class="o">*</span> <span class="n">sss</span>  <span class="c1"># unpack the rows</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx_ax</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">xx_ax</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">yy_ax</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">yy_ax</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">zz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zz_ax</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">zz_ax</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="n">Reuler_lab</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\phi=</span><span class="si">{0:.1f}</span><span class="s2">$, $\theta=</span><span class="si">{1:.1f}</span><span class="s2">$, $\psi=</span><span class="si">{2:.1f}</span><span class="s2">$&quot;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">_euler_ctr2body</span><span class="p">(</span><span class="n">R_ctr2i</span><span class="p">)))</span>
+    <span class="c1"># Visualization of vectors</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text2D</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">Reuler_lab</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="n">view_elev</span><span class="p">)</span>
+    <span class="c1"># ax.set_aspect(0.7)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">vectors_c</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_c</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">vectors_c</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+                 <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">arrow_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;,head_width=0.1&quot;</span><span class="p">,</span> <span class="n">mutation_scale</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                      <span class="n">shrinkA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shrinkB</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">]):</span>  <span class="c1"># only first 2 PCs</span>
+        <span class="n">arrow_opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">scale_i</span> <span class="o">=</span> <span class="n">sss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Arrow3D</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">uu</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span> <span class="n">uu</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span>
+                    <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">uu</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span> <span class="n">uu</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span>
+                    <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">uu</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span> <span class="n">uu</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span>
+                    <span class="o">**</span><span class="n">arrow_opts</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">surf_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;plum&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span><span class="p">,</span> <span class="o">**</span><span class="n">surf_opts</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">animate</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">anim_update</span><span class="p">(</span><span class="n">azim</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">azim</span><span class="o">=</span><span class="n">azim</span><span class="p">,</span> <span class="n">elev</span><span class="o">=</span><span class="n">view_elev</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">,)</span>
+        <span class="n">anim</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">anim_update</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                       <span class="n">frames</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">animate_file</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_scatterIMU_svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">svd</span><span class="p">,</span> <span class="n">R_b2i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;3D plotting of vectors and singular vector matrices</span>
+
+<span class="sd">    Plots a surface of the 2 top-most singular vectors computed from SVD</span>
+<span class="sd">    overlaid on the scatter of vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : array_like, shape (N, 3) or (3,)</span>
+<span class="sd">        Array with vectors to plot.</span>
+<span class="sd">    svd : tuple</span>
+<span class="sd">        The 3 arrays from Singular Value Decomposition (left singular</span>
+<span class="sd">        vectors, sigma, right singular vectors).</span>
+<span class="sd">    R_b2i : Rotation</span>
+<span class="sd">        :class:`~scipy.spatial.transform.Rotation` object describing the</span>
+<span class="sd">        rotation from the body frame to the `IMU` frame.</span>
+<span class="sd">    normalize : bool, optional</span>
+<span class="sd">        Whether to normalize vectors.  Default assumes input is normalized.</span>
+<span class="sd">    title : str, optional</span>
+<span class="sd">        Title for the plot.</span>
+<span class="sd">    animate : bool, optional</span>
+<span class="sd">        Whether to animate the plot.</span>
+<span class="sd">    animate_file : str, optional</span>
+<span class="sd">        Output file for the animation.</span>
+<span class="sd">    **kwargs : optional keyword arguments</span>
+<span class="sd">        Arguments passed to `pyplot.figure` (e.g. ``figsize``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matplotlib.axes.Axes</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">vectors_n</span> <span class="o">=</span> <span class="n">normalize_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vectors_n</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">vectors_n</span> <span class="o">-=</span> <span class="n">vectors_n</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">view_elev</span> <span class="o">=</span> <span class="mi">15</span>              <span class="c1"># elevation for 3D view</span>
+    <span class="c1"># Unpack SVD</span>
+    <span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span> <span class="o">=</span> <span class="n">svd</span>
+    <span class="c1"># Rows across `uu` define the eigenvectors or axes of the</span>
+    <span class="c1"># orthonormal basis</span>
+    <span class="n">sss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span>   <span class="c1"># scale singular vectors</span>
+    <span class="n">xx_ax</span><span class="p">,</span> <span class="n">yy_ax</span><span class="p">,</span> <span class="n">zz_ax</span> <span class="o">=</span> <span class="n">uu</span> <span class="o">*</span> <span class="n">sss</span>  <span class="c1"># unpack the rows</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx_ax</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">-</span><span class="n">xx_ax</span><span class="p">[:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">yy_ax</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">-</span><span class="n">yy_ax</span><span class="p">[:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">zz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zz_ax</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">-</span><span class="n">zz_ax</span><span class="p">[:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="n">Reuler_lab</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\phi=</span><span class="si">{0:.1f}</span><span class="s2">$, $\theta=</span><span class="si">{1:.1f}</span><span class="s2">$, $\psi=</span><span class="si">{2:.1f}</span><span class="s2">$&quot;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">_euler_ctr2body</span><span class="p">(</span><span class="n">R_b2i</span><span class="p">)))</span>
+    <span class="c1"># Visualization of vectors</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text2D</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">Reuler_lab</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="n">view_elev</span><span class="p">)</span>
+    <span class="c1"># ax.set_aspect(0.7)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">vectors_n</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vectors_n</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">vectors_n</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+                 <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">arrow_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;|-|&gt;,head_width=0.1&quot;</span><span class="p">,</span> <span class="n">mutation_scale</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                      <span class="n">shrinkA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shrinkB</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">]):</span>  <span class="c1"># only last 2 PAs</span>
+        <span class="n">arrow_opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">scale_i</span> <span class="o">=</span> <span class="n">sss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Arrow3D</span><span class="p">((</span><span class="o">-</span><span class="p">(</span><span class="n">uu</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span> <span class="n">uu</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span>
+                    <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">uu</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span> <span class="n">uu</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span>
+                    <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">uu</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span> <span class="n">uu</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_i</span><span class="p">),</span>
+                    <span class="o">**</span><span class="n">arrow_opts</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">surf_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;plum&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span><span class="p">,</span> <span class="o">**</span><span class="n">surf_opts</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">animate</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">anim_update</span><span class="p">(</span><span class="n">azim</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">azim</span><span class="o">=</span><span class="n">azim</span><span class="p">,</span> <span class="n">elev</span><span class="o">=</span><span class="n">view_elev</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">,)</span>
+        <span class="n">anim</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">anim_update</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                       <span class="n">frames</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">animate_file</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="scatterIMU3D"><a class="viewcode-back" href="../../imutools.html#imutools.scatterIMU3D">[docs]</a><span class="k">def</span> <span class="nf">scatterIMU3D</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">col_vector</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">animate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">cbar_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;3D plotting of vectors along with depth</span>
+
+<span class="sd">    Scatter plot of vectors, colored by depth.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : array_like, shape (N, 3) or (3,)</span>
+<span class="sd">        Array with vectors to plot.</span>
+<span class="sd">    col_vector : array_like, shape (N,)</span>
+<span class="sd">        The array to be used for coloring symbols.</span>
+<span class="sd">    normalize : bool, optional</span>
+<span class="sd">        Whether to normalize vectors.</span>
+<span class="sd">    title : str, optional</span>
+<span class="sd">        Title for the plot.</span>
+<span class="sd">    animate : bool, optional</span>
+<span class="sd">        Whether to animate the plot.</span>
+<span class="sd">    animate_file : str</span>
+<span class="sd">        Output file for the animation.</span>
+<span class="sd">    cbar_label : str, optional</span>
+<span class="sd">        Title for the color bar.</span>
+<span class="sd">    **kwargs : optional keyword arguments</span>
+<span class="sd">        Arguments passed to `pyplot.figure` (e.g. ``figsize``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matplotlib.axes.Axes</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">view_elev</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">vecs</span> <span class="o">=</span> <span class="n">normalize_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vecs</span> <span class="o">=</span> <span class="n">vectors</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="n">view_elev</span><span class="p">)</span>
+    <span class="c1"># ax.set_aspect(0.7)</span>
+    <span class="n">pts3d</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">vecs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vecs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">vecs</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+                         <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">col_vector</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">)</span>
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pts3d</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                        <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cbar_label</span><span class="p">:</span>
+        <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">cbar_label</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">animate</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">anim_update</span><span class="p">(</span><span class="n">azim</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">azim</span><span class="o">=</span><span class="n">azim</span><span class="p">,</span> <span class="n">elev</span><span class="o">=</span><span class="n">view_elev</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">,)</span>
+        <span class="n">anim</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">anim_update</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                       <span class="n">frames</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">animate_file</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="tsplotIMU_depth"><a class="viewcode-back" href="../../imutools.html#imutools.tsplotIMU_depth">[docs]</a><span class="k">def</span> <span class="nf">tsplotIMU_depth</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot depth and each column of (N,3) array</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : xarray.DataArray</span>
+<span class="sd">        Array with columns to plot in subplot.</span>
+<span class="sd">    depth : xarray.DataArray</span>
+<span class="sd">        Array with depth measurements.</span>
+<span class="sd">    **kwargs : optional keyword arguments</span>
+<span class="sd">        Arguments passed to :func:`~matplotlib.pyplot.subplots`</span>
+<span class="sd">        (e.g. ``figsize``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array_like</span>
+<span class="sd">        Array with :class:`matplotlib.axes.Axes` instances.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Depth [m]&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+    <span class="n">depth</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">vectors</span><span class="p">[:,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">dlocator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">AutoDateLocator</span><span class="p">(</span><span class="n">minticks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">maxticks</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+        <span class="n">dformatter</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">ConciseDateFormatter</span><span class="p">(</span><span class="n">dlocator</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">dlocator</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">dformatter</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelrotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_euler_ctr2body</span><span class="p">(</span><span class="n">R_ctr2i</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper function to compute Euler angles from the body frame</span>
+
+<span class="sd">    The rotation obtained from SVD on the covariance matrix is for the</span>
+<span class="sd">    basis defined by the *centered* data, so pitch and roll refer to the</span>
+<span class="sd">    backward facing animal.  Flipping the sign of these two angles makes</span>
+<span class="sd">    them relative to the forward facing animal.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    R_ctr2i : Rotation</span>
+<span class="sd">        `Rotation` object describing the rotation from the *centered* body</span>
+<span class="sd">        frame to the `IMU` frame.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray, shape (3,)</span>
+<span class="sd">        Array with `x`, `y`, and `z&#39; Euler angles</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">euler_ctr</span> <span class="o">=</span> <span class="n">R_ctr2i</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">euler_ctr</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">euler_ctr</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">euler_ctr</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="IMU2Body"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body">[docs]</a><span class="k">class</span> <span class="nc">IMU2Body</span><span class="p">(</span><span class="n">IMUBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;IMU coordinate frame transformation framework</span>
+
+<span class="sd">    The framework is based on the analytical approach taken in TagTools</span>
+<span class="sd">    (Matlab).  However, the estimation of the IMU orientation uses the</span>
+<span class="sd">    covariance matrix, rather than the unscaled correlation (outer product)</span>
+<span class="sd">    of acceleration as the input for Singular Value Decomposition.</span>
+
+<span class="sd">    In addition to attributes in :class:`IMUBase`, ``IMU2Body`` adds the</span>
+<span class="sd">    attributes listed below.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    surface_details : pandas.DataFrame</span>
+<span class="sd">    accel_sg : pandas.DataFrame</span>
+<span class="sd">        Smoothed acceleration signals, if so requested.  Otherwise, a</span>
+<span class="sd">        pointer to the input acceleration signals.</span>
+<span class="sd">    orientations : pandas.DataFrame</span>
+<span class="sd">        A summary table describing the orientation of the IMU relative to</span>
+<span class="sd">        the body frame for each surface period.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Construct IMU2Body from two accessible DataFrame objects</span>
+
+<span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
+<span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
+<span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc.</span>
+<span class="sd">    ...         resource_filename(&quot;skdiveMove&quot;,</span>
+<span class="sd">    ...                           osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
+<span class="sd">    ...                                    &quot;gert_imu_frame.nc&quot;)))</span>
+<span class="sd">    &gt;&gt;&gt; icsv = (pkg_rsrc.</span>
+<span class="sd">    ...         resource_filename(&quot;skdiveMove&quot;,</span>
+<span class="sd">    ...                           osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
+<span class="sd">    ...                                    &quot;gert_long_srfc.csv&quot;)))</span>
+
+<span class="sd">    Apply Savitzky-Golay filter to acceleration to use as source data for</span>
+<span class="sd">    Singular Value Decomposition.  The required parameters for the filter</span>
+<span class="sd">    are (in a tuple): 1) window length and 2) polynomial order, in that</span>
+<span class="sd">    order.</span>
+
+<span class="sd">    &gt;&gt;&gt; imu2whale = IMU2Body.from_csv_nc(icsv, icdf, savgol_parms=(99, 2))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_details</span><span class="p">,</span> <span class="n">savgol_parms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up attributes required for estimation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_details : pandas.DataFrame</span>
+<span class="sd">            Table with details of surfacing intervals defining the periods</span>
+<span class="sd">            to be used for estimating the orientation of the IMU.  It must</span>
+<span class="sd">            have columns named `beg.surface`, `end.surface`, and</span>
+<span class="sd">            `beg.next.desc` as `datetime64` date type.  These indicate the</span>
+<span class="sd">            beginning and end timestamps, and timestamps for the beginning</span>
+<span class="sd">            of descent after the surface period, respectively, for each</span>
+<span class="sd">            surfacing period to analyze in the `imu` object.  The index of</span>
+<span class="sd">            this DataFrame should be a datetime indicating the end of</span>
+<span class="sd">            ascent of the last dive prior to the beginning of the surface</span>
+<span class="sd">            segment.  This is the typical output `data.frame` from</span>
+<span class="sd">            diveMove&#39;s `diveStats` function.</span>
+<span class="sd">        savgol_parms : tuple, optional</span>
+<span class="sd">            A 2-element tuple with the window length and polynomial order</span>
+<span class="sd">            for the Savitzky-Golay filter to smooth acceleration.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to the `IMUBase.__init__` for instantiation,</span>
+<span class="sd">            except `has_depth` because the input `Dataset` is assumed to</span>
+<span class="sd">            have a depth `DataArray`.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        `IMU2Body.from_csv_nc` : Instantiate from NetCDF and CSV files.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IMU2Body</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">has_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span> <span class="o">=</span> <span class="n">surface_details</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceleration</span>  <span class="c1"># NOT A COPY</span>
+        <span class="k">if</span> <span class="n">savgol_parms</span><span class="p">:</span>
+            <span class="n">win_width</span><span class="p">,</span> <span class="n">polyord</span> <span class="o">=</span> <span class="n">savgol_parms</span>
+            <span class="n">acc_sg</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">acc</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">win_width</span><span class="p">,</span> <span class="n">polyord</span><span class="p">,</span>
+                                       <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">accel_sg</span> <span class="o">=</span> <span class="n">acc</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">acc_sg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">accel_sg</span> <span class="o">=</span> <span class="n">acc</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: Savitzky-Golay filter</span><span class="se">\n</span><span class="s2">&quot;</span>
+               <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s2">&quot;today&quot;</span><span class="p">)</span>
+                       <span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">)))</span>
+        <span class="n">_add_xr_attr</span><span class="p">(</span><span class="n">accel_sg</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accel_sg</span> <span class="o">=</span> <span class="n">accel_sg</span>
+
+<div class="viewcode-block" id="IMU2Body.from_csv_nc"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.from_csv_nc">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv_nc</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface_details_csv</span><span class="p">,</span> <span class="n">imu_nc</span><span class="p">,</span> <span class="n">endasc_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">beg_surface_col</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">end_surface_col</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                    <span class="n">beg_next_desc_col</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">savgol_parms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">load_dataset_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create IMU2Body from NetCDF and CSV surface details files</span>
+
+<span class="sd">        Utility function to facilitate reading and reshaping data files</span>
+<span class="sd">        into and IMU2Body instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_details_csv : str</span>
+<span class="sd">            Path to CSV file with details of long surface intervals.</span>
+<span class="sd">        imu_nc : str</span>
+<span class="sd">            Path to NetCDF file with IMU data.</span>
+<span class="sd">        endasc_col : int</span>
+<span class="sd">            Index of the column with the timestamps identifying the end of</span>
+<span class="sd">            ascent.</span>
+<span class="sd">        beg_surface_col : int</span>
+<span class="sd">            Index of the column with the timestamps identifying the</span>
+<span class="sd">            beginning of the surface interval.</span>
+<span class="sd">        end_surface_col : int</span>
+<span class="sd">            Index of the column with the timestamps identifying the end of</span>
+<span class="sd">            the surface interval.</span>
+<span class="sd">        beg_next_desc_col : int</span>
+<span class="sd">            Index of the column with the timestamps identifying the</span>
+<span class="sd">            beginning of the next interval.</span>
+<span class="sd">        savgol_parms : tuple, optional</span>
+<span class="sd">            A 2-element tuple with the window length and polynomial order</span>
+<span class="sd">            for the Savitzky-Golay filter to smooth acceleration.</span>
+<span class="sd">        load_dataset_kwargs : dict, optional</span>
+<span class="sd">            Dictionary of optional keyword arguments passed to</span>
+<span class="sd">            :func:`xarray.load_dataset`.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Additional arguments passed to :meth:`IMUBase.__init__` method,</span>
+<span class="sd">            except ``has_depth`` or ``imu_filename``.  The input</span>
+<span class="sd">            ``Dataset`` is assumed to have a depth ``DataArray``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `IMU2Body`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Read CSV</span>
+        <span class="n">parse_date_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">beg_surface_col</span><span class="p">,</span> <span class="n">end_surface_col</span><span class="p">,</span>
+                           <span class="n">beg_next_desc_col</span><span class="p">]</span>
+        <span class="n">srfc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">surface_details_csv</span><span class="p">,</span>
+                              <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="n">endasc_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">parse_date_cols</span><span class="p">,</span>
+                              <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="n">srfc_col_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;endasc&quot;</span><span class="p">,</span> <span class="s2">&quot;beg.surface&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;end.surface&quot;</span><span class="p">,</span> <span class="s2">&quot;beg.next.desc&quot;</span><span class="p">]</span>
+        <span class="n">srfc_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">srfc_col_names</span>
+        <span class="n">srfc_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">srfc_col_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Read NetCDF</span>
+        <span class="n">imu</span> <span class="o">=</span> <span class="n">_load_dataset</span><span class="p">(</span><span class="n">imu_nc</span><span class="p">,</span> <span class="o">**</span><span class="n">load_dataset_kwargs</span><span class="p">)</span>
+
+        <span class="n">ocls</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">srfc_df</span><span class="p">,</span> <span class="n">savgol_parms</span><span class="o">=</span><span class="n">savgol_parms</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">imu</span><span class="p">,</span>
+                   <span class="n">imu_filename</span><span class="o">=</span><span class="n">imu_nc</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ocls</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">super_str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">IMU2Body</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+        <span class="n">srfc_dur_summary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe_surfacing_durations</span><span class="p">()</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Surface segment duration summary:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">super_str</span> <span class="o">+</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srfc_dur_summary</span><span class="p">))</span>
+
+<div class="viewcode-block" id="IMU2Body.describe_surfacing_durations"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.describe_surfacing_durations">[docs]</a>    <span class="k">def</span> <span class="nf">describe_surfacing_durations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a summary of surfacing durations</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.Series</span>
+<span class="sd">            Summary description of durations</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        filter_surfacings</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srfc_dur</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="p">[</span><span class="s2">&quot;end.surface&quot;</span><span class="p">]</span> <span class="o">-</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="p">[</span><span class="s2">&quot;beg.surface&quot;</span><span class="p">])</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">srfc_dur</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_surface_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return mask dictionary for given index in surface details table</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_idx : datetime64</span>
+<span class="sd">            Index in surface details table to be analyzed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mask : dict</span>
+<span class="sd">            Boolean array.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Isolate surface segment</span>
+        <span class="n">tlims</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">surface_idx</span><span class="p">,</span>
+                                          <span class="p">[</span><span class="s2">&quot;beg.surface&quot;</span><span class="p">,</span> <span class="s2">&quot;end.surface&quot;</span><span class="p">]])</span>
+        <span class="c1"># Retrieve sampling rate from one of DataArray</span>
+        <span class="n">itvl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_interval</span>
+        <span class="n">left_lim</span> <span class="o">=</span> <span class="n">tlims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">itvl</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="n">mask_d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">tlims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">left_lim</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">mask_d</span>
+
+<div class="viewcode-block" id="IMU2Body.get_surface_vectors"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_surface_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">get_surface_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Subset vectors of given name from IMU object for given index</span>
+
+<span class="sd">        Return vectors of given name from IMU object for given index in</span>
+<span class="sd">        surface details table.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_idx : datetime64</span>
+<span class="sd">            Index in surface details table to be analyzed.</span>
+<span class="sd">        name : str, {&quot;acceleration&quot;, &quot;magnetic_density&quot;, &quot;depth&quot;}</span>
+<span class="sd">            Name of the vector array to subset.</span>
+<span class="sd">        smoothed_accel : bool, optional</span>
+<span class="sd">            Whether to return the smoothed acceleration (if</span>
+<span class="sd">            ``name=&quot;acceleration&quot;``)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        vectors : xarray.DataArray</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">_ACCEL_NAME</span><span class="p">,</span> <span class="n">_MAGNT_NAME</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;name must be one of &quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span>
+                                             <span class="n">names</span><span class="p">))</span>
+
+        <span class="c1"># Isolate surface segment</span>
+        <span class="n">sfci_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_surface_mask</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">)</span>
+        <span class="c1"># Apply mask</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">smoothed_accel</span><span class="p">:</span>
+                <span class="n">sfci_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accel_sg</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sfci_mask</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sfci_vector</span> <span class="o">=</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_ACCEL_NAME</span><span class="p">)</span>
+                               <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sfci_mask</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">sfci_vector</span> <span class="o">=</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_MAGNT_NAME</span><span class="p">)</span>
+                           <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sfci_mask</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sfci_vector</span> <span class="o">=</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">)</span>
+                           <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sfci_mask</span><span class="p">])</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">sfci_vector</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IMU2Body.get_orientation"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">get_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute orientation for a given index in surface details table</span>
+
+<span class="sd">        The orientation is computed via Singular Value Decomposition (SVD),</span>
+<span class="sd">        assuming that the chosen IMU data correspond to the animal close to</span>
+<span class="sd">        the surface and moving with negligible pitching and rolling</span>
+<span class="sd">        motions.</span>
+
+<span class="sd">        The function returns the rotation from the animal body frame to the</span>
+<span class="sd">        IMU frame, along with the SVD matrices.  Note that a right-handed</span>
+<span class="sd">        coordinate system is assumed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_idx : datetime64</span>
+<span class="sd">            Index in surface details table to be analyzed.</span>
+<span class="sd">        plot : bool, optional</span>
+<span class="sd">            Whether to generate a plot of the estimate</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to :meth:`scatterIMU_svd`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Rotation, (U, S, V) : tuple</span>
+<span class="sd">            :class:`~scipy.spatial.transform.Rotation` object with</span>
+<span class="sd">            potentially modified left singular vectors from Singular Value</span>
+<span class="sd">            Decomposition (SVD), and full matrices from SVD (left singular</span>
+<span class="sd">            vectors, sigma, and right singular vectors).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The reference frame for the output</span>
+<span class="sd">        :class:`~scipy.spatial.transform.Rotation` object is defined by the</span>
+<span class="sd">        *centered* acceleration vectors.  All three components of this</span>
+<span class="sd">        reference frame point in the positive direction of the centered</span>
+<span class="sd">        data.  Furthermore, this rotation is not identical to the left</span>
+<span class="sd">        singular vectors because it has been flipped 180 degrees so that</span>
+<span class="sd">        the rotated acceleration is negatively related to the depth</span>
+<span class="sd">        gradient, as it should.  Therefore, a copy of that basis was</span>
+<span class="sd">        transformed by flipping the signs of these components so as to</span>
+<span class="sd">        match the right-handed coordinate system assumed in the class.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Isolate surface segment</span>
+        <span class="n">sfci_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="s2">&quot;acceleration&quot;</span><span class="p">,</span>
+                                            <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sfci_depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">)</span>
+        <span class="c1"># Normalize vectors</span>
+        <span class="n">sfci_acc_n</span> <span class="o">=</span> <span class="n">normalize_vectors</span><span class="p">(</span><span class="n">sfci_acc</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+        <span class="c1"># Center vectors</span>
+        <span class="n">sfci_acc_mu</span> <span class="o">=</span> <span class="n">sfci_acc_n</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">sfci_acc_ctr</span> <span class="o">=</span> <span class="n">sfci_acc_n</span> <span class="o">-</span> <span class="n">sfci_acc_mu</span>
+        <span class="c1"># For computing the covariance matrix, it doesn&#39;t really matter</span>
+        <span class="c1"># whether we use centered data or not, as the operation</span>
+        <span class="c1"># intrinsically centers anyway</span>
+        <span class="n">sfci_acc_cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">sfci_acc_ctr</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Singular value decomposition of the covariance matrix (i.e. PCA)</span>
+        <span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">sfci_acc_cov</span><span class="p">)</span>
+        <span class="n">Rfull</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">uu</span><span class="p">)</span>
+        <span class="n">Reuler</span> <span class="o">=</span> <span class="n">Rfull</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
+        <span class="n">eulers_lab</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$\phi=</span><span class="si">{0:.1f}</span><span class="s2">$, $\theta=</span><span class="si">{1:.1f}</span><span class="s2">$, $\psi=</span><span class="si">{2:.1f}</span><span class="s2">$&quot;</span>
+        <span class="n">eulers_maybe_lab</span> <span class="o">=</span> <span class="s2">&quot;Candidate Euler angles: &quot;</span> <span class="o">+</span> <span class="n">eulers_lab</span>
+        <span class="n">eulers_final_lab</span> <span class="o">=</span> <span class="s2">&quot;Adjusted Euler angles: &quot;</span> <span class="o">+</span> <span class="n">eulers_lab</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">eulers_maybe_lab</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">Reuler</span><span class="p">)))</span>
+        <span class="n">sfci_acc_ctr_body</span> <span class="o">=</span> <span class="n">Rfull</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">sfci_acc_ctr</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Check that relationship between acceleration along the</span>
+        <span class="c1"># longitudinal axis and depth derivative is negative</span>
+        <span class="n">sfci_depth_1d</span> <span class="o">=</span> <span class="n">sfci_depth</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">accx_depth_coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">sfci_acc_ctr_body</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                                     <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">sfci_depth_1d</span><span class="p">),</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Acceleration ~ $\nabla$Depth $b_1$=</span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accx_depth_coef</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">accx_depth_coef</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">Rfull</span> <span class="o">=</span> <span class="n">Rfull</span> <span class="o">*</span> <span class="n">R</span><span class="o">.</span><span class="n">from_euler</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="n">Reuler</span> <span class="o">=</span> <span class="n">Rfull</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">eulers_final_lab</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">Reuler</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;IMU-Frame Centered Acceleration [g]&quot;</span><span class="p">)</span>
+            <span class="n">animate</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;animate&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">surface_idx_str</span> <span class="o">=</span> <span class="n">surface_idx</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S&quot;</span><span class="p">)</span>
+            <span class="n">animate_file</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;animate_file&quot;</span><span class="p">,</span>
+                                      <span class="p">(</span><span class="s2">&quot;imu2whale_</span><span class="si">{}</span><span class="s2">.mp4&quot;</span>
+                                       <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">surface_idx_str</span><span class="p">)))</span>
+            <span class="n">scatterIMU_svd</span><span class="p">(</span><span class="n">sfci_acc_ctr</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">),</span> <span class="n">Rfull</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                           <span class="n">animate</span><span class="o">=</span><span class="n">animate</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="n">animate_file</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">Rfull</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="IMU2Body.get_orientations"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_orientations">[docs]</a>    <span class="k">def</span> <span class="nf">get_orientations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Obtain orientation for all periods in surface details table</span>
+
+<span class="sd">        A quality index (``q``) for each estimate is calculated as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">           q = \frac{s_{3}}{s_{2}}</span>
+
+<span class="sd">        where the dividend and divisor are the singular values for the</span>
+<span class="sd">        third and second singular vectors, respectively.  A second</span>
+<span class="sd">        indicator of the quality of the estimates is given as the standard</span>
+<span class="sd">        deviation of the projection of the acceleration vector onto the</span>
+<span class="sd">        second singular vector (i.e. pitching axis).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            DataFrame indexed the by the rows of the surface details table,</span>
+<span class="sd">            and having the following columns:</span>
+
+<span class="sd">            - ``R``: Rotation</span>
+<span class="sd">            - ``SVD``: SVD matrices</span>
+<span class="sd">            - ``quality``: Tuple (quality index, std) for the estimate</span>
+<span class="sd">            - ``phi``: Roll angle (degrees) from body to IMU frame</span>
+<span class="sd">            - ``theta``: Pitch angle (degrees) from body to IMU frame</span>
+<span class="sd">            - ``psi``: Yaw angle (degrees) from body to IMU frame</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        get_orientation</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">srfcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span>
+        <span class="n">subd_l</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;SVD&quot;</span><span class="p">,</span> <span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="s2">&quot;psi&quot;</span><span class="p">]</span>
+        <span class="c1"># Be careful associating a new sub-dictionary here!</span>
+        <span class="n">orientations</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">subd_l</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">srfcs</span><span class="o">.</span><span class="n">index</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">orientations</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Surface Period: </span><span class="si">{}</span><span class="s2">&quot;</span>
+            <span class="n">idx_str</span> <span class="o">=</span> <span class="n">idx</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx_str</span><span class="p">))</span>
+            <span class="n">Ridx</span><span class="p">,</span> <span class="n">svd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span> <span class="o">=</span> <span class="n">svd</span>
+            <span class="n">acc_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;acceleration&quot;</span><span class="p">,</span>
+                                               <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">acc_idx</span> <span class="o">=</span> <span class="n">normalize_vectors</span><span class="p">(</span><span class="n">acc_idx</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+            <span class="n">acc_theta_sd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">acc_idx</span> <span class="o">@</span> <span class="n">uu</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">orientations</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;quality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ss</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">ss</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                            <span class="n">acc_theta_sd</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="n">orientations</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ridx</span>
+            <span class="n">orientations</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;SVD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">svd</span>
+            <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">psi</span> <span class="o">=</span> <span class="n">_euler_ctr2body</span><span class="p">(</span><span class="n">Ridx</span><span class="p">)</span>
+            <span class="n">orientations</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;phi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">phi</span>
+            <span class="n">orientations</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">theta</span>
+            <span class="n">orientations</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;psi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">psi</span>
+
+        <span class="n">orientations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">orientations</span><span class="p">,</span>
+                                              <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+        <span class="n">orientations</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                  <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span> <span class="o">=</span> <span class="n">orientations</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">orientations</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IMU2Body.orient_surfacing"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_surfacing">[docs]</a>    <span class="k">def</span> <span class="nf">orient_surfacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">R_b2i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply orientation for a given index in surface details table</span>
+
+<span class="sd">        Re-orient acceleration and magnetic density of IMU object relative</span>
+<span class="sd">        to body frame, and return re-oriented IMU object.  Note that the</span>
+<span class="sd">        provided ``R_b2i`` must describe the rotation from the body frame</span>
+<span class="sd">        to the IMU frame.  The opposite rotation is applied to the</span>
+<span class="sd">        acceleration and magnetic field vectors of the selected surface</span>
+<span class="sd">        segment to orient the data in the body frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_idx : datetime64</span>
+<span class="sd">            Index in surface details table to be analyzed.</span>
+<span class="sd">        R_b2i : Rotation</span>
+<span class="sd">            :class:`~scipy.spatial.transform.Rotation` object representing</span>
+<span class="sd">            the rotation from the body frame to the IMU frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.Dataset</span>
+<span class="sd">            The re-oriented IMU object.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        orient_surfacings</span>
+<span class="sd">        orient_IMU</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sfci_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_surface_mask</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">)</span>
+        <span class="n">imu_sfci</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sfci_mask</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="n">imu_sfci</span><span class="o">.</span><span class="n">acceleration</span>
+        <span class="n">magnt</span> <span class="o">=</span> <span class="n">imu_sfci</span><span class="o">.</span><span class="n">magnetic_density</span>
+        <span class="n">acc_body</span> <span class="o">=</span> <span class="n">R_b2i</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">acc</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">magnt_body</span> <span class="o">=</span> <span class="n">R_b2i</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">magnt</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">imu_sfci</span><span class="o">.</span><span class="n">acceleration</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">acc_body</span>
+        <span class="n">imu_sfci</span><span class="o">.</span><span class="n">magnetic_density</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">magnt_body</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">imu_sfci</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IMU2Body.orient_surfacings"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_surfacings">[docs]</a>    <span class="k">def</span> <span class="nf">orient_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R_all</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply orientation to all periods in surface details table</span>
+
+<span class="sd">        If the ``orientations`` attribute was filled, use it to build</span>
+<span class="sd">        multi-index dataframe, othewise, fill it.</span>
+
+<span class="sd">        This method orients each segment independently, as opposed to a</span>
+<span class="sd">        &quot;smooth&quot; transition between segments.  Use</span>
+<span class="sd">        :meth:`IMU2Body.orient_IMU` once satisfied with the results from</span>
+<span class="sd">        individual segments to achieve a smooth adjustment of orientation</span>
+<span class="sd">        across segments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        R_all : Rotation, optional</span>
+<span class="sd">            A :class:`~scipy.spatial.transform.Rotation` object</span>
+<span class="sd">            representing the rotation from the *centered* body frame to the</span>
+<span class="sd">            IMU frame to be applied to all surface periods.  Default is to</span>
+<span class="sd">            use the period-specific rotation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.Dataset</span>
+<span class="sd">            Dataset with the re-oriented surface IMU objects.  If ``R_all``</span>
+<span class="sd">            was not provided, the Dataset contains an additional coordinate</span>
+<span class="sd">            representing the surfacing period for each segment.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        orient_surfacing</span>
+<span class="sd">        orient_IMU</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating orientations&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_orientations</span><span class="p">()</span>
+
+        <span class="n">sfces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="n">R_all</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">sfci</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orient_surfacing</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">R_all</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sfci</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orient_surfacing</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">])</span>
+
+            <span class="n">sfces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sfci</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sfces</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">index</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="IMU2Body.orient_IMU"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_IMU">[docs]</a>    <span class="k">def</span> <span class="nf">orient_IMU</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R_all</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply orientations to the IMU object</span>
+
+<span class="sd">        Use the rotations for each surface period segment to re-orient the</span>
+<span class="sd">        IMU object to the animal frame.  Alternatively, apply the supplied</span>
+<span class="sd">        rotation to the entire IMU object.</span>
+
+<span class="sd">        An overview of the re-orientation process is illustrated below.</span>
+
+<span class="sd">        .. image:: .static/images/time_series_rotation.png</span>
+<span class="sd">           :width: 100%</span>
+
+<span class="sd">        Each surface segment :math:`s_i`, delineated by beginning and</span>
+<span class="sd">        ending times :math:`t_{0}^{s_i}` and :math:`t_{1}^{s_i}`</span>
+<span class="sd">        (:math:`i=1` to :math:`i=n`), respectively, allows for an estimate</span>
+<span class="sd">        of the `IMU` device orientation on the animal.  The corresponding</span>
+<span class="sd">        rotation :math:`R_{s_{i}}` for transforming data from the `IMU`</span>
+<span class="sd">        frame to the animal frame is applied to the data segments in the</span>
+<span class="sd">        second line above, from the beginning of the deployment at</span>
+<span class="sd">        :math:`t_0` to the end at :math:`t_k`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        R_all : Rotation, optional</span>
+<span class="sd">            A :class:`~scipy.spatial.transform.Rotation` object</span>
+<span class="sd">            representing the rotation from the *centered* body frame to the</span>
+<span class="sd">            IMU frame to be applied to the entire `IMU` object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.Dataset</span>
+<span class="sd">            Dataset with the re-oriented IMU object.  If ``R_all`` was not</span>
+<span class="sd">            provided, the Dataset contains an additional coordinate</span>
+<span class="sd">            representing the surfacing period for each segment.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        orient_surfacing</span>
+<span class="sd">        orient_surfacings</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating orientations&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_orientations</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">orient_segment</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">R_seg</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Re-orienting from </span><span class="si">{0}</span><span class="s2"> to </span><span class="si">{1}</span><span class="s2">&quot;</span>
+                        <span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">seg</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                                 <span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S.</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="n">item</span><span class="p">()),</span>
+                                <span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                 <span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S.</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="n">item</span><span class="p">())))</span>
+            <span class="n">acc</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">acceleration</span>
+            <span class="n">magnt</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">magnetic_density</span>
+            <span class="n">acc_b</span> <span class="o">=</span> <span class="n">R_seg</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">magnt_b</span> <span class="o">=</span> <span class="n">R_seg</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">magnt</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">seg</span><span class="o">.</span><span class="n">acceleration</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">acc_b</span>
+            <span class="n">seg</span><span class="o">.</span><span class="n">magnetic_density</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">magnt_b</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
+
+        <span class="n">imu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">R_all</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">imu_l</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># Subset first segment (start through beginning of descent into</span>
+            <span class="c1"># dive at end of first surface period)</span>
+            <span class="n">next_desc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;beg.next.desc&quot;</span><span class="p">]</span>
+            <span class="c1"># Dealing with annoying copy/view.  Drop the last index to</span>
+            <span class="c1"># avoid duplicates</span>
+            <span class="n">itvl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_interval</span>
+            <span class="n">left_lim</span> <span class="o">=</span> <span class="n">next_desc</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">itvl</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+            <span class="n">sel_d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">left_lim</span><span class="p">))</span>
+            <span class="n">seg0</span> <span class="o">=</span> <span class="n">orient_segment</span><span class="p">(</span><span class="n">imu</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sel_d</span><span class="p">],</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;R&quot;</span><span class="p">])</span>
+            <span class="n">imu_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seg0</span><span class="p">)</span>
+            <span class="c1"># Re-orient the middle section from the beginning of first dive</span>
+            <span class="c1"># in prior diving section through beginning of next dive in</span>
+            <span class="c1"># next diving section</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="n">next_desc_i</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span>
+                               <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;beg.next.desc&quot;</span><span class="p">])</span>
+                <span class="n">left_lim</span> <span class="o">=</span> <span class="n">next_desc_i</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">itvl</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+                <span class="n">sel_d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">next_desc</span><span class="p">,</span> <span class="n">left_lim</span><span class="p">))</span>
+                <span class="n">seg_i</span> <span class="o">=</span> <span class="n">orient_segment</span><span class="p">(</span><span class="n">imu</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sel_d</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">])</span>
+                <span class="n">imu_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seg_i</span><span class="p">)</span>
+                <span class="c1"># Set next descent to current one</span>
+                <span class="n">next_desc</span> <span class="o">=</span> <span class="n">next_desc_i</span>
+            <span class="c1"># Last segment (use remnant `row` object)</span>
+            <span class="n">sel_d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">next_desc</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="n">seg_end</span> <span class="o">=</span> <span class="n">orient_segment</span><span class="p">(</span><span class="n">imu</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sel_d</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">])</span>
+            <span class="n">imu_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seg_end</span><span class="p">)</span>
+            <span class="n">imus</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">imu_l</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">imus</span> <span class="o">=</span> <span class="n">orient_segment</span><span class="p">(</span><span class="n">imu</span><span class="p">,</span> <span class="n">R_all</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">imus</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IMU2Body.filter_surfacings"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.filter_surfacings">[docs]</a>    <span class="k">def</span> <span class="nf">filter_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qual_thresh</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter records from ``surface_details`` and ``orientations``</span>
+
+<span class="sd">        Remove records from the ``surface_details`` and ``orientations``</span>
+<span class="sd">        attributes, based on ``quality`` and, optionally, duration of the</span>
+<span class="sd">        surface period.  Records with quality higher than the specified</span>
+<span class="sd">        value, and (optionally) duration lower than the specified number of</span>
+<span class="sd">        seconds, are removed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        qual_thresh : tuple</span>
+<span class="sd">            Tuple with quality index and standard deviation of rolling</span>
+<span class="sd">            motion during surface periods, in that order.  Records with</span>
+<span class="sd">            quality value higher, and standard deviation of rolling motion</span>
+<span class="sd">            higher than these thresholds are removed.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        describe_surfacing_durations</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="p">[</span><span class="s2">&quot;quality&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span>
+        <span class="n">qual</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;q_index&quot;</span><span class="p">,</span> <span class="s2">&quot;phi_std&quot;</span><span class="p">]</span>
+        <span class="n">bad</span> <span class="o">=</span> <span class="p">((</span><span class="n">qual</span><span class="p">[</span><span class="s2">&quot;q_index&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">qual_thresh</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">|</span>
+               <span class="p">(</span><span class="n">qual</span><span class="p">[</span><span class="s2">&quot;phi_std&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">qual_thresh</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">bad_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">bad</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">bad_ids</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Recalculate orientations as the edges have changed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_orientations</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IMU2Body.scatterIMU3D"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.scatterIMU3D">[docs]</a>    <span class="k">def</span> <span class="nf">scatterIMU3D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span> <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Class plotting wrapper for module-level function</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_idx : datetime64</span>
+<span class="sd">            Index in surface details table to be analyzed.</span>
+<span class="sd">        vec_name : str, {&quot;acceleration&quot;, &quot;magnetic_density&quot;}</span>
+<span class="sd">            Name of the vector array to subset.</span>
+<span class="sd">        smoothed_accel : bool, optional</span>
+<span class="sd">            Whether to plot the smoothed acceleration (if</span>
+<span class="sd">            `vec_name=&quot;acceleration&quot;`)</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to :meth:`scatterIMU3D`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Axes : matplotlib.axes.Axes</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        tsplotIMU_depth</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">smoothed_accel</span><span class="p">:</span>
+            <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span>
+                                               <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">scatterIMU3D</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">depth</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                          <span class="n">cbar_label</span><span class="o">=</span><span class="s2">&quot;Depth [m]&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IMU2Body.tsplotIMU_depth"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.tsplotIMU_depth">[docs]</a>    <span class="k">def</span> <span class="nf">tsplotIMU_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span> <span class="n">surface_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Class plotting wrapper for module-level function</span>
+
+<span class="sd">        Plot selected vector along with depth for the entire time series,</span>
+<span class="sd">        and the edges of all surface segments overlaid on the depth panel.</span>
+<span class="sd">        Alternatively, a specific surface segment can be plotted</span>
+<span class="sd">        individually.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vec_name : str, {&quot;acceleration&quot;, &quot;magnetic_density&quot;}</span>
+<span class="sd">            Name of the vector array to subset.</span>
+<span class="sd">        surface_idx : datetime64, optional</span>
+<span class="sd">            Index in surface details table to be analyzed.</span>
+<span class="sd">        smoothed_accel : bool, optional</span>
+<span class="sd">            Whether to plot the smoothed acceleration (if</span>
+<span class="sd">            `vec_name=&quot;acceleration&quot;`)</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to :func:`~matplotlib.pyplot.subplots`</span>
+<span class="sd">            (e.g. ``figsize``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        array_like</span>
+<span class="sd">            Array with :class:`matplotlib.axes.Axes` instances.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        scatterIMU3D</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">surface_idx</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">smoothed_accel</span><span class="p">:</span>
+                <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span>
+                                                   <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">smoothed_accel</span><span class="p">:</span>
+                <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="p">[</span><span class="n">vec_name</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accel_sg</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span>
+
+        <span class="n">axs</span> <span class="o">=</span> <span class="n">tsplotIMU_depth</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">surface_idx</span><span class="p">:</span>
+            <span class="n">sfc_begend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="p">[[</span><span class="s2">&quot;beg.surface&quot;</span><span class="p">,</span>
+                                               <span class="s2">&quot;end.surface&quot;</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">sfc_id</span><span class="p">,</span> <span class="n">lims</span> <span class="ow">in</span> <span class="n">sfc_begend</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_TagTools</span><span class="p">(</span><span class="n">IMU2Body</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A subclass implementing the approach taken by TagTools&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute orientation for a given index in surface details table</span>
+
+<span class="sd">        The orientation is computed via Singular Value Decomposition (SVD),</span>
+<span class="sd">        assuming that the chosen `IMU` data correspond to the animal close</span>
+<span class="sd">        to the surface and moving with negligible pitching and rolling</span>
+<span class="sd">        motions.</span>
+
+<span class="sd">        The function returns the rotation from the animal body frame to the</span>
+<span class="sd">        `IMU` frame, along with the SVD matrices.  Note that a right-handed</span>
+<span class="sd">        coordinate system is assumed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        surface_idx : datetime64</span>
+<span class="sd">            Index in surface details table to be analyzed.</span>
+<span class="sd">        plot : bool, optional</span>
+<span class="sd">            Whether to generate a plot of the estimate</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Arguments passed to `_scatterIMU_svd`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Rotation, (U, S, V) : tuple</span>
+<span class="sd">            `Rotation` object with potentially modified left singular</span>
+<span class="sd">            vectors from Singular Value Decomposition (SVD), and full</span>
+<span class="sd">            matrices from SVD (left singular vectors, sigma, and right</span>
+<span class="sd">            singular vectors).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+<span class="sd">        The reference frame for the output `Rotation` object is defined by</span>
+<span class="sd">        the origin of acceleration vectors.  The first component of this</span>
+<span class="sd">        reference frame points in the positive direction from the origin of</span>
+<span class="sd">        the data.  Furthermore, this rotation is not identical to the left</span>
+<span class="sd">        singular vectors because the Rodrigues formula was used to</span>
+<span class="sd">        transform that basis.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Isolate surface segment (we transform input acceleration)</span>
+        <span class="n">sfci_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="s2">&quot;acceleration&quot;</span><span class="p">,</span>
+                                            <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">sfci_depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_surface_vectors</span><span class="p">(</span><span class="n">surface_idx</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">)</span>
+        <span class="c1"># Normalize vectors</span>
+        <span class="n">sfci_acc_n</span> <span class="o">=</span> <span class="n">normalize_vectors</span><span class="p">(</span><span class="n">sfci_acc</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+        <span class="n">sfci_acc_opr</span> <span class="o">=</span> <span class="n">sfci_acc_n</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">sfci_acc_n</span>
+        <span class="c1"># Singular value decomposition of the outer product</span>
+        <span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">sfci_acc_opr</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Lowest PA, x=</span><span class="si">{0:.2E}</span><span class="s2">, y=</span><span class="si">{1:.2E}</span><span class="s2">, z=</span><span class="si">{2:.2E}</span><span class="s2">&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">uu</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]))</span>
+        <span class="c1"># Target y-vector in the animal frame</span>
+        <span class="n">ytarget</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># Find unit vector normal to the plane formed by the animal frame</span>
+        <span class="c1"># y-coordinate and lowest singular vector (the one along the</span>
+        <span class="c1"># transversal axis of the animal, i.e. pitching axis)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">normalize_vectors</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ytarget</span><span class="p">,</span> <span class="n">uu</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Phi axis, x=</span><span class="si">{0:.2E}</span><span class="s2">, y=</span><span class="si">{1:.2E}</span><span class="s2">, z=</span><span class="si">{2:.2E}</span><span class="s2">&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">phi</span><span class="p">))</span>
+        <span class="c1"># Angle between target y-vector and lowest singular vector</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">vangle</span><span class="p">(</span><span class="n">ytarget</span><span class="p">,</span> <span class="n">uu</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Angle between y-axis and lowest PA: </span><span class="si">{:.2f}</span><span class="s2"> [deg]&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">alpha</span><span class="p">)))</span>
+        <span class="c1"># Skew or cross-product matrix of phi</span>
+        <span class="n">skew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                         <span class="p">[</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                         <span class="p">[</span><span class="o">-</span><span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="c1"># Assemble rotation matrix using Rodrigues&#39; formula</span>
+        <span class="n">Rrod</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">skew</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">skew</span> <span class="o">@</span> <span class="n">skew</span><span class="p">))</span>
+        <span class="c1"># [MJ]: So far we have anchored the rotation axis to the y-axis but</span>
+        <span class="c1"># that only takes care of 2 of the 3 degrees of freedom in the tag</span>
+        <span class="c1"># orientation. The tag could still be pitched up or down as this is</span>
+        <span class="c1"># a rotation around the y-axis. To do something about this we have</span>
+        <span class="c1"># to assume that the animal has a mean pitch of zero when at the</span>
+        <span class="c1"># surface. We force this condition by rotating around the y-axis</span>
+        <span class="c1"># (i.e., a pitch rotation).  Mean acceleration vector after</span>
+        <span class="c1"># rotation by `Rrod`</span>
+        <span class="n">acc_muR</span> <span class="o">=</span> <span class="n">sfci_acc_n</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">@</span> <span class="n">Rrod</span>
+        <span class="c1"># Remaining pitch angle that should be reduced to zero (need to</span>
+        <span class="c1"># re-express this in RHS)</span>
+        <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="n">acc_muR</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">acc_muR</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pitch angle: </span><span class="si">{:.2f}</span><span class="s2"> [deg]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">p0</span><span class="p">)))</span>
+        <span class="c1"># Combine the pitching rotation above with `Rrod`</span>
+        <span class="n">Rfull_rod</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_euler</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">p0</span><span class="p">)</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span> <span class="o">@</span> <span class="n">Rrod</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">Rfull</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">Rfull_rod</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">Reuler</span> <span class="o">=</span> <span class="n">Rfull</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
+        <span class="n">eulers_lab</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$\phi=</span><span class="si">{0:.1f}</span><span class="s2">$, $\theta=</span><span class="si">{1:.1f}</span><span class="s2">$, $\psi=</span><span class="si">{2:.1f}</span><span class="s2">$&quot;</span>
+        <span class="n">eulers_maybe_lab</span> <span class="o">=</span> <span class="s2">&quot;Candidate Euler angles: &quot;</span> <span class="o">+</span> <span class="n">eulers_lab</span>
+        <span class="n">eulers_final_lab</span> <span class="o">=</span> <span class="s2">&quot;Adjusted Euler angles: &quot;</span> <span class="o">+</span> <span class="n">eulers_lab</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">eulers_maybe_lab</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">Reuler</span><span class="p">)))</span>
+        <span class="n">sfci_acc_n_body</span> <span class="o">=</span> <span class="n">Rfull</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">sfci_acc_n</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Check that relationship between acceleration along the</span>
+        <span class="c1"># longitudinal axis and depth derivative is negative</span>
+        <span class="n">sfci_depth_1d</span> <span class="o">=</span> <span class="n">sfci_depth</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">accx_depth_coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">sfci_acc_n_body</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                                     <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">sfci_depth_1d</span><span class="p">),</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Acceleration ~ $\nabla$Depth $b_1$=</span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accx_depth_coef</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">accx_depth_coef</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">Rfull</span> <span class="o">=</span> <span class="n">Rfull</span> <span class="o">*</span> <span class="n">R</span><span class="o">.</span><span class="n">from_euler</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="n">Reuler</span> <span class="o">=</span> <span class="n">Rfull</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;XYZ&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">eulers_final_lab</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">Reuler</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;IMU-Frame Centered Acceleration [g]&quot;</span><span class="p">)</span>
+            <span class="n">animate</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;animate&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">surface_idx_str</span> <span class="o">=</span> <span class="n">surface_idx</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S&quot;</span><span class="p">)</span>
+            <span class="n">animate_file</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;animate_file&quot;</span><span class="p">,</span>
+                                      <span class="p">(</span><span class="s2">&quot;imu2whale_</span><span class="si">{}</span><span class="s2">.mp4&quot;</span>
+                                       <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">surface_idx_str</span><span class="p">)))</span>
+            <span class="n">_scatterIMU_svd</span><span class="p">(</span><span class="n">sfci_acc_n</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">),</span> <span class="n">Rfull</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                            <span class="n">animate</span><span class="o">=</span><span class="n">animate</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="n">animate_file</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">Rfull</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">))</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>

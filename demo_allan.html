@@ -1,0 +1,229 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Allan deviation analysis &#8212; skdiveMove 0.2.5 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Ellipsoid modelling for calibration purposes" href="demo_ellipsoid.html" />
+    <link rel="prev" title="IMU-frame to body-frame transformations" href="demo_imu2body.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="demo_ellipsoid.html" title="Ellipsoid modelling for calibration purposes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="demo_imu2body.html" title="IMU-frame to body-frame transformations"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="imutools_demos.html" accesskey="U">Working with tri-axial IMUs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Allan deviation analysis</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="allan-deviation-analysis">
+<h1>Allan deviation analysis<a class="headerlink" href="#allan-deviation-analysis" title="Permalink to this headline">¶</a></h1>
+<p>Allan deviation analysis is a technique for quantifying the different
+sources of error affecting IMU measurements.  The <cite>IMU</cite> class features
+methods to fit a model to averaging times <span class="math notranslate nohighlight">\(\tau\)</span> and Allan deviation
+estimates <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># Set up</span>
+<span class="linenos">2</span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="linenos">3</span><span class="kn">import</span> <span class="nn">pkg_resources</span> <span class="k">as</span> <span class="nn">pkg_rsrc</span>
+<span class="linenos">4</span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+<span class="linenos">5</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos">6</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos">7</span><span class="kn">import</span> <span class="nn">skdiveMove.imutools</span> <span class="k">as</span> <span class="nn">imutools</span>
+<span class="linenos">8</span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">OptimizeWarning</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>For demonstrating the methods available in the <cite>IMU</cite> class, IMU
+measurements from an Android mobile phone were collected for 6 hours at 100
+Hz frequency, but subsequently decimated to 10 Hz with a forward/backward
+filter to avoid phase shift.  The phone was kept immobile on a table,
+facing up, for the data collection period.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">17</span><span class="n">icdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
+<span class="linenos">18</span>        <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
+<span class="linenos">19</span>                           <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
+<span class="linenos">20</span>                                    <span class="s2">&quot;samsung_galaxy_s5.nc&quot;</span><span class="p">)))</span>
+<span class="linenos">21</span><span class="n">imu</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">IMUBase</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">icdf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Note that the data collected are uncorrected for bias.  It is unclear
+whether Android’s raw (measured) sensor data have any other corrections or
+calibrations, but the assumption here is that none were performed.</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/demo_allan_3_0.png" src="_images/demo_allan_3_0.png" />
+</div>
+</div>
+<p>The first step of the analysis involves the calculation of <span class="math notranslate nohighlight">\(\tau\)</span> and
+<span class="math notranslate nohighlight">\(\sigma\)</span>.  The choice of <span class="math notranslate nohighlight">\(\tau\)</span> sequence is crucial.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">28</span><span class="n">maxn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">imu</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">250</span><span class="p">))</span>
+<span class="linenos">29</span><span class="n">taus</span> <span class="o">=</span> <span class="p">((</span><span class="mf">50.0</span> <span class="o">/</span> <span class="n">imu</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">])</span> <span class="o">*</span>
+<span class="linenos">30</span>        <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxn</span><span class="p">),</span> <span class="mi">100</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>These can be used for fitting the ARMAV model and retrieve the coefficients
+for the five most common sources of variability (quantization,
+angle/velocity random walk, bias instability, rate random walk, and rate
+ramp).</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">31</span><span class="c1"># Silence warning for inability to estimate parameter covariances, which</span>
+<span class="linenos">32</span><span class="c1"># is not a concern as we are not making inferences</span>
+<span class="linenos">33</span><span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+<span class="linenos">34</span>    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">OptimizeWarning</span><span class="p">)</span>
+<span class="linenos">35</span>    <span class="n">allan_coefs</span><span class="p">,</span> <span class="n">adevs</span> <span class="o">=</span> <span class="n">imu</span><span class="o">.</span><span class="n">allan_coefs</span><span class="p">(</span><span class="s2">&quot;angular_velocity&quot;</span><span class="p">,</span> <span class="n">taus</span><span class="p">)</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="nb">print</span><span class="p">(</span><span class="n">allan_coefs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>     angular_velocity_x  angular_velocity_y  angular_velocity_z
+Q             2.391e-08           8.246e-09           3.774e-08
+ARW           6.634e-04           7.557e-04           8.526e-04
+BI            1.054e-04           1.401e-04           8.930e-05
+RRW           1.829e-06           3.863e-11           8.398e-10
+RR            4.728e-08           6.908e-08           3.844e-08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/demo_allan_6_0.png" src="_images/demo_allan_6_0.png" />
+</div>
+</div>
+<p>Feel free to download a copy of this demo
+(<a class="reference download internal" download="" href="_downloads/ce1cd38439d10f66ffb41f79b24707ef/demo_allan.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_allan.py</span></code></a>).</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="demo_imu2body.html"
+                        title="previous chapter">IMU-frame to body-frame transformations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="demo_ellipsoid.html"
+                        title="next chapter">Ellipsoid modelling for calibration purposes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/demo_allan.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="demo_ellipsoid.html" title="Ellipsoid modelling for calibration purposes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="demo_imu2body.html" title="IMU-frame to body-frame transformations"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="imutools_demos.html" >Working with tri-axial IMUs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Allan deviation analysis</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Sebastian Luque.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+<div class="footer">
+  scikit-diveMove icon created by B. Agustín Amenábar Larraín
+  from Noun Project
+</div>
+
+  </body>
+</html>
