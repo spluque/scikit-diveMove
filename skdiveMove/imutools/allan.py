@@ -63,14 +63,14 @@ def _line_fun(t, alpha, tau_crit, adev_crit):
 def allan_coefs(taus, adevs):
     """Compute Allan deviation coefficients for each error type
 
-    Given averaging intervals `taus` and corresponding Allan deviation
-    `adevs`, compute the Allan deviation coefficient for each error type:
+    Given averaging intervals ``taus`` and corresponding Allan deviation
+    ``adevs``, compute the Allan deviation coefficient for each error type:
 
-      - Quantization
-      - (Angle, Velocity) Random Walk
-      - Bias Instability
-      - Rate Random Walk
-      - Rate Ramp
+    - Quantization
+    - (Angle, Velocity) Random Walk
+    - Bias Instability
+    - Rate Random Walk
+    - Rate Ramp
 
     Parameters
     ----------
@@ -86,14 +86,6 @@ def allan_coefs(taus, adevs):
         coefficient for each error type.
     adev_reg : numpy.ndarray
         The array of Allan deviations fitted to `taus`.
-
-    Notes
-    -----
-    See e.g. Jurado et al. (2019)::
-
-      Jurado, J, Schubert Kabban, CM, Raquet, J (2019).  A regression-based
-      methodology to improve estimation of inertial sensor errors using
-      Allan variance data. Navigation 66:251-263.
 
     """
     # Fit ARMAV model

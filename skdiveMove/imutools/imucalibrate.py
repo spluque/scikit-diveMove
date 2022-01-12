@@ -54,6 +54,7 @@ class IMUcalibrate(IMUBase):
           - var_name_pred
           - var_name_temp_refC
           - var_name_adj
+
     axis_order : list
         List of characters specifying which axis ``x``, ``y``, or ``z`` was
         pointing in the same direction as gravity in each period in

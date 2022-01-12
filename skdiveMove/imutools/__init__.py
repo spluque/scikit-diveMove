@@ -92,9 +92,8 @@ from .imu import IMUBase
 from .imu2body import (IMU2Body, scatterIMU3D,
                        scatterIMU_svd, tsplotIMU_depth)
 from .imucalibrate import IMUcalibrate
-from .allan import allan_coefs
 from .ellipsoid import fit_ellipsoid, apply_ellipsoid
 
 __all__ = ["IMUBase", "IMU2Body", "IMUcalibrate",
-           "scatterIMU3D", "scatterIMU_svd", "tsplotIMU_depth",
-           "allan_coefs", "fit_ellipsoid", "apply_ellipsoid"]
+           "fit_ellipsoid", "apply_ellipsoid",
+           "scatterIMU_svd", "scatterIMU3D", "tsplotIMU_depth"]

@@ -12,6 +12,7 @@ import numpy as np
 import numpy.testing as npt
 import xarray as xr
 import skdiveMove.imutools as skimu
+import skdiveMove.imutools.allan as skallan
 from scipy.optimize import OptimizeWarning
 from skdiveMove.imutools.ellipsoid import _ELLIPSOID_FTYPES
 
@@ -31,12 +32,13 @@ class TestUtils(ut.TestCase):
 
     """
     def setUp(self):
-        cdf0 = xr.load_dataset(_ICDF0)
-        cdf0_d = dict(acceleration=cdf0["acceleration"],
-                      angular_velocity=cdf0["angular_velocity"][:, :3],
-                      magnetic_density=cdf0["magnetic_density"][:, :3])
-        cdf0_ds = xr.Dataset(cdf0_d)
-        imu = skimu.IMUBase(cdf0_ds, has_depth=False)
+        cdf0 = (xr.load_dataset(_ICDF0)
+                .set_index(gyroscope=["gyroscope_type", "gyroscope_axis"],
+                           magnetometer=["magnetometer_type",
+                                         "magnetometer_axis"]))
+        imu = skimu.IMUBase(cdf0.sel(gyroscope="output",
+                                     magnetometer="output"),
+                            has_depth=False)
         self.imu = imu
 
         # Define taus
@@ -67,7 +69,7 @@ class TestUtils(ut.TestCase):
         adev_x = adevs["angular_velocity_x"]["allan_dev"]
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", OptimizeWarning)
-            sigmas_d, adevs_reg = skimu.allan_coefs(omega_taus, adev_x)
+            sigmas_d, adevs_reg = skallan.allan_coefs(omega_taus, adev_x)
         npt.assert_equal(len(sigmas_d), 5)
         npt.assert_equal(len(adevs_reg), len(omega_taus))
 

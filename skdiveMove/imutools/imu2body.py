@@ -393,6 +393,7 @@ class IMU2Body(IMUBase):
 
     >>> import pkg_resources as pkg_rsrc
     >>> import os.path as osp
+    >>> import skdiveMove.imutools as imutools
     >>> icdf = (pkg_rsrc.
     ...         resource_filename("skdiveMove",
     ...                           osp.join("tests", "data", "gertrude",
@@ -407,7 +408,7 @@ class IMU2Body(IMUBase):
     are (in a tuple): 1) window length and 2) polynomial order, in that
     order.
 
-    >>> imu2whale = IMU2Body.from_csv_nc(icsv, icdf, savgol_parms=(99, 2))
+    >>> imu = imutools.IMU2Body.from_csv_nc(icsv, icdf, savgol_parms=(99, 2))
 
     """
 
@@ -701,7 +702,8 @@ class IMU2Body(IMUBase):
                                       ("imu2whale_{}.mp4"
                                        .format(surface_idx_str)))
             scatterIMU_svd(sfci_acc_ctr, (uu, ss, vv), Rfull, title=title,
-                           animate=animate, animate_file=animate_file)
+                           animate=animate, animate_file=animate_file,
+                           **kwargs)
 
         return(Rfull, (uu, ss, vv))
 

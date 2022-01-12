@@ -41,6 +41,36 @@ class IMUBase:
         frame of the IMU object data.  Note that the scalar component is
         last, following `scipy`'s convention.
 
+    Examples
+    --------
+    This example illustrates some of the issues encountered while reading
+    data files in a real-world scenario.  ``scikit-diveMove`` includes a
+    NetCDF file with IMU signals collected using a Samsung Galaxy S5 mobile
+    phone.  Set up instance from NetCDF example data:
+
+    >>> import pkg_resources as pkg_rsrc
+    >>> import os.path as osp
+    >>> import xarray as xr
+    >>> import skdiveMove.imutools as imutools
+    >>> icdf = (pkg_rsrc
+    ...            .resource_filename("skdiveMove",
+    ...                               osp.join("tests", "data",
+    ...         		               "samsung_galaxy_s5.nc")))
+
+    The angular velocity and magnetic density arrays have two sets of
+    measurements: output and measured, which, along with the sensor axis
+    designation, constitutes a multi-index.  These multi-indices can be
+    rebuilt prior to instantiating IMUBase, as they provide significant
+    advantages for indexing later:
+
+    >>> s5ds = (xr.load_dataset(icdf)
+    ...         .set_index(gyroscope=["gyroscope_type", "gyroscope_axis"],
+    ...                    magnetometer=["magnetometer_type",
+    ...                                  "magnetometer_axis"]))
+    >>> imu = imutools.IMUBase(s5ds.sel(gyroscope="output",
+    ...                                 magnetometer="output"),
+    ...                        imu_filename=icdf)
+
     """
     def __init__(self, dataset,
                  acceleration_name=_ACCEL_NAME,
@@ -90,6 +120,9 @@ class IMUBase:
                     magnetic_density_name=_MAGNT_NAME,
                     has_depth=False, **kwargs):
         """Instantiate object by loading Dataset from NetCDF file
+
+        Provided all ``DataArray``s in the NetCDF file have the same
+        dimensions (N, 3), then this is an efficient way to instantiate.
 
         Parameters
         ----------
@@ -179,6 +212,16 @@ class IMUBase:
 
         This procedure implements the autonomous regression method for
         Allan variance described in [1]_.
+
+        Given averaging intervals ``taus`` and corresponding Allan
+        deviation ``adevs``, compute the Allan deviation coefficient for
+        each error type:
+
+        - Quantization
+        - (Angle, Velocity) Random Walk
+        - Bias Instability
+        - Rate Random Walk
+        - Rate Ramp
 
         Parameters
         ----------
