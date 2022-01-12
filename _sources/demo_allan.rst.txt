@@ -14,6 +14,7 @@ estimates :math:`\sigma`.
    import pkg_resources as pkg_rsrc
    import os.path as osp
    import numpy as np
+   import xarray as xr
    import matplotlib.pyplot as plt
    import skdiveMove.imutools as imutools
    from scipy.optimize import OptimizeWarning
@@ -30,11 +31,15 @@ estimates :math:`\sigma`.
    pd.set_option("display.precision", 3)
    %matplotlib inline
 
-For demonstrating the methods available in the `IMU` class, IMU
+For demonstrating the methods available in the ``IMUBase`` class, IMU
 measurements from an Android mobile phone were collected for 6 hours at 100
 Hz frequency, but subsequently decimated to 10 Hz with a forward/backward
 filter to avoid phase shift.  The phone was kept immobile on a table,
-facing up, for the data collection period.
+facing up, for the data collection period.  Note that two sets of
+measurements for the magnetometer and gyroscope were recorded: output and
+measured.  The type of measurement and the sensor axis constitute a
+multi-index, which provide significant advantages for indexing, so these
+are rebuilt:
 
 .. jupyter-execute::
    :linenos:
@@ -43,7 +48,13 @@ facing up, for the data collection period.
            .resource_filename("skdiveMove",
 	                      osp.join("tests", "data",
 			               "samsung_galaxy_s5.nc")))
-   imu = imutools.IMUBase.read_netcdf(icdf)
+   s5ds = (xr.load_dataset(icdf)  # rebuild MultiIndex
+           .set_index(gyroscope=["gyroscope_type", "gyroscope_axis"],
+                      magnetometer=["magnetometer_type",
+                                    "magnetometer_axis"]))
+   imu = imutools.IMUBase(s5ds.sel(gyroscope="measured",  # use multi-index
+                                   magnetometer="measured"),
+                          imu_filename=icdf)
 
 Note that the data collected are uncorrected for bias.  It is unclear
 whether Android's raw (measured) sensor data have any other corrections or
@@ -54,7 +65,6 @@ calibrations, but the assumption here is that none were performed.
 
    fig, ax = plt.subplots(figsize=_FIG1X1)
    lines = (imu.angular_velocity
-	    .sel(gyroscope=slice("measured_x", "measured_z"))
             .plot.line(x="timestamp", add_legend=False, ax=ax))
    ax.legend(lines, ["measured {}".format(i) for i in list("xyz")],
              loc=9, ncol=3, frameon=False, borderaxespad=0);

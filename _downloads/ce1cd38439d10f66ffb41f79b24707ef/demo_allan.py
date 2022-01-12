@@ -9,6 +9,7 @@ import warnings
 import pkg_resources as pkg_rsrc
 import os.path as osp
 import numpy as np
+import xarray as xr
 import matplotlib.pyplot as plt
 import skdiveMove.imutools as imutools
 from scipy.optimize import OptimizeWarning
@@ -34,7 +35,13 @@ icdf = (pkg_rsrc
         .resource_filename("skdiveMove",
                            osp.join("tests", "data",
                                     "samsung_galaxy_s5.nc")))
-imu = imutools.IMUBase.read_netcdf(icdf)
+s5ds = (xr.load_dataset(icdf)  # rebuild MultiIndex
+        .set_index(gyroscope=["gyroscope_type", "gyroscope_axis"],
+                   magnetometer=["magnetometer_type",
+                                 "magnetometer_axis"]))
+imu = imutools.IMUBase(s5ds.sel(gyroscope="measured",  # use multi-index
+                                magnetometer="measured"),
+                       imu_filename=icdf)
 
 
 # In[4]:
@@ -42,7 +49,6 @@ imu = imutools.IMUBase.read_netcdf(icdf)
 
 fig, ax = plt.subplots(figsize=_FIG1X1)
 lines = (imu.angular_velocity
-         .sel(gyroscope=slice("measured_x", "measured_z"))
          .plot.line(x="timestamp", add_legend=False, ax=ax))
 ax.legend(lines, ["measured {}".format(i) for i in list("xyz")],
           loc=9, ncol=3, frameon=False, borderaxespad=0);

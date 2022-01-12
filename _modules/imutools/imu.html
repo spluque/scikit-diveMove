@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imu &#8212; skdiveMove 0.2.5 documentation</title>
+    <title>imutools.imu &#8212; skdiveMove 0.2.6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu</a></li> 
       </ul>
@@ -91,6 +91,36 @@
 <span class="sd">        frame of the IMU object data.  Note that the scalar component is</span>
 <span class="sd">        last, following `scipy`&#39;s convention.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    This example illustrates some of the issues encountered while reading</span>
+<span class="sd">    data files in a real-world scenario.  ``scikit-diveMove`` includes a</span>
+<span class="sd">    NetCDF file with IMU signals collected using a Samsung Galaxy S5 mobile</span>
+<span class="sd">    phone.  Set up instance from NetCDF example data:</span>
+
+<span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
+<span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
+<span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
+<span class="sd">    &gt;&gt;&gt; import skdiveMove.imutools as imutools</span>
+<span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc</span>
+<span class="sd">    ...            .resource_filename(&quot;skdiveMove&quot;,</span>
+<span class="sd">    ...                               osp.join(&quot;tests&quot;, &quot;data&quot;,</span>
+<span class="sd">    ...         		               &quot;samsung_galaxy_s5.nc&quot;)))</span>
+
+<span class="sd">    The angular velocity and magnetic density arrays have two sets of</span>
+<span class="sd">    measurements: output and measured, which, along with the sensor axis</span>
+<span class="sd">    designation, constitutes a multi-index.  These multi-indices can be</span>
+<span class="sd">    rebuilt prior to instantiating IMUBase, as they provide significant</span>
+<span class="sd">    advantages for indexing later:</span>
+
+<span class="sd">    &gt;&gt;&gt; s5ds = (xr.load_dataset(icdf)</span>
+<span class="sd">    ...         .set_index(gyroscope=[&quot;gyroscope_type&quot;, &quot;gyroscope_axis&quot;],</span>
+<span class="sd">    ...                    magnetometer=[&quot;magnetometer_type&quot;,</span>
+<span class="sd">    ...                                  &quot;magnetometer_axis&quot;]))</span>
+<span class="sd">    &gt;&gt;&gt; imu = imutools.IMUBase(s5ds.sel(gyroscope=&quot;output&quot;,</span>
+<span class="sd">    ...                                 magnetometer=&quot;output&quot;),</span>
+<span class="sd">    ...                        imu_filename=icdf)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span>
                  <span class="n">acceleration_name</span><span class="o">=</span><span class="n">_ACCEL_NAME</span><span class="p">,</span>
@@ -140,6 +170,9 @@
                     <span class="n">magnetic_density_name</span><span class="o">=</span><span class="n">_MAGNT_NAME</span><span class="p">,</span>
                     <span class="n">has_depth</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate object by loading Dataset from NetCDF file</span>
+
+<span class="sd">        Provided all ``DataArray``s in the NetCDF file have the same</span>
+<span class="sd">        dimensions (N, 3), then this is an efficient way to instantiate.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -229,6 +262,16 @@
 
 <span class="sd">        This procedure implements the autonomous regression method for</span>
 <span class="sd">        Allan variance described in [1]_.</span>
+
+<span class="sd">        Given averaging intervals ``taus`` and corresponding Allan</span>
+<span class="sd">        deviation ``adevs``, compute the Allan deviation coefficient for</span>
+<span class="sd">        each error type:</span>
+
+<span class="sd">        - Quantization</span>
+<span class="sd">        - (Angle, Velocity) Random Walk</span>
+<span class="sd">        - Bias Instability</span>
+<span class="sd">        - Rate Random Walk</span>
+<span class="sd">        - Rate Ramp</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -495,7 +538,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu</a></li> 
       </ul>

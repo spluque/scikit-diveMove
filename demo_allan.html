@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Allan deviation analysis &#8212; skdiveMove 0.2.5 documentation</title>
+    <title>Allan deviation analysis &#8212; skdiveMove 0.2.6 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="demo_imu2body.html" title="IMU-frame to body-frame transformations"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="imutools_demos.html" accesskey="U">Working with tri-axial IMUs</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Allan deviation analysis</a></li> 
       </ul>
@@ -70,9 +70,10 @@ estimates <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <span class="linenos">3</span><span class="kn">import</span> <span class="nn">pkg_resources</span> <span class="k">as</span> <span class="nn">pkg_rsrc</span>
 <span class="linenos">4</span><span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
 <span class="linenos">5</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="linenos">6</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="linenos">7</span><span class="kn">import</span> <span class="nn">skdiveMove.imutools</span> <span class="k">as</span> <span class="nn">imutools</span>
-<span class="linenos">8</span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">OptimizeWarning</span>
+<span class="linenos">6</span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="linenos">7</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos">8</span><span class="kn">import</span> <span class="nn">skdiveMove.imutools</span> <span class="k">as</span> <span class="nn">imutools</span>
+<span class="linenos">9</span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">OptimizeWarning</span>
 </pre></div>
 </div>
 </div>
@@ -83,18 +84,28 @@ estimates <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>For demonstrating the methods available in the <cite>IMU</cite> class, IMU
+<p>For demonstrating the methods available in the <code class="docutils literal notranslate"><span class="pre">IMUBase</span></code> class, IMU
 measurements from an Android mobile phone were collected for 6 hours at 100
 Hz frequency, but subsequently decimated to 10 Hz with a forward/backward
 filter to avoid phase shift.  The phone was kept immobile on a table,
-facing up, for the data collection period.</p>
+facing up, for the data collection period.  Note that two sets of
+measurements for the magnetometer and gyroscope were recorded: output and
+measured.  The type of measurement and the sensor axis constitute a
+multi-index, which provide significant advantages for indexing, so these
+are rebuilt:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">17</span><span class="n">icdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
-<span class="linenos">18</span>        <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
-<span class="linenos">19</span>                           <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
-<span class="linenos">20</span>                                    <span class="s2">&quot;samsung_galaxy_s5.nc&quot;</span><span class="p">)))</span>
-<span class="linenos">21</span><span class="n">imu</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">IMUBase</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">icdf</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">18</span><span class="n">icdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_rsrc</span>
+<span class="linenos">19</span>        <span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">,</span>
+<span class="linenos">20</span>                           <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
+<span class="linenos">21</span>                                    <span class="s2">&quot;samsung_galaxy_s5.nc&quot;</span><span class="p">)))</span>
+<span class="linenos">22</span><span class="n">s5ds</span> <span class="o">=</span> <span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="n">icdf</span><span class="p">)</span>  <span class="c1"># rebuild MultiIndex</span>
+<span class="linenos">23</span>        <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">gyroscope</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gyroscope_type&quot;</span><span class="p">,</span> <span class="s2">&quot;gyroscope_axis&quot;</span><span class="p">],</span>
+<span class="linenos">24</span>                   <span class="n">magnetometer</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;magnetometer_type&quot;</span><span class="p">,</span>
+<span class="linenos">25</span>                                 <span class="s2">&quot;magnetometer_axis&quot;</span><span class="p">]))</span>
+<span class="linenos">26</span><span class="n">imu</span> <span class="o">=</span> <span class="n">imutools</span><span class="o">.</span><span class="n">IMUBase</span><span class="p">(</span><span class="n">s5ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">gyroscope</span><span class="o">=</span><span class="s2">&quot;measured&quot;</span><span class="p">,</span>  <span class="c1"># use multi-index</span>
+<span class="linenos">27</span>                                <span class="n">magnetometer</span><span class="o">=</span><span class="s2">&quot;measured&quot;</span><span class="p">),</span>
+<span class="linenos">28</span>                       <span class="n">imu_filename</span><span class="o">=</span><span class="n">icdf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -113,9 +124,9 @@ calibrations, but the assumption here is that none were performed.</p>
 <span class="math notranslate nohighlight">\(\sigma\)</span>.  The choice of <span class="math notranslate nohighlight">\(\tau\)</span> sequence is crucial.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">28</span><span class="n">maxn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">imu</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">250</span><span class="p">))</span>
-<span class="linenos">29</span><span class="n">taus</span> <span class="o">=</span> <span class="p">((</span><span class="mf">50.0</span> <span class="o">/</span> <span class="n">imu</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">])</span> <span class="o">*</span>
-<span class="linenos">30</span>        <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxn</span><span class="p">),</span> <span class="mi">100</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">34</span><span class="n">maxn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">imu</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">250</span><span class="p">))</span>
+<span class="linenos">35</span><span class="n">taus</span> <span class="o">=</span> <span class="p">((</span><span class="mf">50.0</span> <span class="o">/</span> <span class="n">imu</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">])</span> <span class="o">*</span>
+<span class="linenos">36</span>        <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxn</span><span class="p">),</span> <span class="mi">100</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -128,23 +139,23 @@ angle/velocity random walk, bias instability, rate random walk, and rate
 ramp).</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">31</span><span class="c1"># Silence warning for inability to estimate parameter covariances, which</span>
-<span class="linenos">32</span><span class="c1"># is not a concern as we are not making inferences</span>
-<span class="linenos">33</span><span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-<span class="linenos">34</span>    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">OptimizeWarning</span><span class="p">)</span>
-<span class="linenos">35</span>    <span class="n">allan_coefs</span><span class="p">,</span> <span class="n">adevs</span> <span class="o">=</span> <span class="n">imu</span><span class="o">.</span><span class="n">allan_coefs</span><span class="p">(</span><span class="s2">&quot;angular_velocity&quot;</span><span class="p">,</span> <span class="n">taus</span><span class="p">)</span>
-<span class="linenos">36</span>
-<span class="linenos">37</span><span class="nb">print</span><span class="p">(</span><span class="n">allan_coefs</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">37</span><span class="c1"># Silence warning for inability to estimate parameter covariances, which</span>
+<span class="linenos">38</span><span class="c1"># is not a concern as we are not making inferences</span>
+<span class="linenos">39</span><span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+<span class="linenos">40</span>    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">OptimizeWarning</span><span class="p">)</span>
+<span class="linenos">41</span>    <span class="n">allan_coefs</span><span class="p">,</span> <span class="n">adevs</span> <span class="o">=</span> <span class="n">imu</span><span class="o">.</span><span class="n">allan_coefs</span><span class="p">(</span><span class="s2">&quot;angular_velocity&quot;</span><span class="p">,</span> <span class="n">taus</span><span class="p">)</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span><span class="nb">print</span><span class="p">(</span><span class="n">allan_coefs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>     angular_velocity_x  angular_velocity_y  angular_velocity_z
-Q             2.391e-08           8.246e-09           3.774e-08
-ARW           6.634e-04           7.557e-04           8.526e-04
-BI            1.054e-04           1.401e-04           8.930e-05
-RRW           1.829e-06           3.863e-11           8.398e-10
-RR            4.728e-08           6.908e-08           3.844e-08
+Q             3.016e-08           4.739e-08           4.065e-08
+ARW           6.529e-04           7.557e-04           8.337e-04
+BI            1.011e-04           1.401e-04           8.289e-05
+RRW           1.963e-06           1.752e-10           7.173e-10
+RR            4.437e-08           6.909e-08           2.853e-08
 </pre></div>
 </div>
 </div>
@@ -210,7 +221,7 @@ RR            4.728e-08           6.908e-08           3.844e-08
         <li class="right" >
           <a href="demo_imu2body.html" title="IMU-frame to body-frame transformations"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="imutools_demos.html" >Working with tri-axial IMUs</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Allan deviation analysis</a></li> 
       </ul>

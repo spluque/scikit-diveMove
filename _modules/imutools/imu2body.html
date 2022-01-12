@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imu2body &#8212; skdiveMove 0.2.5 documentation</title>
+    <title>imutools.imu2body &#8212; skdiveMove 0.2.6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
       </ul>
@@ -443,6 +443,7 @@
 
 <span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
 <span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
+<span class="sd">    &gt;&gt;&gt; import skdiveMove.imutools as imutools</span>
 <span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc.</span>
 <span class="sd">    ...         resource_filename(&quot;skdiveMove&quot;,</span>
 <span class="sd">    ...                           osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
@@ -457,7 +458,7 @@
 <span class="sd">    are (in a tuple): 1) window length and 2) polynomial order, in that</span>
 <span class="sd">    order.</span>
 
-<span class="sd">    &gt;&gt;&gt; imu2whale = IMU2Body.from_csv_nc(icsv, icdf, savgol_parms=(99, 2))</span>
+<span class="sd">    &gt;&gt;&gt; imu = imutools.IMU2Body.from_csv_nc(icsv, icdf, savgol_parms=(99, 2))</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -751,7 +752,8 @@
                                       <span class="p">(</span><span class="s2">&quot;imu2whale_</span><span class="si">{}</span><span class="s2">.mp4&quot;</span>
                                        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">surface_idx_str</span><span class="p">)))</span>
             <span class="n">scatterIMU_svd</span><span class="p">(</span><span class="n">sfci_acc_ctr</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">),</span> <span class="n">Rfull</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
-                           <span class="n">animate</span><span class="o">=</span><span class="n">animate</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="n">animate_file</span><span class="p">)</span>
+                           <span class="n">animate</span><span class="o">=</span><span class="n">animate</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="n">animate_file</span><span class="p">,</span>
+                           <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="k">return</span><span class="p">(</span><span class="n">Rfull</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">))</span></div>
 
@@ -1281,7 +1283,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
       </ul>
