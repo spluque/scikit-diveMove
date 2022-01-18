@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Bout analysis &#8212; skdiveMove 0.2.6 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.2.7 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -104,7 +104,7 @@ processes, this class would set up the model:</p>
 process <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(s\)</span>, respectively; and <span class="math notranslate nohighlight">\(\lambda_f\)</span> and
 <span class="math notranslate nohighlight">\(\lambda_s\)</span> are the probabilities of an event occurring in each
 process.  Mixtures of more processes can also be added to the model.</p>
-<p>The bout-ending criterion (BEC) corresponding to equation <a class="reference internal" href="#equation-1">(1)</a> is:</p>
+<p>The bout-ending criterion (BEC) corresponding to equation <a class="reference internal" href="imutools.html#equation-1">(1)</a> is:</p>
 <div class="math notranslate nohighlight" id="equation-2">
 <span class="eqno">(2)<a class="headerlink" href="#equation-2" title="Permalink to this equation">¶</a></span>\[BEC = \frac{1}{\lambda_f - \lambda_s}
       log \frac{N_f \lambda_f}{N_s \lambda_s}\]</div>
@@ -438,11 +438,8 @@ fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
 to calculate the likelihood.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>out</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>out</p>
 </dd>
 </dl>
 </dd></dl>
@@ -646,11 +643,8 @@ represents the proportion of “slow” to “slow” <em>and</em> “very slow�
 used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><cite>ndarray</cite></p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><cite>ndarray</cite></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -679,8 +673,9 @@ probability.</p>
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Bout analysis</a><ul>
 <li><a class="reference internal" href="#abstract-class-methods-summary">Abstract class &amp; methods summary</a></li>
 <li><a class="reference internal" href="#nonlinear-least-squares-models">Nonlinear least squares models</a></li>
@@ -692,12 +687,17 @@ probability.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="tdr.html"
-                        title="previous chapter">TDR class</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="metadata.html"
-                        title="next chapter">Read and write metadata</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="tdr.html"
+                          title="previous chapter">TDR class</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="metadata.html"
+                          title="next chapter">Read and write metadata</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -734,14 +734,14 @@ probability.</p>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

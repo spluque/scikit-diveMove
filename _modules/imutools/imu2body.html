@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imu2body &#8212; skdiveMove 0.2.6 documentation</title>
+    <title>imutools.imu2body &#8212; skdiveMove 0.2.7 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
       </ul>
@@ -439,7 +439,8 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    Construct IMU2Body from two accessible DataFrame objects</span>
+<span class="sd">    Construct IMU2Body from NetCDF file with IMU signals, and</span>
+<span class="sd">    comma-separated file with timestamps for surface periods:</span>
 
 <span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
 <span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
@@ -458,7 +459,43 @@
 <span class="sd">    are (in a tuple): 1) window length and 2) polynomial order, in that</span>
 <span class="sd">    order.</span>
 
-<span class="sd">    &gt;&gt;&gt; imu = imutools.IMU2Body.from_csv_nc(icsv, icdf, savgol_parms=(99, 2))</span>
+<span class="sd">    &gt;&gt;&gt; imu = imutools.IMU2Body.from_csv_nc(icsv, icdf,</span>
+<span class="sd">    ...                                     savgol_parms=(99, 2))</span>
+<span class="sd">    &gt;&gt;&gt; print(imu)  # doctest: +ELLIPSIS</span>
+<span class="sd">    IMU -- Class IMU2Body object</span>
+<span class="sd">    Source File          ...</span>
+<span class="sd">    IMU: &lt;xarray.Dataset&gt;</span>
+<span class="sd">    Dimensions:           ...</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * timestamp         (timestamp) datetime64[ns] ...</span>
+<span class="sd">      * accelerometer     (accelerometer) object &#39;x&#39; &#39;y&#39; &#39;z&#39;</span>
+<span class="sd">      * magnetometer      (magnetometer) object &#39;x&#39; &#39;y&#39; &#39;z&#39;</span>
+<span class="sd">      * gyroscope         (gyroscope) object &#39;x&#39; &#39;y&#39; &#39;z&#39;</span>
+<span class="sd">    Data variables:</span>
+<span class="sd">        depth             (timestamp) float64 ...</span>
+<span class="sd">        acceleration      (timestamp, accelerometer) float64 ...</span>
+<span class="sd">        magnetic_density  (timestamp, magnetometer) float64 ...</span>
+<span class="sd">        angular_velocity  (timestamp, gyroscope) float64 ...</span>
+<span class="sd">    Attributes:...</span>
+<span class="sd">        animal_id:              Unknown</span>
+<span class="sd">        animal_species_common:  Humpback whale</span>
+<span class="sd">        animal_species_name:    Megaptera novaeangliae</span>
+<span class="sd">        deployment_id:          gert01</span>
+<span class="sd">        source_files:           gertrude_2017.csv,...</span>
+<span class="sd">    Surface segment duration summary:</span>
+<span class="sd">    count                           68</span>
+<span class="sd">    mean     0 days 00:02:01.764705882</span>
+<span class="sd">    std      0 days 00:02:15.182918382</span>
+<span class="sd">    min                0 days 00:00:11</span>
+<span class="sd">    25%         0 days 00:00:29.750000</span>
+<span class="sd">    50%                0 days 00:00:59</span>
+<span class="sd">    75%         0 days 00:02:26.250000</span>
+<span class="sd">    max                0 days 00:08:43</span>
+<span class="sd">    dtype: object</span>
+
+
+<span class="sd">    See :doc:`demo_imu2body` demo for an extended example of typical usage</span>
+<span class="sd">    of the methods in this class.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -685,7 +722,8 @@
 <span class="sd">        plot : bool, optional</span>
 <span class="sd">            Whether to generate a plot of the estimate</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :meth:`scatterIMU_svd`.</span>
+<span class="sd">            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and</span>
+<span class="sd">            ``animate`` are taken.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -751,6 +789,9 @@
             <span class="n">animate_file</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;animate_file&quot;</span><span class="p">,</span>
                                       <span class="p">(</span><span class="s2">&quot;imu2whale_</span><span class="si">{}</span><span class="s2">.mp4&quot;</span>
                                        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">surface_idx_str</span><span class="p">)))</span>
+            <span class="n">normalize</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;normalize&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Vectors are already normalized&quot;</span><span class="p">)</span>
             <span class="n">scatterIMU_svd</span><span class="p">(</span><span class="n">sfci_acc_ctr</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">),</span> <span class="n">Rfull</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
                            <span class="n">animate</span><span class="o">=</span><span class="n">animate</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="n">animate_file</span><span class="p">,</span>
                            <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1152,7 +1193,8 @@
 <span class="sd">        plot : bool, optional</span>
 <span class="sd">            Whether to generate a plot of the estimate</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to `_scatterIMU_svd`.</span>
+<span class="sd">            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and</span>
+<span class="sd">            ``animate`` are taken.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1283,7 +1325,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
       </ul>
@@ -1291,7 +1333,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

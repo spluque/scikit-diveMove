@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imucalibrate &#8212; skdiveMove 0.2.6 documentation</title>
+    <title>imutools.imucalibrate &#8212; skdiveMove 0.2.7 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imucalibrate</a></li> 
       </ul>
@@ -61,6 +61,7 @@
 <span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
 <span class="kn">import</span> <span class="nn">scipy.signal</span> <span class="k">as</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.tdrsource</span> <span class="kn">import</span> <span class="n">_load_dataset</span>
 <span class="kn">from</span> <span class="nn">.imu</span> <span class="kn">import</span> <span class="p">(</span><span class="n">IMUBase</span><span class="p">,</span>
                   <span class="n">_ACCEL_NAME</span><span class="p">,</span> <span class="n">_OMEGA_NAME</span><span class="p">,</span> <span class="n">_MAGNT_NAME</span><span class="p">,</span> <span class="n">_DEPTH_NAMES</span><span class="p">)</span>
 
@@ -75,7 +76,33 @@
 
 
 <div class="viewcode-block" id="IMUcalibrate"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate">[docs]</a><span class="k">class</span> <span class="nc">IMUcalibrate</span><span class="p">(</span><span class="n">IMUBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calibration framework for IMU measurements</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calibration framework for IMU measurements</span>
+
+<span class="sd">    Measurements from most IMU sensors are influenced by temperature, among</span>
+<span class="sd">    other artifacts.  The IMUcalibrate class implements the following</span>
+<span class="sd">    procedure to remove the effects of temperature from IMU signals:</span>
+
+<span class="sd">    - For each axis, fit a piecewise or simple linear regression of</span>
+<span class="sd">      measured (lowpass-filtered) data against temperature.</span>
+<span class="sd">    - Compute predicted signal from the model.</span>
+<span class="sd">    - Select a reference temperature :math:`T_{\alpha}` to standardize all</span>
+<span class="sd">      measurements at.</span>
+<span class="sd">    - The standardized measurement (:math:`x_\sigma`) at :math:`T_{\alpha}`</span>
+<span class="sd">      is calculated as:</span>
+
+<span class="sd">      .. math::</span>
+<span class="sd">         :label: 1</span>
+
+<span class="sd">         x_\sigma = x - (\hat{x} - \hat{x}_{\alpha})</span>
+
+<span class="sd">      where :math:`\hat{x}` is the value predicted from the model at the</span>
+<span class="sd">      measured temperature, and :math:`\hat{x}_{\alpha}` is the predicted</span>
+<span class="sd">      value at :math:`T_{\alpha}`.</span>
+
+<span class="sd">    The models fit to signals from a *motionless* (i.e. experimental) IMU</span>
+<span class="sd">    device in the first step can subsequently be used to remove or minimize</span>
+<span class="sd">    temperature effects from an IMU device measuring motions of interest,</span>
+<span class="sd">    provided the temperature is within the range observed in experiments.</span>
 
 <span class="sd">    In addition to attributes in :class:`IMUBase`, ``IMUcalibrate`` adds</span>
 <span class="sd">    the attributes listed below.</span>
@@ -86,33 +113,84 @@
 <span class="sd">        List of slices with the beginning and ending timestamps defining</span>
 <span class="sd">        periods in ``x_calib`` where valid calibration data are available.</span>
 <span class="sd">        Periods are assumed to be ordered chronologically.</span>
-<span class="sd">    obs_l : list</span>
-<span class="sd">        List of :class:`xarray.Dataset`, where each one is a subset of the</span>
-<span class="sd">        input :class:`Dataset`, bounded by the slices in the `periods`</span>
-<span class="sd">        attribute.</span>
 <span class="sd">    models_l : list</span>
-<span class="sd">        List of tuples as long as there are periods, with tuple elements:</span>
-
-<span class="sd">        - Dictionary with regression model objects for each sensor</span>
-<span class="sd">          axis.</span>
-<span class="sd">        - DataFrame with hierarchical column index with sensor axis</span>
-<span class="sd">          label at the first level.  The following columns are in the</span>
-<span class="sd">          second level:</span>
-
-<span class="sd">          - temperature</span>
-<span class="sd">          - var_name</span>
-<span class="sd">          - var_name_pred</span>
-<span class="sd">          - var_name_temp_refC</span>
-<span class="sd">          - var_name_adj</span>
-
+<span class="sd">        List of dictionaries as long as there are periods, with each</span>
+<span class="sd">        element corresponding to a sensor, in turn containing another</span>
+<span class="sd">        dictionary with each element corresponding to each sensor axis.</span>
 <span class="sd">    axis_order : list</span>
 <span class="sd">        List of characters specifying which axis ``x``, ``y``, or ``z`` was</span>
 <span class="sd">        pointing in the same direction as gravity in each period in</span>
 <span class="sd">        ``periods``.</span>
+<span class="sd">    time_name : str</span>
+<span class="sd">        Name of the dataset coordinate representing a timestamp consistent</span>
+<span class="sd">        with timestamps in ``periods``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Construct IMUcalibrate from NetCDF file with samples of IMU signals and</span>
+<span class="sd">    a list with begining and ending timestamps for experimental periods:</span>
+
+<span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
+<span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
+<span class="sd">    &gt;&gt;&gt; import skdiveMove.imutools as imutools</span>
+<span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc</span>
+<span class="sd">    ...         .resource_filename(&quot;skdiveMove&quot;,</span>
+<span class="sd">    ...                            osp.join(&quot;tests&quot;, &quot;data&quot;,</span>
+<span class="sd">    ...                                     &quot;cats_temperature_calib.nc&quot;)))</span>
+<span class="sd">    &gt;&gt;&gt; pers = [slice(&quot;2021-09-20T09:00:00&quot;, &quot;2021-09-21T10:33:00&quot;),</span>
+<span class="sd">    ...         slice(&quot;2021-09-21T10:40:00&quot;, &quot;2021-09-22T11:55:00&quot;),</span>
+<span class="sd">    ...         slice(&quot;2021-09-22T12:14:00&quot;, &quot;2021-09-23T11:19:00&quot;)]</span>
+<span class="sd">    &gt;&gt;&gt; imucal = (imutools.IMUcalibrate</span>
+<span class="sd">    ...           .read_netcdf(icdf, periods=pers,</span>
+<span class="sd">    ...                        axis_order=list(&quot;zxy&quot;),</span>
+<span class="sd">    ...                        time_name=&quot;timestamp_utc&quot;))</span>
+<span class="sd">    &gt;&gt;&gt; print(imucal)  # doctest: +ELLIPSIS</span>
+<span class="sd">    IMU -- Class IMUcalibrate object</span>
+<span class="sd">    Source File          None</span>
+<span class="sd">    IMU: &lt;xarray.Dataset&gt;</span>
+<span class="sd">    Dimensions:           (timestamp_utc: 268081, axis: 3)</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * axis              (axis) object &#39;x&#39; &#39;y&#39; &#39;z&#39;</span>
+<span class="sd">      * timestamp_utc     (timestamp_utc) datetime64[ns] ...</span>
+<span class="sd">    Data variables:</span>
+<span class="sd">        acceleration      (timestamp_utc, axis) float64 ...</span>
+<span class="sd">        angular_velocity  (timestamp_utc, axis) float64 ...</span>
+<span class="sd">        magnetic_density  (timestamp_utc, axis) float64 ...</span>
+<span class="sd">        depth             (timestamp_utc) float64 ...</span>
+<span class="sd">        temperature       (timestamp_utc) float64 ...</span>
+<span class="sd">    Attributes:...</span>
+<span class="sd">        history:  Resampled from 20 Hz to 1 Hz</span>
+<span class="sd">    Periods:</span>
+<span class="sd">    0:[&#39;2021-09-20T09:00:00&#39;, &#39;2021-09-21T10:33:00&#39;]</span>
+<span class="sd">    1:[&#39;2021-09-21T10:40:00&#39;, &#39;2021-09-22T11:55:00&#39;]</span>
+<span class="sd">    2:[&#39;2021-09-22T12:14:00&#39;, &#39;2021-09-23T11:19:00&#39;]</span>
+
+<span class="sd">    Plot signals from a given period:</span>
+
+<span class="sd">    &gt;&gt;&gt; fig, axs, axs_temp = imucal.plot_experiment(0, var=&quot;acceleration&quot;)</span>
+
+<span class="sd">    Build temperature models for a given variable and chosen</span>
+<span class="sd">    :math:`T_{\alpha}`, without low-pass filtering the input signals:</span>
+
+<span class="sd">    &gt;&gt;&gt; fs = 1.0</span>
+<span class="sd">    &gt;&gt;&gt; acc_cal = imucal.build_tmodels(&quot;acceleration&quot;, T_alpha=8,</span>
+<span class="sd">    ...                                use_axis_order=True,</span>
+<span class="sd">    ...                                 win_len=int(2 * 60 * fs) - 1)</span>
+
+<span class="sd">    Plot model of IMU variable against temperature:</span>
+
+<span class="sd">    &gt;&gt;&gt; fig, axs = imucal.plot_var_model(&quot;acceleration&quot;,</span>
+<span class="sd">    ...                                  use_axis_order=True)</span>
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This class redefines :meth:`IMUBase.read_netcdf`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_calib</span><span class="p">,</span> <span class="n">periods</span><span class="p">,</span> <span class="n">axis_order</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_calib</span><span class="p">,</span> <span class="n">periods</span><span class="p">,</span> <span class="n">axis_order</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">),</span>
+                 <span class="n">time_name</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set up attributes required for calibration</span>
 
 <span class="sd">        Parameters</span>
@@ -129,35 +207,75 @@
 <span class="sd">            List of characters specifying which axis ``x``, ``y``, or ``z``</span>
 <span class="sd">            was pointing in the same direction as gravity in each period in</span>
 <span class="sd">            ``periods``.</span>
+<span class="sd">        time_name : str</span>
+<span class="sd">            Name of the dataset coordinate representing a timestamp</span>
+<span class="sd">            consistent with timestamps in ``periods``.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Arguments passed to the `IMUBase.__init__` for instantiation.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">IMUcalibrate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x_calib</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">periods</span> <span class="o">=</span> <span class="n">periods</span>
-        <span class="n">obs_l</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">models_l</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
-            <span class="n">obs_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_calib</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">timestamp_utc</span><span class="o">=</span><span class="n">period</span><span class="p">)])</span>
             <span class="n">models_1d</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="nb">dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_MONOAXIAL_VARS</span><span class="p">}</span>
             <span class="n">models_2d</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">_TRIAXIAL_VARS</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">models_2d</span><span class="p">:</span>
                 <span class="n">models_2d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">axis_order</span><span class="p">)</span>
             <span class="n">models_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">models_1d</span><span class="p">,</span> <span class="o">**</span><span class="n">models_2d</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span> <span class="o">=</span> <span class="n">obs_l</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_name</span> <span class="o">=</span> <span class="n">time_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">models_l</span> <span class="o">=</span> <span class="n">models_l</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_order</span> <span class="o">=</span> <span class="n">axis_order</span>
+        <span class="c1"># Private attribute collecting DataArrays with standardized data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stdda_l</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="IMUcalibrate.savgol_filter"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.savgol_filter">[docs]</a>    <span class="k">def</span> <span class="nf">savgol_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">win_len</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="IMUcalibrate.read_netcdf"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.read_netcdf">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">read_netcdf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">imu_nc</span><span class="p">,</span> <span class="n">load_dataset_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create IMUcalibrate from NetCDF file and list of slices</span>
+
+<span class="sd">        This method redefines :meth:`IMUBase.read_netcdf`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        imu_nc : str</span>
+<span class="sd">            Path to NetCDF file.</span>
+<span class="sd">        load_dataset_kwargs : dict, optional</span>
+<span class="sd">            Dictionary of optional keyword arguments passed to</span>
+<span class="sd">            :func:`xarray.load_dataset`.</span>
+<span class="sd">        **kwargs : optional keyword arguments</span>
+<span class="sd">            Additional arguments passed to :meth:`IMUcalibrate.__init__`</span>
+<span class="sd">            method, except ``has_depth`` or ``imu_filename``.  The input</span>
+<span class="sd">            ``Dataset`` is assumed to have a depth ``DataArray``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out :</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">imu</span> <span class="o">=</span> <span class="n">_load_dataset</span><span class="p">(</span><span class="n">imu_nc</span><span class="p">,</span> <span class="o">**</span><span class="n">load_dataset_kwargs</span><span class="p">)</span>
+        <span class="n">ocls</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">imu</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ocls</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">super_str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">IMUcalibrate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+        <span class="n">pers_ends</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">per</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">:</span>
+            <span class="n">pers_ends</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">per</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">per</span><span class="o">.</span><span class="n">stop</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">per</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pers_ends</span><span class="p">)))</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">super_str</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Periods:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+
+<div class="viewcode-block" id="IMUcalibrate.savgol_filter"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.savgol_filter">[docs]</a>    <span class="k">def</span> <span class="nf">savgol_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">,</span> <span class="n">win_len</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Apply Savitzky-Golay filter on tri-axial IMU signals</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        var : str</span>
 <span class="sd">            Name of the variable in ``x`` with tri-axial signals.</span>
-<span class="sd">        period : int</span>
-<span class="sd">            Period to plot (zero-based).</span>
+<span class="sd">        period_idx : int</span>
+<span class="sd">            Index of period to plot (zero-based).</span>
 <span class="sd">        win_len : int</span>
 <span class="sd">            Window length for the low pass filter.</span>
 <span class="sd">        polyorder : int, optional</span>
@@ -170,7 +288,7 @@
 <span class="sd">            dimensions, and updated attributes.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">darray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">period</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
+        <span class="n">darray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">period_idx</span><span class="p">)[</span><span class="n">var</span><span class="p">]</span>
         <span class="n">var_df</span> <span class="o">=</span> <span class="n">darray</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
         <span class="n">var_sg</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">var_df</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="n">win_len</span><span class="p">,</span>
                                       <span class="n">polyorder</span><span class="o">=</span><span class="n">polyorder</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -250,7 +368,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        A new DataArray with signal standardized at :math:`T_alpha` is</span>
+<span class="sd">        A new DataArray with signal standardized at :math:`T_{\alpha}` is</span>
 <span class="sd">        added to the instance Dataset.  These signals correspond to the</span>
 <span class="sd">        lowpass-filtered form of the input used to build the models.</span>
 
@@ -261,7 +379,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Iterate through periods</span>
         <span class="n">per_l</span> <span class="o">=</span> <span class="p">[]</span>              <span class="c1"># output list as long as periods</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">)):</span>
+            <span class="n">per</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
             <span class="c1"># Subset the requested variable, smoothing if necessary</span>
             <span class="k">if</span> <span class="n">filter_sig</span><span class="p">:</span>
                 <span class="n">per_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -359,18 +478,20 @@
                                    <span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)))</span>
             <span class="n">std_data</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">std_data</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;history&quot;</span><span class="p">]</span> <span class="o">+</span>
                                          <span class="n">new_history</span><span class="p">)</span>
-            <span class="c1"># Update instance obs_l attribute</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">per</span><span class="p">,</span> <span class="n">std_data</span><span class="p">])</span>
+            <span class="c1"># Update instance _std_da_l attribute with DataArray having an</span>
+            <span class="c1"># additional dimension for the period index</span>
+            <span class="n">std_data</span> <span class="o">=</span> <span class="n">std_data</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stdda_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">std_data</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">per_l</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.plot_experiment"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">plot_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="IMUcalibrate.plot_experiment"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">plot_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot experimental IMU</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        period : int</span>
-<span class="sd">            Period to plot (zero-based).</span>
+<span class="sd">        period_idx : int</span>
+<span class="sd">            Index of period to plot (zero-based).</span>
 <span class="sd">        var : str</span>
 <span class="sd">            Name of the variable in with tri-axial data.</span>
 <span class="sd">        units_label : str, optional</span>
@@ -396,8 +517,9 @@
 <span class="sd">        plot_standardized</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">per_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">period</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
-        <span class="n">per_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">period</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
+        <span class="n">per_da</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">period_idx</span><span class="p">)</span>
+        <span class="n">per_var</span> <span class="o">=</span> <span class="n">per_da</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+        <span class="n">per_temp</span> <span class="o">=</span> <span class="n">per_da</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Plot variable and temperature&quot;&quot;&quot;</span>
@@ -515,16 +637,14 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xpred</span><span class="p">,</span> <span class="n">ypred_u</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span>
                     <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
+        <span class="n">per0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">units_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">units_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units_label&quot;</span><span class="p">]</span>
-        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
-                                  <span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span>
-                                  <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
-                                  <span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units_label&quot;</span><span class="p">])</span>
-        <span class="n">ylabel_pre</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
-                                      <span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span>
+            <span class="n">units_label</span> <span class="o">=</span> <span class="n">per0</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units_label&quot;</span><span class="p">]</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">per0</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span>
+                                  <span class="n">per0</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units_label&quot;</span><span class="p">])</span>
+        <span class="n">ylabel_pre</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">per0</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span>
                                       <span class="n">units_label</span><span class="p">)</span>
-        <span class="n">nperiods</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">)</span>
+        <span class="n">nperiods</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">axs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
 
@@ -533,8 +653,9 @@
                 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nperiods</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">per_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nperiods</span><span class="p">):</span>
-                <span class="n">per_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">per_i</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
-                <span class="n">per_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">per_i</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
+                <span class="n">peri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">per_i</span><span class="p">)</span>
+                <span class="n">per_var</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="n">per_temp</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
                 <span class="n">xdata</span> <span class="o">=</span> <span class="n">per_temp</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
                 <span class="n">ydata</span> <span class="o">=</span> <span class="n">per_var</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
                 <span class="c1"># Linear model</span>
@@ -551,8 +672,9 @@
             <span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_AXIS_NAMES</span><span class="p">):</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
-                <span class="n">xdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-                <span class="n">ydata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+                <span class="n">peri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                <span class="n">xdata</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+                <span class="n">ydata</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
                 <span class="c1"># Linear model</span>
                 <span class="n">model_fit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
                 <span class="n">ax_i</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -565,11 +687,11 @@
             <span class="k">if</span> <span class="n">axs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">nperiods</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">vert_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nperiods</span><span class="p">):</span>
-                <span class="n">xdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">vert_i</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+                <span class="n">peri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">vert_i</span><span class="p">)</span>
+                <span class="n">xdata</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
                 <span class="n">axs_xyz</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[:,</span> <span class="n">vert_i</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_AXIS_NAMES</span><span class="p">):</span>
-                    <span class="n">ydata</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">vert_i</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
-                             <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+                    <span class="n">ydata</span> <span class="o">=</span> <span class="p">(</span><span class="n">peri</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
                     <span class="c1"># Linear model</span>
                     <span class="n">model_fit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">vert_i</span><span class="p">,</span>
                                                <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
@@ -670,24 +792,27 @@
 
             <span class="k">return</span> <span class="n">ax_temp</span>
 
+        <span class="n">per0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">units_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">units_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units_label&quot;</span><span class="p">]</span>
-        <span class="n">ylabel_pre</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
-                                      <span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span>
+            <span class="n">units_label</span> <span class="o">=</span> <span class="n">per0</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units_label&quot;</span><span class="p">]</span>
+        <span class="n">ylabel_pre</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">per0</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span>
                                       <span class="n">units_label</span><span class="p">)</span>
         <span class="n">var_std</span> <span class="o">=</span> <span class="n">var</span> <span class="o">+</span> <span class="s2">&quot;_std&quot;</span>
-        <span class="n">nperiods</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">)</span>
+        <span class="n">nperiods</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">axs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+
+        <span class="n">std_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stdda_l</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">_MONOAXIAL_VARS</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">axs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nperiods</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">axs_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">per_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nperiods</span><span class="p">):</span>
-                <span class="n">per_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">per_i</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
-                <span class="n">per_std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">per_i</span><span class="p">][</span><span class="n">var_std</span><span class="p">]</span>
-                <span class="n">per_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">per_i</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
+                <span class="n">peri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">per_i</span><span class="p">)</span>
+                <span class="n">per_var</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="n">per_std</span> <span class="o">=</span> <span class="n">std_ds</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">per_i</span><span class="p">)][</span><span class="n">var_std</span><span class="p">]</span>
+                <span class="n">per_temp</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
                 <span class="n">ax_i</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">per_i</span><span class="p">]</span>
                 <span class="n">ax_temp</span> <span class="o">=</span> <span class="n">_plot_signal</span><span class="p">(</span><span class="n">per_var</span><span class="p">,</span> <span class="n">ystd</span><span class="o">=</span><span class="n">per_std</span><span class="p">,</span>
                                        <span class="n">temp</span><span class="o">=</span><span class="n">per_temp</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax_i</span><span class="p">)</span>
@@ -705,9 +830,11 @@
             <span class="n">axs_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_AXIS_NAMES</span><span class="p">):</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
-                <span class="n">per_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">per_std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">var_std</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">per_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
+                <span class="n">peri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                <span class="n">per_var</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">per_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">std_ds</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">idx</span><span class="p">)][</span><span class="n">var_std</span><span class="p">]</span>
+                           <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+                <span class="n">per_temp</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
                 <span class="n">ax_i</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
                     <span class="n">neg_ref</span> <span class="o">=</span> <span class="kc">True</span>
@@ -732,11 +859,11 @@
             <span class="k">for</span> <span class="n">vert_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nperiods</span><span class="p">):</span>
                 <span class="n">axs_xyz</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[:,</span> <span class="n">vert_i</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_AXIS_NAMES</span><span class="p">):</span>
-                    <span class="n">per_var</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">vert_i</span><span class="p">][</span><span class="n">var</span><span class="p">]</span>
+                    <span class="n">peri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset_imu</span><span class="p">(</span><span class="n">vert_i</span><span class="p">)</span>
+                    <span class="n">per_var</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">per_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">std_ds</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">vert_i</span><span class="p">)][</span><span class="n">var_std</span><span class="p">]</span>
                                <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-                    <span class="n">per_std</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">vert_i</span><span class="p">][</span><span class="n">var_std</span><span class="p">]</span>
-                               <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-                    <span class="n">per_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_l</span><span class="p">[</span><span class="n">vert_i</span><span class="p">][</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
+                    <span class="n">per_temp</span> <span class="o">=</span> <span class="n">peri</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
                     <span class="n">ax_i</span> <span class="o">=</span> <span class="n">axs_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                     <span class="n">ax_temp</span> <span class="o">=</span> <span class="n">_plot_signal</span><span class="p">(</span><span class="n">per_var</span><span class="p">,</span> <span class="n">ystd</span><span class="o">=</span><span class="n">per_std</span><span class="p">,</span>
                                            <span class="n">temp</span><span class="o">=</span><span class="n">per_temp</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax_i</span><span class="p">)</span>
@@ -830,8 +957,8 @@
         <span class="sd">&quot;&quot;&quot;Apply fitted temperature compensation model to Dataset</span>
 
 <span class="sd">        The selected models for tri-axial sensor data are applied to input</span>
-<span class="sd">        Dataset, standardizing signals at :math:`T_{alpha}`, optionally</span>
-<span class="sd">        subtracting the offset at :math:`T_{alpha}`.</span>
+<span class="sd">        Dataset, standardizing signals at :math:`T_{\alpha}`, optionally</span>
+<span class="sd">        subtracting the offset at :math:`T_{\alpha}`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -928,7 +1055,26 @@
         <span class="n">darray_new</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">darray_new</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;history&quot;</span><span class="p">]</span> <span class="o">+</span>
                                        <span class="n">new_history</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">darray_new</span></div></div>
+        <span class="k">return</span> <span class="n">darray_new</span></div>
+
+<div class="viewcode-block" id="IMUcalibrate.subset_imu"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.subset_imu">[docs]</a>    <span class="k">def</span> <span class="nf">subset_imu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Subset IMU dataset given a period index</span>
+
+<span class="sd">        The dataset is subset using the slice corresponding to the period</span>
+<span class="sd">        index.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        period_idx : int</span>
+<span class="sd">            Index of the experiment period to subset.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.Dataset</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">time_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">[</span><span class="n">period_idx</span><span class="p">]}]</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -963,7 +1109,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imucalibrate</a></li> 
       </ul>
@@ -971,7 +1117,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín
