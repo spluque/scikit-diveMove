@@ -130,5 +130,5 @@ intersphinx_mapping = {
     'scipy': ('https://docs.scipy.org/doc/scipy/reference', None),
     'pandas': ('https://pandas.pydata.org/docs', None),
     'matplotlib': ('https://matplotlib.org/stable', None),
-    'xarray': ('http://xarray.pydata.org/en/stable/', None),
+    'xarray': ('https://xarray.pydata.org/en/stable/', None),
 }

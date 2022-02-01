@@ -2,7 +2,9 @@
 
 """
 
-from skdiveMove.helpers import get_var_sampling_interval, _load_dataset
+import pandas as pd
+from skdiveMove.helpers import (get_var_sampling_interval,
+                                _append_xr_attr, _load_dataset)
 
 _SPEED_NAMES = ["velocity", "speed"]
 
@@ -20,6 +22,8 @@ class TDRSource:
         Dataset with input data.
     depth_name : str
         Name of data variable with depth measurements.
+    time_name : str
+        Name of the time dimension in the dataset.
     has_speed : bool
         Whether input data include speed measurements.
     speed_name : str
@@ -33,8 +37,8 @@ class TDRSource:
     Time-Depth Recorder -- Class TDR object ...
 
     """
-    def __init__(self, dataset, depth_name="depth",
-                 has_speed=False, tdr_filename=None):
+    def __init__(self, dataset, depth_name="depth", time_name="timestamp",
+                 subsample=None, has_speed=False, tdr_filename=None):
         """Set up attributes for TDRSource objects
 
         Parameters
@@ -42,15 +46,32 @@ class TDRSource:
         dataset : xarray.Dataset
             Dataset containing depth, and optionally other DataArrays.
         depth_name : str, optional
-            Name of data variable with depth measurements. Default: "depth".
+            Name of data variable with depth measurements.
+        time_name : str, optional
+            Name of the time dimension in the dataset.
+        subsample : str, optional
+            Subsample dataset at given frequency specification.  See pandas
+            offset aliases.
         has_speed : bool, optional
             Weather data includes speed measurements. Column name must be
-            one of ["velocity", "speed"].  Default: False.
+            one of ["velocity", "speed"].
         tdr_filename : str
             Name of the file from which `dataset` originated.
 
         """
-        self.tdr = dataset
+        self.time_name = time_name
+        if subsample is not None:
+            self.tdr = (dataset.resample({time_name: subsample})
+                        .interpolate("linear"))
+            for vname, da in self.tdr.data_vars.items():
+                da.attrs["sampling_rate"] = (1.0 /
+                                             pd.to_timedelta(subsample)
+                                             .seconds)
+                da.attrs["sampling_rate_units"] = "Hz"
+                _append_xr_attr(da, "history",
+                                "Resampled to {}\n".format(subsample))
+        else:
+            self.tdr = dataset
         self.depth_name = depth_name
         speed_var = [x for x in list(self.tdr.data_vars.keys())
                      if x in _SPEED_NAMES]
@@ -64,8 +85,8 @@ class TDRSource:
         self.tdr_file = tdr_filename
 
     @classmethod
-    def read_netcdf(cls, tdr_file, depth_name="depth",
-                    has_speed=False, **kwargs):
+    def read_netcdf(cls, tdr_file, depth_name="depth", time_name="timestamp",
+                    subsample=None, has_speed=False, **kwargs):
         """Instantiate object by loading Dataset from NetCDF file
 
         Parameters
@@ -74,6 +95,11 @@ class TDRSource:
             As first argument for :func:`xarray.load_dataset`.
         depth_name : str, optional
             Name of data variable with depth measurements. Default: "depth".
+        time_name : str, optional
+            Name of the time dimension in the dataset.
+        subsample : str, optional
+            Subsample dataset at given frequency specification.  See pandas
+            offset aliases.
         has_speed : bool, optional
             Weather data includes speed measurements. Column name must be
             one of ["velocity", "speed"].  Default: False.
@@ -87,7 +113,8 @@ class TDRSource:
 
         """
         dataset = _load_dataset(tdr_file, **kwargs)
-        return(cls(dataset, depth_name=depth_name, has_speed=has_speed,
+        return(cls(dataset, depth_name=depth_name, time_name=time_name,
+                   subsample=subsample, has_speed=has_speed,
                    tdr_filename=tdr_file))
 
     def __str__(self):

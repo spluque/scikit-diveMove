@@ -40,6 +40,7 @@ def diveMove2skd(oclass="TDR", has_speed=True):
         classes = [TDRSource, ZOC, TDRPhases, TDR]
         class_map = dict(zip(class_names, classes))
         tdrX = class_map[oclass].read_netcdf(ifile, depth_name="depth",
+                                             time_name="date_time",
                                              has_speed=has_speed)
     else:
         raise LookupError(("Requested class ({}) does not exist"

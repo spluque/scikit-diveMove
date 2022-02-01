@@ -6,7 +6,7 @@ import logging
 import pandas as pd
 from skdiveMove.tdrsource import TDRSource
 from skdiveMove.core import robjs, cv, pandas2ri
-from skdiveMove.helpers import _add_xr_attr
+from skdiveMove.helpers import _append_xr_attr
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
@@ -76,7 +76,7 @@ class ZOC(TDRSource):
         depth_zoc = depth - offset
         depth_zoc[depth_zoc < 0] = 0
 
-        _add_xr_attr(depth_zoc, "history", "ZOC")
+        _append_xr_attr(depth_zoc, "history", "ZOC")
 
         self._depth_zoc = depth_zoc
 
@@ -108,7 +108,7 @@ class ZOC(TDRSource):
         depth_zoc[depth_zoc < 0] = 0
         depth_zoc = depth_zoc.rename("depth").to_xarray()
         depth_zoc.attrs = depth.attrs
-        _add_xr_attr(depth_zoc, "history", "ZOC")
+        _append_xr_attr(depth_zoc, "history", "ZOC")
         self._depth_zoc = depth_zoc
         self.zoc_filters = depthmtx
 

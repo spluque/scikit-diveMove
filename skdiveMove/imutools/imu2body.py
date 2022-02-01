@@ -16,8 +16,8 @@ from scipy.spatial.transform import Rotation as R  # for zyx covention
 from mpl_toolkits.mplot3d import Axes3D, proj3d  # noqa:F401
 from matplotlib.patches import FancyArrowPatch
 from skdiveMove.tdrsource import _load_dataset
-from skdiveMove.helpers import _add_xr_attr
-from .imu import IMUBase, _ACCEL_NAME, _MAGNT_NAME
+from skdiveMove.helpers import _append_xr_attr
+from .imu import IMUBase, _ACCEL_NAME, _MAGNT_NAME, _TIME_NAME
 from .vector import normalize as normalize_vectors
 from .vector import vangle
 
@@ -302,7 +302,7 @@ def scatterIMU3D(vectors, col_vector, normalize=True, title=None,
     return(ax)
 
 
-def tsplotIMU_depth(vectors, depth, **kwargs):
+def tsplotIMU_depth(vectors, depth, time_name=_TIME_NAME, **kwargs):
     """Plot depth and each column of (N,3) array
 
     Parameters
@@ -324,10 +324,10 @@ def tsplotIMU_depth(vectors, depth, **kwargs):
     fig, axs = plt.subplots(4, 1, sharex=True, **kwargs)
     axs[0].set_ylabel("Depth [m]")
     axs[0].invert_yaxis()
-    depth.plot.line(x="timestamp", ax=axs[0], color="k")
+    depth.plot.line(x=time_name, ax=axs[0], color="k")
     axs[0].axhline(0, linestyle="--", linewidth=0.75, color="k")
     for i in range(1, 4):
-        vectors[:, i - 1].plot.line(x="timestamp", ax=axs[i])
+        vectors[:, i - 1].plot.line(x=time_name, ax=axs[i])
         axs[i].axhline(0, linestyle="--", linewidth=0.75, color="k")
         axs[i].set_title("")
         axs[i].set_xlabel("")
@@ -495,7 +495,7 @@ class IMU2Body(IMUBase):
         msg = ("{}: Savitzky-Golay filter\n"
                .format(pd.to_datetime("today")
                        .strftime("%Y-%m-%d %H:%M")))
-        _add_xr_attr(accel_sg, "history", msg)
+        _append_xr_attr(accel_sg, "history", msg)
         self.accel_sg = accel_sg
 
     @classmethod
@@ -604,7 +604,7 @@ class IMU2Body(IMUBase):
         # Retrieve sampling rate from one of DataArray
         itvl = self.sampling_interval
         left_lim = tlims[1] - pd.Timedelta(itvl, unit="s")
-        mask_d = dict(timestamp=slice(tlims[0], left_lim))
+        mask_d = {self.time_name: slice(tlims[0], left_lim)}
 
         return mask_d
 
@@ -948,10 +948,10 @@ class IMU2Body(IMUBase):
 
         def orient_segment(seg, R_seg):
             logger.info("Re-orienting from {0} to {1}"
-                        .format((seg.coords["timestamp"][0]
+                        .format((seg.coords[self.time_name][0]
                                  .dt.strftime("%Y-%m-%d %H:%M:%S.%f")
                                  .item()),
-                                (seg.coords["timestamp"][-1]
+                                (seg.coords[self.time_name][-1]
                                  .dt.strftime("%Y-%m-%d %H:%M:%S.%f")
                                  .item())))
             acc = seg.acceleration
@@ -972,7 +972,7 @@ class IMU2Body(IMUBase):
             # avoid duplicates
             itvl = self.sampling_interval
             left_lim = next_desc - pd.Timedelta(itvl, unit="s")
-            sel_d = dict(timestamp=slice(None, left_lim))
+            sel_d = {self.time_name: slice(None, left_lim)}
             seg0 = orient_segment(imu.loc[sel_d],
                                   self.orientations.iloc[0]["R"])
             imu_l.append(seg0)
@@ -983,13 +983,13 @@ class IMU2Body(IMUBase):
                 next_desc_i = (self.surface_details
                                .loc[idx]["beg.next.desc"])
                 left_lim = next_desc_i - pd.Timedelta(itvl, unit="s")
-                sel_d = dict(timestamp=slice(next_desc, left_lim))
+                sel_d = {self.time_name: slice(next_desc, left_lim)}
                 seg_i = orient_segment(imu.loc[sel_d], row["R"])
                 imu_l.append(seg_i)
                 # Set next descent to current one
                 next_desc = next_desc_i
             # Last segment (use remnant `row` object)
-            sel_d = dict(timestamp=slice(next_desc, None))
+            sel_d = {self.time_name: slice(next_desc, None)}
             seg_end = orient_segment(imu.loc[sel_d], row["R"])
             imu_l.append(seg_end)
             imus = xr.concat(imu_l, dim=self.orientations.index)

@@ -9,6 +9,8 @@ _DEFAULT_CONFIG = {
     'log_level': "INFO",
     'read': {
         'depth_name': "depth",
+        'time_name': "timestamp",
+        'subsample': 5,
         'has_speed': False,
         'load_dataset_kwargs': {}
     },
@@ -25,7 +27,6 @@ _DEFAULT_CONFIG = {
     'dives': {
         'dive_thr': 4,
         'dive_model': "unimodal",
-        'smooth_par': 0.1,
         'knot_factor': 3,
         'descent_crit_q': 0,
         'ascent_crit_q': 0

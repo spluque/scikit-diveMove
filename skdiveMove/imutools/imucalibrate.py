@@ -41,7 +41,7 @@ class IMUcalibrate(IMUBase):
       is calculated as:
 
       .. math::
-         :label: 1
+         :label: 5
 
          x_\sigma = x - (\hat{x} - \hat{x}_{\alpha})
 
@@ -71,9 +71,6 @@ class IMUcalibrate(IMUBase):
         List of characters specifying which axis ``x``, ``y``, or ``z`` was
         pointing in the same direction as gravity in each period in
         ``periods``.
-    time_name : str
-        Name of the dataset coordinate representing a timestamp consistent
-        with timestamps in ``periods``.
 
     Examples
     --------
@@ -140,7 +137,7 @@ class IMUcalibrate(IMUBase):
     """
 
     def __init__(self, x_calib, periods, axis_order=list("xyz"),
-                 time_name="timestamp", **kwargs):
+                 **kwargs):
         """Set up attributes required for calibration
 
         Parameters
@@ -157,9 +154,6 @@ class IMUcalibrate(IMUBase):
             List of characters specifying which axis ``x``, ``y``, or ``z``
             was pointing in the same direction as gravity in each period in
             ``periods``.
-        time_name : str
-            Name of the dataset coordinate representing a timestamp
-            consistent with timestamps in ``periods``.
         **kwargs : optional keyword arguments
             Arguments passed to the `IMUBase.__init__` for instantiation.
 
@@ -174,7 +168,6 @@ class IMUcalibrate(IMUBase):
                 models_2d[k] = dict.fromkeys(axis_order)
             models_l.append(dict(**models_1d, **models_2d))
 
-        self.time_name = time_name
         self.models_l = models_l
         self.axis_order = axis_order
         # Private attribute collecting DataArrays with standardized data

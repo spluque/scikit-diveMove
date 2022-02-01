@@ -12,6 +12,7 @@ from skdiveMove.tdrsource import _load_dataset
 from .allan import allan_coefs
 from .vector import rotate_vector
 
+_TIME_NAME = "timestamp"
 _DEPTH_NAMES = ["depth", ]
 _ACCEL_NAME = "acceleration"
 _OMEGA_NAME = "angular_velocity"
@@ -36,6 +37,8 @@ class IMUBase:
         Whether input data include depth measurements.
     depth_name : str
         Name of the data variable with depth measurements.
+    time_name : str
+        Name of the time dimension in the dataset.
     quats : numpy.ndarray
         Array of quaternions representing the orientation relative to the
         frame of the IMU object data.  Note that the scalar component is
@@ -79,6 +82,7 @@ class IMUBase:
                  acceleration_name=_ACCEL_NAME,
                  angular_velocity_name=_OMEGA_NAME,
                  magnetic_density_name=_MAGNT_NAME,
+                 time_name=_TIME_NAME,
                  has_depth=False, imu_filename=None):
         """Set up attributes for IMU objects
 
@@ -93,6 +97,8 @@ class IMUBase:
             Name of the angular velocity ``DataArray`` in the ``Dataset``.
         magnetic_density_name : str, optional
             Name of the magnetic density ``DataArray`` in the ``Dataset``.
+        time_name : str, optional
+            Name of the time dimension in the dataset.
         has_depth : bool, optional
             Whether input data include depth measurements.  Variable must
             be named "depth".
@@ -100,6 +106,7 @@ class IMUBase:
             Name of the file from which ``dataset`` originated.
 
         """
+        self.time_name = time_name
         self.imu = dataset
         self.imu_var_names = [acceleration_name,
                               angular_velocity_name,
@@ -121,6 +128,7 @@ class IMUBase:
                     acceleration_name=_ACCEL_NAME,
                     angular_velocity_name=_OMEGA_NAME,
                     magnetic_density_name=_MAGNT_NAME,
+                    time_name=_TIME_NAME,
                     has_depth=False, **kwargs):
         """Instantiate object by loading Dataset from NetCDF file
 
@@ -155,7 +163,8 @@ class IMUBase:
         return(cls(dataset, acceleration_name=acceleration_name,
                    angular_velocity_name=angular_velocity_name,
                    magnetic_density_name=magnetic_density_name,
-                   has_depth=has_depth, imu_filename=imu_file))
+                   time_name=time_name, has_depth=has_depth,
+                   imu_filename=imu_file))
 
     def __str__(self):
         x = self.imu

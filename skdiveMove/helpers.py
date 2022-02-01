@@ -43,8 +43,11 @@ def _get_dive_indices(indices, diveNo):
     return(idx_ok)
 
 
-def _add_xr_attr(x, attr, val):
-    """Add an attribute to xarray.DataArray or xarray.Dataset
+def _append_xr_attr(x, attr, val):
+    """Append to attribute to xarray.DataArray or xarray.Dataset
+
+    If attribute does not exist, create it.  Attribute is assumed to be a
+    string.
 
     Parameters
     ----------
@@ -53,11 +56,12 @@ def _add_xr_attr(x, attr, val):
         Attribute name to update or add
     val : str
         Attribute value
+
     """
     if attr in x.attrs:
         x.attrs[attr] += "{}".format(val)
     else:
-        x.attrs["history"] = "{}".format(val)
+        x.attrs[attr] = "{}".format(val)
 
 
 def get_var_sampling_interval(x):

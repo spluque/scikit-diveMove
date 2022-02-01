@@ -9,7 +9,7 @@ from skdiveMove.tdrphases import TDRPhases
 import skdiveMove.plotting as plotting
 import skdiveMove.calibspeed as speedcal
 from skdiveMove.helpers import (get_var_sampling_interval,
-                                _get_dive_indices, _add_xr_attr,
+                                _get_dive_indices, _append_xr_attr,
                                 _one_dive_stats, _speed_stats)
 import skdiveMove.calibconfig as calibconfig
 import xarray as xr
@@ -584,7 +584,7 @@ class TDR(TDRPhases):
                 coef_b = coefs[1]
 
             ospeed = (ispeed - coef_a) / coef_b
-            _add_xr_attr(ospeed, "history", "speed_calib_fit")
+            _append_xr_attr(ospeed, "history", "speed_calib_fit")
         else:
             msg = "kind must be one of: {}".format(kinds)
             logger.error(msg)
@@ -718,7 +718,7 @@ def calibrate(tdr_file, config_file=None):
     tdr.detect_dive_phases(**config["dives"])
 
     do_speed_calib = bool(config["speed_calib"].pop("required"))
-    if do_speed_calib:
+    if tdr.has_speed and do_speed_calib:
         logger.info("Speed calibration config: {}"
                     .format(config["speed_calib"]))
         tdr.calibrate_speed(**config["speed_calib"], plot=False)

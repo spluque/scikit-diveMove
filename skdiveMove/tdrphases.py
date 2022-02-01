@@ -25,7 +25,7 @@ import pandas as pd
 from skdiveMove.zoc import ZOC
 from skdiveMove.core import robjs, cv, pandas2ri
 from skdiveMove.helpers import (get_var_sampling_interval, _cut_dive,
-                                rle_key, _add_xr_attr)
+                                rle_key, _append_xr_attr)
 
 logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
@@ -158,7 +158,7 @@ class TDRPhases(ZOC):
                                              depth_intp)
                 zdepth = zdepth.to_xarray()
                 zdepth.attrs = depth.attrs
-                _add_xr_attr(zdepth, "history", "interp_wet")
+                _append_xr_attr(zdepth, "history", "interp_wet")
                 self._depth_zoc = zdepth
                 self._zoc_params.update(dict(interp_wet=interp_wet))
 
