@@ -135,6 +135,8 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
             _plot_phase_cat(depth, axs)
         if (dry_time is not None):
             _plot_dry_time(dry_time, axs)
+        if (xlim is not None):
+            axs.set_xlim(xlim)
         if (depth_lim is not None):
             axs.set_ylim(depth_lim)
         axs.invert_yaxis()
