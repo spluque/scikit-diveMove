@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdr &#8212; skdiveMove 0.2.7 documentation</title>
+    <title>skdiveMove.tdr &#8212; skdiveMove 0.2.8 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdr</a></li> 
       </ul>
@@ -59,7 +59,7 @@
 <span class="kn">import</span> <span class="nn">skdiveMove.plotting</span> <span class="k">as</span> <span class="nn">plotting</span>
 <span class="kn">import</span> <span class="nn">skdiveMove.calibspeed</span> <span class="k">as</span> <span class="nn">speedcal</span>
 <span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_var_sampling_interval</span><span class="p">,</span>
-                                <span class="n">_get_dive_indices</span><span class="p">,</span> <span class="n">_add_xr_attr</span><span class="p">,</span>
+                                <span class="n">_get_dive_indices</span><span class="p">,</span> <span class="n">_append_xr_attr</span><span class="p">,</span>
                                 <span class="n">_one_dive_stats</span><span class="p">,</span> <span class="n">_speed_stats</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">skdiveMove.calibconfig</span> <span class="k">as</span> <span class="nn">calibconfig</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -634,7 +634,7 @@
                 <span class="n">coef_b</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">ospeed</span> <span class="o">=</span> <span class="p">(</span><span class="n">ispeed</span> <span class="o">-</span> <span class="n">coef_a</span><span class="p">)</span> <span class="o">/</span> <span class="n">coef_b</span>
-            <span class="n">_add_xr_attr</span><span class="p">(</span><span class="n">ospeed</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;speed_calib_fit&quot;</span><span class="p">)</span>
+            <span class="n">_append_xr_attr</span><span class="p">(</span><span class="n">ospeed</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;speed_calib_fit&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;kind must be one of: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kinds</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -768,7 +768,7 @@
     <span class="n">tdr</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;dives&quot;</span><span class="p">])</span>
 
     <span class="n">do_speed_calib</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;speed_calib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;required&quot;</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">do_speed_calib</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">tdr</span><span class="o">.</span><span class="n">has_speed</span> <span class="ow">and</span> <span class="n">do_speed_calib</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Speed calibration config: </span><span class="si">{}</span><span class="s2">&quot;</span>
                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;speed_calib&quot;</span><span class="p">]))</span>
         <span class="n">tdr</span><span class="o">.</span><span class="n">calibrate_speed</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;speed_calib&quot;</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -818,7 +818,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdr</a></li> 
       </ul>

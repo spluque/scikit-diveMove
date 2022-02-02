@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.zoc &#8212; skdiveMove 0.2.7 documentation</title>
+    <title>skdiveMove.zoc &#8212; skdiveMove 0.2.8 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.zoc</a></li> 
       </ul>
@@ -56,7 +56,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">skdiveMove.tdrsource</span> <span class="kn">import</span> <span class="n">TDRSource</span>
 <span class="kn">from</span> <span class="nn">skdiveMove.core</span> <span class="kn">import</span> <span class="n">robjs</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">pandas2ri</span>
-<span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="n">_add_xr_attr</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="n">_append_xr_attr</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="c1"># Add the null handler if importing as library; whatever using this library</span>
@@ -126,7 +126,7 @@
         <span class="n">depth_zoc</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">-</span> <span class="n">offset</span>
         <span class="n">depth_zoc</span><span class="p">[</span><span class="n">depth_zoc</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="n">_add_xr_attr</span><span class="p">(</span><span class="n">depth_zoc</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;ZOC&quot;</span><span class="p">)</span>
+        <span class="n">_append_xr_attr</span><span class="p">(</span><span class="n">depth_zoc</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;ZOC&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_depth_zoc</span> <span class="o">=</span> <span class="n">depth_zoc</span>
 
@@ -158,7 +158,7 @@
         <span class="n">depth_zoc</span><span class="p">[</span><span class="n">depth_zoc</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">depth_zoc</span> <span class="o">=</span> <span class="n">depth_zoc</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_xarray</span><span class="p">()</span>
         <span class="n">depth_zoc</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">depth</span><span class="o">.</span><span class="n">attrs</span>
-        <span class="n">_add_xr_attr</span><span class="p">(</span><span class="n">depth_zoc</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;ZOC&quot;</span><span class="p">)</span>
+        <span class="n">_append_xr_attr</span><span class="p">(</span><span class="n">depth_zoc</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="s2">&quot;ZOC&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_depth_zoc</span> <span class="o">=</span> <span class="n">depth_zoc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zoc_filters</span> <span class="o">=</span> <span class="n">depthmtx</span>
 
@@ -307,7 +307,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.zoc</a></li> 
       </ul>

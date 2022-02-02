@@ -50,7 +50,8 @@ Load `diveMove`'s example data, using ``TDR.__init__`` method, and print:
             .resource_filename("skdiveMove",
                                ("tests/data/"
                                 "ag_mk7_2002_022.nc")))
-   tdrX = skdive.TDR.read_netcdf(ifile, depth_name="depth", has_speed=True)
+   tdrX = skdive.TDR.read_netcdf(ifile, depth_name="depth",
+                                 time_name="date_time", has_speed=True)
    # Or simply use function ``skdive.tests.diveMove2skd`` to do the
    # same with this particular data set.
    print(tdrX)
@@ -112,7 +113,6 @@ Using the "offset" method here for speed performance reasons:
            "wet_thr": 3610,
            "dive_thr": 3,
            "dive_model": "unimodal",
-           "smooth_par": 0.1,
            "knot_factor": 3,
            "descent_crit_q": 0,
            "ascent_crit_q": 0}
@@ -164,7 +164,6 @@ Two methods for dive phase detection are available ("unimodal" and
    :linenos:
 
    tdrX.detect_dive_phases(dive_model=pars["dive_model"],
-                           smooth_par=pars["smooth_par"],
                            knot_factor=pars["knot_factor"],
                            descent_crit_q=pars["descent_crit_q"],
                            ascent_crit_q=pars["ascent_crit_q"])

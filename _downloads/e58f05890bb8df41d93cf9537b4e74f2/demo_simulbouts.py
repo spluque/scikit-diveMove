@@ -78,7 +78,7 @@ for i in range(nsims):
     init_pars = xbouts.init_pars([80], plot=False)
     coefs, _ = xbouts.fit(init_pars)
     p_i = skbouts.bouts.calc_p(coefs)[0][0]  # only one here
-    coefs_i = coefs.loc["lambda"].append(pd.Series({"p": p_i}))
+    coefs_i = pd.concat([coefs.loc["lambda"], pd.Series({"p": p_i})])
     coefs_nls.append(coefs_i.to_numpy())
 
     # MLE

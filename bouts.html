@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Bout analysis &#8212; skdiveMove 0.2.7 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.2.8 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>  
@@ -104,7 +104,7 @@ processes, this class would set up the model:</p>
 process <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(s\)</span>, respectively; and <span class="math notranslate nohighlight">\(\lambda_f\)</span> and
 <span class="math notranslate nohighlight">\(\lambda_s\)</span> are the probabilities of an event occurring in each
 process.  Mixtures of more processes can also be added to the model.</p>
-<p>The bout-ending criterion (BEC) corresponding to equation <a class="reference internal" href="imutools.html#equation-1">(1)</a> is:</p>
+<p>The bout-ending criterion (BEC) corresponding to equation <a class="reference internal" href="#equation-1">(1)</a> is:</p>
 <div class="math notranslate nohighlight" id="equation-2">
 <span class="eqno">(2)<a class="headerlink" href="#equation-2" title="Permalink to this equation">¶</a></span>\[BEC = \frac{1}{\lambda_f - \lambda_s}
       log \frac{N_f \lambda_f}{N_s \lambda_s}\]</div>
@@ -212,7 +212,7 @@ methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
 log-frequencies of <cite>x</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -224,7 +224,7 @@ log-frequencies of <cite>x</cite>.</p>
 <p>Implementing default as from NLS method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
+<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -245,7 +245,7 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
 </ul>
 </dd>
@@ -280,7 +280,7 @@ and x &gt;= x_break[2] is third one.</p></li>
 <dd class="field-even"><p><strong>out</strong> – DataFrame with coefficients for each process.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -292,7 +292,7 @@ and x &gt;= x_break[2] is third one.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
+<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
 </ul>
@@ -398,7 +398,7 @@ of a single float is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with starting values for coefficients of each process
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)"><em>pandas.DataFrame</em></a>) – DataFrame with starting values for coefficients of each process
 in columns.  These can come from the “broken stick” method as
 in <a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Bouts.init_pars()</span></code></a>, and will be transformed to minimize
 the first log likelihood function.</p></li>
@@ -545,7 +545,7 @@ probability.</p>
 <p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p>
+<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
@@ -565,7 +565,7 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
 </ul>
 </dd>
@@ -586,7 +586,7 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p></li>
+<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – An Axes instance to use as target.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
 </ul>
@@ -609,7 +609,7 @@ coefs.shape[1]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v1.3.5)"><em>pandas.Series</em></a>) – Series with data to classify according to <cite>bec</cite>.</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v1.4.0)"><em>pandas.Series</em></a>) – Series with data to classify according to <cite>bec</cite>.</p></li>
 <li><p><strong>bec</strong> (<em>array_like</em>) – Array with bout-ending criteria. It is assumed to be sorted.</p></li>
 <li><p><strong>as_diff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to apply <cite>diff</cite> on <cite>x</cite> so it matches <cite>bec</cite>’s scale.</p></li>
 </ul>
@@ -734,7 +734,7 @@ probability.</p>
         <li class="right" >
           <a href="tdr.html" title="TDR class"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
       </ul>
     </div>

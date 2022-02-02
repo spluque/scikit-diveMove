@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Utilities for working with IMU data &#8212; skdiveMove 0.2.7 documentation</title>
+    <title>Utilities for working with IMU data &#8212; skdiveMove 0.2.8 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="metadata.html" title="Read and write metadata"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Utilities for working with IMU data</a></li> 
       </ul>
     </div>  
@@ -157,7 +157,7 @@ measurements.  These need to be taken into account and the
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#imutools.IMUcalibrate" title="imutools.IMUcalibrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IMUcalibrate</span></code></a>(x_calib, periods[, axis_order, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#imutools.IMUcalibrate" title="imutools.IMUcalibrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IMUcalibrate</span></code></a>(x_calib, periods[, axis_order])</p></td>
 <td><p>Calibration framework for IMU measurements</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#imutools.IMUcalibrate.build_tmodels" title="imutools.IMUcalibrate.build_tmodels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IMUcalibrate.build_tmodels</span></code></a>(var[, T_alpha, ...])</p></td>
@@ -208,7 +208,7 @@ attributes listed below.</p>
 <span class="sig-name descname"><span class="pre">surface_details</span></span><a class="headerlink" href="#imutools.IMU2Body.surface_details" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -220,7 +220,7 @@ attributes listed below.</p>
 pointer to the input acceleration signals.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -232,7 +232,7 @@ pointer to the input acceleration signals.</p>
 the body frame for each surface period.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -303,7 +303,7 @@ of the methods in this class.</p>
 <dd class="field-odd"><p>Summary description of durations</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v1.3.5)">pandas.Series</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v1.4.0)">pandas.Series</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -357,7 +357,7 @@ beginning of the next interval.</p></li>
 <li><p><strong>savgol_parms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a><em>, </em><em>optional</em>) – A 2-element tuple with the window length and polynomial order
 for the Savitzky-Golay filter to smooth acceleration.</p></li>
 <li><p><strong>load_dataset_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of optional keyword arguments passed to
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.21.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Additional arguments passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">IMUBase.__init__()</span></code> method,
 except <code class="docutils literal notranslate"><span class="pre">has_depth</span></code> or <code class="docutils literal notranslate"><span class="pre">imu_filename</span></code>.  The input
 <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> is assumed to have a depth <code class="docutils literal notranslate"><span class="pre">DataArray</span></code>.</p></li>
@@ -439,7 +439,7 @@ and having the following columns:</p>
 </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)">pandas.DataFrame</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.0)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -467,7 +467,7 @@ surface details table.</p>
 <dd class="field-even"><p><strong>vectors</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -501,7 +501,7 @@ provided, the Dataset contains an additional coordinate
 representing the surfacing period for each segment.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -532,7 +532,7 @@ the rotation from the body frame to the IMU frame.</p></li>
 <dd class="field-even"><p>The re-oriented IMU object.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -565,7 +565,7 @@ was not provided, the Dataset contains an additional coordinate
 representing the surfacing period for each segment.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -637,10 +637,10 @@ individually.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="imutools.IMUBase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imutools.</span></span><span class="sig-name descname"><span class="pre">IMUBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceleration_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'acceleration'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_velocity_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'angular_velocity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnetic_density_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'magnetic_density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imu_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imu.html#IMUBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUBase" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imutools.</span></span><span class="sig-name descname"><span class="pre">IMUBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceleration_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'acceleration'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_velocity_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'angular_velocity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnetic_density_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'magnetic_density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imu_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imu.html#IMUBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Define IMU data source</p>
-<p>Use <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> to ensure pseudo-standard metadata.</p>
+<p>Use <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> to ensure pseudo-standard metadata.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imutools.IMUBase.imu_file">
 <span class="sig-name descname"><span class="pre">imu_file</span></span><a class="headerlink" href="#imutools.IMUBase.imu_file" title="Permalink to this definition">¶</a></dt>
@@ -658,7 +658,7 @@ individually.</p>
 <dd><p>Dataset with input data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -690,6 +690,17 @@ and magnetic density measurements.</p>
 <dt class="sig sig-object py" id="imutools.IMUBase.depth_name">
 <span class="sig-name descname"><span class="pre">depth_name</span></span><a class="headerlink" href="#imutools.IMUBase.depth_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the data variable with depth measurements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imutools.IMUBase.time_name">
+<span class="sig-name descname"><span class="pre">time_name</span></span><a class="headerlink" href="#imutools.IMUBase.time_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the time dimension in the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
@@ -854,21 +865,21 @@ realistic for dead-reckoning tracking purposes.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imutools.IMUBase.read_netcdf">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imu_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceleration_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'acceleration'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_velocity_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'angular_velocity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnetic_density_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'magnetic_density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imu.html#IMUBase.read_netcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUBase.read_netcdf" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imu_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceleration_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'acceleration'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_velocity_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'angular_velocity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnetic_density_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'magnetic_density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imu.html#IMUBase.read_netcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUBase.read_netcdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate object by loading Dataset from NetCDF file</p>
 <p>Provided all <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the NetCDF file have the same
 dimensions (N, 3), this is an efficient way to instantiate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>imu_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>imu_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.21.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>acceleration_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the acceleration <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p></li>
 <li><p><strong>angular_velocity_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the angular velocity <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p></li>
 <li><p><strong>magnetic_density_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the magnetic density <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p></li>
 <li><p><strong>dimension_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em>) – Names of the dimensions of the data in each of the sensors.</p></li>
 <li><p><strong>has_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether input data include depth measurements.  Variable must
 be named “depth”.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.21.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -886,7 +897,7 @@ be named “depth”.</p></li>
 <dd><p>Return acceleration array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -897,7 +908,7 @@ be named “depth”.</p></li>
 <dd><p>Return angular velocity array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -908,7 +919,7 @@ be named “depth”.</p></li>
 <dd><p>Return depth array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -919,7 +930,7 @@ be named “depth”.</p></li>
 <dd><p>Return magnetic_density array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -932,7 +943,7 @@ be named “depth”.</p></li>
 is retrieved from the acceleration `DataArray</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 <div class="admonition warning">
@@ -946,7 +957,7 @@ in the NetCDF file, which is assumed to be in Hz units.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="imutools.IMUcalibrate">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imutools.</span></span><span class="sig-name descname"><span class="pre">IMUcalibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_calib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['x',</span> <span class="pre">'y',</span> <span class="pre">'z']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'timestamp'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imucalibrate.html#IMUcalibrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUcalibrate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imutools.</span></span><span class="sig-name descname"><span class="pre">IMUcalibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_calib</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['x',</span> <span class="pre">'y',</span> <span class="pre">'z']</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imucalibrate.html#IMUcalibrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUcalibrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#imutools.IMUBase" title="imutools.imu.IMUBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">imutools.imu.IMUBase</span></code></a></p>
 <p>Calibration framework for IMU measurements</p>
 <p>Measurements from most IMU sensors are influenced by temperature, among
@@ -960,8 +971,8 @@ measured (lowpass-filtered) data against temperature.</p></li>
 measurements at.</p></li>
 <li><p>The standardized measurement (<span class="math notranslate nohighlight">\(x_\sigma\)</span>) at <span class="math notranslate nohighlight">\(T_{\alpha}\)</span>
 is calculated as:</p>
-<div class="math notranslate nohighlight" id="equation-1">
-<span class="eqno">(1)<a class="headerlink" href="#equation-1" title="Permalink to this equation">¶</a></span>\[x_\sigma = x - (\hat{x} - \hat{x}_{\alpha})\]</div>
+<div class="math notranslate nohighlight" id="equation-5">
+<span class="eqno">(1)<a class="headerlink" href="#equation-5" title="Permalink to this equation">¶</a></span>\[x_\sigma = x - (\hat{x} - \hat{x}_{\alpha})\]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat{x}\)</span> is the value predicted from the model at the
 measured temperature, and <span class="math notranslate nohighlight">\(\hat{x}_{\alpha}\)</span> is the predicted
 value at <span class="math notranslate nohighlight">\(T_{\alpha}\)</span>.</p>
@@ -1008,18 +1019,6 @@ pointing in the same direction as gravity in each period in
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="imutools.IMUcalibrate.time_name">
-<span class="sig-name descname"><span class="pre">time_name</span></span><a class="headerlink" href="#imutools.IMUcalibrate.time_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the dataset coordinate representing a timestamp consistent
-with timestamps in <code class="docutils literal notranslate"><span class="pre">periods</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1093,7 +1092,7 @@ subtracting the offset at <span class="math notranslate nohighlight">\(T_{lpha}
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>var</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Name of the variable with tri-axial data.</p></li>
-<li><p><strong>dataset</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><em>xarray.Dataset</em></a>) – Dataset with temperature and tri-axial data from motionless IMU.</p></li>
+<li><p><strong>dataset</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)"><em>xarray.Dataset</em></a>) – Dataset with temperature and tri-axial data from motionless IMU.</p></li>
 <li><p><strong>T_alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>optional</em>) – Reference temperature at which all measurements will be
 adjusted to.  Default is the mean temperature in the input
 dataset.</p></li>
@@ -1115,7 +1114,7 @@ specifying the period for the model to use.  Ignored if
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1363,7 +1362,7 @@ with IMU signal plots.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>imu_nc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to NetCDF file.</p></li>
 <li><p><strong>load_dataset_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of optional keyword arguments passed to
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v0.21.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Additional arguments passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">IMUcalibrate.__init__()</span></code>
 method, except <code class="docutils literal notranslate"><span class="pre">has_depth</span></code> or <code class="docutils literal notranslate"><span class="pre">imu_filename</span></code>.  The input
 <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> is assumed to have a depth <code class="docutils literal notranslate"><span class="pre">DataArray</span></code>.</p></li>
@@ -1393,7 +1392,7 @@ method, except <code class="docutils literal notranslate"><span class="pre">has_
 dimensions, and updated attributes.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1409,7 +1408,7 @@ index.</p>
 <dd class="field-odd"><p><strong>period_idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Index of the experiment period to subset.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.21.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1504,13 +1503,13 @@ assumes input is centered.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="imutools.tsplotIMU_depth">
-<span class="sig-prename descclassname"><span class="pre">imutools.</span></span><span class="sig-name descname"><span class="pre">tsplotIMU_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imu2body.html#tsplotIMU_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.tsplotIMU_depth" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">imutools.</span></span><span class="sig-name descname"><span class="pre">tsplotIMU_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'timestamp'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imutools/imu2body.html#tsplotIMU_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.tsplotIMU_depth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot depth and each column of (N,3) array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vectors</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><em>xarray.DataArray</em></a>) – Array with columns to plot in subplot.</p></li>
-<li><p><strong>depth</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.20.2.dev0)"><em>xarray.DataArray</em></a>) – Array with depth measurements.</p></li>
+<li><p><strong>vectors</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)"><em>xarray.DataArray</em></a>) – Array with columns to plot in subplot.</p></li>
+<li><p><strong>depth</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.21.2.dev0)"><em>xarray.DataArray</em></a>) – Array with depth measurements.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.5.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>
 (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>
@@ -1588,7 +1587,7 @@ assumes input is centered.</p></li>
         <li class="right" >
           <a href="metadata.html" title="Read and write metadata"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Utilities for working with IMU data</a></li> 
       </ul>
     </div>
