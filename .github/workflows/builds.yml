@@ -34,7 +34,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -55,7 +55,7 @@ jobs:
           coverage xml
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         if: matrix.python-version == env.PY_LATEST
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
           name: dist-pkg
 
       - name: Publish GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
           branch: gh-pages
           folder: docs/build/html
