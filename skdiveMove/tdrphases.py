@@ -23,7 +23,7 @@ import logging
 import numpy as np
 import pandas as pd
 from skdiveMove.zoc import ZOC
-from skdiveMove.core import robjs, cv, pandas2ri
+from skdiveMove.core import diveMove, robjs, cv, pandas2ri
 from skdiveMove.helpers import (get_var_sampling_interval, _cut_dive,
                                 rle_key, _append_xr_attr)
 
@@ -131,15 +131,18 @@ class TDRPhases(ZOC):
         if wet_cond is None:
             wet_cond = ~depth_py.isna()
 
-        rstr = """detPhaseFun <- diveMove:::.detPhase"""
-        detPhaseFun = robjs.r(rstr)
+        phases_l = (diveMove
+                    ._detPhase(robjs.vectors.POSIXct(time_py),
+                               robjs.vectors.FloatVector(depth_py),
+                               dry_thr=dry_thr,
+                               wet_thr=wet_thr,
+                               wet_cond=(robjs.vectors
+                                         .BoolVector(~depth_py.isna())),
+                               interval=dtime))
         with cv.localconverter(robjs.default_converter +
                                pandas2ri.converter):
-            phases_l = detPhaseFun(pd.Series(time_py), pd.Series(depth_py),
-                                   dry_thr=dry_thr, wet_thr=wet_thr,
-                                   wet_cond=wet_cond, interval=dtime)
-            phases = pd.DataFrame({'phase_id': phases_l[0],
-                                   'phase_label': phases_l[1]},
+            phases = pd.DataFrame({'phase_id': phases_l.rx2("phase.id"),
+                                   'phase_label': phases_l.rx2("activity")},
                                   index=time_py)
 
         phases.loc[:, "phase_id"] = phases.loc[:, "phase_id"].astype(int)
@@ -196,12 +199,11 @@ class TDRPhases(ZOC):
         depth = self.depth_zoc
         depth_py = depth.to_series()
         act_phases = self.wet_dry["phase_label"]
-        detDiveFun = robjs.r("""detDiveFun <- diveMove:::.detDive""")
         with cv.localconverter(robjs.default_converter +
                                pandas2ri.converter):
-            phases_df = detDiveFun(pd.Series(depth_py),
-                                   pd.Series(act_phases),
-                                   dive_thr=dive_thr)
+            phases_df = diveMove._detDive(pd.Series(depth_py),
+                                          pd.Series(act_phases),
+                                          dive_thr=dive_thr)
 
         # Replace dots with underscore
         phases_df.columns = (phases_df.columns.str
