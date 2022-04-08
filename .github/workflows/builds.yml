@@ -95,7 +95,7 @@ jobs:
           persist-credentials: false
 
       - name: Download products
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dist-pkg
 
