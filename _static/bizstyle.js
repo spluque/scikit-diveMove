@@ -36,6 +36,6 @@ $(window).resize(function(){
         $("li.nav-item-0 a").text("Top");
     }
     else {
-        $("li.nav-item-0 a").text("skdiveMove 0.2.8 documentation");
+        $("li.nav-item-0 a").text("skdiveMove 0.2.9 documentation");
     }
 });

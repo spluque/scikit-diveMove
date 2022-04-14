@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.zoc &#8212; skdiveMove 0.2.8 documentation</title>
+    <title>skdiveMove.zoc &#8212; skdiveMove 0.2.9 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -18,7 +18,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script src="../../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.zoc</a></li> 
       </ul>
@@ -55,7 +55,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">skdiveMove.tdrsource</span> <span class="kn">import</span> <span class="n">TDRSource</span>
-<span class="kn">from</span> <span class="nn">skdiveMove.core</span> <span class="kn">import</span> <span class="n">robjs</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">pandas2ri</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.core</span> <span class="kn">import</span> <span class="n">robjs</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">pandas2ri</span><span class="p">,</span> <span class="n">diveMove</span>
 <span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="n">_append_xr_attr</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -237,11 +237,12 @@
 <span class="sd">            column `depth_adj` for corrected depth.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filterFun</span> <span class="o">=</span> <span class="n">robjs</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;filterFun &lt;- diveMove:::.depthFilter&quot;&quot;&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">cv</span><span class="o">.</span><span class="n">localconverter</span><span class="p">(</span><span class="n">robjs</span><span class="o">.</span><span class="n">default_converter</span> <span class="o">+</span>
                                <span class="n">pandas2ri</span><span class="o">.</span><span class="n">converter</span><span class="p">):</span>
-            <span class="n">depthmtx</span> <span class="o">=</span> <span class="n">filterFun</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">probs</span><span class="p">),</span>
-                                 <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">depth_bounds</span><span class="p">),</span> <span class="n">na_rm</span><span class="p">)</span>
+            <span class="n">depthmtx</span> <span class="o">=</span> <span class="n">diveMove</span><span class="o">.</span><span class="n">_depthFilter</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span>
+                                             <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">probs</span><span class="p">),</span>
+                                             <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">depth_bounds</span><span class="p">),</span>
+                                             <span class="n">na_rm</span><span class="p">)</span>
 
         <span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;k</span><span class="si">{0}</span><span class="s2">_p</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">probs</span><span class="p">)]</span>
         <span class="n">colnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;depth_adj&quot;</span><span class="p">)</span>
@@ -307,7 +308,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.zoc</a></li> 
       </ul>
@@ -315,7 +316,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín
