@@ -40,13 +40,13 @@ def nlsLL(x, coefs):
 
     """
     def calc_term(params):
-        return(params[0] * params[1] * np.exp(-params[1] * x))
+        return params[0] * params[1] * np.exp(-params[1] * x)
 
     terms = np.apply_along_axis(calc_term, 0, coefs)
     terms_sum = terms.sum(1)
     if np.any(terms_sum <= 0):
         logger.warning("Negative values at: {}".format(coefs))
-    return(np.log(terms_sum))
+    return np.log(terms_sum)
 
 
 def calc_p(coefs):
@@ -79,7 +79,7 @@ def calc_p(coefs):
         p_i = a1 / (a1 + a2)
         p_ll.append(p_i)
 
-    return(p_ll, coefs.loc["lambda"])
+    return (p_ll, coefs.loc["lambda"])
 
 
 def ecdf(x, p, lambdas):
@@ -126,7 +126,7 @@ def ecdf(x, p, lambdas):
         msg = "Only mixtures of <= 3 processes are implemented"
         raise KeyError(msg)
 
-    return(cdf)
+    return cdf
 
 
 def label_bouts(x, bec, as_diff=False):
@@ -159,7 +159,7 @@ def label_bouts(x, bec, as_diff=False):
     xx_cat = pd.cut(xx, bins=brks, include_lowest=True)
     xx_bouts = rle_key(xx_cat)
 
-    return(xx_bouts)
+    return xx_bouts
 
 
 def _plot_bec(bec_x, bec_y, ax, xytext, horizontalalignment="left"):
@@ -270,7 +270,7 @@ class Bouts(metaclass=ABCMeta):
         lnfreq_str = ("{0:<20}\n{1}"
                       .format("log-frequency histogram:",
                               lnfreq.describe()))
-        return(objcls + meth_str + lnfreq_str)
+        return objcls + meth_str + lnfreq_str
 
     def init_pars(self, x_break, plot=True, ax=None, **kwargs):
         """Find starting values for mixtures of random Poisson processes
@@ -326,7 +326,7 @@ class Bouts(metaclass=ABCMeta):
             """
             lda = -p["x"]
             a = np.exp(p["Intercept"]) / lda
-            return(pd.Series({"a": a, "lambda": lda}))
+            return pd.Series({"a": a, "lambda": lda})
 
         pars = coefs.apply(calculate_pars)
 
@@ -353,7 +353,7 @@ class Bouts(metaclass=ABCMeta):
             ax.set_xlabel("x")
             ax.set_ylabel("log frequency")
 
-        return(pars)
+        return pars
 
     @abstractmethod
     def fit(self, start, **kwargs):
@@ -384,7 +384,7 @@ class Bouts(metaclass=ABCMeta):
             """Wrapper to nlsLL to allow for array argument"""
             # Pass in original shape, damn it!  Note order="F" needed
             coefs = np.array(args).reshape(start.shape, order="F")
-            return(nlsLL(x, coefs))
+            return nlsLL(x, coefs)
 
         # Rearrange starting values into a 1D array (needs to be flat)
         init_flat = start.to_numpy().T.reshape((start.size,))
@@ -393,7 +393,7 @@ class Bouts(metaclass=ABCMeta):
         # Reshape coefs back into init shape
         coefs = pd.DataFrame(popt.reshape(start.shape, order="F"),
                              columns=start.columns, index=start.index)
-        return(coefs, pcov)
+        return (coefs, pcov)
 
     @abstractmethod
     def bec(self, coefs):
@@ -430,7 +430,7 @@ class Bouts(metaclass=ABCMeta):
                    (lambda1 - lambda2))
             becs.append(bec)
 
-        return(np.array(becs))
+        return np.array(becs)
 
     def plot_fit(self, coefs, ax=None):
         """Plot log frequency histogram and fitted model
@@ -473,7 +473,7 @@ class Bouts(metaclass=ABCMeta):
         ax.set_xlabel("x")
         ax.set_ylabel("log frequency")
 
-        return(ax)
+        return ax
 
     def _plot_ecdf(x_pred_expm1, y_pred, ax):
         """Plot Empirical Frequency Distribution

@@ -208,7 +208,7 @@ class IMUcalibrate(IMUBase):
             pers_ends.append([per.start, per.stop])
         msg = ("\n".join("{}:{}".format(i, per)
                          for i, per in enumerate(pers_ends)))
-        return(super_str + "\nPeriods:\n{}".format(msg))
+        return super_str + "\nPeriods:\n{}".format(msg)
 
     def savgol_filter(self, var, period_idx, win_len, polyorder=1):
         """Apply Savitzky-Golay filter on tri-axial IMU signals

@@ -142,12 +142,12 @@ def scatterIMU_svd(vectors, svd, R_ctr2i, normalize=False, center=False,
     if animate:
         def anim_update(azim):
             ax.view_init(azim=azim, elev=view_elev)
-            return(ax,)
+            return (ax,)
         anim = animation.FuncAnimation(fig, anim_update, blit=False,
                                        frames=360, interval=20)
         anim.save(animate_file, fps=20)
 
-    return(ax)
+    return ax
 
 
 def _scatterIMU_svd(vectors, svd, R_b2i, normalize=False, title=None,
@@ -231,12 +231,12 @@ def _scatterIMU_svd(vectors, svd, R_b2i, normalize=False, title=None,
     if animate:
         def anim_update(azim):
             ax.view_init(azim=azim, elev=view_elev)
-            return(ax,)
+            return (ax,)
         anim = animation.FuncAnimation(fig, anim_update, blit=False,
                                        frames=360, interval=20)
         anim.save(animate_file, fps=20)
 
-    return(ax)
+    return ax
 
 
 def scatterIMU3D(vectors, col_vector, normalize=True, title=None,
@@ -294,12 +294,12 @@ def scatterIMU3D(vectors, col_vector, normalize=True, title=None,
     if animate:
         def anim_update(azim):
             ax.view_init(azim=azim, elev=view_elev)
-            return(ax,)
+            return (ax,)
         anim = animation.FuncAnimation(fig, anim_update, blit=False,
                                        frames=360, interval=20)
         anim.save(animate_file, fps=20)
 
-    return(ax)
+    return ax
 
 
 def tsplotIMU_depth(vectors, depth, time_name=_TIME_NAME, **kwargs):
@@ -338,7 +338,7 @@ def tsplotIMU_depth(vectors, depth, time_name=_TIME_NAME, **kwargs):
 
     axs[0].margins(x=0)
     axs[-1].tick_params(labelrotation=0, which="both")
-    return(axs)
+    return axs
 
 
 def _euler_ctr2body(R_ctr2i):
@@ -363,7 +363,7 @@ def _euler_ctr2body(R_ctr2i):
     """
     euler_ctr = R_ctr2i.as_euler("XYZ", degrees=True)
     euler_ctr[:2] = -euler_ctr[:2]
-    return(euler_ctr)
+    return euler_ctr
 
 
 class IMU2Body(IMUBase):
@@ -565,7 +565,7 @@ class IMU2Body(IMUBase):
         super_str = super(IMU2Body, self).__str__()
         srfc_dur_summary = self.describe_surfacing_durations()
         msg = "\nSurface segment duration summary:\n{}"
-        return(super_str + msg.format(srfc_dur_summary))
+        return super_str + msg.format(srfc_dur_summary)
 
     def describe_surfacing_durations(self):
         """Return a summary of surfacing durations
@@ -582,7 +582,7 @@ class IMU2Body(IMUBase):
         """
         srfc_dur = (self.surface_details["end.surface"] -
                     self.surface_details["beg.surface"])
-        return(srfc_dur.describe())
+        return srfc_dur.describe()
 
     def _get_surface_mask(self, surface_idx):
         """Return mask dictionary for given index in surface details table
@@ -651,7 +651,7 @@ class IMU2Body(IMUBase):
             sfci_vector = (getattr(self, self.depth_name)
                            .loc[sfci_mask])
 
-        return(sfci_vector)
+        return sfci_vector
 
     def get_orientation(self, surface_idx, plot=True, **kwargs):
         """Compute orientation for a given index in surface details table
@@ -746,7 +746,7 @@ class IMU2Body(IMUBase):
                            animate=animate, animate_file=animate_file,
                            **kwargs)
 
-        return(Rfull, (uu, ss, vv))
+        return (Rfull, (uu, ss, vv))
 
     def get_orientations(self):
         r"""Obtain orientation for all periods in surface details table
@@ -809,7 +809,7 @@ class IMU2Body(IMUBase):
         orientations.index.rename(self.surface_details.index.name,
                                   inplace=True)
         self.orientations = orientations
-        return(orientations)
+        return orientations
 
     def orient_surfacing(self, surface_idx, R_b2i):
         """Apply orientation for a given index in surface details table
@@ -848,7 +848,7 @@ class IMU2Body(IMUBase):
         magnt_body = R_b2i.apply(magnt.to_numpy(), inverse=True)
         imu_sfci.acceleration.data = acc_body
         imu_sfci.magnetic_density.data = magnt_body
-        return(imu_sfci)
+        return imu_sfci
 
     def orient_surfacings(self, R_all=None):
         """Apply orientation to all periods in surface details table
@@ -898,7 +898,7 @@ class IMU2Body(IMUBase):
 
             sfces.append(sfci)
 
-        return(xr.concat(sfces, dim=self.orientations.index))
+        return xr.concat(sfces, dim=self.orientations.index)
 
     def orient_IMU(self, R_all=None):
         """Apply orientations to the IMU object
@@ -960,7 +960,7 @@ class IMU2Body(IMUBase):
             magnt_b = R_seg.apply(magnt, inverse=True)
             seg.acceleration.data = acc_b
             seg.magnetic_density.data = magnt_b
-            return(seg)
+            return seg
 
         imu = self.imu.copy()
         if R_all is None:
@@ -996,7 +996,7 @@ class IMU2Body(IMUBase):
         else:
             imus = orient_segment(imu, R_all)
 
-        return(imus)
+        return imus
 
     def filter_surfacings(self, qual_thresh):
         """Filter records from ``surface_details`` and ``orientations``
@@ -1062,7 +1062,7 @@ class IMU2Body(IMUBase):
         depth = self.get_surface_vectors(surface_idx, "depth")
         ax = scatterIMU3D(vectors.to_numpy(), depth.to_numpy().flatten(),
                           cbar_label="Depth [m]", **kwargs)
-        return(ax)
+        return ax
 
     def tsplotIMU_depth(self, vec_name, surface_idx=None,
                         smoothed_accel=False, **kwargs):
@@ -1118,7 +1118,7 @@ class IMU2Body(IMUBase):
             for sfc_id, lims in sfc_begend.iterrows():
                 axs[0].axvspan(lims[0], lims[1], facecolor="g", alpha=0.5)
 
-        return(axs)
+        return axs
 
 
 class _TagTools(IMU2Body):
@@ -1240,4 +1240,4 @@ class _TagTools(IMU2Body):
             _scatterIMU_svd(sfci_acc_n, (uu, ss, vv), Rfull, title=title,
                             animate=animate, animate_file=animate_file)
 
-        return(Rfull, (uu, ss, vv))
+        return (Rfull, (uu, ss, vv))

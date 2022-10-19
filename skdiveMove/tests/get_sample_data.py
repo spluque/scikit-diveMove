@@ -46,7 +46,7 @@ def diveMove2skd(oclass="TDR", has_speed=True):
         raise LookupError(("Requested class ({}) does not exist"
                            .format(oclass)))
 
-    return(tdrX)
+    return tdrX
 
 
 def _nc2imu2body():

@@ -106,7 +106,7 @@ def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
         # Adjust limits to compensate for the noise in x
         ax.set_xlim([mins[0], maxs[0]])
 
-    return(qfit, ax)
+    return (qfit, ax)
 
 
 if __name__ == '__main__':

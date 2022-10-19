@@ -13,7 +13,7 @@ _ERROR_DEFS = {"Q": [np.sqrt(3), -1], "ARW": [1.0, -0.5],
 
 def _armav_nls_fun(x, *args):
     coefs = np.array(args).reshape(len(args), 1)
-    return(np.log10(np.dot(x, coefs ** 2)).flatten())
+    return np.log10(np.dot(x, coefs ** 2)).flatten()
 
 
 def _armav(taus, adevs):
@@ -37,7 +37,7 @@ def _armav(taus, adevs):
     adev_reg = np.sqrt(np.dot(x0 ** 2, sigma_hat ** 2))
     sigma_hat[2] = np.min(adev_reg) / np.sqrt((2 * np.log(2) / np.pi))
 
-    return(sigma_hat, popt, adev_reg)
+    return (sigma_hat, popt, adev_reg)
 
 
 def _line_fun(t, alpha, tau_crit, adev_crit):
@@ -56,8 +56,8 @@ def _line_fun(t, alpha, tau_crit, adev_crit):
     adev_crit : float
         Observed Allan deviation at `tau_crit`
     """
-    return(10 ** (alpha * (np.log10(t) - np.log10(tau_crit)) +
-                  np.log10(adev_crit)))
+    return (10 ** (alpha * (np.log10(t) - np.log10(tau_crit)) +
+                   np.log10(adev_crit)))
 
 
 def allan_coefs(taus, adevs):
@@ -92,4 +92,4 @@ def allan_coefs(taus, adevs):
     sigmas_hat, popt, adev_reg = _armav(taus, adevs)
     sigmas_d = dict(zip(_ERROR_DEFS.keys(), sigmas_hat))
 
-    return(sigmas_d, adev_reg)
+    return (sigmas_d, adev_reg)

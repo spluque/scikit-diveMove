@@ -77,7 +77,7 @@ class BoutsNLS(bouts.Bouts):
             Covariance of coefs.
 
         """
-        return(bouts.Bouts.fit(self, start, **kwargs))
+        return bouts.Bouts.fit(self, start, **kwargs)
 
     def bec(self, coefs):
         """Calculate bout ending criteria from model coefficients
@@ -97,7 +97,7 @@ class BoutsNLS(bouts.Bouts):
 
         """
         # The metaclass implements this method
-        return(bouts.Bouts.bec(self, coefs))
+        return bouts.Bouts.bec(self, coefs)
 
     def plot_ecdf(self, coefs, ax=None, **kwargs):
         """Plot observed and modelled empirical cumulative frequencies
@@ -150,7 +150,7 @@ class BoutsNLS(bouts.Bouts):
         ax.set_xlabel("x")
         ax.set_ylabel("ECDF [x]")
 
-        return(ax)
+        return ax
 
 
 if __name__ == '__main__':

@@ -51,9 +51,9 @@ class ZOC(TDRSource):
     def __str__(self):
         base = TDRSource.__str__(self)
         meth, params = self.zoc_params
-        return(base +
-               ("\n{0:<20} {1}\n{2:<20} {3}"
-                .format("ZOC method:", meth, "ZOC parameters:", params)))
+        return (base +
+                ("\n{0:<20} {1}\n{2:<20} {3}"
+                 .format("ZOC method:", meth, "ZOC parameters:", params)))
 
     def _offset_depth(self, offset=0):
         """Perform ZOC with "offset" method
@@ -196,10 +196,10 @@ class ZOC(TDRSource):
 
         colnames = ["k{0}_p{1}".format(k, p) for k, p in zip(k, probs)]
         colnames.append("depth_adj")
-        return(pd.DataFrame(depthmtx, index=depth.index, columns=colnames))
+        return pd.DataFrame(depthmtx, index=depth.index, columns=colnames)
 
     def _get_depth(self):
-        return(self._depth_zoc)
+        return self._depth_zoc
 
     depth_zoc = property(_get_depth)
     """Depth array accessor
@@ -211,7 +211,7 @@ class ZOC(TDRSource):
     """
 
     def _get_params(self):
-        return((self.zoc_method, self._zoc_params))
+        return (self.zoc_method, self._zoc_params)
 
     zoc_params = property(_get_params)
     """Parameters used with method for zero-offset correction

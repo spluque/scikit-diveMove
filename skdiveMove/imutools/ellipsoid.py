@@ -92,7 +92,7 @@ def fit_ellipsoid(vectors, f="rxyz"):
         g = 1 + (v[6] ** 2 / v[0] + v[7] ** 2 / v[1] + v[8] ** 2 / v[2])
         gain = (np.sqrt(g / v[:3]))
 
-    return(ofs, gain, rotM)
+    return (ofs, gain, rotM)
 
 
 def _refine_ellipsoid_fit(gain, rotM):
@@ -109,4 +109,4 @@ def apply_ellipsoid(vectors, offset, gain, rotM, ref_r):
     vectors_new = vectors_new @ rotM
     # Scale to sphere
     vectors_new = vectors_new / gain * ref_r
-    return(vectors_new)
+    return vectors_new

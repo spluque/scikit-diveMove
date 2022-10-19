@@ -62,4 +62,4 @@ def random_mixexp(n, p, lda, rng=None):
                          p=p_full / p_full.sum())
     rates = 1 / np.array(lda)
     proc_mix = rng.exponential(rates[chooser])
-    return(proc_mix)
+    return proc_mix

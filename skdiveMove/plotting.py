@@ -38,7 +38,7 @@ def _night(times, sunrise_time, sunset_time):
     sunrises = pd.date_range(start=tmin1 + sunrise_time,
                              end=tmax1 + sunrise_time,
                              freq="1D")
-    return(sunsets, sunrises)
+    return (sunsets, sunrises)
 
 
 def _plot_dry_time(times_dataframe, ax):
@@ -180,7 +180,7 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
 
     fig.tight_layout()
 
-    return(fig, axs)
+    return (fig, axs)
 
 
 def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
@@ -250,7 +250,7 @@ def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
     axs[2].set_xlabel("")
     fig.tight_layout()
 
-    return(fig, axs)
+    return (fig, axs)
 
 
 def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
@@ -330,7 +330,7 @@ def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
     for ttime, ypos, txt, halign in titer:
         ax2.text(ttime, ypos, txt, ha=halign)
 
-    return(fig, (ax1, ax2))
+    return (fig, (ax1, ax2))
 
 
 if __name__ == '__main__':

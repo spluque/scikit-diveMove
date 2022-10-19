@@ -80,7 +80,7 @@ def read_config(config_file):
     with open(config_file, "r") as ifile:
         config = json.load(ifile)
 
-    return(config)
+    return config
 
 
 def dump_config(fname, config_dict):

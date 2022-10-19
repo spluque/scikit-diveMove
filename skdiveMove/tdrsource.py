@@ -113,9 +113,9 @@ class TDRSource:
 
         """
         dataset = _load_dataset(tdr_file, **kwargs)
-        return(cls(dataset, depth_name=depth_name, time_name=time_name,
+        return cls(dataset, depth_name=depth_name, time_name=time_name,
                    subsample=subsample, has_speed=has_speed,
-                   tdr_filename=tdr_file))
+                   tdr_filename=tdr_file)
 
     def __str__(self):
         x = self.tdr
@@ -147,11 +147,11 @@ class TDRSource:
             attr_list += "{0:>35}: {1}\n".format(key, val)
         attr_list = attr_list.rstrip("\n")
 
-        return(objcls + src + itv + nsamples + beg + end + dur + drange +
-               others + attr_list)
+        return (objcls + src + itv + nsamples + beg + end + dur + drange +
+                others + attr_list)
 
     def _get_depth(self):
-        return(self.tdr[self.depth_name])
+        return self.tdr[self.depth_name]
 
     depth = property(_get_depth)
     """Return depth array
@@ -163,7 +163,7 @@ class TDRSource:
     """
 
     def _get_speed(self):
-        return(self.tdr[self.speed_name])
+        return self.tdr[self.speed_name]
 
     speed = property(_get_speed)
     """Return speed array

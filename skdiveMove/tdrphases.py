@@ -75,10 +75,10 @@ class TDRPhases(ZOC):
         base = ZOC.__str__(self)
         wetdry_params = self.get_phases_params("wet_dry")
         dives_params = self.get_phases_params("dives")
-        return(base +
-               ("\n{0:<20} {1}\n{2:<20} {3}"
-                .format("Wet/Dry parameters:", wetdry_params,
-                        "Dives parameters:", dives_params)))
+        return (base +
+                ("\n{0:<20} {1}\n{2:<20} {3}"
+                 .format("Wet/Dry parameters:", wetdry_params,
+                         "Dives parameters:", dives_params)))
 
     def detect_wet(self, dry_thr=70, wet_cond=None, wet_thr=3610,
                    interp_wet=False):
@@ -367,10 +367,10 @@ class TDRPhases(ZOC):
         else:
             odata = okey
 
-        return(odata)
+        return odata
 
     def _get_wet_activity(self):
-        return(self._wet_dry)
+        return self._wet_dry
 
     wet_dry = property(_get_wet_activity)
     """Wet/dry activity labels
@@ -401,7 +401,7 @@ class TDRPhases(ZOC):
             msg = "key must be one of: {}".format(self.params.keys())
             logger.error(msg)
             raise KeyError(msg)
-        return(params)
+        return params
 
     def _get_dive_spline_slot(self, diveNo, name):
         """Accessor for the R objects in `dives`["splines"]
@@ -436,7 +436,7 @@ class TDRPhases(ZOC):
         else:
             odata = np.array(idata[name])
 
-        return(odata)
+        return odata
 
     def get_dive_deriv(self, diveNo, phase=None):
         """Retrieve depth spline derivative for a given dive
@@ -479,7 +479,7 @@ class TDRPhases(ZOC):
             logger.error(msg)
             raise KeyError(msg)
 
-        return(oder)
+        return oder
 
     def _get_dive_deriv_stats(self, diveNo):
         """Calculate stats for the depth derivative of a given dive
@@ -499,7 +499,7 @@ class TDRPhases(ZOC):
                        right_index=True)
         sts = pd.merge(sts, asc_sts, left_index=True, right_index=True)
 
-        return(sts)
+        return sts
 
     def time_budget(self, ignore_z=True, ignore_du=True):
         """Summary of wet/dry activities at the broadest time scale
@@ -548,7 +548,7 @@ class TDRPhases(ZOC):
         begs = labels_grp.first().rename(columns={idx_name: "beg"})
         ends = labels_grp.last()[idx_name].rename("end")
 
-        return(pd.concat((begs, ends), axis=1))
+        return pd.concat((begs, ends), axis=1)
 
     def stamp_dives(self, ignore_z=True):
         """Identify the wet activity phase corresponding to each dive
@@ -609,4 +609,4 @@ class TDRPhases(ZOC):
             dives_ll.append(dive_df)
 
         dives_all = pd.concat(dives_ll)
-        return(dives_all)
+        return dives_all

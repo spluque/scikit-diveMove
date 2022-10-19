@@ -81,7 +81,7 @@ class TDR(TDRPhases):
             speed_coefs_fmt = ("\n{0:<20} (a=None, b=None)"
                                .format(speed_fmt_pref))
 
-        return(base + speed_coefs_fmt)
+        return base + speed_coefs_fmt
 
     def calibrate_speed(self, tau=0.1, contour_level=0.1, z=0, bad=[0, 0],
                         **kwargs):
@@ -235,7 +235,7 @@ class TDR(TDRPhases):
             pd_speed_stats = pd.concat(pd_speed_ll)
             ones_df = pd.concat((ones_df, pd_speed_stats), axis=1)
 
-        return(ones_df)
+        return ones_df
 
     def plot(self, concur_vars=None, concur_var_titles=None, **kwargs):
         """Plot TDR object
@@ -291,7 +291,7 @@ class TDR(TDRPhases):
                                         concur_var_titles=ccvars_title,
                                         **kwargs)
 
-        return(fig, ax)
+        return (fig, ax)
 
     def plot_zoc(self, xlim=None, ylim=None, **kwargs):
         """Plot zero offset correction filters
@@ -357,7 +357,7 @@ class TDR(TDRPhases):
             ax.set_ylim(ylim)
             ax.invert_yaxis()
 
-        return(fig, ax)
+        return (fig, ax)
 
     def plot_phases(self, diveNo=None, concur_vars=None,
                     concur_var_titles=None, surface=False, **kwargs):
@@ -452,7 +452,7 @@ class TDR(TDRPhases):
                                  phase_cat=details_df["dive_phase"],
                                  dry_time=dry_time, **kwargs))
 
-        return(fig, ax)
+        return (fig, ax)
 
     def plot_dive_model(self, diveNo=None, **kwargs):
         """Plot dive model for selected dive
@@ -523,7 +523,7 @@ class TDR(TDRPhases):
                                             a_crit_rate=a_crit_rate,
                                             leg_title=title, **kwargs)
 
-        return(fig, axs)
+        return (fig, axs)
 
     def get_depth(self, kind="measured"):
         """Retrieve depth records
@@ -552,7 +552,7 @@ class TDR(TDRPhases):
             logger.error(msg)
             raise LookupError(msg)
 
-        return(odepth)
+        return odepth
 
     def get_speed(self, kind="measured"):
         """Retrieve speed records
@@ -590,7 +590,7 @@ class TDR(TDRPhases):
             logger.error(msg)
             raise LookupError(msg)
 
-        return(ospeed)
+        return ospeed
 
     def get_tdr(self, calib_depth=True, calib_speed=True):
         """Return a copy of tdr Dataset
@@ -619,7 +619,7 @@ class TDR(TDRPhases):
             speed_cal = self.get_speed("calibrated")
             tdr[speed_name] = speed_cal
 
-        return(tdr)
+        return tdr
 
     def extract_dives(self, diveNo, **kwargs):
         """Extract TDR data corresponding to a particular set of dives
@@ -655,7 +655,7 @@ class TDR(TDRPhases):
         tdr = self.get_tdr(**kwargs)
         tdr_i = tdr[{idx_name: idxs.astype(int)}]
 
-        return(tdr_i)
+        return tdr_i
 
 
 def calibrate(tdr_file, config_file=None):
@@ -723,7 +723,7 @@ def calibrate(tdr_file, config_file=None):
                     .format(config["speed_calib"]))
         tdr.calibrate_speed(**config["speed_calib"], plot=False)
 
-    return(tdr)
+    return tdr
 
 
 if __name__ == '__main__':

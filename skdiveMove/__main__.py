@@ -14,7 +14,7 @@ def main():
                         help="Path to NetCDF TDR data file.")
     args = parser.parse_args()
     tdr = calibrate(args.tdr_file, args.config_file)
-    return(tdr)
+    return tdr
 
 
 sys.exit(main())

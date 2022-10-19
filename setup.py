@@ -7,14 +7,14 @@ def readme():
     with open('README.rst') as f:
         lines = f.readlines()[25:]
 
-    return("".join(lines))
+    return "".join(lines)
 
 
 def get_requirements():
     with open("requirements.txt") as f:
         reqs = f.read().splitlines()
 
-    return(reqs)
+    return reqs
 
 
 REQUIREMENTS = get_requirements()

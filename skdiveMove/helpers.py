@@ -28,7 +28,7 @@ def _load_dataset(filename_or_obj, **kwargs):
         The output Dataset.
 
     """
-    return(xr.load_dataset(filename_or_obj, **kwargs))
+    return xr.load_dataset(filename_or_obj, **kwargs)
 
 
 def _get_dive_indices(indices, diveNo):
@@ -38,7 +38,7 @@ def _get_dive_indices(indices, diveNo):
         # Subtract 1 for zero-based python
         idx_ok = diveMove._diveIndices(indices, diveNo) - 1
 
-    return(idx_ok)
+    return idx_ok
 
 
 def _append_xr_attr(x, attr, val):
@@ -83,7 +83,7 @@ def get_var_sampling_interval(x):
     intvl = pd.Timedelta("{}{}"
                          .format(sampling_rate, sampling_rate_units))
 
-    return(intvl)
+    return intvl
 
 
 def _cut_dive(x, dive_model, smooth_par, knot_factor,
@@ -142,7 +142,7 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
                    [lmtx, spl, spl_der, desc_crit, asc_crit,
                     desc_crit_r, asc_crit_r]))
 
-    return(res)
+    return res
 
 
 def _one_dive_stats(x, interval, has_speed=False):
@@ -186,7 +186,7 @@ def _one_dive_stats(x, interval, has_speed=False):
         res_df.iloc[:, tcol] = pd.to_datetime(res_df.iloc[:, tcol],
                                               unit="s")
 
-    return(res_df)
+    return res_df
 
 
 def _speed_stats(x, vdist=None):
@@ -214,7 +214,7 @@ def _speed_stats(x, vdist=None):
                            pandas2ri.converter):
         res = diveMove._speedStats(**kwargs)
 
-    return(res)
+    return res
 
 
 def rle_key(x):
@@ -262,7 +262,7 @@ def rle_key(x):
 
     """
     xout = x.ne(x.shift()).cumsum()
-    return(xout)
+    return xout
 
 
 if __name__ == '__main__':

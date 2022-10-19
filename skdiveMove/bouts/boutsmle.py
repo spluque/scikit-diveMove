@@ -61,7 +61,7 @@ def mleLL(x, p, lambdas):
         term2 = (1 - p1) * (1 - p0) * lda2 * np.exp(-lda2 * x)
         res = term0 + term1 + term2
 
-    return(np.log(res))
+    return np.log(res)
 
 
 class BoutsMLE(bouts.Bouts):
@@ -171,7 +171,7 @@ class BoutsMLE(bouts.Bouts):
 
         ll = -sum(mleLL(x, p, lambdas))
         logger.info("LL={}".format(ll))
-        return(ll)
+        return ll
 
     def fit(self, start, fit1_opts=None, fit2_opts=None):
         """Maximum likelihood estimation of log frequencies
@@ -224,7 +224,7 @@ class BoutsMLE(bouts.Bouts):
         logger.info("N iter fit 1: {0}, fit 2: {1}"
                     .format(fit1.nit, fit2.nit))
 
-        return(fit1, fit2)
+        return (fit1, fit2)
 
     def bec(self, fit):
         """Calculate bout ending criteria from model coefficients
@@ -265,7 +265,7 @@ class BoutsMLE(bouts.Bouts):
                     (lda1_hat - lda2_hat))
             bec = [bec0, bec1]
 
-        return(np.array(bec))
+        return np.array(bec)
 
     def plot_fit(self, fit, ax=None):
         """Plot log frequency histogram and fitted model
@@ -318,7 +318,7 @@ class BoutsMLE(bouts.Bouts):
         ax.set_xlabel("x")
         ax.set_ylabel("log frequency")
 
-        return(ax)
+        return ax
 
     def plot_ecdf(self, fit, ax=None, **kwargs):
         """Plot observed and modelled empirical cumulative frequencies
@@ -378,7 +378,7 @@ class BoutsMLE(bouts.Bouts):
         ax.set_xlabel("x")
         ax.set_ylabel("ECDF [x]")
 
-        return(ax)
+        return ax
 
 
 if __name__ == '__main__':

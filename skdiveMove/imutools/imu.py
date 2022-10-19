@@ -160,11 +160,11 @@ class IMUBase:
 
         """
         dataset = _load_dataset(imu_file, **kwargs)
-        return(cls(dataset, acceleration_name=acceleration_name,
+        return cls(dataset, acceleration_name=acceleration_name,
                    angular_velocity_name=angular_velocity_name,
                    magnetic_density_name=magnetic_density_name,
                    time_name=time_name, has_depth=has_depth,
-                   imu_filename=imu_file))
+                   depth_name=depth_name, imu_filename=imu_file)
 
     def __str__(self):
         x = self.imu
@@ -173,7 +173,7 @@ class IMUBase:
         src = "{0:<20} {1}\n".format("Source File", self.imu_file)
         imu_desc = "IMU: {}".format(x.__str__())
 
-        return(objcls + src + imu_desc)
+        return objcls + src + imu_desc
 
     def _allan_deviation(self, sensor, taus):
         """Compute Allan deviation for all axes of a given sensor
@@ -214,7 +214,7 @@ class IMUBase:
 
         keys = [sensor + "_" + i for i in list("xyz")]
         devs = pd.concat(allan_l, axis=1, keys=keys)
-        return(devs)
+        return devs
 
     def allan_coefs(self, sensor, taus):
         """Estimate Allan deviation coefficients for each error type
@@ -282,7 +282,7 @@ class IMUBase:
                                             for c in fitted_all]))
         adevs = (pd.concat([adevs_errs, fitted_all], axis=1)
                  .sort_index(axis=1))
-        return(coefs_all, adevs)
+        return (coefs_all, adevs)
 
     def compute_orientation(self, method="Madgwick", **kwargs):
         """Compute the orientation of IMU tri-axial signals
@@ -385,7 +385,7 @@ class IMUBase:
 
     def _get_acceleration(self):
         # Acceleration name is the first
-        return(self.imu[self.imu_var_names[0]])
+        return self.imu[self.imu_var_names[0]]
 
     acceleration = property(_get_acceleration)
     """Return acceleration array
@@ -398,7 +398,7 @@ class IMUBase:
 
     def _get_angular_velocity(self):
         # Angular velocity name is the second
-        return(self.imu[self.imu_var_names[1]])
+        return self.imu[self.imu_var_names[1]]
 
     angular_velocity = property(_get_angular_velocity)
     """Return angular velocity array
@@ -411,7 +411,7 @@ class IMUBase:
 
     def _get_magnetic_density(self):
         # Magnetic density name is the last one
-        return(self.imu[self.imu_var_names[-1]])
+        return self.imu[self.imu_var_names[-1]]
 
     magnetic_density = property(_get_magnetic_density)
     """Return magnetic_density array
@@ -423,7 +423,7 @@ class IMUBase:
     """
 
     def _get_depth(self):
-        return(getattr(self.imu, self.depth_name))
+        return getattr(self.imu, self.depth_name)
 
     depth = property(_get_depth)
     """Return depth array
@@ -445,7 +445,7 @@ class IMUBase:
         else:
             itvl = sampling_rate
 
-        return(itvl)
+        return itvl
 
     sampling_interval = property(_get_sampling_interval)
     """Return sampling interval
