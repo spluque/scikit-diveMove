@@ -174,8 +174,14 @@ class TDR(TDRPhases):
         idx_name = phases_df.index.name
 
         # calib_speed=False if no fit object
-        tdr = self.get_tdr(calib_depth=True,
-                           calib_speed=bool(self.speed_calib_fit))
+        if self.has_speed:
+            tdr = (self.get_tdr(calib_depth=True,
+                                calib_speed=bool(self.speed_calib_fit))
+                   [[self.depth_name, self.speed_name]])
+        else:
+            tdr = (self.get_tdr(calib_depth=True,
+                                calib_speed=bool(self.speed_calib_fit))
+                   [[self.depth_name]])
 
         intvl = (get_var_sampling_interval(tdr[self.depth_name])
                  .total_seconds())
@@ -191,8 +197,11 @@ class TDR(TDRPhases):
                         .groupby("postdive_id")
                         .apply(lambda x: x.iloc[-1] - x.iloc[0]))
 
+        # Enforce UTC, as otherwise rpy2 uses our locale in the output of
+        # OneDiveStats
         tdrf = (pd.concat((phases_df[["dive_id", "dive_phase"]][ok],
-                           tdr[ok]), axis=1).reset_index())
+                           tdr.loc[ok.index[ok]]), axis=1)
+                .tz_localize("UTC").reset_index())
 
         # Ugly hack to re-order columns for `diveMove` convention
         names0 = ["dive_id", "dive_phase", idx_name, self.depth_name]
@@ -205,7 +214,7 @@ class TDR(TDRPhases):
 
         ones_list = []
         for name, grp in tdrf_grp:
-            res = _one_dive_stats(grp, interval=intvl,
+            res = _one_dive_stats(grp.loc[:, names0], interval=intvl,
                                   has_speed=self.has_speed)
             # Rename to match dive number
             res = res.rename({0: name})

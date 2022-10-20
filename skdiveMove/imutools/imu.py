@@ -13,7 +13,7 @@ from .allan import allan_coefs
 from .vector import rotate_vector
 
 _TIME_NAME = "timestamp"
-_DEPTH_NAMES = ["depth", ]
+_DEPTH_NAME = "depth"
 _ACCEL_NAME = "acceleration"
 _OMEGA_NAME = "angular_velocity"
 _MAGNT_NAME = "magnetic_density"
@@ -83,7 +83,8 @@ class IMUBase:
                  angular_velocity_name=_OMEGA_NAME,
                  magnetic_density_name=_MAGNT_NAME,
                  time_name=_TIME_NAME,
-                 has_depth=False, imu_filename=None):
+                 has_depth=False, depth_name=_DEPTH_NAME,
+                 imu_filename=None):
         """Set up attributes for IMU objects
 
         Parameters
@@ -100,8 +101,9 @@ class IMUBase:
         time_name : str, optional
             Name of the time dimension in the dataset.
         has_depth : bool, optional
-            Whether input data include depth measurements.  Variable must
-            be named "depth".
+            Whether input data include depth measurements.
+        depth_name : str, optional
+            Name of the depth ``DataArray`` in the ``Dataset``.
         imu_filename : str, optional
             Name of the file from which ``dataset`` originated.
 
@@ -111,11 +113,9 @@ class IMUBase:
         self.imu_var_names = [acceleration_name,
                               angular_velocity_name,
                               magnetic_density_name]
-        depth_var = [x for x in list(self.imu.data_vars.keys())
-                     if has_depth and x in _DEPTH_NAMES]
-        if (len(depth_var) > 0) and has_depth:
+        if has_depth:
             self.has_depth = True
-            self.depth_name = depth_var[0]
+            self.depth_name = depth_name
         else:
             self.has_depth = False
             self.depth_name = None
@@ -129,7 +129,8 @@ class IMUBase:
                     angular_velocity_name=_OMEGA_NAME,
                     magnetic_density_name=_MAGNT_NAME,
                     time_name=_TIME_NAME,
-                    has_depth=False, **kwargs):
+                    has_depth=False, depth_name=_DEPTH_NAME,
+                    **kwargs):
         """Instantiate object by loading Dataset from NetCDF file
 
         Provided all ``DataArray`` in the NetCDF file have the same
@@ -148,8 +149,9 @@ class IMUBase:
         dimension_names : list, optional
             Names of the dimensions of the data in each of the sensors.
         has_depth : bool, optional
-            Whether input data include depth measurements.  Variable must
-            be named "depth".
+            Whether input data include depth measurements.
+        depth_name : str, optional
+            Name of the depth ``DataArray`` in the ``Dataset``.
         **kwargs : optional keyword arguments
             Arguments passed to :func:`xarray.load_dataset`.
 
