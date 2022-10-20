@@ -13,10 +13,10 @@ import scipy.signal as signal
 import xarray as xr
 from skdiveMove.tdrsource import _load_dataset
 from .imu import (IMUBase,
-                  _ACCEL_NAME, _OMEGA_NAME, _MAGNT_NAME, _DEPTH_NAMES)
+                  _ACCEL_NAME, _OMEGA_NAME, _MAGNT_NAME, _DEPTH_NAME)
 
 _TRIAXIAL_VARS = [_ACCEL_NAME, _OMEGA_NAME, _MAGNT_NAME]
-_MONOAXIAL_VARS = _DEPTH_NAMES + ["light_levels"]
+_MONOAXIAL_VARS = [_DEPTH_NAME, "light_levels"]
 _AXIS_NAMES = list("xyz")
 
 logger = logging.getLogger(__name__)

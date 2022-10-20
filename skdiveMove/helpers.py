@@ -161,8 +161,6 @@ def _one_dive_stats(x, interval, has_speed=False):
 
     """
     xx = x.iloc[:, 1:]
-    rstr = "one_dive_stats_fun <- diveMove::oneDiveStats"
-    one_dive_stats_fun = robjs.r(rstr)
     onames_speed = ["begdesc", "enddesc", "begasc", "desctim", "botttim",
                     "asctim", "divetim", "descdist", "bottdist", "ascdist",
                     "bottdep_mean", "bottdep_median", "bottdep_sd",
@@ -173,7 +171,7 @@ def _one_dive_stats(x, interval, has_speed=False):
 
     with cv.localconverter(robjs.default_converter +
                            pandas2ri.converter):
-        res = one_dive_stats_fun(xx, interval, has_speed)
+        res = diveMove.oneDiveStats(xx, interval, has_speed)
 
     if has_speed:
         onames = onames_speed
