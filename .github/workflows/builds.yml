@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10", "3.11"]
     env:
-      PY_LATEST: "3.10"
+      PY_LATEST: "3.11"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up R (release)
         # They tell us to use master (ambiguously)
@@ -34,7 +34,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -65,7 +65,7 @@ jobs:
       - name: Build Sphinx docs
         if: matrix.python-version == env.PY_LATEST
         run: |
-          python -m pip install .['docs']
+          python -m pip install .['dev']
           make -C docs/ html
           touch docs/build/html/.nojekyll
 
@@ -90,7 +90,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 

@@ -19,7 +19,7 @@ sys.path.append("../skdiveMove")
 # -- Project information -----------------------------------------------------
 
 project = 'skdiveMove'
-copyright = '2022, Sebastian Luque'
+copyright = '2023'
 author = 'Sebastian Luque'
 
 # The short X.Y version
@@ -127,8 +127,8 @@ latex_documents = [
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'numpy': ('https://numpy.org/doc/stable', None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/reference', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy', None),
     'pandas': ('https://pandas.pydata.org/docs', None),
     'matplotlib': ('https://matplotlib.org/stable', None),
-    'xarray': ('https://xarray.pydata.org/en/stable/', None),
+    'xarray': ('https://docs.xarray.dev/en/stable/', None),
 }
