@@ -63,7 +63,8 @@ Extract postdive duration for further analysis.
    :linenos:
 
    postdives = stats_tab["postdive_dur"][stats_tab["phase_id"] == 4]
-   postdives_diff = postdives.dt.total_seconds().diff()[1:].abs()
+   postdives_diff = (postdives.dt.total_seconds()
+                     .diff().iloc[1:].abs())
    # Remove isolated dives
    postdives_diff = postdives_diff[postdives_diff < 2000]
 

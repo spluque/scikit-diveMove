@@ -105,12 +105,12 @@ ramp).
    adevs_ad = adevs.xs("allan_dev", level=1, axis=1)
    adevs_fit = adevs.xs("fitted", level=1, axis=1)
    fig, ax = plt.subplots(figsize=[6, 5])
-   for sensor, coefs in adevs_ad.iteritems():
+   for sensor, coefs in adevs_ad.items():
        suffix = sensor.split("_")[-1]
        ax.loglog(adevs_ad.index, adevs_ad[sensor], marker=".",
                  linestyle="none",
                  label="measured {}".format(suffix))
-   for sensor, fitted in adevs_ad.iteritems():
+   for sensor, fitted in adevs_ad.items():
        suffix = sensor.split("_")[-1]
        ax.loglog(adevs_fit.index, adevs_fit[sensor],
                  color="r", linewidth=4, alpha=0.4,
