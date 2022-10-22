@@ -2,12 +2,12 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>TDR class &#8212; skdiveMove 0.2.9 documentation</title>
+    <title>TDR class &#8212; skdiveMove 0.3.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -16,10 +16,12 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,7 +47,7 @@
         <li class="right" >
           <a href="demo_ellipsoid.html" title="Ellipsoid modelling for calibration purposes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">TDR class</a></li> 
       </ul>
     </div>  
@@ -56,22 +58,18 @@
           <div class="body" role="main">
             
   <section id="module-skdiveMove">
-<span id="tdr-class"></span><h1>TDR class<a class="headerlink" href="#module-skdiveMove" title="Permalink to this headline">¶</a></h1>
+<span id="tdr-class"></span><h1>TDR class<a class="headerlink" href="#module-skdiveMove" title="Permalink to this heading">¶</a></h1>
 <p>Top-level class for interacting with diveMove</p>
 <p>The <a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDR</span></code></a> class aims to be a comprehensive class to encapsulate the
 processing of <cite>TDR</cite> records from a data file.</p>
 <p>This module instantiates an <cite>R</cite> session to interact with low-level
 functions and methods of package <cite>diveMove</cite>.</p>
 <section id="class-main-methods-summary">
-<h2>Class &amp; Main Methods Summary<a class="headerlink" href="#class-main-methods-summary" title="Permalink to this headline">¶</a></h2>
+<h2>Class &amp; Main Methods Summary<a class="headerlink" href="#class-main-methods-summary" title="Permalink to this heading">¶</a></h2>
 <p>See <cite>API</cite> section for details on minor methods.</p>
 <section id="calibration-and-phase-detection">
-<h3>Calibration and phase detection<a class="headerlink" href="#calibration-and-phase-detection" title="Permalink to this headline">¶</a></h3>
+<h3>Calibration and phase detection<a class="headerlink" href="#calibration-and-phase-detection" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Base class encapsulating TDR objects and processing</p></td>
@@ -95,12 +93,8 @@ functions and methods of package <cite>diveMove</cite>.</p>
 </table>
 </section>
 <section id="analyses">
-<h3>Analyses<a class="headerlink" href="#analyses" title="Permalink to this headline">¶</a></h3>
+<h3>Analyses<a class="headerlink" href="#analyses" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.dive_stats" title="skdiveMove.TDR.dive_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.dive_stats</span></code></a>([depth_deriv])</p></td>
 <td><p>Calculate dive statistics in <cite>TDR</cite> records</p></td>
@@ -115,12 +109,8 @@ functions and methods of package <cite>diveMove</cite>.</p>
 </table>
 </section>
 <section id="plotting">
-<h3>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h3>
+<h3>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.TDR.plot" title="skdiveMove.TDR.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.plot</span></code></a>([concur_vars, concur_var_titles])</p></td>
 <td><p>Plot TDR object</p></td>
@@ -139,12 +129,8 @@ functions and methods of package <cite>diveMove</cite>.</p>
 </section>
 </section>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#skdiveMove.calibrate" title="skdiveMove.calibrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibrate</span></code></a>(tdr_file[, config_file])</p></td>
 <td><p>Perform all major TDR calibration operations</p></td>
@@ -156,7 +142,8 @@ functions and methods of package <cite>diveMove</cite>.</p>
 </table>
 </section>
 <section id="api">
-<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading">¶</a></h2>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="skdiveMove.TDR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">skdiveMove.</span></span><span class="sig-name descname"><span class="pre">TDR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR" title="Permalink to this definition">¶</a></dt>
@@ -169,7 +156,7 @@ capabilities.</p>
 <span class="sig-name descname"><span class="pre">speed_calib_fit</span></span><a class="headerlink" href="#skdiveMove.TDR.speed_calib_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Model object fit by quantile regression for speed calibration.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>quantreg model fit</p>
 </dd>
 </dl>
@@ -192,7 +179,7 @@ capabilities.</p>
 <dd><p>Calibrate speed measurements</p>
 <p>Set the <cite>speed_calib_fit</cite> attribute</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tau</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>optional</em>) – Quantile on which to regress speed on rate of depth change.</p></li>
 <li><p><strong>contour_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>optional</em>) – The mesh obtained from the bivariate kernel density estimation
@@ -222,7 +209,7 @@ for calibration, respectively.</p></li>
 <dd><p>Detect dive phases</p>
 <p>Complete filling the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dive_model</strong> (<em>{&quot;unimodal&quot;</em><em>, </em><em>&quot;smooth.spline&quot;}</em>) – </p></li>
 <li><p><strong>smooth_par</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>optional</em>) – </p></li>
@@ -261,7 +248,7 @@ parameters</p>
 <p>Set the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute’s “row_ids” dictionary element, and
 update the <code class="docutils literal notranslate"><span class="pre">wet_act</span></code> attribute’s “phases” dictionary element.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dive_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – </p>
 </dd>
 </dl>
@@ -286,7 +273,7 @@ update the <code class="docutils literal notranslate"><span class="pre">wet_act<
 <span class="sig-name descname"><span class="pre">detect_wet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dry_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">70</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wet_cond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wet_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3610</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_wet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.detect_wet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect wet/dry activity phases</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dry_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>optional</em>) – </p></li>
 <li><p><strong>wet_cond</strong> (<em>bool mask</em><em>, </em><em>optional</em>) – A Pandas.Series bool mask indexed as <cite>depth</cite>.  Default is
@@ -327,11 +314,11 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">dive_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">depth_deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.dive_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.dive_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate dive statistics in <cite>TDR</cite> records</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>depth_deriv</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to compute depth derivative statistics.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.2)">pandas.DataFrame</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -364,14 +351,14 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">extract_dives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diveNo</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.extract_dives"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.extract_dives" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract TDR data corresponding to a particular set of dives</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <a class="reference internal" href="#skdiveMove.TDR.get_tdr" title="skdiveMove.TDR.get_tdr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_tdr()</span></code></a></p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)">xarray.Dataset</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.10.1.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -394,11 +381,11 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">get_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'measured'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.get_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.get_depth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve depth records</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;zoc&quot;}</em>) – Which depth to retrieve.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.3.1.dev0)">xarray.DataArray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -408,17 +395,17 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">get_dive_deriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diveNo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.get_dive_deriv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve depth spline derivative for a given dive</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diveNo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Dive number to retrieve derivative for.</p></li>
 <li><p><strong>phase</strong> (<em>{&quot;descent&quot;</em><em>, </em><em>&quot;bottom&quot;</em><em>, </em><em>&quot;ascent&quot;}</em>) – If provided, the dive phase to retrieve data for.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.2)">pandas.DataFrame</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -428,7 +415,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">get_dives_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.get_dives_details" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accessor for the <cite>dives</cite> attribute</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>{&quot;row_ids&quot;</em><em>, </em><em>&quot;model&quot;</em><em>, </em><em>&quot;splines&quot;</em><em>, </em><em>&quot;spline_derivs&quot;</em><em>, </em><em>crit_vals}</em>) – Name of the key to retrieve.</p></li>
 <li><p><strong>columns</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Names of the columns of the dataframe in <cite>key</cite>, when applicable.</p></li>
@@ -442,13 +429,13 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">get_phases_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.get_phases_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return parameters used for identifying wet/dry or diving phases.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>key</strong> (<em>{'wet_dry'</em><em>, </em><em>'dives'}</em>) – </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)">dict</a></p>
 </dd>
 </dl>
@@ -459,11 +446,11 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">get_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'measured'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.get_speed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.get_speed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve speed records</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;calibrated&quot;}</em>) – Which speed to retrieve.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.3.1.dev0)">xarray.DataArray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2022.10.1.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -473,14 +460,14 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">get_tdr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calib_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calib_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.get_tdr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.get_tdr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of tdr Dataset</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>calib_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to return calibrated depth measurements.</p></li>
 <li><p><strong>calib_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to return calibrated speed measurements.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)">xarray.Dataset</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.10.1.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -490,7 +477,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concur_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concur_var_titles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot TDR object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
 select additional data to plot.</p></li>
@@ -498,11 +485,11 @@ select additional data to plot.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
 </dd>
 </dl>
@@ -521,17 +508,17 @@ select additional data to plot.</p></li>
 <span class="sig-name descname"><span class="pre">plot_dive_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diveNo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot_dive_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.plot_dive_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot dive model for selected dive</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
 </dd>
 </dl>
@@ -555,7 +542,7 @@ select additional data to plot.</p></li>
 <span class="sig-name descname"><span class="pre">plot_phases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diveNo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concur_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concur_var_titles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot_phases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.plot_phases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot major phases found on the object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
 <li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
@@ -565,11 +552,11 @@ select additional data to plot.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
 </dd>
 </dl>
@@ -593,20 +580,20 @@ select additional data to plot.</p></li>
 <span class="sig-name descname"><span class="pre">plot_zoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/skdiveMove/tdr.html#TDR.plot_zoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.plot_zoc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot zero offset correction filters</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xlim</strong> (<em>2-tuple/list</em><em>, </em><em>optional</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
 respectively.</p></li>
 <li><p><strong>ylim</strong> (<em>2-tuple/list</em><em>, </em><em>optional</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
 respectively.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.5.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.6.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
 </dd>
 </dl>
@@ -634,22 +621,22 @@ respectively.</p></li>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tdr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'depth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subsample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.read_netcdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate object by loading Dataset from NetCDF file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>depth_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of data variable with depth measurements. Default: “depth”.</p></li>
 <li><p><strong>time_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the time dimension in the dataset.</p></li>
 <li><p><strong>subsample</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Subsample dataset at given frequency specification.  See pandas
 offset aliases.</p></li>
 <li><p><strong>has_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Weather data includes speed measurements. Column name must be
 one of [“velocity”, “speed”].  Default: False.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>obj</strong> – Class matches the caller.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>TDRSource, ZOC, TDRPhases, or <a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR">TDR</a></p>
 </dd>
 </dl>
@@ -660,16 +647,16 @@ one of [“velocity”, “speed”].  Default: False.</p></li>
 <span class="sig-name descname"><span class="pre">stamp_dives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore_z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.stamp_dives" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identify the wet activity phase corresponding to each dive</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ignore_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – DataFrame indexed by dive ID, and three columns identifying
 which phase thy are in, and the beginning and ending time
 stamps.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.2)">pandas.DataFrame</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -693,18 +680,18 @@ stamps.</p>
 <span class="sig-name descname"><span class="pre">time_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore_z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_du</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.time_budget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary of wet/dry activities at the broadest time scale</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ignore_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p></li>
 <li><p><strong>ignore_du</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore diving and underwater periods.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – DataFrame indexed by phase id, with categorical activity label
 for each phase, and beginning and ending times.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.2)">pandas.DataFrame</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -730,7 +717,7 @@ for each phase, and beginning and ending times.</p>
 <span class="sig-name descname"><span class="pre">zoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'filter'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.zoc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply zero offset correction to depth measurements</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> (<em>{&quot;filter&quot;</em><em>, </em><em>&quot;offset&quot;}</em>) – Name of method to use for zero offset correction.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to the chosen method (<code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_depth()</span></code>,
@@ -763,6 +750,31 @@ for each phase, and beginning and ending times.</p>
 </div>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="skdiveMove.TDR.depth">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#skdiveMove.TDR.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="skdiveMove.TDR.depth_zoc">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depth_zoc</span></span><a class="headerlink" href="#skdiveMove.TDR.depth_zoc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="skdiveMove.TDR.speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">speed</span></span><a class="headerlink" href="#skdiveMove.TDR.speed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="skdiveMove.TDR.wet_dry">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wet_dry</span></span><a class="headerlink" href="#skdiveMove.TDR.wet_dry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="skdiveMove.TDR.zoc_params">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zoc_params</span></span><a class="headerlink" href="#skdiveMove.TDR.zoc_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -782,16 +794,16 @@ data if appropriate.</p>
 required for it, a calibration configuration file (JSON) is used to
 guide the operations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2022.10.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>config_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A valid string path for TDR calibration configuration file.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR">TDR</a></p>
 </dd>
 </dl>
@@ -810,7 +822,7 @@ guide the operations.</p>
 <dd><p>Dump configuration template file</p>
 <p>Dump a json configuration template file to set up TDR calibration.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>file-like</em>) – A valid string path, or <cite>file-like</cite> object, for output file.</p>
 </dd>
 </dl>
@@ -821,7 +833,6 @@ guide the operations.</p>
 <p>Edit the file to your specifications.</p>
 </dd></dl>
 
-</section>
 </section>
 
 
@@ -846,6 +857,37 @@ guide the operations.</p>
 </li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR"><code class="docutils literal notranslate"><span class="pre">TDR</span></code></a><ul>
+<li><a class="reference internal" href="#skdiveMove.TDR.speed_calib_fit"><code class="docutils literal notranslate"><span class="pre">TDR.speed_calib_fit</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.calibrate_speed"><code class="docutils literal notranslate"><span class="pre">TDR.calibrate_speed()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.detect_dive_phases"><code class="docutils literal notranslate"><span class="pre">TDR.detect_dive_phases()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.detect_dives"><code class="docutils literal notranslate"><span class="pre">TDR.detect_dives()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.detect_wet"><code class="docutils literal notranslate"><span class="pre">TDR.detect_wet()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.dive_stats"><code class="docutils literal notranslate"><span class="pre">TDR.dive_stats()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.extract_dives"><code class="docutils literal notranslate"><span class="pre">TDR.extract_dives()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.get_depth"><code class="docutils literal notranslate"><span class="pre">TDR.get_depth()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.get_dive_deriv"><code class="docutils literal notranslate"><span class="pre">TDR.get_dive_deriv()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.get_dives_details"><code class="docutils literal notranslate"><span class="pre">TDR.get_dives_details()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.get_phases_params"><code class="docutils literal notranslate"><span class="pre">TDR.get_phases_params()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.get_speed"><code class="docutils literal notranslate"><span class="pre">TDR.get_speed()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.get_tdr"><code class="docutils literal notranslate"><span class="pre">TDR.get_tdr()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.plot"><code class="docutils literal notranslate"><span class="pre">TDR.plot()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.plot_dive_model"><code class="docutils literal notranslate"><span class="pre">TDR.plot_dive_model()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.plot_phases"><code class="docutils literal notranslate"><span class="pre">TDR.plot_phases()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.plot_zoc"><code class="docutils literal notranslate"><span class="pre">TDR.plot_zoc()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.read_netcdf"><code class="docutils literal notranslate"><span class="pre">TDR.read_netcdf()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.stamp_dives"><code class="docutils literal notranslate"><span class="pre">TDR.stamp_dives()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.time_budget"><code class="docutils literal notranslate"><span class="pre">TDR.time_budget()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.zoc"><code class="docutils literal notranslate"><span class="pre">TDR.zoc()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.depth"><code class="docutils literal notranslate"><span class="pre">TDR.depth</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.depth_zoc"><code class="docutils literal notranslate"><span class="pre">TDR.depth_zoc</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.speed"><code class="docutils literal notranslate"><span class="pre">TDR.speed</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.wet_dry"><code class="docutils literal notranslate"><span class="pre">TDR.wet_dry</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.TDR.zoc_params"><code class="docutils literal notranslate"><span class="pre">TDR.zoc_params</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#skdiveMove.calibrate"><code class="docutils literal notranslate"><span class="pre">calibrate()</span></code></a></li>
+<li><a class="reference internal" href="#skdiveMove.dump_config_template"><code class="docutils literal notranslate"><span class="pre">dump_config_template()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -877,7 +919,7 @@ guide the operations.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -897,14 +939,14 @@ guide the operations.</p>
         <li class="right" >
           <a href="demo_ellipsoid.html" title="Ellipsoid modelling for calibration purposes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">TDR class</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

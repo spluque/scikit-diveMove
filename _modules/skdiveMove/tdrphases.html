@@ -2,11 +2,11 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdrphases &#8212; skdiveMove 0.2.9 documentation</title>
+    <title>skdiveMove.tdrphases &#8212; skdiveMove 0.3.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -15,10 +15,12 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="../../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -36,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdrphases</a></li> 
       </ul>
@@ -125,10 +127,10 @@
         <span class="n">base</span> <span class="o">=</span> <span class="n">ZOC</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">wetdry_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">)</span>
         <span class="n">dives_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;dives&quot;</span><span class="p">)</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">base</span> <span class="o">+</span>
-               <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="si">{2:&lt;20}</span><span class="s2"> </span><span class="si">{3}</span><span class="s2">&quot;</span>
-                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Wet/Dry parameters:&quot;</span><span class="p">,</span> <span class="n">wetdry_params</span><span class="p">,</span>
-                        <span class="s2">&quot;Dives parameters:&quot;</span><span class="p">,</span> <span class="n">dives_params</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">base</span> <span class="o">+</span>
+                <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{0:&lt;20}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="si">{2:&lt;20}</span><span class="s2"> </span><span class="si">{3}</span><span class="s2">&quot;</span>
+                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Wet/Dry parameters:&quot;</span><span class="p">,</span> <span class="n">wetdry_params</span><span class="p">,</span>
+                         <span class="s2">&quot;Dives parameters:&quot;</span><span class="p">,</span> <span class="n">dives_params</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">detect_wet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dry_thr</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">wet_cond</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wet_thr</span><span class="o">=</span><span class="mi">3610</span><span class="p">,</span>
                    <span class="n">interp_wet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -417,10 +419,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">odata</span> <span class="o">=</span> <span class="n">okey</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">odata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">odata</span>
 
     <span class="k">def</span> <span class="nf">_get_wet_activity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wet_dry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wet_dry</span>
 
     <span class="n">wet_dry</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_wet_activity</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Wet/dry activity labels</span>
@@ -451,7 +453,7 @@
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;key must be one of: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">params</span>
 
     <span class="k">def</span> <span class="nf">_get_dive_spline_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Accessor for the R objects in `dives`[&quot;splines&quot;]</span>
@@ -486,7 +488,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">odata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">odata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">odata</span>
 
     <span class="k">def</span> <span class="nf">get_dive_deriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve depth spline derivative for a given dive</span>
@@ -529,7 +531,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">oder</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">oder</span>
 
     <span class="k">def</span> <span class="nf">_get_dive_deriv_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate stats for the depth derivative of a given dive</span>
@@ -549,7 +551,7 @@
                        <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">sts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">sts</span><span class="p">,</span> <span class="n">asc_sts</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">sts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sts</span>
 
     <span class="k">def</span> <span class="nf">time_budget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Summary of wet/dry activities at the broadest time scale</span>
@@ -598,7 +600,7 @@
         <span class="n">begs</span> <span class="o">=</span> <span class="n">labels_grp</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">idx_name</span><span class="p">:</span> <span class="s2">&quot;beg&quot;</span><span class="p">})</span>
         <span class="n">ends</span> <span class="o">=</span> <span class="n">labels_grp</span><span class="o">.</span><span class="n">last</span><span class="p">()[</span><span class="n">idx_name</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">begs</span><span class="p">,</span> <span class="n">ends</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">begs</span><span class="p">,</span> <span class="n">ends</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">stamp_dives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Identify the wet activity phase corresponding to each dive</span>
@@ -659,7 +661,7 @@
             <span class="n">dives_ll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dive_df</span><span class="p">)</span>
 
         <span class="n">dives_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dives_ll</span><span class="p">)</span>
-        <span class="k">return</span><span class="p">(</span><span class="n">dives_all</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dives_all</span>
 </pre></div>
 
             <div class="clearer"></div>
@@ -680,7 +682,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -694,7 +696,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdrphases</a></li> 
       </ul>
@@ -702,7 +704,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

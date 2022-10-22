@@ -2,12 +2,12 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Read and write metadata &#8212; skdiveMove 0.2.9 documentation</title>
+    <title>Read and write metadata &#8212; skdiveMove 0.3.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -16,10 +16,12 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,7 +47,7 @@
         <li class="right" >
           <a href="bouts.html" title="Bout analysis"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Read and write metadata</a></li> 
       </ul>
     </div>  
@@ -56,17 +58,13 @@
           <div class="body" role="main">
             
   <section id="module-metadata">
-<span id="read-and-write-metadata"></span><h1>Read and write metadata<a class="headerlink" href="#module-metadata" title="Permalink to this headline">¶</a></h1>
+<span id="read-and-write-metadata"></span><h1>Read and write metadata<a class="headerlink" href="#module-metadata" title="Permalink to this heading">¶</a></h1>
 <p>Tools to read and write DataArray and Dataset attributes</p>
 <p>Easily dump a template to set up metadata for a given Dataset or DataArray
 that can subsequenty be read-in and append attributes to the objects.</p>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metadata.dump_config_template" title="metadata.dump_config_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_config_template</span></code></a>(fname, config_type)</p></td>
 <td><p>Dump configuration file</p></td>
@@ -78,23 +76,24 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 </table>
 </section>
 <section id="api">
-<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading">¶</a></h2>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="metadata.assign_xr_attrs">
 <span class="sig-prename descclassname"><span class="pre">metadata.</span></span><span class="sig-name descname"><span class="pre">assign_xr_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metadata.html#assign_xr_attrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metadata.assign_xr_attrs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign attributes to xarray.Dataset or xarray.DataArray</p>
 <p>The <cite>config_file</cite> should have only one-level of nesting.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<em>{xarray.Dataset</em><em>, </em><em>xarray.DataArray}</em>) – Object to assign attributes to.</p></li>
 <li><p><strong>config_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A valid string path for input json file with metadata attributes.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>{xarray.Dataset, xarray.DataArray}</p>
 </dd>
 </dl>
@@ -139,7 +138,7 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 <p>Dump a json configuration template file to build metadata for a Dataset
 or DataArray.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A valid string path for output file.</p></li>
 <li><p><strong>config_type</strong> (<em>{&quot;dataset&quot;</em><em>, </em><em>&quot;sensor&quot;}</em>) – The type of config to dump.</p></li>
@@ -158,7 +157,6 @@ or DataArray.</p>
 </dd></dl>
 
 </section>
-</section>
 
 
             <div class="clearer"></div>
@@ -176,6 +174,8 @@ or DataArray.</p>
 <li><a class="reference internal" href="#">Read and write metadata</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#metadata.assign_xr_attrs"><code class="docutils literal notranslate"><span class="pre">assign_xr_attrs()</span></code></a></li>
+<li><a class="reference internal" href="#metadata.dump_config_template"><code class="docutils literal notranslate"><span class="pre">dump_config_template()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -207,7 +207,7 @@ or DataArray.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -227,14 +227,14 @@ or DataArray.</p>
         <li class="right" >
           <a href="bouts.html" title="Bout analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Read and write metadata</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

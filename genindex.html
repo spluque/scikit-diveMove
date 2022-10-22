@@ -2,11 +2,11 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; skdiveMove 0.2.9 documentation</title>
+    <title>Index &#8212; skdiveMove 0.3.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -15,10 +15,12 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,7 +38,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
     </div>  
@@ -68,6 +70,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
  
@@ -147,15 +150,21 @@
       <li><a href="imutools.html#imutools.IMUBase.dead_reckon">dead_reckon() (imutools.IMUBase method)</a>
 </li>
       <li><a href="imutools.html#imutools.IMUBase.depth">depth (imutools.IMUBase property)</a>
+
+      <ul>
+        <li><a href="tdr.html#skdiveMove.TDR.depth">(skdiveMove.TDR property)</a>
 </li>
+      </ul></li>
       <li><a href="imutools.html#imutools.IMUBase.depth_name">depth_name (imutools.IMUBase attribute)</a>
+</li>
+      <li><a href="tdr.html#skdiveMove.TDR.depth_zoc">depth_zoc (skdiveMove.TDR property)</a>
 </li>
       <li><a href="imutools.html#imutools.IMU2Body.describe_surfacing_durations">describe_surfacing_durations() (imutools.IMU2Body method)</a>
 </li>
-      <li><a href="tdr.html#skdiveMove.TDR.detect_dive_phases">detect_dive_phases() (skdiveMove.TDR method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tdr.html#skdiveMove.TDR.detect_dive_phases">detect_dive_phases() (skdiveMove.TDR method)</a>
+</li>
       <li><a href="tdr.html#skdiveMove.TDR.detect_dives">detect_dives() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="tdr.html#skdiveMove.TDR.detect_wet">detect_wet() (skdiveMove.TDR method)</a>
@@ -413,8 +422,6 @@
       </ul></li>
       <li><a href="imutools.html#imutools.scatterIMU_svd">scatterIMU_svd() (in module imutools)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     skdiveMove
 
@@ -422,6 +429,10 @@
         <li><a href="tdr.html#module-skdiveMove">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tdr.html#skdiveMove.TDR.speed">speed (skdiveMove.TDR property)</a>
+</li>
       <li><a href="tdr.html#skdiveMove.TDR.speed_calib_fit">speed_calib_fit (skdiveMove.TDR attribute)</a>
 </li>
       <li><a href="tdr.html#skdiveMove.TDR.stamp_dives">stamp_dives() (skdiveMove.TDR method)</a>
@@ -453,6 +464,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tdr.html#skdiveMove.TDR.wet_dry">wet_dry (skdiveMove.TDR property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="X">X</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -465,6 +484,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tdr.html#skdiveMove.TDR.zoc">zoc() (skdiveMove.TDR method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tdr.html#skdiveMove.TDR.zoc_params">zoc_params (skdiveMove.TDR property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -489,7 +512,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -503,14 +526,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

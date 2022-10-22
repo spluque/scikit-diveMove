@@ -2,12 +2,12 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Simulating bouts &#8212; skdiveMove 0.2.9 documentation</title>
+    <title>Simulating bouts &#8212; skdiveMove 0.3.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -16,10 +16,12 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -46,7 +48,7 @@
         <li class="right" >
           <a href="demo_bouts.html" title="Bout analysis"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
       </ul>
     </div>  
@@ -57,14 +59,14 @@
           <div class="body" role="main">
             
   <section id="simulating-bouts">
-<span id="demo-simulbouts-label"></span><h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Permalink to this headline">¶</a></h1>
+<span id="demo-simulbouts-label"></span><h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Permalink to this heading">¶</a></h1>
 <p>This follows the simulation of mixed Poisson distributions in <a class="reference external" href="https://doi.org/10.1163/156853907782418213">Luque &amp;
 Guinet (2007)</a>, and the comparison of models for characterizing such
 distributions.</p>
 <p>Set up the environment.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># Set up</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># Set up</span>
 <span class="linenos">2</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="linenos">3</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="linenos">4</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -83,7 +85,7 @@ distributions.</p>
 </div>
 </div>
 <section id="generate-two-process-mixture">
-<h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Permalink to this headline">¶</a></h2>
+<h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Permalink to this heading">¶</a></h2>
 <p>For a mixed distribution of two random Poisson processes with a mixing
 parameter <span class="math notranslate nohighlight">\(p=0.7\)</span>, and density parameters <span class="math notranslate nohighlight">\(\lambda_f=0.05\)</span>, and
 <span class="math notranslate nohighlight">\(\lambda_s=0.005\)</span>, we use the <cite>random_mixexp</cite> function to generate
@@ -92,7 +94,7 @@ samples.</p>
 <cite>Series</cite> to simplify further operations.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">12</span><span class="n">p_true</span> <span class="o">=</span> <span class="mf">0.7</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">12</span><span class="n">p_true</span> <span class="o">=</span> <span class="mf">0.7</span>
 <span class="linenos">13</span><span class="n">lda0_true</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="linenos">14</span><span class="n">lda1_true</span> <span class="o">=</span> <span class="mf">0.005</span>
 <span class="linenos">15</span><span class="n">pars_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;lambda0&quot;</span><span class="p">:</span> <span class="n">lda0_true</span><span class="p">,</span>
@@ -107,7 +109,7 @@ samples.</p>
 <p>Declare the number of simulations and the number of samples to generate:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">18</span><span class="c1"># Number of simulations</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">18</span><span class="c1"># Number of simulations</span>
 <span class="linenos">19</span><span class="n">nsims</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="linenos">20</span><span class="c1"># Size of each sample</span>
 <span class="linenos">21</span><span class="n">nsamp</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -120,7 +122,7 @@ samples.</p>
 <p>Set up variables to accumulate simulations:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">22</span><span class="c1"># Set up NLS simulations</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">22</span><span class="c1"># Set up NLS simulations</span>
 <span class="linenos">23</span><span class="n">coefs_nls</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="linenos">24</span><span class="c1"># Set up MLE simulations</span>
 <span class="linenos">25</span><span class="n">coefs_mle</span> <span class="o">=</span> <span class="p">[]</span>
@@ -147,7 +149,7 @@ samples.</p>
 iteration.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">38</span><span class="c1"># Set up a random number generator for efficiency</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">38</span><span class="c1"># Set up a random number generator for efficiency</span>
 <span class="linenos">39</span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="linenos">40</span><span class="c1"># Estimate parameters `nsims` times</span>
 <span class="linenos">41</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsims</span><span class="p">):</span>
@@ -176,11 +178,11 @@ iteration.</p>
 </div>
 </section>
 <section id="non-linear-least-squares-nls">
-<h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Permalink to this headline">¶</a></h2>
+<h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Permalink to this heading">¶</a></h2>
 <p>Collect and display NLS results from the simulations:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">59</span><span class="n">nls_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">coefs_nls</span><span class="p">),</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">59</span><span class="n">nls_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">coefs_nls</span><span class="p">),</span>
 <span class="linenos">60</span>                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
 <span class="linenos">61</span><span class="c1"># Centrality and variance</span>
 <span class="linenos">62</span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -221,44 +223,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.047</td>
-      <td>3.981e-03</td>
-      <td>0.730</td>
+      <td>4.005e-03</td>
+      <td>0.728</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>0.005</td>
-      <td>4.095e-04</td>
-      <td>0.020</td>
+      <td>0.004</td>
+      <td>3.837e-04</td>
+      <td>0.021</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>0.033</td>
-      <td>2.868e-03</td>
-      <td>0.670</td>
+      <td>0.035</td>
+      <td>2.894e-03</td>
+      <td>0.665</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.044</td>
-      <td>3.706e-03</td>
+      <td>3.771e-03</td>
       <td>0.714</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.047</td>
-      <td>3.982e-03</td>
-      <td>0.732</td>
+      <td>3.994e-03</td>
+      <td>0.727</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.050</td>
       <td>4.250e-03</td>
-      <td>0.744</td>
+      <td>0.743</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>0.062</td>
-      <td>5.108e-03</td>
-      <td>0.782</td>
+      <td>0.061</td>
+      <td>5.358e-03</td>
+      <td>0.789</td>
     </tr>
   </tbody>
 </table>
@@ -266,11 +268,11 @@ iteration.</p>
 </div>
 </section>
 <section id="maximum-likelihood-estimation-mle">
-<h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Permalink to this headline">¶</a></h2>
+<h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Permalink to this heading">¶</a></h2>
 <p>Collect and display MLE results from the simulations:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">63</span><span class="n">mle_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">coefs_mle</span><span class="p">),</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">63</span><span class="n">mle_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">coefs_mle</span><span class="p">),</span>
 <span class="linenos">64</span>                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
 <span class="linenos">65</span><span class="c1"># Centrality and variance</span>
 <span class="linenos">66</span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -311,44 +313,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.050</td>
-      <td>5.030e-03</td>
-      <td>0.700</td>
+      <td>5.028e-03</td>
+      <td>0.699</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.003</td>
-      <td>3.894e-04</td>
-      <td>0.024</td>
+      <td>3.724e-04</td>
+      <td>0.025</td>
     </tr>
     <tr>
       <th>min</th>
       <td>0.042</td>
-      <td>4.056e-03</td>
-      <td>0.627</td>
+      <td>3.756e-03</td>
+      <td>0.617</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.048</td>
-      <td>4.738e-03</td>
-      <td>0.684</td>
+      <td>4.786e-03</td>
+      <td>0.682</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.050</td>
-      <td>4.998e-03</td>
-      <td>0.699</td>
+      <td>5.026e-03</td>
+      <td>0.700</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.052</td>
-      <td>5.282e-03</td>
+      <td>5.270e-03</td>
       <td>0.716</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>0.060</td>
-      <td>6.393e-03</td>
-      <td>0.763</td>
+      <td>0.058</td>
+      <td>6.255e-03</td>
+      <td>0.766</td>
     </tr>
   </tbody>
 </table>
@@ -356,19 +358,19 @@ iteration.</p>
 </div>
 </section>
 <section id="comparing-nls-vs-mle">
-<h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Permalink to this headline">¶</a></h2>
+<h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Permalink to this heading">¶</a></h2>
 <p>The bias relative to the true values of the mixed distribution can be
 readily assessed for NLS:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">67</span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">67</span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0   -0.003
-lambda1   -0.001
-p          0.030
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0   -3.122e-03
+lambda1   -9.952e-04
+p          2.816e-02
 dtype: float64
 </pre></div>
 </div>
@@ -377,14 +379,14 @@ dtype: float64
 <p>and for MLE:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">68</span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">68</span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    4.261e-04
-lambda1    3.011e-05
-p         -3.467e-04
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    1.997e-04
+lambda1    2.849e-05
+p         -8.706e-04
 dtype: float64
 </pre></div>
 </div>
@@ -399,14 +401,14 @@ compare density plots, along with the true parameter values:</p>
 </div>
 </section>
 <section id="three-process-mixture">
-<h2>Three-process mixture<a class="headerlink" href="#three-process-mixture" title="Permalink to this headline">¶</a></h2>
+<h2>Three-process mixture<a class="headerlink" href="#three-process-mixture" title="Permalink to this heading">¶</a></h2>
 <p>We generate a mixture of “fast”, “slow”, and “very slow” processes.  The
 probabilities considered for modeling this mixture are <span class="math notranslate nohighlight">\(p0\)</span> and
 <span class="math notranslate nohighlight">\(p1\)</span>, representing the proportion of “fast” to “slow” events, and the
 proportion of “slow” to “slow” <em>and</em> “very slow” events, respectively.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 93</span><span class="n">p_fast</span> <span class="o">=</span> <span class="mf">0.6</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 93</span><span class="n">p_fast</span> <span class="o">=</span> <span class="mf">0.6</span>
 <span class="linenos"> 94</span><span class="n">p_svs</span> <span class="o">=</span> <span class="mf">0.7</span>                   <span class="c1"># prop of slow to (slow + very slow) procs</span>
 <span class="linenos"> 95</span><span class="n">p_true</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_fast</span><span class="p">,</span> <span class="n">p_svs</span><span class="p">]</span>
 <span class="linenos"> 96</span><span class="n">lda_true</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">8e-4</span><span class="p">]</span>
@@ -426,7 +428,7 @@ to avoid numerical issues to fit the models; even the NLS model may require
 help.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">102</span><span class="c1"># Bounds for NLS fit; flattened, two per process (a, lambda).  Two-tuple</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">102</span><span class="c1"># Bounds for NLS fit; flattened, two per process (a, lambda).  Two-tuple</span>
 <span class="linenos">103</span><span class="c1"># with lower and upper bounds for each parameter.</span>
 <span class="linenos">104</span><span class="n">nls_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span>
 <span class="linenos">105</span>    <span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]),</span>
@@ -460,7 +462,7 @@ help.</p>
 <p>We fit the three-process data with the two models:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">127</span><span class="n">x_nls</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">127</span><span class="n">x_nls</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="linenos">128</span><span class="n">init_pars</span> <span class="o">=</span> <span class="n">x_nls</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">75</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="linenos">129</span><span class="n">coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">x_nls</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="o">**</span><span class="n">nls_opts</span><span class="p">)</span>
 <span class="linenos">130</span>
@@ -477,7 +479,7 @@ help.</p>
 <p>Plot both fits and BECs:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">135</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">135</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="linenos">136</span><span class="n">x_nls</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="linenos">137</span><span class="n">x_mle</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">fit2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
 </pre></div>
@@ -490,7 +492,7 @@ help.</p>
 <p>Compare cumulative frequency distributions:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">138</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">138</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="linenos">139</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NLS&quot;</span><span class="p">)</span>
 <span class="linenos">140</span><span class="n">x_nls</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="linenos">141</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MLE&quot;</span><span class="p">)</span>
@@ -557,7 +559,7 @@ help.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -577,14 +579,14 @@ help.</p>
         <li class="right" >
           <a href="demo_bouts.html" title="Bout analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.2.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín
