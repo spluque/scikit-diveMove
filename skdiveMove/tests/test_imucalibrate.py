@@ -2,8 +2,7 @@
 
 """
 
-import pkg_resources as pkg_rsrc
-import os.path as osp
+import importlib.resources as rsrc
 import unittest as ut
 import numpy as np
 import numpy.testing as npt
@@ -14,10 +13,8 @@ import xarray as xr
 from skdiveMove.imutools.imu import _ACCEL_NAME, _OMEGA_NAME, _MAGNT_NAME
 
 
-_ICDF = (pkg_rsrc
-         .resource_filename("skdiveMove",
-                            osp.join("tests", "data",
-                                     "cats_temperature_calib.nc")))
+_ICDF = (rsrc.files("skdiveMove") / "tests" / "data" /
+         "cats_temperature_calib.nc")
 
 
 class TestIMUcalibrate(ut.TestCase):

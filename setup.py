@@ -27,7 +27,7 @@ PACKAGES = ["skdiveMove",
 setup(
     name="scikit-diveMove",
     version=__version__,
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     packages=PACKAGES,
     include_package_data=True,
     # Below is redundant but safe

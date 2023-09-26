@@ -4,7 +4,7 @@
 
 import os
 import unittest as ut
-import pkg_resources as pkg_rsrc
+import importlib.resources as rsrc
 from tempfile import NamedTemporaryFile
 import skdiveMove as skdive
 import skdiveMove.calibconfig as calibconfig
@@ -16,12 +16,10 @@ class TestCalibrate(ut.TestCase):
     """
     def setUp(self):
         # An instance to work with
-        tdrfn = "tests/data/ag_mk7_2002_022.nc"
-        self.tdr_file = (pkg_rsrc
-                         .resource_filename("skdiveMove", tdrfn))
-        configfn = "config_examples/ag_mk7_2002_022_config.json"
-        self.config_file = (pkg_rsrc
-                            .resource_filename("skdiveMove", configfn))
+        self.tdr_file = (rsrc.files("skdiveMove") / "tests" / "data" /
+                         "ag_mk7_2002_022.nc")
+        self.config_file = (rsrc.files("skdiveMove") / "config_examples" /
+                            "ag_mk7_2002_022_config.json")
 
     def test_calibrate(self):
         tdr_calib = skdive.calibrate(self.tdr_file, self.config_file)

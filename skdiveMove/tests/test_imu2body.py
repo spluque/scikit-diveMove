@@ -2,7 +2,7 @@
 
 """
 
-import pkg_resources as pkg_rsrc
+import importlib.resources as rsrc
 import os.path as osp
 import tempfile
 import unittest as ut
@@ -14,14 +14,10 @@ from skdiveMove.imutools import imu2body as i2b
 from skdiveMove.imutools.imu import _ACCEL_NAME, _OMEGA_NAME, _MAGNT_NAME
 
 
-_ICDF = (pkg_rsrc
-         .resource_filename("skdiveMove",
-                            osp.join("tests", "data", "gertrude",
-                                     "gert_imu_frame.nc")))
-_ICSV = (pkg_rsrc
-         .resource_filename("skdiveMove",
-                            osp.join("tests", "data", "gertrude",
-                                     "gert_long_srfc.csv")))
+_ICDF = (rsrc.files("skdiveMove") / "tests" / "data" / "gertrude" /
+         "gert_imu_frame.nc")
+_ICSV = (rsrc.files("skdiveMove") / "tests" / "data" / "gertrude" /
+         "gert_long_srfc.csv")
 
 
 class TestIMU2Body(ut.TestCase):

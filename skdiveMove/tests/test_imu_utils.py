@@ -5,8 +5,7 @@ Tests for `imu2body` and `imucalibrate` modules are done separately.
 """
 
 import warnings
-import pkg_resources as pkg_rsrc
-import os.path as osp
+import importlib.resources as rsrc
 import unittest as ut
 import numpy as np
 import numpy.testing as npt
@@ -17,19 +16,13 @@ from scipy.optimize import OptimizeWarning
 from skdiveMove.imutools.ellipsoid import _ELLIPSOID_FTYPES
 
 
-_ICDF0 = (pkg_rsrc
-          .resource_filename("skdiveMove",
-                             osp.join("tests", "data",
-                                      "samsung_galaxy_s5.nc")))
-_ICDF1 = (pkg_rsrc
-          .resource_filename("skdiveMove",
-                             osp.join("tests", "data", "gertrude",
-                                      "magnt_accel_calib.nc")))
+_ICDF0 = (rsrc.files("skdiveMove") / "tests" / "data" /
+          "samsung_galaxy_s5.nc")
+_ICDF1 = (rsrc.files("skdiveMove") / "tests" / "data" / "gertrude" /
+          "magnt_accel_calib.nc")
 
-_ICDF2 = (pkg_rsrc
-          .resource_filename("skdiveMove",
-                             osp.join("tests", "data", "gertrude",
-                                      "gert_imu_frame.nc")))
+_ICDF2 = (rsrc.files("skdiveMove") / "tests" / "data" / "gertrude" /
+          "gert_imu_frame.nc")
 
 
 class TestUtils(ut.TestCase):

@@ -13,7 +13,7 @@ estimates :math:`\sigma`.
 
    # Set up
    import warnings
-   import pkg_resources as pkg_rsrc
+   import importlib.resources as rsrc
    import os.path as osp
    import numpy as np
    import xarray as xr
@@ -46,10 +46,8 @@ are rebuilt:
 .. jupyter-execute::
    :linenos:
 
-   icdf = (pkg_rsrc
-           .resource_filename("skdiveMove",
-	                      osp.join("tests", "data",
-			               "samsung_galaxy_s5.nc")))
+   icdf = (rsrc.files("skdiveMove") / "tests" /
+           "data" / "samsung_galaxy_s5.nc")
    s5ds = (xr.load_dataset(icdf)  # rebuild MultiIndex
            .set_index(gyroscope=["gyroscope_type", "gyroscope_axis"],
                       magnetometer=["magnetometer_type",

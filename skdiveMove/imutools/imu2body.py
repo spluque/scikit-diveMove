@@ -392,17 +392,12 @@ class IMU2Body(IMUBase):
     Construct IMU2Body from NetCDF file with IMU signals, and
     comma-separated file with timestamps for surface periods:
 
-    >>> import pkg_resources as pkg_rsrc
-    >>> import os.path as osp
+    >>> import importlib.resources as rsrc
     >>> import skdiveMove.imutools as imutools
-    >>> icdf = (pkg_rsrc
-    ...         .resource_filename("skdiveMove",
-    ...                            osp.join("tests", "data", "gertrude",
-    ...                                     "gert_imu_frame.nc")))
-    >>> icsv = (pkg_rsrc
-    ...         .resource_filename("skdiveMove",
-    ...                            osp.join("tests", "data", "gertrude",
-    ...                                     "gert_long_srfc.csv")))
+    >>> icdf = (rsrc.files("skdiveMove") / "tests" / "data" / "gertrude" /
+    ...         "gert_imu_frame.nc")
+    >>> icsv = (rsrc.files("skdiveMove") / "tests" / "data" / "gertrude" /
+    ...         "gert_long_srfc.csv")
 
     Apply Savitzky-Golay filter to acceleration to use as source data for
     Singular Value Decomposition.  The required parameters for the filter

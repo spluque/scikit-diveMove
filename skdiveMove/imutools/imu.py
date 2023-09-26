@@ -51,14 +51,11 @@ class IMUBase:
     NetCDF file with IMU signals collected using a Samsung Galaxy S5 mobile
     phone.  Set up instance from NetCDF example data:
 
-    >>> import pkg_resources as pkg_rsrc
-    >>> import os.path as osp
+    >>> import importlib.resources as rsrc
     >>> import xarray as xr
     >>> import skdiveMove.imutools as imutools
-    >>> icdf = (pkg_rsrc
-    ...         .resource_filename("skdiveMove",
-    ...                            osp.join("tests", "data",
-    ...                                     "samsung_galaxy_s5.nc")))
+    >>> icdf = (rsrc.files("skdiveMove") / "tests" / "data" /
+    ...         "samsung_galaxy_s5.nc")
 
     The angular velocity and magnetic density arrays have two sets of
     measurements: output and measured, which, along with the sensor axis

@@ -77,13 +77,10 @@ class IMUcalibrate(IMUBase):
     Construct IMUcalibrate from NetCDF file with samples of IMU signals and
     a list with begining and ending timestamps for experimental periods:
 
-    >>> import pkg_resources as pkg_rsrc
-    >>> import os.path as osp
+    >>> import importlib.resources as rsrc
     >>> import skdiveMove.imutools as imutools
-    >>> icdf = (pkg_rsrc
-    ...         .resource_filename("skdiveMove",
-    ...                            osp.join("tests", "data",
-    ...                                     "cats_temperature_calib.nc")))
+    >>> icdf = (rsrc.files("skdiveMove") / "tests" / "data" /
+    ...         "cats_temperature_calib.nc")
     >>> pers = [slice("2021-09-20T09:00:00", "2021-09-21T10:33:00"),
     ...         slice("2021-09-21T10:40:00", "2021-09-22T11:55:00"),
     ...         slice("2021-09-22T12:14:00", "2021-09-23T11:19:00")]

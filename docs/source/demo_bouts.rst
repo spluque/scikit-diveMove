@@ -13,7 +13,7 @@ up a logger to monitor progress to this section.
 .. jupyter-execute::
 
    # Set up
-   import pkg_resources as pkg_rsrc
+   import importlib.resources as rsrc
    import pandas as pd
    import matplotlib.pyplot as plt
    from skdiveMove import calibrate
@@ -43,14 +43,10 @@ Create a :class:`TDR` object to easily calculate the necessary statistics:
 .. jupyter-execute::
    :linenos:
 
-   config_file = (pkg_rsrc
-                  .resource_filename("skdiveMove",
-                                     ("config_examples/"
-                                      "ag_mk7_2002_022_config.json")))
-   tdr_file = (pkg_rsrc
-               .resource_filename("skdiveMove",
-                                  ("tests/data/"
-                                   "ag_mk7_2002_022.nc")))
+   config_file = (rsrc.files("skdiveMove") / "config_examples" /
+                  "ag_mk7_2002_022_config.json")
+   tdr_file = (rsrc.files("skdiveMove") / "tests" /
+               "data" / "ag_mk7_2002_022.nc")
    tdrX = calibrate(tdr_file, config_file)
    stats = tdrX.dive_stats()
    stamps = tdrX.stamp_dives(ignore_z=True)
