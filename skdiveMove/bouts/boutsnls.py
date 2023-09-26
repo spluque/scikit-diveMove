@@ -49,12 +49,12 @@ class BoutsNLS(bouts.Bouts):
     Plot observed and predicted data:
 
     >>> xbouts2.plot_fit(coefs)  # doctest: +ELLIPSIS
-    <AxesSubplot:...>
+    <Axes: ...>
 
     Plot ECDF:
 
     >>> xbouts2.plot_ecdf(coefs)  # doctest: +ELLIPSIS
-    <AxesSubplot:...>
+    <Axes: ...>
 
     """
     def fit(self, start, **kwargs):

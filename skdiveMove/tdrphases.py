@@ -23,7 +23,7 @@ import logging
 import numpy as np
 import pandas as pd
 from skdiveMove.zoc import ZOC
-from skdiveMove.core import diveMove, robjs, cv, pandas2ri
+from skdiveMove.core import diveMove, robjs, pandas2ri
 from skdiveMove.helpers import (get_var_sampling_interval, _cut_dive,
                                 rle_key, _append_xr_attr)
 
@@ -139,13 +139,12 @@ class TDRPhases(ZOC):
                                wet_cond=(robjs.vectors
                                          .BoolVector(~depth_py.isna())),
                                interval=dtime))
-        with cv.localconverter(robjs.default_converter +
-                               pandas2ri.converter):
+        with (robjs.default_converter + pandas2ri.converter).context():
             phases = pd.DataFrame({'phase_id': phases_l.rx2("phase.id"),
                                    'phase_label': phases_l.rx2("activity")},
                                   index=time_py)
 
-        phases.loc[:, "phase_id"] = phases.loc[:, "phase_id"].astype(int)
+        phases["phase_id"] = phases["phase_id"].astype(int)
         self._wet_dry = phases
         wet_dry_params = dict(dry_thr=dry_thr, wet_thr=wet_thr)
         self.params["wet_dry"].update(wet_dry_params)
@@ -199,8 +198,7 @@ class TDRPhases(ZOC):
         depth = self.depth_zoc
         depth_py = depth.to_series()
         act_phases = self.wet_dry["phase_label"]
-        with cv.localconverter(robjs.default_converter +
-                               pandas2ri.converter):
+        with (robjs.default_converter + pandas2ri.converter).context():
             phases_df = diveMove._detDive(pd.Series(depth_py),
                                           pd.Series(act_phases),
                                           dive_thr=dive_thr)

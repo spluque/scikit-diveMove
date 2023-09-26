@@ -5,7 +5,7 @@
 import logging
 import pandas as pd
 from skdiveMove.tdrsource import TDRSource
-from skdiveMove.core import robjs, cv, pandas2ri, diveMove
+from skdiveMove.core import robjs, pandas2ri, diveMove
 from skdiveMove.helpers import _append_xr_attr
 
 logger = logging.getLogger(__name__)
@@ -146,8 +146,8 @@ class ZOC(TDRSource):
         Plot the filters that were applied
 
         >>> tdrX.plot_zoc(ylim=[-1, 10])  # doctest: +ELLIPSIS
-        (<Figure ... with 3 Axes>, array([<AxesSubplot:...>,
-            <AxesSubplot:...>, <AxesSubplot:...>], dtype=object))
+        (<Figure ... with 3 Axes>, array([<Axes: ...>,
+            <Axes: ...>, <Axes: ...>], dtype=object))
 
         """
         if method == "offset":
@@ -187,8 +187,7 @@ class ZOC(TDRSource):
             column `depth_adj` for corrected depth.
 
         """
-        with cv.localconverter(robjs.default_converter +
-                               pandas2ri.converter):
+        with (robjs.default_converter + pandas2ri.converter).context():
             depthmtx = diveMove._depthFilter(depth,
                                              pd.Series(k), pd.Series(probs),
                                              pd.Series(depth_bounds),

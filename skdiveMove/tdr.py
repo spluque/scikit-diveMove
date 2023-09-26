@@ -47,7 +47,7 @@ class TDR(TDRPhases):
     Plot the `TDR` object
 
     >>> tdrX.plot()  # doctest: +ELLIPSIS
-    (<Figure ... 1 Axes>, <AxesSubplot:...>)
+    (<Figure ... 1 Axes>, <Axes: ...>)
 
     """
 
@@ -271,7 +271,7 @@ class TDR(TDRPhases):
         >>> tdrX = diveMove2skd()
         >>> tdrX.plot(xlim=["2002-01-05 21:00:00", "2002-01-06 04:10:00"],
         ...           depth_lim=[95, -1])  # doctest: +ELLIPSIS
-        (<Figure ... with 1 Axes>, <AxesSubplot:...'>)
+        (<Figure ... with 1 Axes>, <Axes: ...'>)
 
         """
         try:
@@ -333,8 +333,8 @@ class TDR(TDRPhases):
         >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
         ...                         ascent_crit_q=0, knot_factor=20)
         >>> tdrX.plot_zoc()  # doctest: +ELLIPSIS
-        (<Figure ... with 3 Axes>, array([<AxesSubplot:...'>,
-            <AxesSubplot:...'>, <AxesSubplot:...>], dtype=object))
+        (<Figure ... with 3 Axes>, array([<Axes: ...'>,
+            <Axes: ...'>, <Axes: ...>], dtype=object))
 
         """
         zoc_method = self.zoc_method
@@ -403,7 +403,7 @@ class TDR(TDRPhases):
         ...                         ascent_crit_q=0, knot_factor=20)
         >>> tdrX.plot_phases(list(range(250, 300)),
         ...                  surface=True)  # doctest: +ELLIPSIS
-        (<Figure ... with 1 Axes>, <AxesSubplot:...>)
+        (<Figure ... with 1 Axes>, <Axes: ...>)
 
         """
         row_ids = self.get_dives_details("row_ids")
@@ -490,7 +490,7 @@ class TDR(TDRPhases):
         ...                         ascent_crit_q=0, knot_factor=20)
         >>> tdrX.plot_dive_model(diveNo=20,
         ...                      figsize=(10, 10))  # doctest: +ELLIPSIS
-        (<Figure ... with 2 Axes>, (<AxesSubplot:...>, <AxesSubplot:...>))
+        (<Figure ... with 2 Axes>, (<Axes: ...>, <Axes: ...>))
 
         """
         dive_ids = self.get_dives_details("row_ids", "dive_id")

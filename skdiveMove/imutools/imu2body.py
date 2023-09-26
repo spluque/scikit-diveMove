@@ -598,8 +598,8 @@ class IMU2Body(IMUBase):
                                           ["beg.surface", "end.surface"]])
         # Retrieve sampling rate from one of DataArray
         itvl = self.sampling_interval
-        left_lim = tlims[1] - pd.Timedelta(itvl, unit="s")
-        mask_d = {self.time_name: slice(tlims[0], left_lim)}
+        left_lim = tlims.iloc[1] - pd.Timedelta(itvl, unit="s")
+        mask_d = {self.time_name: slice(tlims.iloc[0], left_lim)}
 
         return mask_d
 
@@ -1111,7 +1111,8 @@ class IMU2Body(IMUBase):
             sfc_begend = self.surface_details[["beg.surface",
                                                "end.surface"]]
             for sfc_id, lims in sfc_begend.iterrows():
-                axs[0].axvspan(lims[0], lims[1], facecolor="g", alpha=0.5)
+                axs[0].axvspan(lims.iloc[0], lims.iloc[1],
+                               facecolor="g", alpha=0.5)
 
         return axs
 

@@ -33,8 +33,7 @@ def _load_dataset(filename_or_obj, **kwargs):
 
 def _get_dive_indices(indices, diveNo):
     """Mapping to diveMove's `.diveIndices`"""
-    with cv.localconverter(robjs.default_converter +
-                           pandas2ri.converter):
+    with (robjs.default_converter + pandas2ri.converter).context():
         # Subtract 1 for zero-based python
         idx_ok = diveMove._diveIndices(indices, diveNo) - 1
 
@@ -116,9 +115,9 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
 
     """
     xx = x.iloc[:, 1:]
-    with cv.localconverter(robjs.default_converter +
-                           pandas2ri.converter):
-        dmodel = diveMove._cutDive(cv.py2rpy(xx), dive_model=dive_model,
+    with (robjs.default_converter + pandas2ri.converter).context():
+        dmodel = diveMove._cutDive(cv.get_conversion().py2rpy(xx),
+                                   dive_model=dive_model,
                                    smooth_par=smooth_par,
                                    knot_factor=knot_factor,
                                    descent_crit_q=descent_crit_q,
@@ -169,8 +168,7 @@ def _one_dive_stats(x, interval, has_speed=False):
                     "asc_tdist", "asc_mean_speed", "asc_angle"]
     onames_nospeed = onames_speed[:14]
 
-    with cv.localconverter(robjs.default_converter +
-                           pandas2ri.converter):
+    with (robjs.default_converter + pandas2ri.converter).context():
         res = diveMove.oneDiveStats(xx, interval, has_speed)
 
     if has_speed:
@@ -208,8 +206,7 @@ def _speed_stats(x, vdist=None):
     kwargs = dict(x=x)
     if vdist is not None:
         kwargs.update(vdist=vdist)
-    with cv.localconverter(robjs.default_converter +
-                           pandas2ri.converter):
+    with (robjs.default_converter + pandas2ri.converter).context():
         res = diveMove._speedStats(**kwargs)
 
     return res

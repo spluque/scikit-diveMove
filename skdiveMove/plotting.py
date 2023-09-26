@@ -51,7 +51,7 @@ def _plot_dry_time(times_dataframe, ax):
 
     """
     for idx, row in times_dataframe.iterrows():
-        ax.axvspan(row[0], row[1], ymin=0.99, facecolor="tan",
+        ax.axvspan(row.iloc[0], row.iloc[1], ymin=0.99, facecolor="tan",
                    edgecolor=None, alpha=0.6)
 
 
