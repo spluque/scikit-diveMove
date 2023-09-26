@@ -54,8 +54,8 @@ def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
 
     kde = stats.gaussian_kde(xnpy.T)
     # Build the grid for evaluation, mimicking bkde2D
-    mins = x.min()
-    maxs = x.max()
+    mins = x.min().to_numpy()
+    maxs = x.max().to_numpy()
     x_flat = np.linspace(mins[0], maxs[0], n_eval)
     y_flat = np.linspace(mins[1], maxs[1], n_eval)
     xx, yy = np.meshgrid(x_flat, y_flat)
@@ -74,7 +74,7 @@ def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
     qdata = pd.DataFrame(binned, columns=list("xy"))
     qmod = smf.quantreg("y ~ x", qdata)
     qfit = qmod.fit(q=tau)
-    coefs = qfit.params
+    coefs = qfit.params.to_numpy()
     logger.info("a={}, b={}".format(*coefs))
 
     if plot:

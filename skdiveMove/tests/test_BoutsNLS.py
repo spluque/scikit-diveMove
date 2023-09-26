@@ -69,7 +69,8 @@ class TestBoutsNLS(ut.TestCase):
                                "p0": p0_true,
                                "p1": p1_true})
         cls.pars_true3 = pars_true
-        x = skbouts.random_mixexp(nsamp, pars_true.loc[["p0", "p1"]],
+        x = skbouts.random_mixexp(nsamp,
+                                  pars_true.loc[["p0", "p1"]].to_numpy(),
                                   (pars_true.loc[["lambda0", "lambda1",
                                                   "lambda2"]]
                                    .to_numpy()), rng=rng)

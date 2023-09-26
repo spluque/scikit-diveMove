@@ -588,7 +588,7 @@ class TDR(TDRPhases):
                 logger.error(msg)
                 raise LookupError(msg)
             else:
-                coefs = qfit.params
+                coefs = qfit.params.to_numpy()
                 coef_a = coefs[0]
                 coef_b = coefs[1]
 
