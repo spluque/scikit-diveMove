@@ -1,8 +1,4 @@
-.. raw:: html
-
-   <img alt="scikit-diveMove" src="docs/source/.static/skdiveMove_logo.png"
-    width=10% align=left>
-   <h1>scikit-diveMove</h1>
+.. image:: docs/source/.static/skdiveMove_logo_1line.png
 
 .. image:: https://img.shields.io/pypi/v/scikit-diveMove
    :target: https://pypi.python.org/pypi/scikit-diveMove

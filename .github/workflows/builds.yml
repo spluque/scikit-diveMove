@@ -40,17 +40,16 @@ jobs:
 
       - name: Install Python requirements
         run: |
-          python -m pip install --upgrade pip setuptools wheel twine
-          python -m pip install -r requirements.txt
+          python -m pip install --upgrade pip setuptools build twine
 
       - name: Build binary wheel and source tarball
         run: |
-          python setup.py build sdist bdist_wheel
+          python -m build
           twine check dist/*
 
       - name: Test and coverage
         run: |
-          python -m pip install --upgrade pytest coverage
+          python -m pip install --upgrade .['test']
           coverage run --branch -m pytest skdiveMove
           coverage xml
 
@@ -65,7 +64,7 @@ jobs:
       - name: Build Sphinx docs
         if: matrix.python-version == env.PY_LATEST
         run: |
-          python -m pip install .['dev']
+          python -m pip install --upgrade .['dev']
           make -C docs/ html
           touch docs/build/html/.nojekyll
 
@@ -104,3 +103,24 @@ jobs:
         with:
           branch: gh-pages
           folder: docs/build/html
+
+  publish:
+    name: Publish Python distribution to PyPI
+    if: startsWith(github.ref, 'refs/tags')
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/scikit-diveMove
+    permissions:
+      id-token: write         # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+      - name: Download products
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-pkg
+          path: dist/
+
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

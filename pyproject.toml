@@ -1,0 +1,51 @@
+[build-system]
+# This is the default table, so is here for clarity only
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scikit-diveMove"
+description = "Python interface to R package diveMove"
+readme = "README.rst"
+license = {file = "LICENSE"}
+authors = [{name = "Sebastian Luque", email = "spluque@gmail.com"}]
+requires-python = ">=3.9"
+dependencies = ["ahrs",
+	        "allantools",
+		"bottleneck",
+		"docutils>=0.3",
+		"matplotlib>=3.0",
+		"netcdf4>=1.5",
+		"numpy>=1.18",
+		"pandas>=1.0",
+		"rpy2>=3.5",
+		"scikit-learn>=0.20.0",
+		"scipy>=1.5",
+		"statsmodels>=0.11",
+		"xarray>=0.16"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Topic :: Scientific/Engineering"]
+keywords = ["animal behaviour",
+	    "biology",
+	    "behavioural ecology",
+            "diving",
+	    "diving behaviour"]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["ipykernel>=6.20", "jupyter-sphinx"]
+test = ["pytest", "coverage"]
+
+[project.urls]
+Repository = "https://github.com/spluque/scikit-diveMove"
+
+[tool.setuptools.packages.find]
+include = ["skdiveMove", "skdiveMove.*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "skdiveMove.__version__"}
