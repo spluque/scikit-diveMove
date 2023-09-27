@@ -5,7 +5,7 @@
 
 
 # Set up
-import pkg_resources as pkg_rsrc
+import importlib.resources as rsrc
 import matplotlib.pyplot as plt
 import skdiveMove as skdive
 
@@ -31,10 +31,8 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # In[3]:
 
 
-ifile = (pkg_rsrc
-         .resource_filename("skdiveMove",
-                            ("tests/data/"
-                             "ag_mk7_2002_022.nc")))
+ifile = (rsrc.files("skdiveMove") / "tests" / "data" /
+         "ag_mk7_2002_022.nc")
 tdrX = skdive.TDR.read_netcdf(ifile, depth_name="depth",
                               time_name="date_time", has_speed=True)
 # Or simply use function ``skdive.tests.diveMove2skd`` to do the

@@ -2,22 +2,19 @@
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdrsource &#8212; skdiveMove 0.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <title>skdiveMove.tdrsource &#8212; skdiveMove 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -38,7 +35,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdrsource</a></li> 
       </ul>
@@ -62,7 +59,7 @@
 
 
 <span class="k">class</span> <span class="nc">TDRSource</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Define TDR data source</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define TDR data source</span>
 
 <span class="sd">    Use xarray.Dataset to ensure pseudo-standard metadata</span>
 
@@ -91,7 +88,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">time_name</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
                  <span class="n">subsample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tdr_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set up attributes for TDRSource objects</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up attributes for TDRSource objects</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -139,7 +136,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">read_netcdf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tdr_file</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">time_name</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
                     <span class="n">subsample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate object by loading Dataset from NetCDF file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate object by loading Dataset from NetCDF file</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -206,7 +203,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span><span class="p">]</span>
 
     <span class="n">depth</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_depth</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;Return depth array</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return depth array</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -218,7 +215,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">speed_name</span><span class="p">]</span>
 
     <span class="n">speed</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_speed</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;Return speed array</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return speed array</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -259,15 +256,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.tdrsource</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2023.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

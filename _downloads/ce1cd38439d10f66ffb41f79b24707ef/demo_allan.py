@@ -6,7 +6,7 @@
 
 # Set up
 import warnings
-import pkg_resources as pkg_rsrc
+import importlib.resources as rsrc
 import os.path as osp
 import numpy as np
 import xarray as xr
@@ -31,10 +31,8 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # In[3]:
 
 
-icdf = (pkg_rsrc
-        .resource_filename("skdiveMove",
-                           osp.join("tests", "data",
-                                    "samsung_galaxy_s5.nc")))
+icdf = (rsrc.files("skdiveMove") / "tests" /
+        "data" / "samsung_galaxy_s5.nc")
 s5ds = (xr.load_dataset(icdf)  # rebuild MultiIndex
         .set_index(gyroscope=["gyroscope_type", "gyroscope_axis"],
                    magnetometer=["magnetometer_type",
@@ -82,12 +80,12 @@ import matplotlib.ticker as mticker
 adevs_ad = adevs.xs("allan_dev", level=1, axis=1)
 adevs_fit = adevs.xs("fitted", level=1, axis=1)
 fig, ax = plt.subplots(figsize=[6, 5])
-for sensor, coefs in adevs_ad.iteritems():
+for sensor, coefs in adevs_ad.items():
     suffix = sensor.split("_")[-1]
     ax.loglog(adevs_ad.index, adevs_ad[sensor], marker=".",
               linestyle="none",
               label="measured {}".format(suffix))
-for sensor, fitted in adevs_ad.iteritems():
+for sensor, fitted in adevs_ad.items():
     suffix = sensor.split("_")[-1]
     ax.loglog(adevs_fit.index, adevs_fit[sensor],
               color="r", linewidth=4, alpha=0.4,

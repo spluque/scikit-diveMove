@@ -5,8 +5,7 @@
 
 
 # Set up
-import pkg_resources as pkg_rsrc
-import os.path as osp
+import importlib.resources as rsrc
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -31,14 +30,10 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # In[2]:
 
 
-icdf = (pkg_rsrc
-        .resource_filename("skdiveMove",
-                           osp.join("tests", "data", "gertrude",
-                                    "gert_imu_frame.nc")))
-icsv = (pkg_rsrc
-        .resource_filename("skdiveMove",
-                           osp.join("tests", "data", "gertrude",
-                                    "gert_long_srfc.csv")))
+icdf = (rsrc.files("skdiveMove") / "tests" / "data" /
+        "gertrude" / "gert_imu_frame.nc")
+icsv = (rsrc.files("skdiveMove") / "tests" / "data" /
+        "gertrude" / "gert_long_srfc.csv")
 
 
 # In[3]:

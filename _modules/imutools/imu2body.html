@@ -2,22 +2,19 @@
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imu2body &#8212; skdiveMove 0.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <title>imutools.imu2body &#8212; skdiveMove 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -38,7 +35,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
       </ul>
@@ -88,7 +85,7 @@
 
 
 <span class="k">class</span> <span class="nc">Arrow3D</span><span class="p">(</span><span class="n">FancyArrowPatch</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclass extending FancyArrowPatch to 3D&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass extending FancyArrowPatch to 3D&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Arrow3D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_verts3d</span> <span class="o">=</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span>
@@ -107,9 +104,11 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="scatterIMU_svd"><a class="viewcode-back" href="../../imutools.html#imutools.scatterIMU_svd">[docs]</a><span class="k">def</span> <span class="nf">scatterIMU_svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">svd</span><span class="p">,</span> <span class="n">R_ctr2i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<div class="viewcode-block" id="scatterIMU_svd">
+<a class="viewcode-back" href="../../imutools.html#imutools.scatterIMU_svd">[docs]</a>
+<span class="k">def</span> <span class="nf">scatterIMU_svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">svd</span><span class="p">,</span> <span class="n">R_ctr2i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                    <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;3D plotting of vectors and singular vector matrices</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;3D plotting of vectors and singular vector matrices</span>
 
 <span class="sd">    Plots a surface of the 2 top-most singular vectors computed from SVD</span>
 <span class="sd">    overlaid on the scatter of vectors.</span>
@@ -202,9 +201,10 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_scatterIMU_svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">svd</span><span class="p">,</span> <span class="n">R_b2i</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;3D plotting of vectors and singular vector matrices</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;3D plotting of vectors and singular vector matrices</span>
 
 <span class="sd">    Plots a surface of the 2 top-most singular vectors computed from SVD</span>
 <span class="sd">    overlaid on the scatter of vectors.</span>
@@ -291,10 +291,12 @@
     <span class="k">return</span> <span class="n">ax</span>
 
 
-<div class="viewcode-block" id="scatterIMU3D"><a class="viewcode-back" href="../../imutools.html#imutools.scatterIMU3D">[docs]</a><span class="k">def</span> <span class="nf">scatterIMU3D</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">col_vector</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="scatterIMU3D">
+<a class="viewcode-back" href="../../imutools.html#imutools.scatterIMU3D">[docs]</a>
+<span class="k">def</span> <span class="nf">scatterIMU3D</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">col_vector</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">animate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">animate_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">cbar_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;3D plotting of vectors along with depth</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;3D plotting of vectors along with depth</span>
 
 <span class="sd">    Scatter plot of vectors, colored by depth.</span>
 
@@ -354,8 +356,11 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="tsplotIMU_depth"><a class="viewcode-back" href="../../imutools.html#imutools.tsplotIMU_depth">[docs]</a><span class="k">def</span> <span class="nf">tsplotIMU_depth</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">time_name</span><span class="o">=</span><span class="n">_TIME_NAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Plot depth and each column of (N,3) array</span>
+
+<div class="viewcode-block" id="tsplotIMU_depth">
+<a class="viewcode-back" href="../../imutools.html#imutools.tsplotIMU_depth">[docs]</a>
+<span class="k">def</span> <span class="nf">tsplotIMU_depth</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">time_name</span><span class="o">=</span><span class="n">_TIME_NAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot depth and each column of (N,3) array</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -393,8 +398,9 @@
     <span class="k">return</span> <span class="n">axs</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_euler_ctr2body</span><span class="p">(</span><span class="n">R_ctr2i</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Helper function to compute Euler angles from the body frame</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to compute Euler angles from the body frame</span>
 
 <span class="sd">    The rotation obtained from SVD on the covariance matrix is for the</span>
 <span class="sd">    basis defined by the *centered* data, so pitch and roll refer to the</span>
@@ -418,8 +424,10 @@
     <span class="k">return</span> <span class="n">euler_ctr</span>
 
 
-<div class="viewcode-block" id="IMU2Body"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body">[docs]</a><span class="k">class</span> <span class="nc">IMU2Body</span><span class="p">(</span><span class="n">IMUBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;IMU coordinate frame transformation framework</span>
+<div class="viewcode-block" id="IMU2Body">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body">[docs]</a>
+<span class="k">class</span> <span class="nc">IMU2Body</span><span class="p">(</span><span class="n">IMUBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;IMU coordinate frame transformation framework</span>
 
 <span class="sd">    The framework is based on the analytical approach taken in TagTools</span>
 <span class="sd">    (Matlab).  However, the estimation of the IMU orientation uses the</span>
@@ -444,17 +452,12 @@
 <span class="sd">    Construct IMU2Body from NetCDF file with IMU signals, and</span>
 <span class="sd">    comma-separated file with timestamps for surface periods:</span>
 
-<span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
-<span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
+<span class="sd">    &gt;&gt;&gt; import importlib.resources as rsrc</span>
 <span class="sd">    &gt;&gt;&gt; import skdiveMove.imutools as imutools</span>
-<span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc</span>
-<span class="sd">    ...         .resource_filename(&quot;skdiveMove&quot;,</span>
-<span class="sd">    ...                            osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
-<span class="sd">    ...                                     &quot;gert_imu_frame.nc&quot;)))</span>
-<span class="sd">    &gt;&gt;&gt; icsv = (pkg_rsrc</span>
-<span class="sd">    ...         .resource_filename(&quot;skdiveMove&quot;,</span>
-<span class="sd">    ...                            osp.join(&quot;tests&quot;, &quot;data&quot;, &quot;gertrude&quot;,</span>
-<span class="sd">    ...                                     &quot;gert_long_srfc.csv&quot;)))</span>
+<span class="sd">    &gt;&gt;&gt; icdf = (rsrc.files(&quot;skdiveMove&quot;) / &quot;tests&quot; / &quot;data&quot; / &quot;gertrude&quot; /</span>
+<span class="sd">    ...         &quot;gert_imu_frame.nc&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; icsv = (rsrc.files(&quot;skdiveMove&quot;) / &quot;tests&quot; / &quot;data&quot; / &quot;gertrude&quot; /</span>
+<span class="sd">    ...         &quot;gert_long_srfc.csv&quot;)</span>
 
 <span class="sd">    Apply Savitzky-Golay filter to acceleration to use as source data for</span>
 <span class="sd">    Singular Value Decomposition.  The required parameters for the filter</span>
@@ -502,7 +505,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_details</span><span class="p">,</span> <span class="n">savgol_parms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set up attributes required for estimation</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up attributes required for estimation</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -550,12 +553,14 @@
         <span class="n">_append_xr_attr</span><span class="p">(</span><span class="n">accel_sg</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accel_sg</span> <span class="o">=</span> <span class="n">accel_sg</span>
 
-<div class="viewcode-block" id="IMU2Body.from_csv_nc"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.from_csv_nc">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="IMU2Body.from_csv_nc">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.from_csv_nc">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_csv_nc</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">surface_details_csv</span><span class="p">,</span> <span class="n">imu_nc</span><span class="p">,</span> <span class="n">endasc_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                     <span class="n">beg_surface_col</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">end_surface_col</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
                     <span class="n">beg_next_desc_col</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">savgol_parms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">load_dataset_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create IMU2Body from NetCDF and CSV surface details files</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create IMU2Body from NetCDF and CSV surface details files</span>
 
 <span class="sd">        Utility function to facilitate reading and reshaping data files</span>
 <span class="sd">        into and IMU2Body instance.</span>
@@ -613,14 +618,17 @@
 
         <span class="k">return</span> <span class="n">ocls</span></div>
 
+
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">super_str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">IMU2Body</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
         <span class="n">srfc_dur_summary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe_surfacing_durations</span><span class="p">()</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Surface segment duration summary:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">super_str</span> <span class="o">+</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srfc_dur_summary</span><span class="p">)</span>
 
-<div class="viewcode-block" id="IMU2Body.describe_surfacing_durations"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.describe_surfacing_durations">[docs]</a>    <span class="k">def</span> <span class="nf">describe_surfacing_durations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a summary of surfacing durations</span>
+<div class="viewcode-block" id="IMU2Body.describe_surfacing_durations">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.describe_surfacing_durations">[docs]</a>
+    <span class="k">def</span> <span class="nf">describe_surfacing_durations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a summary of surfacing durations</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -636,8 +644,9 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="p">[</span><span class="s2">&quot;beg.surface&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">srfc_dur</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span></div>
 
+
     <span class="k">def</span> <span class="nf">_get_surface_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return mask dictionary for given index in surface details table</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return mask dictionary for given index in surface details table</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -655,13 +664,15 @@
                                           <span class="p">[</span><span class="s2">&quot;beg.surface&quot;</span><span class="p">,</span> <span class="s2">&quot;end.surface&quot;</span><span class="p">]])</span>
         <span class="c1"># Retrieve sampling rate from one of DataArray</span>
         <span class="n">itvl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_interval</span>
-        <span class="n">left_lim</span> <span class="o">=</span> <span class="n">tlims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">itvl</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
-        <span class="n">mask_d</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_name</span><span class="p">:</span> <span class="nb">slice</span><span class="p">(</span><span class="n">tlims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">left_lim</span><span class="p">)}</span>
+        <span class="n">left_lim</span> <span class="o">=</span> <span class="n">tlims</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">itvl</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="n">mask_d</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_name</span><span class="p">:</span> <span class="nb">slice</span><span class="p">(</span><span class="n">tlims</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">left_lim</span><span class="p">)}</span>
 
         <span class="k">return</span> <span class="n">mask_d</span>
 
-<div class="viewcode-block" id="IMU2Body.get_surface_vectors"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_surface_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">get_surface_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Subset vectors of given name from IMU object for given index</span>
+<div class="viewcode-block" id="IMU2Body.get_surface_vectors">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_surface_vectors">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_surface_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subset vectors of given name from IMU object for given index</span>
 
 <span class="sd">        Return vectors of given name from IMU object for given index in</span>
 <span class="sd">        surface details table.</span>
@@ -705,8 +716,11 @@
 
         <span class="k">return</span> <span class="n">sfci_vector</span></div>
 
-<div class="viewcode-block" id="IMU2Body.get_orientation"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">get_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute orientation for a given index in surface details table</span>
+
+<div class="viewcode-block" id="IMU2Body.get_orientation">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_orientation">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute orientation for a given index in surface details table</span>
 
 <span class="sd">        The orientation is computed via Singular Value Decomposition (SVD),</span>
 <span class="sd">        assuming that the chosen IMU data correspond to the animal close to</span>
@@ -800,8 +814,11 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">Rfull</span><span class="p">,</span> <span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">ss</span><span class="p">,</span> <span class="n">vv</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="IMU2Body.get_orientations"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_orientations">[docs]</a>    <span class="k">def</span> <span class="nf">get_orientations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Obtain orientation for all periods in surface details table</span>
+
+<div class="viewcode-block" id="IMU2Body.get_orientations">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.get_orientations">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_orientations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Obtain orientation for all periods in surface details table</span>
 
 <span class="sd">        A quality index (``q``) for each estimate is calculated as:</span>
 
@@ -863,8 +880,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span> <span class="o">=</span> <span class="n">orientations</span>
         <span class="k">return</span> <span class="n">orientations</span></div>
 
-<div class="viewcode-block" id="IMU2Body.orient_surfacing"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_surfacing">[docs]</a>    <span class="k">def</span> <span class="nf">orient_surfacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">R_b2i</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply orientation for a given index in surface details table</span>
+
+<div class="viewcode-block" id="IMU2Body.orient_surfacing">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_surfacing">[docs]</a>
+    <span class="k">def</span> <span class="nf">orient_surfacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">R_b2i</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply orientation for a given index in surface details table</span>
 
 <span class="sd">        Re-orient acceleration and magnetic density of IMU object relative</span>
 <span class="sd">        to body frame, and return re-oriented IMU object.  Note that the</span>
@@ -902,8 +922,11 @@
         <span class="n">imu_sfci</span><span class="o">.</span><span class="n">magnetic_density</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">magnt_body</span>
         <span class="k">return</span> <span class="n">imu_sfci</span></div>
 
-<div class="viewcode-block" id="IMU2Body.orient_surfacings"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_surfacings">[docs]</a>    <span class="k">def</span> <span class="nf">orient_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R_all</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply orientation to all periods in surface details table</span>
+
+<div class="viewcode-block" id="IMU2Body.orient_surfacings">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_surfacings">[docs]</a>
+    <span class="k">def</span> <span class="nf">orient_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R_all</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply orientation to all periods in surface details table</span>
 
 <span class="sd">        If the ``orientations`` attribute was filled, use it to build</span>
 <span class="sd">        multi-index dataframe, othewise, fill it.</span>
@@ -952,8 +975,11 @@
 
         <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sfces</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orientations</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="IMU2Body.orient_IMU"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_IMU">[docs]</a>    <span class="k">def</span> <span class="nf">orient_IMU</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R_all</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply orientations to the IMU object</span>
+
+<div class="viewcode-block" id="IMU2Body.orient_IMU">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.orient_IMU">[docs]</a>
+    <span class="k">def</span> <span class="nf">orient_IMU</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R_all</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply orientations to the IMU object</span>
 
 <span class="sd">        Use the rotations for each surface period segment to re-orient the</span>
 <span class="sd">        IMU object to the animal frame.  Alternatively, apply the supplied</span>
@@ -1050,8 +1076,11 @@
 
         <span class="k">return</span> <span class="n">imus</span></div>
 
-<div class="viewcode-block" id="IMU2Body.filter_surfacings"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.filter_surfacings">[docs]</a>    <span class="k">def</span> <span class="nf">filter_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qual_thresh</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Filter records from ``surface_details`` and ``orientations``</span>
+
+<div class="viewcode-block" id="IMU2Body.filter_surfacings">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.filter_surfacings">[docs]</a>
+    <span class="k">def</span> <span class="nf">filter_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qual_thresh</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter records from ``surface_details`` and ``orientations``</span>
 
 <span class="sd">        Remove records from the ``surface_details`` and ``orientations``</span>
 <span class="sd">        attributes, based on ``quality`` and, optionally, duration of the</span>
@@ -1081,9 +1110,12 @@
         <span class="c1"># Recalculate orientations as the edges have changed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_orientations</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="IMU2Body.scatterIMU3D"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.scatterIMU3D">[docs]</a>    <span class="k">def</span> <span class="nf">scatterIMU3D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span> <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+<div class="viewcode-block" id="IMU2Body.scatterIMU3D">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.scatterIMU3D">[docs]</a>
+    <span class="k">def</span> <span class="nf">scatterIMU3D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span> <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                      <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Class plotting wrapper for module-level function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Class plotting wrapper for module-level function</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1116,9 +1148,12 @@
                           <span class="n">cbar_label</span><span class="o">=</span><span class="s2">&quot;Depth [m]&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ax</span></div>
 
-<div class="viewcode-block" id="IMU2Body.tsplotIMU_depth"><a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.tsplotIMU_depth">[docs]</a>    <span class="k">def</span> <span class="nf">tsplotIMU_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span> <span class="n">surface_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="IMU2Body.tsplotIMU_depth">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMU2Body.tsplotIMU_depth">[docs]</a>
+    <span class="k">def</span> <span class="nf">tsplotIMU_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vec_name</span><span class="p">,</span> <span class="n">surface_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">smoothed_accel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Class plotting wrapper for module-level function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Class plotting wrapper for module-level function</span>
 
 <span class="sd">        Plot selected vector along with depth for the entire time series,</span>
 <span class="sd">        and the edges of all surface segments overlaid on the depth panel.</span>
@@ -1168,16 +1203,19 @@
             <span class="n">sfc_begend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_details</span><span class="p">[[</span><span class="s2">&quot;beg.surface&quot;</span><span class="p">,</span>
                                                <span class="s2">&quot;end.surface&quot;</span><span class="p">]]</span>
             <span class="k">for</span> <span class="n">sfc_id</span><span class="p">,</span> <span class="n">lims</span> <span class="ow">in</span> <span class="n">sfc_begend</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-                <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">lims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">lims</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lims</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                               <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">axs</span></div></div>
+        <span class="k">return</span> <span class="n">axs</span></div>
+</div>
+
 
 
 <span class="k">class</span> <span class="nc">_TagTools</span><span class="p">(</span><span class="n">IMU2Body</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A subclass implementing the approach taken by TagTools&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass implementing the approach taken by TagTools&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">get_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute orientation for a given index in surface details table</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute orientation for a given index in surface details table</span>
 
 <span class="sd">        The orientation is computed via Singular Value Decomposition (SVD),</span>
 <span class="sd">        assuming that the chosen `IMU` data correspond to the animal close</span>
@@ -1327,15 +1365,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imu2body</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2023.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

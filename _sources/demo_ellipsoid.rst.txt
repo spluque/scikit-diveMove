@@ -15,8 +15,7 @@ the sensor's axes are exposed to the forces of the fields they measure.
 .. jupyter-execute::
 
    # Set up
-   import pkg_resources as pkg_rsrc
-   import os.path as osp
+   import importlib.resources as rsrc
    import xarray as xr
    import numpy as np
    import matplotlib.pyplot as plt
@@ -50,10 +49,8 @@ axes to cover a large surface of the sphere.
 .. jupyter-execute::
    :linenos:
 
-   icdf = (pkg_rsrc
-           .resource_filename("skdiveMove",
-	                      osp.join("tests", "data", "gertrude",
-			               "magnt_accel_calib.nc")))
+   icdf = (rsrc.files("skdiveMove") / "tests" / "data" /
+           "gertrude" / "magnt_accel_calib.nc")
    magnt_accel = xr.load_dataset(icdf)
    magnt = magnt_accel["magnetic_density"].to_numpy()
    accel = magnt_accel["acceleration"].to_numpy()

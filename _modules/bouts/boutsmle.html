@@ -2,22 +2,19 @@
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.boutsmle &#8212; skdiveMove 0.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <title>bouts.boutsmle &#8212; skdiveMove 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -38,7 +35,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>
@@ -71,7 +68,7 @@
 
 
 <span class="k">def</span> <span class="nf">mleLL</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Random Poisson processes function</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Random Poisson processes function</span>
 
 <span class="sd">    The current implementation takes two or three random Poisson processes.</span>
 
@@ -116,8 +113,10 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="BoutsMLE"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE">[docs]</a><span class="k">class</span> <span class="nc">BoutsMLE</span><span class="p">(</span><span class="n">bouts</span><span class="o">.</span><span class="n">Bouts</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Maximum Likelihood estimation for models of Poisson process mixtures</span>
+<div class="viewcode-block" id="BoutsMLE">
+<a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE">[docs]</a>
+<span class="k">class</span> <span class="nc">BoutsMLE</span><span class="p">(</span><span class="n">bouts</span><span class="o">.</span><span class="n">Bouts</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Maximum Likelihood estimation for models of Poisson process mixtures</span>
 
 <span class="sd">    Methods for modelling log-frequency data as a mixture of Poisson</span>
 <span class="sd">    processes via maximum likelihood estimation [2]_, [3]_.  Mixtures of</span>
@@ -183,8 +182,10 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BoutsMLE.negMLEll"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.negMLEll">[docs]</a>    <span class="k">def</span> <span class="nf">negMLEll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">istransformed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Log likelihood function of parameters given observed data</span>
+<div class="viewcode-block" id="BoutsMLE.negMLEll">
+<a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.negMLEll">[docs]</a>
+    <span class="k">def</span> <span class="nf">negMLEll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">istransformed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Log likelihood function of parameters given observed data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -225,8 +226,11 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;LL=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ll</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ll</span></div>
 
-<div class="viewcode-block" id="BoutsMLE.fit"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">fit1_opts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit2_opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Maximum likelihood estimation of log frequencies</span>
+
+<div class="viewcode-block" id="BoutsMLE.fit">
+<a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">fit1_opts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit2_opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum likelihood estimation of log frequencies</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -278,8 +282,11 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">fit1</span><span class="p">,</span> <span class="n">fit2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BoutsMLE.bec"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.bec">[docs]</a>    <span class="k">def</span> <span class="nf">bec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate bout ending criteria from model coefficients</span>
+
+<div class="viewcode-block" id="BoutsMLE.bec">
+<a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.bec">[docs]</a>
+    <span class="k">def</span> <span class="nf">bec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate bout ending criteria from model coefficients</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -319,8 +326,11 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bec</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BoutsMLE.plot_fit"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.plot_fit">[docs]</a>    <span class="k">def</span> <span class="nf">plot_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plot log frequency histogram and fitted model</span>
+
+<div class="viewcode-block" id="BoutsMLE.plot_fit">
+<a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.plot_fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot log frequency histogram and fitted model</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -372,8 +382,11 @@
 
         <span class="k">return</span> <span class="n">ax</span></div>
 
-<div class="viewcode-block" id="BoutsMLE.plot_ecdf"><a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.plot_ecdf">[docs]</a>    <span class="k">def</span> <span class="nf">plot_ecdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plot observed and modelled empirical cumulative frequencies</span>
+
+<div class="viewcode-block" id="BoutsMLE.plot_ecdf">
+<a class="viewcode-back" href="../../bouts.html#bouts.BoutsMLE.plot_ecdf">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_ecdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot observed and modelled empirical cumulative frequencies</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -430,7 +443,9 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;ECDF [x]&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ax</span></div></div>
+        <span class="k">return</span> <span class="n">ax</span></div>
+</div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -524,15 +539,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.boutsmle</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2023.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

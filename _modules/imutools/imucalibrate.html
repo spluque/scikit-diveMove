@@ -2,22 +2,19 @@
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imucalibrate &#8212; skdiveMove 0.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <title>imutools.imucalibrate &#8212; skdiveMove 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -38,7 +35,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imucalibrate</a></li> 
       </ul>
@@ -77,8 +74,10 @@
 <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
 
 
-<div class="viewcode-block" id="IMUcalibrate"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate">[docs]</a><span class="k">class</span> <span class="nc">IMUcalibrate</span><span class="p">(</span><span class="n">IMUBase</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calibration framework for IMU measurements</span>
+<div class="viewcode-block" id="IMUcalibrate">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate">[docs]</a>
+<span class="k">class</span> <span class="nc">IMUcalibrate</span><span class="p">(</span><span class="n">IMUBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calibration framework for IMU measurements</span>
 
 <span class="sd">    Measurements from most IMU sensors are influenced by temperature, among</span>
 <span class="sd">    other artifacts.  The IMUcalibrate class implements the following</span>
@@ -129,13 +128,10 @@
 <span class="sd">    Construct IMUcalibrate from NetCDF file with samples of IMU signals and</span>
 <span class="sd">    a list with begining and ending timestamps for experimental periods:</span>
 
-<span class="sd">    &gt;&gt;&gt; import pkg_resources as pkg_rsrc</span>
-<span class="sd">    &gt;&gt;&gt; import os.path as osp</span>
+<span class="sd">    &gt;&gt;&gt; import importlib.resources as rsrc</span>
 <span class="sd">    &gt;&gt;&gt; import skdiveMove.imutools as imutools</span>
-<span class="sd">    &gt;&gt;&gt; icdf = (pkg_rsrc</span>
-<span class="sd">    ...         .resource_filename(&quot;skdiveMove&quot;,</span>
-<span class="sd">    ...                            osp.join(&quot;tests&quot;, &quot;data&quot;,</span>
-<span class="sd">    ...                                     &quot;cats_temperature_calib.nc&quot;)))</span>
+<span class="sd">    &gt;&gt;&gt; icdf = (rsrc.files(&quot;skdiveMove&quot;) / &quot;tests&quot; / &quot;data&quot; /</span>
+<span class="sd">    ...         &quot;cats_temperature_calib.nc&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; pers = [slice(&quot;2021-09-20T09:00:00&quot;, &quot;2021-09-21T10:33:00&quot;),</span>
 <span class="sd">    ...         slice(&quot;2021-09-21T10:40:00&quot;, &quot;2021-09-22T11:55:00&quot;),</span>
 <span class="sd">    ...         slice(&quot;2021-09-22T12:14:00&quot;, &quot;2021-09-23T11:19:00&quot;)]</span>
@@ -190,7 +186,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_calib</span><span class="p">,</span> <span class="n">periods</span><span class="p">,</span> <span class="n">axis_order</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">),</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set up attributes required for calibration</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up attributes required for calibration</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -225,9 +221,11 @@
         <span class="c1"># Private attribute collecting DataArrays with standardized data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stdda_l</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="IMUcalibrate.read_netcdf"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.read_netcdf">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="IMUcalibrate.read_netcdf">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.read_netcdf">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">read_netcdf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">imu_nc</span><span class="p">,</span> <span class="n">load_dataset_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create IMUcalibrate from NetCDF file and list of slices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create IMUcalibrate from NetCDF file and list of slices</span>
 
 <span class="sd">        This method redefines :meth:`IMUBase.read_netcdf`.</span>
 
@@ -253,6 +251,7 @@
 
         <span class="k">return</span> <span class="n">ocls</span></div>
 
+
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">super_str</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">IMUcalibrate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
         <span class="n">pers_ends</span> <span class="o">=</span> <span class="p">[]</span>
@@ -262,8 +261,10 @@
                          <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pers_ends</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">super_str</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Periods:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-<div class="viewcode-block" id="IMUcalibrate.savgol_filter"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.savgol_filter">[docs]</a>    <span class="k">def</span> <span class="nf">savgol_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">,</span> <span class="n">win_len</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply Savitzky-Golay filter on tri-axial IMU signals</span>
+<div class="viewcode-block" id="IMUcalibrate.savgol_filter">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.savgol_filter">[docs]</a>
+    <span class="k">def</span> <span class="nf">savgol_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">,</span> <span class="n">win_len</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply Savitzky-Golay filter on tri-axial IMU signals</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -298,9 +299,12 @@
                                        <span class="n">new_history</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">darray_new</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.build_tmodels"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.build_tmodels">[docs]</a>    <span class="k">def</span> <span class="nf">build_tmodels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">T_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">T_brk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="IMUcalibrate.build_tmodels">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.build_tmodels">[docs]</a>
+    <span class="k">def</span> <span class="nf">build_tmodels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">T_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">T_brk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_sig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Build temperature models for experimental tri-axial IMU sensor signals</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Build temperature models for experimental tri-axial IMU sensor signals</span>
 
 <span class="sd">        Perform thermal compensation on *motionless* tri-axial IMU sensor</span>
 <span class="sd">        data.  A simple approach is used for the compensation:</span>
@@ -480,8 +484,11 @@
 
         <span class="k">return</span> <span class="n">per_l</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.plot_experiment"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_experiment">[docs]</a>    <span class="k">def</span> <span class="nf">plot_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plot experimental IMU</span>
+
+<div class="viewcode-block" id="IMUcalibrate.plot_experiment">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_experiment">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot experimental IMU</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -517,7 +524,7 @@
         <span class="n">per_temp</span> <span class="o">=</span> <span class="n">per_da</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Plot variable and temperature&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Plot variable and temperature&quot;&quot;&quot;</span>
             <span class="n">ax_temp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
             <span class="n">var</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;measured&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
                           <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -573,9 +580,12 @@
 
         <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">axs_temp</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.plot_var_model"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_var_model">[docs]</a>    <span class="k">def</span> <span class="nf">plot_var_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="IMUcalibrate.plot_var_model">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_var_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_var_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">axs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plot IMU variable against temperature and fitted model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot IMU variable against temperature and fitted model</span>
 
 <span class="sd">        A multi-panel plot of the selected variable against temperature</span>
 <span class="sd">        from all periods.</span>
@@ -699,9 +709,12 @@
 
         <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.plot_standardized"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_standardized">[docs]</a>    <span class="k">def</span> <span class="nf">plot_standardized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="IMUcalibrate.plot_standardized">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.plot_standardized">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_standardized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">units_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">ref_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot IMU measured and standardized variable along with temperature</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot IMU measured and standardized variable along with temperature</span>
 
 <span class="sd">        A multi-panel time series plot of the selected variable, measured</span>
 <span class="sd">        and standardized, for all periods.</span>
@@ -880,8 +893,11 @@
 
         <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">axs_temp</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.get_model"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieve linear model for a given IMU sensor axis signal</span>
+
+<div class="viewcode-block" id="IMUcalibrate.get_model">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.get_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve linear model for a given IMU sensor axis signal</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -906,8 +922,11 @@
 
         <span class="k">return</span> <span class="n">model_fit</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.get_offset"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.get_offset">[docs]</a>    <span class="k">def</span> <span class="nf">get_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">T_alpha</span><span class="p">,</span> <span class="n">ref_val</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate signal ofset at given temperature from calibration model</span>
+
+<div class="viewcode-block" id="IMUcalibrate.get_offset">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.get_offset">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">T_alpha</span><span class="p">,</span> <span class="n">ref_val</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate signal ofset at given temperature from calibration model</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -947,9 +966,12 @@
         <span class="n">offset</span> <span class="o">=</span> <span class="n">ypred</span> <span class="o">-</span> <span class="n">ref_val</span>
         <span class="k">return</span> <span class="n">offset</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.apply_model"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.apply_model">[docs]</a>    <span class="k">def</span> <span class="nf">apply_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">T_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="IMUcalibrate.apply_model">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.apply_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">T_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">model_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply fitted temperature compensation model to Dataset</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply fitted temperature compensation model to Dataset</span>
 
 <span class="sd">        The selected models for tri-axial sensor data are applied to input</span>
 <span class="sd">        Dataset, standardizing signals at :math:`T_{\alpha}`, optionally</span>
@@ -1052,8 +1074,11 @@
 
         <span class="k">return</span> <span class="n">darray_new</span></div>
 
-<div class="viewcode-block" id="IMUcalibrate.subset_imu"><a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.subset_imu">[docs]</a>    <span class="k">def</span> <span class="nf">subset_imu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Subset IMU dataset given a period index</span>
+
+<div class="viewcode-block" id="IMUcalibrate.subset_imu">
+<a class="viewcode-back" href="../../imutools.html#imutools.IMUcalibrate.subset_imu">[docs]</a>
+    <span class="k">def</span> <span class="nf">subset_imu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period_idx</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subset IMU dataset given a period index</span>
 
 <span class="sd">        The dataset is subset using the slice corresponding to the period</span>
 <span class="sd">        index.</span>
@@ -1069,7 +1094,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">time_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_name</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">time_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">[</span><span class="n">period_idx</span><span class="p">]}]</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">time_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">[</span><span class="n">period_idx</span><span class="p">]}]</span></div>
+</div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -1104,15 +1131,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">imutools.imucalibrate</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2023.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

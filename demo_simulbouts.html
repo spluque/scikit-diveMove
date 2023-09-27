@@ -2,23 +2,20 @@
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Simulating bouts &#8212; skdiveMove 0.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <title>Simulating bouts &#8212; skdiveMove 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=4621528c"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -48,7 +45,7 @@
         <li class="right" >
           <a href="demo_bouts.html" title="Bout analysis"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
       </ul>
     </div>  
@@ -59,7 +56,7 @@
           <div class="body" role="main">
             
   <section id="simulating-bouts">
-<span id="demo-simulbouts-label"></span><h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Permalink to this heading">¶</a></h1>
+<span id="demo-simulbouts-label"></span><h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Link to this heading">¶</a></h1>
 <p>This follows the simulation of mixed Poisson distributions in <a class="reference external" href="https://doi.org/10.1163/156853907782418213">Luque &amp;
 Guinet (2007)</a>, and the comparison of models for characterizing such
 distributions.</p>
@@ -85,7 +82,7 @@ distributions.</p>
 </div>
 </div>
 <section id="generate-two-process-mixture">
-<h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Permalink to this heading">¶</a></h2>
+<h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Link to this heading">¶</a></h2>
 <p>For a mixed distribution of two random Poisson processes with a mixing
 parameter <span class="math notranslate nohighlight">\(p=0.7\)</span>, and density parameters <span class="math notranslate nohighlight">\(\lambda_f=0.05\)</span>, and
 <span class="math notranslate nohighlight">\(\lambda_s=0.005\)</span>, we use the <cite>random_mixexp</cite> function to generate
@@ -178,7 +175,7 @@ iteration.</p>
 </div>
 </section>
 <section id="non-linear-least-squares-nls">
-<h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Permalink to this heading">¶</a></h2>
+<h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Link to this heading">¶</a></h2>
 <p>Collect and display NLS results from the simulations:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -223,44 +220,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.047</td>
-      <td>4.005e-03</td>
-      <td>0.728</td>
+      <td>3.996e-03</td>
+      <td>0.729</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>0.004</td>
-      <td>3.837e-04</td>
-      <td>0.021</td>
+      <td>0.005</td>
+      <td>3.965e-04</td>
+      <td>0.020</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>0.035</td>
-      <td>2.894e-03</td>
-      <td>0.665</td>
+      <td>0.031</td>
+      <td>2.785e-03</td>
+      <td>0.674</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.044</td>
-      <td>3.771e-03</td>
+      <td>3.744e-03</td>
       <td>0.714</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.047</td>
-      <td>3.994e-03</td>
-      <td>0.727</td>
+      <td>3.972e-03</td>
+      <td>0.729</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>0.050</td>
-      <td>4.250e-03</td>
-      <td>0.743</td>
+      <td>0.051</td>
+      <td>4.254e-03</td>
+      <td>0.742</td>
     </tr>
     <tr>
       <th>max</th>
       <td>0.061</td>
-      <td>5.358e-03</td>
-      <td>0.789</td>
+      <td>5.125e-03</td>
+      <td>0.799</td>
     </tr>
   </tbody>
 </table>
@@ -268,7 +265,7 @@ iteration.</p>
 </div>
 </section>
 <section id="maximum-likelihood-estimation-mle">
-<h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Permalink to this heading">¶</a></h2>
+<h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Link to this heading">¶</a></h2>
 <p>Collect and display MLE results from the simulations:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -313,44 +310,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.050</td>
-      <td>5.028e-03</td>
-      <td>0.699</td>
+      <td>5.010e-03</td>
+      <td>0.700</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.003</td>
-      <td>3.724e-04</td>
-      <td>0.025</td>
+      <td>3.687e-04</td>
+      <td>0.024</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>0.042</td>
-      <td>3.756e-03</td>
-      <td>0.617</td>
+      <td>0.041</td>
+      <td>4.120e-03</td>
+      <td>0.634</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.048</td>
-      <td>4.786e-03</td>
-      <td>0.682</td>
+      <td>4.743e-03</td>
+      <td>0.683</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.050</td>
-      <td>5.026e-03</td>
+      <td>4.979e-03</td>
       <td>0.700</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.052</td>
-      <td>5.270e-03</td>
+      <td>5.235e-03</td>
       <td>0.716</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>0.058</td>
-      <td>6.255e-03</td>
-      <td>0.766</td>
+      <td>0.059</td>
+      <td>6.205e-03</td>
+      <td>0.772</td>
     </tr>
   </tbody>
 </table>
@@ -358,7 +355,7 @@ iteration.</p>
 </div>
 </section>
 <section id="comparing-nls-vs-mle">
-<h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Permalink to this heading">¶</a></h2>
+<h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Link to this heading">¶</a></h2>
 <p>The bias relative to the true values of the mixed distribution can be
 readily assessed for NLS:</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -368,9 +365,9 @@ readily assessed for NLS:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0   -3.122e-03
-lambda1   -9.952e-04
-p          2.816e-02
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0   -0.003
+lambda1   -0.001
+p          0.029
 dtype: float64
 </pre></div>
 </div>
@@ -384,9 +381,9 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    1.997e-04
-lambda1    2.849e-05
-p         -8.706e-04
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    2.871e-04
+lambda1    1.021e-05
+p         -4.397e-04
 dtype: float64
 </pre></div>
 </div>
@@ -401,7 +398,7 @@ compare density plots, along with the true parameter values:</p>
 </div>
 </section>
 <section id="three-process-mixture">
-<h2>Three-process mixture<a class="headerlink" href="#three-process-mixture" title="Permalink to this heading">¶</a></h2>
+<h2>Three-process mixture<a class="headerlink" href="#three-process-mixture" title="Link to this heading">¶</a></h2>
 <p>We generate a mixture of “fast”, “slow”, and “very slow” processes.  The
 probabilities considered for modeling this mixture are <span class="math notranslate nohighlight">\(p0\)</span> and
 <span class="math notranslate nohighlight">\(p1\)</span>, representing the proportion of “fast” to “slow” events, and the
@@ -579,14 +576,14 @@ help.</p>
         <li class="right" >
           <a href="demo_bouts.html" title="Bout analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2023.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

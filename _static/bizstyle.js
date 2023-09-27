@@ -6,7 +6,7 @@
 //
 // This theme was created by referring to 'sphinxdoc'
 //
-// :copyright: Copyright 2012-2014 by Sphinx team, see AUTHORS.
+// :copyright: Copyright 2007-2023 by Sphinx team, see AUTHORS.
 // :license: BSD, see LICENSE for details.
 //
 const initialiseBizStyle = () => {
@@ -23,7 +23,7 @@ const initialiseBizStyle = () => {
 }
 
 window.addEventListener("resize",
-  () => (document.querySelector("li.nav-item-0 a").innerText = (window.innerWidth <= 776) ? "Top" : "skdiveMove 0.3.0 documentation")
+  () => (document.querySelector("li.nav-item-0 a").innerText = (window.innerWidth <= 776) ? "Top" : "skdiveMove 0.3.1 documentation")
 )
 
 if (document.readyState !== "loading") initialiseBizStyle()

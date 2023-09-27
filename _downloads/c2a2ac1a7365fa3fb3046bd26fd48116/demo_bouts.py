@@ -5,7 +5,7 @@
 
 
 # Set up
-import pkg_resources as pkg_rsrc
+import importlib.resources as rsrc
 import pandas as pd
 import matplotlib.pyplot as plt
 from skdiveMove import calibrate
@@ -30,14 +30,10 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # In[3]:
 
 
-config_file = (pkg_rsrc
-               .resource_filename("skdiveMove",
-                                  ("config_examples/"
-                                   "ag_mk7_2002_022_config.json")))
-tdr_file = (pkg_rsrc
-            .resource_filename("skdiveMove",
-                               ("tests/data/"
-                                "ag_mk7_2002_022.nc")))
+config_file = (rsrc.files("skdiveMove") / "config_examples" /
+               "ag_mk7_2002_022_config.json")
+tdr_file = (rsrc.files("skdiveMove") / "tests" /
+            "data" / "ag_mk7_2002_022.nc")
 tdrX = calibrate(tdr_file, config_file)
 stats = tdrX.dive_stats()
 stamps = tdrX.stamp_dives(ignore_z=True)
@@ -49,7 +45,8 @@ stats_tab.info()
 
 
 postdives = stats_tab["postdive_dur"][stats_tab["phase_id"] == 4]
-postdives_diff = postdives.dt.total_seconds().diff()[1:].abs()
+postdives_diff = (postdives.dt.total_seconds()
+                  .diff().iloc[1:].abs())
 # Remove isolated dives
 postdives_diff = postdives_diff[postdives_diff < 2000]
 

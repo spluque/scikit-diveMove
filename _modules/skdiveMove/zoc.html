@@ -2,22 +2,19 @@
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.zoc &#8212; skdiveMove 0.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <title>skdiveMove.zoc &#8212; skdiveMove 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -38,7 +35,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.zoc</a></li> 
       </ul>
@@ -57,7 +54,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">skdiveMove.tdrsource</span> <span class="kn">import</span> <span class="n">TDRSource</span>
-<span class="kn">from</span> <span class="nn">skdiveMove.core</span> <span class="kn">import</span> <span class="n">robjs</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">pandas2ri</span><span class="p">,</span> <span class="n">diveMove</span>
+<span class="kn">from</span> <span class="nn">skdiveMove.core</span> <span class="kn">import</span> <span class="n">robjs</span><span class="p">,</span> <span class="n">pandas2ri</span><span class="p">,</span> <span class="n">diveMove</span>
 <span class="kn">from</span> <span class="nn">skdiveMove.helpers</span> <span class="kn">import</span> <span class="n">_append_xr_attr</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -67,7 +64,7 @@
 
 
 <span class="k">class</span> <span class="nc">ZOC</span><span class="p">(</span><span class="n">TDRSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Perform zero offset correction</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform zero offset correction</span>
 
 <span class="sd">    See help(ZOC) for inherited attributes.</span>
 
@@ -84,7 +81,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize ZOC instance</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize ZOC instance</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -108,7 +105,7 @@
                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;ZOC method:&quot;</span><span class="p">,</span> <span class="n">meth</span><span class="p">,</span> <span class="s2">&quot;ZOC parameters:&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">_offset_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform ZOC with &quot;offset&quot; method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform ZOC with &quot;offset&quot; method</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -133,7 +130,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_depth_zoc</span> <span class="o">=</span> <span class="n">depth_zoc</span>
 
     <span class="k">def</span> <span class="nf">_filter_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">depth_bounds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">na_rm</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform ZOC with &quot;filter&quot; method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform ZOC with &quot;filter&quot; method</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -165,7 +162,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">zoc_filters</span> <span class="o">=</span> <span class="n">depthmtx</span>
 
     <span class="k">def</span> <span class="nf">zoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Apply zero offset correction to depth measurements</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply zero offset correction to depth measurements</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -198,8 +195,8 @@
 <span class="sd">        Plot the filters that were applied</span>
 
 <span class="sd">        &gt;&gt;&gt; tdrX.plot_zoc(ylim=[-1, 10])  # doctest: +ELLIPSIS</span>
-<span class="sd">        (&lt;Figure ... with 3 Axes&gt;, array([&lt;AxesSubplot:...&gt;,</span>
-<span class="sd">            &lt;AxesSubplot:...&gt;, &lt;AxesSubplot:...&gt;], dtype=object))</span>
+<span class="sd">        (&lt;Figure ... with 3 Axes&gt;, array([&lt;Axes: ...&gt;,</span>
+<span class="sd">            &lt;Axes: ...&gt;, &lt;Axes: ...&gt;], dtype=object))</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;offset&quot;</span><span class="p">:</span>
@@ -222,7 +219,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished ZOC&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_depth_filter_r</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">depth_bounds</span><span class="p">,</span> <span class="n">na_rm</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Filter method for zero offset correction via `diveMove`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter method for zero offset correction via `diveMove`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -239,8 +236,7 @@
 <span class="sd">            column `depth_adj` for corrected depth.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">cv</span><span class="o">.</span><span class="n">localconverter</span><span class="p">(</span><span class="n">robjs</span><span class="o">.</span><span class="n">default_converter</span> <span class="o">+</span>
-                               <span class="n">pandas2ri</span><span class="o">.</span><span class="n">converter</span><span class="p">):</span>
+        <span class="k">with</span> <span class="p">(</span><span class="n">robjs</span><span class="o">.</span><span class="n">default_converter</span> <span class="o">+</span> <span class="n">pandas2ri</span><span class="o">.</span><span class="n">converter</span><span class="p">)</span><span class="o">.</span><span class="n">context</span><span class="p">():</span>
             <span class="n">depthmtx</span> <span class="o">=</span> <span class="n">diveMove</span><span class="o">.</span><span class="n">_depthFilter</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span>
                                              <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">probs</span><span class="p">),</span>
                                              <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">depth_bounds</span><span class="p">),</span>
@@ -254,7 +250,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth_zoc</span>
 
     <span class="n">depth_zoc</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_depth</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;Depth array accessor</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Depth array accessor</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -266,7 +262,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoc_method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zoc_params</span><span class="p">)</span>
 
     <span class="n">zoc_params</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_params</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;Parameters used with method for zero-offset correction</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters used with method for zero-offset correction</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -310,15 +306,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">skdiveMove.zoc</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2023.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín

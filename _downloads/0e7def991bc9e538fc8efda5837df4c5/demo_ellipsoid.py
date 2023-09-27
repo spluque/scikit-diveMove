@@ -5,8 +5,7 @@
 
 
 # Set up
-import pkg_resources as pkg_rsrc
-import os.path as osp
+import importlib.resources as rsrc
 import xarray as xr
 import numpy as np
 import matplotlib.pyplot as plt
@@ -37,10 +36,8 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # In[3]:
 
 
-icdf = (pkg_rsrc
-        .resource_filename("skdiveMove",
-                           osp.join("tests", "data", "gertrude",
-                                    "magnt_accel_calib.nc")))
+icdf = (rsrc.files("skdiveMove") / "tests" / "data" /
+        "gertrude" / "magnt_accel_calib.nc")
 magnt_accel = xr.load_dataset(icdf)
 magnt = magnt_accel["magnetic_density"].to_numpy()
 accel = magnt_accel["acceleration"].to_numpy()

@@ -2,22 +2,19 @@
 
 <!doctype html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.bouts &#8212; skdiveMove 0.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css" />
+    <title>bouts.bouts &#8212; skdiveMove 0.3.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=4621528c"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -38,7 +35,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.bouts</a></li> 
       </ul>
@@ -73,7 +70,7 @@
 
 
 <span class="k">def</span> <span class="nf">nlsLL</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generalized log-likelihood for Random Poisson mixtures</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generalized log-likelihood for Random Poisson mixtures</span>
 
 <span class="sd">    This is a generalized form taking any number of Poisson processes.</span>
 
@@ -102,7 +99,7 @@
 
 
 <span class="k">def</span> <span class="nf">calc_p</span><span class="p">(</span><span class="n">coefs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate `p` (proportion) parameter from `a` coefficients</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate `p` (proportion) parameter from `a` coefficients</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -135,7 +132,7 @@
 
 
 <span class="k">def</span> <span class="nf">ecdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Estimated cumulative frequency for Poisson mixture models</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Estimated cumulative frequency for Poisson mixture models</span>
 
 <span class="sd">    ECDF for two- or three-process mixture models.</span>
 
@@ -181,8 +178,10 @@
     <span class="k">return</span> <span class="n">cdf</span>
 
 
-<div class="viewcode-block" id="label_bouts"><a class="viewcode-back" href="../../bouts.html#bouts.label_bouts">[docs]</a><span class="k">def</span> <span class="nf">label_bouts</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bec</span><span class="p">,</span> <span class="n">as_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Classify data into bouts based on bout ending criteria</span>
+<div class="viewcode-block" id="label_bouts">
+<a class="viewcode-back" href="../../bouts.html#bouts.label_bouts">[docs]</a>
+<span class="k">def</span> <span class="nf">label_bouts</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bec</span><span class="p">,</span> <span class="n">as_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classify data into bouts based on bout ending criteria</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -214,8 +213,9 @@
     <span class="k">return</span> <span class="n">xx_bouts</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_plot_bec</span><span class="p">(</span><span class="n">bec_x</span><span class="p">,</span> <span class="n">bec_y</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">xytext</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Plot bout-ending criteria on `Axes`</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot bout-ending criteria on `Axes`</span>
 
 <span class="sd">    Private helper function only for convenience here.</span>
 
@@ -253,8 +253,10 @@
                         <span class="n">horizontalalignment</span><span class="o">=</span><span class="n">horizontalalignment</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Bouts"><a class="viewcode-back" href="../../bouts.html#bouts.Bouts">[docs]</a><span class="k">class</span> <span class="nc">Bouts</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract base class for models of log-transformed frequencies</span>
+<div class="viewcode-block" id="Bouts">
+<a class="viewcode-back" href="../../bouts.html#bouts.Bouts">[docs]</a>
+<span class="k">class</span> <span class="nc">Bouts</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for models of log-transformed frequencies</span>
 
 <span class="sd">    This is a base class for other classes to build on, and do the model</span>
 <span class="sd">    fitting.  `Bouts` is an abstract base class to set up bout</span>
@@ -273,7 +275,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">bw</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;standard&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Histogram of log transformed frequencies of `x`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Histogram of log transformed frequencies of `x`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -324,8 +326,10 @@
                               <span class="n">lnfreq</span><span class="o">.</span><span class="n">describe</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">objcls</span> <span class="o">+</span> <span class="n">meth_str</span> <span class="o">+</span> <span class="n">lnfreq_str</span>
 
-<div class="viewcode-block" id="Bouts.init_pars"><a class="viewcode-back" href="../../bouts.html#bouts.Bouts.init_pars">[docs]</a>    <span class="k">def</span> <span class="nf">init_pars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_break</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Find starting values for mixtures of random Poisson processes</span>
+<div class="viewcode-block" id="Bouts.init_pars">
+<a class="viewcode-back" href="../../bouts.html#bouts.Bouts.init_pars">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_pars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_break</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find starting values for mixtures of random Poisson processes</span>
 
 <span class="sd">        Starting values are calculated using the &quot;broken stick&quot; method.</span>
 
@@ -373,7 +377,7 @@
         <span class="n">coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">coefs_ll</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">calculate_pars</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Poisson process parameters from linear model</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Poisson process parameters from linear model</span>
 
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">lda</span> <span class="o">=</span> <span class="o">-</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
@@ -407,9 +411,12 @@
 
         <span class="k">return</span> <span class="n">pars</span></div>
 
-<div class="viewcode-block" id="Bouts.fit"><a class="viewcode-back" href="../../bouts.html#bouts.Bouts.fit">[docs]</a>    <span class="nd">@abstractmethod</span>
+
+<div class="viewcode-block" id="Bouts.fit">
+<a class="viewcode-back" href="../../bouts.html#bouts.Bouts.fit">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit Poisson mixture model to log frequencies</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit Poisson mixture model to log frequencies</span>
 
 <span class="sd">        Default is non-linear least squares method.</span>
 
@@ -433,7 +440,7 @@
         <span class="n">ydata</span> <span class="o">=</span> <span class="n">lnfreq</span><span class="p">[</span><span class="s2">&quot;lnfreq&quot;</span><span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">_nlsLL</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Wrapper to nlsLL to allow for array argument&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Wrapper to nlsLL to allow for array argument&quot;&quot;&quot;</span>
             <span class="c1"># Pass in original shape, damn it!  Note order=&quot;F&quot; needed</span>
             <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">nlsLL</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coefs</span><span class="p">)</span>
@@ -447,9 +454,12 @@
                              <span class="n">columns</span><span class="o">=</span><span class="n">start</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">start</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">pcov</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bouts.bec"><a class="viewcode-back" href="../../bouts.html#bouts.Bouts.bec">[docs]</a>    <span class="nd">@abstractmethod</span>
+
+<div class="viewcode-block" id="Bouts.bec">
+<a class="viewcode-back" href="../../bouts.html#bouts.Bouts.bec">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">bec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate bout ending criteria from model coefficients</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate bout ending criteria from model coefficients</span>
 
 <span class="sd">        Implementing default as from NLS method.</span>
 
@@ -484,8 +494,11 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">becs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bouts.plot_fit"><a class="viewcode-back" href="../../bouts.html#bouts.Bouts.plot_fit">[docs]</a>    <span class="k">def</span> <span class="nf">plot_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plot log frequency histogram and fitted model</span>
+
+<div class="viewcode-block" id="Bouts.plot_fit">
+<a class="viewcode-back" href="../../bouts.html#bouts.Bouts.plot_fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot log frequency histogram and fitted model</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -527,8 +540,9 @@
 
         <span class="k">return</span> <span class="n">ax</span></div>
 
+
     <span class="k">def</span> <span class="nf">_plot_ecdf</span><span class="p">(</span><span class="n">x_pred_expm1</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Plot Empirical Frequency Distribution</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot Empirical Frequency Distribution</span>
 
 <span class="sd">        Plot the ECDF at predicted x and corresponding y locations.</span>
 
@@ -543,6 +557,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -577,15 +592,15 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">bouts.bouts</a></li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, Sebastian Luque.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2023.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
 <div class="footer">
   scikit-diveMove icon created by B. Agustín Amenábar Larraín
