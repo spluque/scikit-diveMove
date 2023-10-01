@@ -7,13 +7,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Utilities for working with IMU data &#8212; skdiveMove 0.3.1 documentation</title>
+    <title>Utilities for working with IMU data &#8212; skdiveMove 0.3.1.post1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=532c1bf3" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     
-    <script src="_static/documentation_options.js?v=4621528c"></script>
+    <script src="_static/documentation_options.js?v=4ea2d450"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/thebelab-helper.js"></script>
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="metadata.html" title="Read and write metadata"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1.post1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Utilities for working with IMU data</a></li> 
       </ul>
     </div>  
@@ -373,7 +373,7 @@ coordinate system is assumed.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Rotation, (U, S, V)</strong> – <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object with
+<dd class="field-even"><p><strong>Rotation, (U, S, V)</strong> – <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object with
 potentially modified left singular vectors from Singular Value
 Decomposition (SVD), and full matrices from SVD (left singular
 vectors, sigma, and right singular vectors).</p>
@@ -384,7 +384,7 @@ vectors, sigma, and right singular vectors).</p>
 </dl>
 <p class="rubric">Notes</p>
 <p>The reference frame for the output
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object is defined by the
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object is defined by the
 <em>centered</em> acceleration vectors.  All three components of this
 reference frame point in the positive direction of the centered
 data.  Furthermore, this rotation is not identical to the left
@@ -474,7 +474,7 @@ second line above, from the beginning of the deployment at
 <span class="math notranslate nohighlight">\(t_0\)</span> to the end at <span class="math notranslate nohighlight">\(t_k\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>R_all</strong> (<em>Rotation</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object
+<dd class="field-odd"><p><strong>R_all</strong> (<em>Rotation</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object
 representing the rotation from the <em>centered</em> body frame to the
 IMU frame to be applied to the entire <cite>IMU</cite> object.</p>
 </dd>
@@ -507,7 +507,7 @@ segment to orient the data in the body frame.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>surface_idx</strong> (<em>datetime64</em>) – Index in surface details table to be analyzed.</p></li>
-<li><p><strong>R_b2i</strong> (<em>Rotation</em>) – <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object representing
+<li><p><strong>R_b2i</strong> (<em>Rotation</em>) – <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object representing
 the rotation from the body frame to the IMU frame.</p></li>
 </ul>
 </dd>
@@ -537,7 +537,7 @@ individual segments to achieve a smooth adjustment of orientation
 across segments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>R_all</strong> (<em>Rotation</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object
+<dd class="field-odd"><p><strong>R_all</strong> (<em>Rotation</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html#scipy.spatial.transform.Rotation" title="(in SciPy v1.11.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a> object
 representing the rotation from the <em>centered</em> body frame to the
 IMU frame to be applied to all surface periods.  Default is to
 use the period-specific rotation.</p>
@@ -1621,7 +1621,7 @@ assumes input is centered.</p></li>
         <li class="right" >
           <a href="metadata.html" title="Read and write metadata"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1.post1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Utilities for working with IMU data</a></li> 
       </ul>
     </div>
