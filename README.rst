@@ -1,4 +1,5 @@
-.. image:: docs/source/.static/skdiveMove_logo_1line.png
+.. image:: https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png
+   :target: https://github.com/spluque/diveMove
 
 .. image:: https://img.shields.io/pypi/v/scikit-diveMove
    :target: https://pypi.python.org/pypi/scikit-diveMove
@@ -147,9 +148,6 @@ installed and available to the user running Python.  If needed, install
 
    install.packages("diveMove")
 
-Required Python packages are listed in the `requirements
-<requirements.txt>`_ file.
-
 
 Documentation
 =============
@@ -160,7 +158,7 @@ Alternatively, installing the package as follows:
 
 .. code-block:: sh
 
-   pip install -e .["docs"]
+   pip install -e .["dev"]
 
 allows the documentation to be built locally (choosing the desired target
 {"html", "pdf", etc.}):
@@ -168,5 +166,3 @@ allows the documentation to be built locally (choosing the desired target
 .. code-block:: sh
 
    make -C docs/ html
-
-The `html` tree is at `docs/build/html`.
