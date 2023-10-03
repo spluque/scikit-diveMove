@@ -23,7 +23,7 @@ const initialiseBizStyle = () => {
 }
 
 window.addEventListener("resize",
-  () => (document.querySelector("li.nav-item-0 a").innerText = (window.innerWidth <= 776) ? "Top" : "skdiveMove 0.3.1.post2 documentation")
+  () => (document.querySelector("li.nav-item-0 a").innerText = (window.innerWidth <= 776) ? "Top" : "skdiveMove 0.3.1.post3 documentation")
 )
 
 if (document.readyState !== "loading") initialiseBizStyle()
