@@ -38,7 +38,7 @@ keywords = ["animal behaviour",
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["ipykernel>=6.20", "jupyter-sphinx"]
+dev = ["ipykernel>=6.20", "jupyter-sphinx", "pydata-sphinx-theme"]
 test = ["pytest", "coverage"]
 
 [project.urls]

@@ -439,8 +439,8 @@ class IMU2Body(IMUBase):
     dtype: object
 
 
-    See :doc:`demo_imu2body` demo for an extended example of typical usage
-    of the methods in this class.
+    See :doc:`/demos/demo_imu2body` demo for an extended example of typical
+    usage of the methods in this class.
 
     """
 
@@ -904,7 +904,7 @@ class IMU2Body(IMUBase):
 
         An overview of the re-orientation process is illustrated below.
 
-        .. image:: .static/images/time_series_rotation.png
+        .. image:: /.static/images/time_series_rotation.png
            :width: 100%
 
         Each surface segment :math:`s_i`, delineated by beginning and

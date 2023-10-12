@@ -11,8 +11,6 @@ AHRS.
 Base class & methods summary
 ----------------------------
 
-See `API` section for details on minor methods.
-
 .. autosummary::
 
    IMUBase
@@ -36,7 +34,7 @@ Notes
 
 A right-handed coordinate system is assumed in the input `IMU` data.
 
-.. image:: .static/images/rhs_frame.png
+.. image:: /.static/images/rhs_frame.png
    :scale: 40%
 
 :class:`IMU2Body` subclass extends :class:`IMUBase`, providing an
@@ -44,7 +42,7 @@ integrated approach to estimating the relative orientation of two reference
 frames: a) body (b) and b) sensor (s).  It adds the methods summarized
 below.
 
-.. image:: .static/images/imu2body_frames.png
+.. image:: /.static/images/imu2body_frames.png
    :scale: 40%
 
 .. autosummary::
@@ -82,9 +80,6 @@ measurements.  These need to be taken into account and the
    IMUcalibrate.apply_model
    fit_ellipsoid
    apply_ellipsoid
-
-API
----
 
 """
 

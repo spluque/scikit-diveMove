@@ -11,6 +11,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import sys
+from datetime import date
 from skdiveMove import __version__
 
 sys.path.append("../skdiveMove")
@@ -19,7 +20,7 @@ sys.path.append("../skdiveMove")
 # -- Project information -----------------------------------------------------
 
 project = 'skdiveMove'
-copyright = '2023'
+copyright = '2020-{}, Sebastian Luque'.format(date.today().year)
 author = 'Sebastian Luque'
 
 # The short X.Y version
@@ -38,6 +39,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
+    'sphinx.ext.coverage',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
@@ -74,7 +76,7 @@ autodoc_default_options = {
 # a list of builtin themes.
 #
 # html_theme = 'sphinxdoc'
-html_theme = 'bizstyle'
+html_theme = 'pydata_sphinx_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -85,6 +87,13 @@ html_theme = 'bizstyle'
 #     # 'relbarbgcolor': "#19205E",
 #     # 'footerbgcolor': "#19205E",
 # }
+html_theme_options = {
+    "github_url": "https://github.com/spluque/scikit-diveMove",
+    "footer_end": ["icon-credit", "theme-version"],
+    # "logo": {
+    #     "text": "skdiveMove",
+    # }
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -94,11 +103,15 @@ html_static_path = ['.static']
 # Name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or
 # 32x32 pixels large.
-html_logo = '.static/skdiveMove_logo.png'
+html_logo = ('https://raw.githubusercontent.com/spluque/scikit-diveMove/'
+             'master/docs/source/.static/skdiveMove_logo_1line.png')
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'skdiveMove_doc'
 
+# -- Coverage report ------------------------------------------------------
+
+coverage_show_missing_items = True
 
 # -- Options for LaTeX output ---------------------------------------------
 

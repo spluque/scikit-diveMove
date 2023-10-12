@@ -91,8 +91,8 @@ The BEC in this case can be estimated as:
 
 The subclass :class:`BoutsMLE` offers the framework for these models.
 
-Class & methods summary
------------------------
+Methods summary
+---------------
 
 .. autosummary::
 
@@ -101,10 +101,6 @@ Class & methods summary
    BoutsMLE.bec
    BoutsMLE.plot_fit
    BoutsMLE.plot_ecdf
-
-
-API
----
 
 """
 

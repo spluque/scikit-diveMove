@@ -12,10 +12,6 @@ Functions
    dump_config_template
    assign_xr_attrs
 
-
-API
----
-
 """
 
 import json

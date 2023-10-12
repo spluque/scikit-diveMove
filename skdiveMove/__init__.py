@@ -6,13 +6,8 @@ processing of `TDR` records from a data file.
 This module instantiates an `R` session to interact with low-level
 functions and methods of package `diveMove`.
 
-Class & Main Methods Summary
-----------------------------
-
-See `API` section for details on minor methods.
-
 Calibration and phase detection
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 .. autosummary::
 
@@ -24,7 +19,7 @@ Calibration and phase detection
    TDR.calibrate_speed
 
 Analyses
-~~~~~~~~
+--------
 
 .. autosummary::
 
@@ -33,7 +28,7 @@ Analyses
    TDR.stamp_dives
 
 Plotting
-~~~~~~~~
+--------
 
 .. autosummary::
 
@@ -50,9 +45,6 @@ Functions
    calibrate
    dump_config_template
 
-API
----
-
 """
 
 from skdiveMove.tdr import TDR, calibrate
@@ -60,5 +52,5 @@ from skdiveMove.calibconfig import dump_config_template
 
 __author__ = "Sebastian Luque <spluque@gmail.com>"
 __license__ = "AGPLv3"
-__version__ = "0.3.1.post3"
+__version__ = "0.3.1.post4"
 __all__ = ["TDR", "calibrate", "dump_config_template"]

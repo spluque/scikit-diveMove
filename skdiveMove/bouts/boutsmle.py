@@ -127,7 +127,7 @@ class BoutsMLE(bouts.Bouts):
 
     Examples
     --------
-    See :doc:`demo_simulbouts` for a detailed example.
+    See :doc:`/demos/demo_simulbouts` for a detailed example.
 
     """
 

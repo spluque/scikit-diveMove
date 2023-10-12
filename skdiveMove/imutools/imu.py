@@ -71,8 +71,8 @@ class IMUBase:
     ...                                 magnetometer="output"),
     ...                        imu_filename=icdf)
 
-    See :doc:`demo_allan` demo for an extended example of typical usage of
-    the methods in this class.
+    See :doc:`/demos/demo_allan` demo for an extended example of typical
+    usage of the methods in this class.
 
     """
     def __init__(self, dataset,
