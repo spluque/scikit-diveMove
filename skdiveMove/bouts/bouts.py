@@ -311,7 +311,7 @@ class Bouts(metaclass=ABCMeta):
         xbins.extend([xmax])
         procf = pd.cut(ctrs, bins=xbins, right=True,
                        include_lowest=True)
-        lnfreq_grp = lnfreq.groupby(procf)
+        lnfreq_grp = lnfreq.groupby(procf, observed=True)
 
         coefs_ll = []
         for name, grp in lnfreq_grp:
