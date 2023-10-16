@@ -7,7 +7,7 @@
 Here is a bird's-eye view of the functionality of `scikit-diveMove`,
 loosely following `diveMove`'s `vignette`_.
 
-.. _vignette: https://cran.r-project.org/web/packages/diveMove/vignettes/diveMove.pdf
+.. _vignette: https://cran.r-project.org/web/packages/diveMove/vignettes/diveMove.html
 
 Set up the environment.  Consider loading the `logging` module and setting
 up a logger to monitor progress to this section.

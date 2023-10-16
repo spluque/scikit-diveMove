@@ -1,62 +1,386 @@
 
+<!DOCTYPE html>
 
-<!doctype html>
 
-<html lang="en" data-content_root="./">
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Simulating bouts &#8212; skdiveMove 0.3.1.post3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=532c1bf3" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
-    
-    <script src="_static/documentation_options.js?v=dd22da23"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/thebelab-helper.js"></script>
+    <title>Simulating bouts &#8212; skdiveMove 0.3.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="_static/bizstyle.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'demos/demo_simulbouts';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Working with tri-axial IMUs" href="imutools_demos.html" />
     <link rel="prev" title="Bout analysis" href="demo_bouts.html" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <!--[if lt IE 9]>
-    <script src="_static/css3-mediaqueries.js"></script>
-    <![endif]-->
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="imutools_demos.html" title="Working with tri-axial IMUs"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="demo_bouts.html" title="Bout analysis"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1.post3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
-      </ul>
-    </div>  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Demos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules/index.html">
+                        Modules
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Demos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules/index.html">
+                        Modules
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="demo_tdr.html">Diving behaviour analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_bouts.html">Bout analysis</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Simulating bouts</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="imutools_demos.html">Working with tri-axial IMUs</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_imu2body.html">IMU-frame to body-frame transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_allan.html">Allan deviation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_ellipsoid.html">Ellipsoid modelling for calibration purposes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Demos</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Simulating bouts</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section id="simulating-bouts">
-<span id="demo-simulbouts-label"></span><h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Link to this heading">¶</a></h1>
+<span id="demo-simulbouts-label"></span><h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Link to this heading">#</a></h1>
 <p>This follows the simulation of mixed Poisson distributions in <a class="reference external" href="https://doi.org/10.1163/156853907782418213">Luque &amp;
 Guinet (2007)</a>, and the comparison of models for characterizing such
 distributions.</p>
@@ -82,7 +406,7 @@ distributions.</p>
 </div>
 </div>
 <section id="generate-two-process-mixture">
-<h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Link to this heading">¶</a></h2>
+<h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Link to this heading">#</a></h2>
 <p>For a mixed distribution of two random Poisson processes with a mixing
 parameter <span class="math notranslate nohighlight">\(p=0.7\)</span>, and density parameters <span class="math notranslate nohighlight">\(\lambda_f=0.05\)</span>, and
 <span class="math notranslate nohighlight">\(\lambda_s=0.005\)</span>, we use the <cite>random_mixexp</cite> function to generate
@@ -175,7 +499,7 @@ iteration.</p>
 </div>
 </section>
 <section id="non-linear-least-squares-nls">
-<h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Link to this heading">¶</a></h2>
+<h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Link to this heading">#</a></h2>
 <p>Collect and display NLS results from the simulations:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -220,44 +544,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.047</td>
-      <td>3.987e-03</td>
+      <td>3.998e-03</td>
       <td>0.729</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.005</td>
-      <td>4.153e-04</td>
+      <td>4.264e-04</td>
       <td>0.021</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>0.026</td>
-      <td>2.750e-03</td>
-      <td>0.662</td>
+      <td>0.033</td>
+      <td>2.859e-03</td>
+      <td>0.647</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.044</td>
-      <td>3.704e-03</td>
+      <td>3.697e-03</td>
       <td>0.714</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.047</td>
-      <td>3.992e-03</td>
-      <td>0.728</td>
+      <td>3.976e-03</td>
+      <td>0.730</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.050</td>
-      <td>4.244e-03</td>
+      <td>4.291e-03</td>
       <td>0.744</td>
     </tr>
     <tr>
       <th>max</th>
       <td>0.061</td>
-      <td>5.094e-03</td>
-      <td>0.783</td>
+      <td>5.437e-03</td>
+      <td>0.786</td>
     </tr>
   </tbody>
 </table>
@@ -265,7 +589,7 @@ iteration.</p>
 </div>
 </section>
 <section id="maximum-likelihood-estimation-mle">
-<h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Link to this heading">¶</a></h2>
+<h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Link to this heading">#</a></h2>
 <p>Collect and display MLE results from the simulations:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -310,43 +634,43 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.050</td>
-      <td>5.006e-03</td>
-      <td>0.699</td>
+      <td>5.025e-03</td>
+      <td>0.700</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.003</td>
-      <td>3.692e-04</td>
+      <td>3.931e-04</td>
       <td>0.024</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>0.043</td>
-      <td>3.990e-03</td>
+      <td>0.041</td>
+      <td>3.974e-03</td>
       <td>0.619</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.048</td>
-      <td>4.752e-03</td>
+      <td>4.725e-03</td>
       <td>0.683</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.050</td>
-      <td>5.000e-03</td>
-      <td>0.699</td>
+      <td>5.016e-03</td>
+      <td>0.702</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.052</td>
-      <td>5.252e-03</td>
-      <td>0.716</td>
+      <td>5.273e-03</td>
+      <td>0.718</td>
     </tr>
     <tr>
       <th>max</th>
       <td>0.060</td>
-      <td>6.167e-03</td>
+      <td>6.117e-03</td>
       <td>0.761</td>
     </tr>
   </tbody>
@@ -355,7 +679,7 @@ iteration.</p>
 </div>
 </section>
 <section id="comparing-nls-vs-mle">
-<h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Link to this heading">¶</a></h2>
+<h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Link to this heading">#</a></h2>
 <p>The bias relative to the true values of the mixed distribution can be
 readily assessed for NLS:</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -381,9 +705,9 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    1.015e-04
-lambda1    6.282e-06
-p         -7.672e-04
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    2.416e-04
+lambda1    2.488e-05
+p          3.825e-04
 dtype: float64
 </pre></div>
 </div>
@@ -393,12 +717,12 @@ dtype: float64
 compare density plots, along with the true parameter values:</p>
 <div class="jupyter_cell docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/demo_simulbouts_10_0.png" src="_images/demo_simulbouts_10_0.png" />
+<img alt="../_images/demo_simulbouts_10_0.png" src="../_images/demo_simulbouts_10_0.png" />
 </div>
 </div>
 </section>
 <section id="three-process-mixture">
-<h2>Three-process mixture<a class="headerlink" href="#three-process-mixture" title="Link to this heading">¶</a></h2>
+<h2>Three-process mixture<a class="headerlink" href="#three-process-mixture" title="Link to this heading">#</a></h2>
 <p>We generate a mixture of “fast”, “slow”, and “very slow” processes.  The
 probabilities considered for modeling this mixture are <span class="math notranslate nohighlight">\(p0\)</span> and
 <span class="math notranslate nohighlight">\(p1\)</span>, representing the proportion of “fast” to “slow” events, and the
@@ -483,7 +807,7 @@ help.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_simulbouts_14_0.png" src="_images/demo_simulbouts_14_0.png" />
+<img alt="../_images/demo_simulbouts_14_0.png" src="../_images/demo_simulbouts_14_0.png" />
 </div>
 </div>
 <p>Compare cumulative frequency distributions:</p>
@@ -498,97 +822,132 @@ help.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_simulbouts_15_0.png" src="_images/demo_simulbouts_15_0.png" />
+<img alt="../_images/demo_simulbouts_15_0.png" src="../_images/demo_simulbouts_15_0.png" />
 </div>
 </div>
 <p>Feel free to download a copy of this demo
-(<a class="reference download internal" download="" href="_downloads/e58f05890bb8df41d93cf9537b4e74f2/demo_simulbouts.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_simulbouts.py</span></code></a>).</p>
+(<a class="reference download internal" download="" href="../_downloads/6fe606eed06f1bf8dfd6732b391d309a/demo_simulbouts.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_simulbouts.py</span></code></a>).</p>
 </section>
 </section>
 
 
-            <div class="clearer"></div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="demo_bouts.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bout analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="imutools_demos.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working with tri-axial IMUs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-two-process-mixture">Generate two-process mixture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-least-squares-nls">Non-linear least squares (NLS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation-mle">Maximum likelihood estimation (MLE)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-nls-vs-mle">Comparing NLS vs MLE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-process-mixture">Three-process mixture</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/demos/demo_simulbouts.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
-            </a></p>
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Simulating bouts</a><ul>
-<li><a class="reference internal" href="#generate-two-process-mixture">Generate two-process mixture</a></li>
-<li><a class="reference internal" href="#non-linear-least-squares-nls">Non-linear least squares (NLS)</a></li>
-<li><a class="reference internal" href="#maximum-likelihood-estimation-mle">Maximum likelihood estimation (MLE)</a></li>
-<li><a class="reference internal" href="#comparing-nls-vs-mle">Comparing NLS vs MLE</a></li>
-<li><a class="reference internal" href="#three-process-mixture">Three-process mixture</a></li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="demo_bouts.html"
-                          title="previous chapter">Bout analysis</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="imutools_demos.html"
-                          title="next chapter">Working with tri-axial IMUs</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/demo_simulbouts.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2020-2023, Sebastian Luque.
+      <br/>
+    
+  </p>
 </div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="imutools_demos.html" title="Working with tri-axial IMUs"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="demo_bouts.html" title="Bout analysis"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1.post3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Simulating bouts</a></li> 
-      </ul>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    scikit-diveMove icon inspired by B. Agustín Amenábar
+    Larraín's <a href="https://thenounproject.com/browse/creator/agustin.amenabar/icons/?p=1">wave
+    icon</a>  <br/>
+  </p>
+</div>
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
     </div>
-
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2023.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-<div class="footer">
-  scikit-diveMove icon created by B. Agustín Amenábar Larraín
-  from Noun Project
+  
 </div>
 
+  </footer>
   </body>
 </html>

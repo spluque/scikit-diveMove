@@ -1,61 +1,385 @@
 
+<!DOCTYPE html>
 
-<!doctype html>
 
-<html lang="en" data-content_root="./">
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Bout analysis &#8212; skdiveMove 0.3.1.post3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=532c1bf3" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
-    
-    <script src="_static/documentation_options.js?v=dd22da23"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/thebelab-helper.js"></script>
+    <title>Bout analysis &#8212; skdiveMove 0.3.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script src="_static/bizstyle.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'demos/demo_bouts';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Simulating bouts" href="demo_simulbouts.html" />
     <link rel="prev" title="Diving behaviour analysis" href="demo_tdr.html" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <!--[if lt IE 9]>
-    <script src="_static/css3-mediaqueries.js"></script>
-    <![endif]-->
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="demo_simulbouts.html" title="Simulating bouts"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="demo_tdr.html" title="Diving behaviour analysis"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1.post3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
-      </ul>
-    </div>  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Demos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules/index.html">
+                        Modules
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Demos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules/index.html">
+                        Modules
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="demo_tdr.html">Diving behaviour analysis</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Bout analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_simulbouts.html">Simulating bouts</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="imutools_demos.html">Working with tri-axial IMUs</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo_imu2body.html">IMU-frame to body-frame transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_allan.html">Allan deviation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo_ellipsoid.html">Ellipsoid modelling for calibration purposes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Demos</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Bout analysis</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section id="bout-analysis">
-<span id="demo-bouts-label"></span><h1>Bout analysis<a class="headerlink" href="#bout-analysis" title="Link to this heading">¶</a></h1>
+<span id="demo-bouts-label"></span><h1>Bout analysis<a class="headerlink" href="#bout-analysis" title="Link to this heading">#</a></h1>
 <p>Here is a brief demo on bout analysis with <cite>skdiveMove.bouts</cite> for data
 generated by mixtures of random Poisson processes.</p>
 <p>Set up the environment.  Consider loading the <cite>logging</cite> module and setting
@@ -84,7 +408,7 @@ up a logger to monitor progress to this section.</p>
 </div>
 </div>
 <section id="calculate-postdive-duration">
-<h2>Calculate postdive duration<a class="headerlink" href="#calculate-postdive-duration" title="Link to this heading">¶</a></h2>
+<h2>Calculate postdive duration<a class="headerlink" href="#calculate-postdive-duration" title="Link to this heading">#</a></h2>
 <p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">TDR</span></code> object to easily calculate the necessary statistics:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -177,7 +501,7 @@ memory usage: 166.4 KB
 </div>
 </section>
 <section id="non-linear-least-squares-via-broken-stick-model">
-<h2>Non-linear least squares via “broken-stick” model<a class="headerlink" href="#non-linear-least-squares-via-broken-stick-model" title="Link to this heading">¶</a></h2>
+<h2>Non-linear least squares via “broken-stick” model<a class="headerlink" href="#non-linear-least-squares-via-broken-stick-model" title="Link to this heading">#</a></h2>
 <p><cite>skdiveMove</cite> provides the <code class="xref py py-class docutils literal notranslate"><span class="pre">BoutsNLS</span></code> class for fitting non-linear
 least squares (NLS) models to a modified histogram of a given variable.</p>
 <p>The first step is to generate a modified histogram of postdive duration,
@@ -207,7 +531,7 @@ max    1449.950   3.091
 </div>
 </div>
 <section id="two-process-model">
-<h3>Two-process model<a class="headerlink" href="#two-process-model" title="Link to this heading">¶</a></h3>
+<h3>Two-process model<a class="headerlink" href="#two-process-model" title="Link to this heading">#</a></h3>
 <p>Assuming a 2-process model, calculate starting values, providing a guess at
 50 s interdive interval.</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -218,7 +542,7 @@ max    1449.950   3.091
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_5_1.png" src="_images/demo_bouts_5_1.png" />
+<img alt="../_images/demo_bouts_5_0.png" src="../_images/demo_bouts_5_0.png" />
 </div>
 </div>
 <p>Fit the two-process model.</p>
@@ -277,12 +601,12 @@ lambda          0.119            0.003
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_9_0.png" src="_images/demo_bouts_9_0.png" />
+<img alt="../_images/demo_bouts_9_0.png" src="../_images/demo_bouts_9_0.png" />
 </div>
 </div>
 </section>
 <section id="three-process-model">
-<h3>Three-process model<a class="headerlink" href="#three-process-model" title="Link to this heading">¶</a></h3>
+<h3>Three-process model<a class="headerlink" href="#three-process-model" title="Link to this heading">#</a></h3>
 <p>Attempt to discern three processes in the data.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -292,7 +616,7 @@ lambda          0.119            0.003
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_10_1.png" src="_images/demo_bouts_10_1.png" />
+<img alt="../_images/demo_bouts_10_0.png" src="../_images/demo_bouts_10_0.png" />
 </div>
 </div>
 <p>Fit three-process model.</p>
@@ -339,7 +663,7 @@ lambda          0.254          0.014             0.001
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_13_0.png" src="_images/demo_bouts_13_0.png" />
+<img alt="../_images/demo_bouts_13_0.png" src="../_images/demo_bouts_13_0.png" />
 </div>
 </div>
 <p>Compare the cumulative frequency distributions of two- vs three-process
@@ -353,7 +677,7 @@ models.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_14_0.png" src="_images/demo_bouts_14_0.png" />
+<img alt="../_images/demo_bouts_14_0.png" src="../_images/demo_bouts_14_0.png" />
 </div>
 </div>
 <p>The three-process model does not follow the observed data as well as the
@@ -361,7 +685,7 @@ two-process model.</p>
 </section>
 </section>
 <section id="maximum-likelihood-estimation">
-<h2>Maximum likelihood estimation<a class="headerlink" href="#maximum-likelihood-estimation" title="Link to this heading">¶</a></h2>
+<h2>Maximum likelihood estimation<a class="headerlink" href="#maximum-likelihood-estimation" title="Link to this heading">#</a></h2>
 <p>Another way to model Poisson mixtures that does not rely on the
 subjectively created histogram, and involves fewer parameters, requires
 fitting via maximum likelihood estimation (MLE). This approach is available
@@ -400,7 +724,7 @@ max    1449.950   3.091
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_16_1.png" src="_images/demo_bouts_16_1.png" />
+<img alt="../_images/demo_bouts_16_0.png" src="../_images/demo_bouts_16_0.png" />
 </div>
 </div>
 <p>Fit the two-process model.  It is important, but optional, to supply
@@ -495,7 +819,7 @@ Therefore, there are two sets of bounds required.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_21_0.png" src="_images/demo_bouts_21_0.png" />
+<img alt="../_images/demo_bouts_21_0.png" src="../_images/demo_bouts_21_0.png" />
 </div>
 </div>
 <p>Compare the cumulative frequency distribution between NLS and MLE model
@@ -511,7 +835,7 @@ estimates.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/demo_bouts_22_0.png" src="_images/demo_bouts_22_0.png" />
+<img alt="../_images/demo_bouts_22_0.png" src="../_images/demo_bouts_22_0.png" />
 </div>
 </div>
 <p>Label bouts based on BEC from the last MLE model.  Note that <cite>Timedelta</cite>
@@ -541,95 +865,130 @@ Name: postdive_dur, Length: 191, dtype: int64
 </div>
 </div>
 <p>Feel free to download a copy of this demo
-(<a class="reference download internal" download="" href="_downloads/c2a2ac1a7365fa3fb3046bd26fd48116/demo_bouts.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_bouts.py</span></code></a>).</p>
+(<a class="reference download internal" download="" href="../_downloads/614a5d5edc35630a6e0f3378b1e8dbdb/demo_bouts.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_bouts.py</span></code></a>).</p>
 </section>
 </section>
 
 
-            <div class="clearer"></div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="demo_tdr.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Diving behaviour analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="demo_simulbouts.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Simulating bouts</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-postdive-duration">Calculate postdive duration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-least-squares-via-broken-stick-model">Non-linear least squares via “broken-stick” model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-process-model">Two-process model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-process-model">Three-process model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation">Maximum likelihood estimation</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/demos/demo_bouts.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/skdiveMove_logo.png" alt="Logo"/>
-            </a></p>
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Bout analysis</a><ul>
-<li><a class="reference internal" href="#calculate-postdive-duration">Calculate postdive duration</a></li>
-<li><a class="reference internal" href="#non-linear-least-squares-via-broken-stick-model">Non-linear least squares via “broken-stick” model</a><ul>
-<li><a class="reference internal" href="#two-process-model">Two-process model</a></li>
-<li><a class="reference internal" href="#three-process-model">Three-process model</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#maximum-likelihood-estimation">Maximum likelihood estimation</a></li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="demo_tdr.html"
-                          title="previous chapter">Diving behaviour analysis</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="demo_simulbouts.html"
-                          title="next chapter">Simulating bouts</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/demo_bouts.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2020-2023, Sebastian Luque.
+      <br/>
+    
+  </p>
 </div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="demo_simulbouts.html" title="Simulating bouts"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="demo_tdr.html" title="Diving behaviour analysis"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">skdiveMove 0.3.1.post3 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Bout analysis</a></li> 
-      </ul>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    scikit-diveMove icon inspired by B. Agustín Amenábar
+    Larraín's <a href="https://thenounproject.com/browse/creator/agustin.amenabar/icons/?p=1">wave
+    icon</a>  <br/>
+  </p>
+</div>
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
     </div>
-
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2023.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-<div class="footer">
-  scikit-diveMove icon created by B. Agustín Amenábar Larraín
-  from Noun Project
+  
 </div>
 
+  </footer>
   </body>
 </html>

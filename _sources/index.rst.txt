@@ -56,10 +56,6 @@ installed and available to the user running Python.  If needed, install
 
    install.packages("diveMove")
 
-Required Python packages are listed in the `requirements`_ file.
-
-.. _requirements: https://github.com/spluque/scikit-diveMove/blob/master/requirements.txt
-
 
 Testing
 =======
@@ -93,33 +89,17 @@ and then install with:
    pip install -e .["dev"]
 
 
-Demos
-=====
-
-.. toctree::
-   :maxdepth: 2
-
-   demo_tdr
-   demo_bouts
-   demo_simulbouts
-   imutools_demos
-
-
-Modules
-=======
-
-.. toctree::
-   :maxdepth: 2
-
-   tdr
-   bouts
-   metadata
-   imutools
-
-
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   demos/index
+   modules/index
