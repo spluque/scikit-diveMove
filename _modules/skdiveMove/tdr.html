@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdr &#8212; skdiveMove 0.3.2 documentation</title>
+    <title>skdiveMove.tdr &#8212; skdiveMove 0.3.2.post1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -355,6 +355,7 @@ document.write(`
   <h1>Source code for skdiveMove.tdr</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;TDR objects homologous to `R` package diveMove&#39;s main classes</span>
 
+
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -415,8 +416,9 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        *args : positional arguments</span>
 <span class="sd">            Passed to :meth:`TDRPhases.__init__`</span>
-<span class="sd">        **kwargs : keyword arguments</span>
-<span class="sd">            Passed to :meth:`TDRPhases.__init__`</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :meth:`TDRPhases.__init__`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">TDRPhases</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -446,7 +448,9 @@ document.write(`
                         <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calibrate speed measurements</span>
 
-<span class="sd">        Set the `speed_calib_fit` attribute</span>
+<span class="sd">        Set the `speed_calib_fit` attribute. This method calibrates speed</span>
+<span class="sd">        readings following the procedure outlined in Blackwell et.</span>
+<span class="sd">        al. (1999) [1]_.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -461,10 +465,22 @@ document.write(`
 <span class="sd">            calibration.</span>
 <span class="sd">        bad : array_like, optional</span>
 <span class="sd">            Two-element `array_like` indicating that only rates of depth</span>
-<span class="sd">            change and speed greater than the given value should be used</span>
+<span class="sd">            change and speed greater than the given values should be used</span>
 <span class="sd">            for calibration, respectively.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to :func:`~speedcal.calibrate_speed`</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments listed below.</span>
+<span class="sd">        plot : bool, default True</span>
+<span class="sd">            Whether to plot calibration results.</span>
+<span class="sd">        ax : matplotlib.Axes, optional</span>
+<span class="sd">            A :class:`~matplotlib.axes.Axes` instance to use as target.</span>
+<span class="sd">            Default is to create one.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        .. [1] Blackwell S, Haverl C, Le Boeuf B, Costa D (1999). A method</span>
+<span class="sd">           for calibrating swim-speed recorders.  Marine Mammal Science</span>
+<span class="sd">           15(3):894-905.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -505,6 +521,42 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        pandas.DataFrame</span>
+<span class="sd">            DataFrame indexed by dive number, having the following columns:</span>
+
+<span class="sd">              - ``begdesc``: time stamp for the start of each dive;</span>
+<span class="sd">              - ``enddesc``: time stamp for the descent&#39;s end;</span>
+<span class="sd">              - ``begasc``: time stamp for the beginning of the ascent;</span>
+<span class="sd">              - ``desctime``: duration of descent;</span>
+<span class="sd">              - ``botttim``: duration of the bottom phase;</span>
+<span class="sd">              - ``asctim``: duration of ascent;</span>
+<span class="sd">              - ``divetim``: dive duration;</span>
+<span class="sd">              - ``descdist``: last descent depth;</span>
+<span class="sd">              - ``bottdist``: sum of the absolute depth differences while</span>
+<span class="sd">                at the bottom of the dive; a measure of the amount of</span>
+<span class="sd">                &quot;wiggling&quot; while at the bottom;</span>
+<span class="sd">              - ``ascdist``: first ascent depth;</span>
+<span class="sd">              - ``bottdep_mean``: mean bottom depth;</span>
+<span class="sd">              - ``bottdep_median``: median bottom depth;</span>
+<span class="sd">              - ``bottdep_sd``: standard deviation of bottom depths;</span>
+<span class="sd">              - ``maxdep``: maximum depth;</span>
+<span class="sd">              - ``desc_tdist``: descent total distance, estimated from speed;</span>
+<span class="sd">              - ``desc_mean_speed``: descent mean speed;</span>
+<span class="sd">              - ``desc_angle``: descent mean speed;</span>
+<span class="sd">              - ``bott_tdist``: total distance at the bottom, estimated</span>
+<span class="sd">                from speed;</span>
+<span class="sd">              - ``bott_mean_speed``: mean speed at the bottom;</span>
+<span class="sd">              - ``asc_tdist``: ascent total distance, estimated from speed;</span>
+<span class="sd">              - ``asc_mean_speed``: ascent mean speed;</span>
+<span class="sd">              - ``asc_angle``: ascent angle, relative to bottom plane;</span>
+<span class="sd">              - ``postdive_dur``: postdive duration;</span>
+<span class="sd">              - ``postdive_tdist``: postdive total distance, estimated from</span>
+<span class="sd">                speed;</span>
+<span class="sd">              - ``postdive_mean_speed``: postdive mean speed.</span>
+
+<span class="sd">            If `depth_deriv=True` (default), 21 additional columns with the</span>
+<span class="sd">            minimum, first quartile, median, mean, third quartile, maximum,</span>
+<span class="sd">            and standard deviation of the depth derivative for each phase</span>
+<span class="sd">            of the dive are included.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -621,8 +673,37 @@ document.write(`
 <span class="sd">            select additional data to plot.</span>
 <span class="sd">        concur_var_titles : str or list, optional</span>
 <span class="sd">            String or list of strings with y-axis labels for `concur_vars`.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to plotting function.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to plotting function,</span>
+<span class="sd">            including those listed below. Additional arguments are passed</span>
+<span class="sd">            to underlying plotting method.</span>
+<span class="sd">        xlim : tuple of (float, float)</span>
+<span class="sd">            Minimum and maximum limits for ``x`` axis.  Ignored when</span>
+<span class="sd">            ``concur_vars=None``.</span>
+<span class="sd">        ylim : tuple of (float, float)</span>
+<span class="sd">            Minimum and maximum limits for ``y`` axis for data other than</span>
+<span class="sd">            depth.</span>
+<span class="sd">        depth_lim : array_like of (float, float)</span>
+<span class="sd">            Minimum and maximum limits for depth to plot.</span>
+<span class="sd">        xlab : str</span>
+<span class="sd">            Label for ``x`` axis.</span>
+<span class="sd">        ylab_depth : str</span>
+<span class="sd">            Label for ``y`` axis for depth.</span>
+<span class="sd">        xlab_format : str</span>
+<span class="sd">            Format string for formatting the ``x`` axis.</span>
+<span class="sd">        sunrise_time : str</span>
+<span class="sd">            Time of sunrise, in 24 hr format.  This is used for shading night</span>
+<span class="sd">            time.</span>
+<span class="sd">        sunset_time : str</span>
+<span class="sd">            Time of sunset, in 24 hr format.  This is used for shading night</span>
+<span class="sd">            time.</span>
+<span class="sd">        night_col : str</span>
+<span class="sd">            Color for shading night time.</span>
+<span class="sd">        dry_time : pandas.DataFrame</span>
+<span class="sd">            Two-column DataFrame with beginning and ending times corresponding</span>
+<span class="sd">            to periods considered to be dry.</span>
+<span class="sd">        phase_cat : pandas.Series</span>
+<span class="sd">            Categorical series dividing rows into sections.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -673,11 +754,16 @@ document.write(`
     <span class="k">def</span> <span class="nf">plot_zoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot zero offset correction filters</span>
 
+<span class="sd">        Compare the zero-offset corrected depth with the uncorrected</span>
+<span class="sd">        signal, or the progress attained in each of the filters during</span>
+<span class="sd">        recursive filtering for zero-offset correction, as illustrated in</span>
+<span class="sd">        Luque and Fried (2011) [3]_.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        xlim, ylim : 2-tuple/list, optional</span>
-<span class="sd">            Minimum and maximum limits for ``x``- and ``y``-axis,</span>
-<span class="sd">            respectively.</span>
+<span class="sd">        xlim, ylim : array_like, optional</span>
+<span class="sd">            array_like with minimum and maximum limits for ``x``- and</span>
+<span class="sd">            ``y``-axis, respectively.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Passed to :func:`~matplotlib.pyplot.subplots`.</span>
 
@@ -754,8 +840,9 @@ document.write(`
 <span class="sd">            String or list of strings with y-axis labels for `concur_vars`.</span>
 <span class="sd">        surface : bool, optional</span>
 <span class="sd">            Whether to plot surface readings.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to plotting function.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to plotting function (see</span>
+<span class="sd">            :meth:`plot`)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -840,12 +927,19 @@ document.write(`
     <span class="k">def</span> <span class="nf">plot_dive_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot dive model for selected dive</span>
 
+<span class="sd">        Diagnostic double-panel plot of dive models for selected dives. The</span>
+<span class="sd">        top panel shows depth against time, the cubic spline smoother, the</span>
+<span class="sd">        identified descent and ascent phases (which form the basis for</span>
+<span class="sd">        identifying the rest of the dive phases), while the bottom panel</span>
+<span class="sd">        shows the first derivative of the smooth trace.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        diveNo : array_like, optional</span>
 <span class="sd">            List of dive numbers (1-based) to plot.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to plotting function.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

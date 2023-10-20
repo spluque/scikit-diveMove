@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imucalibrate &#8212; skdiveMove 0.3.2 documentation</title>
+    <title>imutools.imucalibrate &#8212; skdiveMove 0.3.2.post1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -508,8 +508,9 @@ document.write(`
 <span class="sd">            List of characters specifying which axis ``x``, ``y``, or ``z``</span>
 <span class="sd">            was pointing in the same direction as gravity in each period in</span>
 <span class="sd">            ``periods``.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to the `IMUBase.__init__` for instantiation.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to the `IMUBase.__init__` for</span>
+<span class="sd">            instantiation.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">IMUcalibrate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x_calib</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -542,10 +543,11 @@ document.write(`
 <span class="sd">        load_dataset_kwargs : dict, optional</span>
 <span class="sd">            Dictionary of optional keyword arguments passed to</span>
 <span class="sd">            :func:`xarray.load_dataset`.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Additional arguments passed to :meth:`IMUcalibrate.__init__`</span>
-<span class="sd">            method, except ``has_depth`` or ``imu_filename``.  The input</span>
-<span class="sd">            ``Dataset`` is assumed to have a depth ``DataArray``.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional keyword arguments passed to</span>
+<span class="sd">            :meth:`IMUcalibrate.__init__` method, except ``has_depth`` or</span>
+<span class="sd">            ``imu_filename``.  The input ``Dataset`` is assumed to have a</span>
+<span class="sd">            depth ``DataArray``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -610,7 +612,8 @@ document.write(`
 <a class="viewcode-back" href="../../modules/imutools.html#imutools.IMUcalibrate.build_tmodels">[docs]</a>
     <span class="k">def</span> <span class="nf">build_tmodels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">T_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">T_brk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_sig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Build temperature models for experimental tri-axial IMU sensor signals</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Build temperature models for experimental tri-axial IMU sensor</span>
+<span class="sd">        signals</span>
 
 <span class="sd">        Perform thermal compensation on *motionless* tri-axial IMU sensor</span>
 <span class="sd">        data.  A simple approach is used for the compensation:</span>
@@ -650,26 +653,26 @@ document.write(`
 <span class="sd">            correction.  Default is to apply a Savitzky-Golay filter to the</span>
 <span class="sd">            signal for characterizing the temperature relationship, and to</span>
 <span class="sd">            calculate the standardized signal.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to `savgol_filter` (e.g. ``win_len`` and</span>
-<span class="sd">            ``polyorder``).</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to `savgol_filter`</span>
+<span class="sd">            (e.g. ``win_len`` and ``polyorder``).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            List of tuples as long as there are periods, with tuple elements:</span>
 
-<span class="sd">            - Dictionary with regression model objects for each sensor</span>
-<span class="sd">              axis.</span>
-<span class="sd">            - DataFrame with hierarchical column index with sensor axis</span>
-<span class="sd">              label at the first level.  The following columns are in the</span>
-<span class="sd">              second level:</span>
+<span class="sd">              - Dictionary with regression model objects for each sensor</span>
+<span class="sd">                axis.</span>
+<span class="sd">              - DataFrame with hierarchical column index with sensor axis</span>
+<span class="sd">                label at the first level.  The following columns are in the</span>
+<span class="sd">                second level:</span>
 
-<span class="sd">              - temperature</span>
-<span class="sd">              - var_name</span>
-<span class="sd">              - var_name_pred</span>
-<span class="sd">              - var_name_temp_refC</span>
-<span class="sd">              - var_name_adj</span>
+<span class="sd">                  - temperature</span>
+<span class="sd">                  - var_name</span>
+<span class="sd">                  - var_name_pred</span>
+<span class="sd">                  - var_name_temp_refC</span>
+<span class="sd">                  - var_name_adj</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -805,9 +808,9 @@ document.write(`
 <span class="sd">        units_label : str, optional</span>
 <span class="sd">            Label for the units of the chosen variable.  Defaults to the</span>
 <span class="sd">            &quot;units_label&quot; attribute available in the DataArray.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :func:`~matplotlib.pyplot.subplots`</span>
-<span class="sd">            (e.g. ``figsize``).</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -911,9 +914,9 @@ document.write(`
 <span class="sd">            &quot;units_label&quot; attribute available in the DataArray.</span>
 <span class="sd">        axs : array_like, optional</span>
 <span class="sd">            Array of Axes instances to plot in.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :func:`~matplotlib.pyplot.subplots`</span>
-<span class="sd">            (e.g. ``figsize``).</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1043,9 +1046,9 @@ document.write(`
 <span class="sd">            the plot for reference.</span>
 <span class="sd">        axs : array_like, optional</span>
 <span class="sd">            Array of Axes instances to plot in.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :func:`~matplotlib.pyplot.subplots`</span>
-<span class="sd">            (e.g. ``figsize``).</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

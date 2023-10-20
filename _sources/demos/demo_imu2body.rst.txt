@@ -289,4 +289,4 @@ Or with segment-specific rotations:
                             figsize=_FIG4X1);
 
 Feel free to download a copy of this demo
-(:jupyter-download:script:`demo_imu2body`).
+(:jupyter-download-script:`demo_imu2body`).

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.zoc &#8212; skdiveMove 0.3.2 documentation</title>
+    <title>skdiveMove.zoc &#8212; skdiveMove 0.3.2.post1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -391,10 +391,10 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        *args : positional arguments</span>
-<span class="sd">            Passed to :meth:`TDRSource.__init__`</span>
-<span class="sd">        **kwargs : keyword arguments</span>
-<span class="sd">            Passed to :meth:`TDRSource.__init__`</span>
+<span class="sd">        *args</span>
+<span class="sd">            Positional arguments passed to :meth:`TDRSource.__init__`</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Keyword arguments passed to :meth:`TDRSource.__init__`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">TDRSource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -418,10 +418,6 @@ document.write(`
 <span class="sd">        offset : float, optional</span>
 <span class="sd">            Value to subtract from measured depth.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        More details in diveMove&#39;s ``calibrateDepth`` function.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Retrieve copy of depth from our own property</span>
         <span class="n">depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span>
@@ -442,13 +438,9 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        k : array_like</span>
 <span class="sd">        probs : array_like</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            For this method: (&#39;depth_bounds&#39; (defaults to range), &#39;na_rm&#39;</span>
-<span class="sd">            (defaults to True)).</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        More details in diveMove&#39;s ``calibrateDepth`` function.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments. For this method: (&#39;depth_bounds&#39;</span>
+<span class="sd">            (defaults to range), &#39;na_rm&#39; (defaults to True)).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zoc_method</span> <span class="o">=</span> <span class="s2">&quot;filter&quot;</span>
@@ -470,17 +462,62 @@ document.write(`
     <span class="k">def</span> <span class="nf">zoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply zero offset correction to depth measurements</span>
 
+<span class="sd">        This procedure is required to correct drifts in the pressure</span>
+<span class="sd">        transducer of TDR records and noise in depth measurements. Three</span>
+<span class="sd">        methods are available to perform this correction.</span>
+
+<span class="sd">        Method `offset` can be used when the offset is known in advance,</span>
+<span class="sd">        and this value is used to correct the entire time series.</span>
+<span class="sd">        Therefore, ``offset=0`` specifies no correction.</span>
+
+<span class="sd">        Method `filter` implements a smoothing/filtering mechanism where</span>
+<span class="sd">        running quantiles can be applied to depth measurements in a</span>
+<span class="sd">        recursive manner [3]_.  The method calculates the first running</span>
+<span class="sd">        quantile defined by the first probability in a given sequence on a</span>
+<span class="sd">        moving window of size specified by the first integer supplied in a</span>
+<span class="sd">        second sequence.  The next running quantile, defined by the second</span>
+<span class="sd">        supplied probability and moving window size, is applied to the</span>
+<span class="sd">        smoothed/filtered depth measurements from the previous step, and so</span>
+<span class="sd">        on. The corrected depth measurements (d) are calculated as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">           d = d_{0} - d_{n}</span>
+
+<span class="sd">        where :math:`d_{0}` is original depth and :math:`d_{n}` is the last</span>
+<span class="sd">        smoothed/filtered depth.  This method is under development, but</span>
+<span class="sd">        reasonable results can be achieved by applying two filters (see</span>
+<span class="sd">        Examples). The default `na_rm=True` works well when there are no</span>
+<span class="sd">        level shifts between non-NA phases in the data, but `na_rm=False`</span>
+<span class="sd">        is better in the presence of such shifts. In other words, there is</span>
+<span class="sd">        no reason to pollute the moving window with null values when</span>
+<span class="sd">        non-null phases can be regarded as a continuum, so splicing</span>
+<span class="sd">        non-null phases makes sense. Conversely, if there are level shifts</span>
+<span class="sd">        between non-null phases, then it is better to retain null phases to</span>
+<span class="sd">        help the algorithm recognize the shifts while sliding the</span>
+<span class="sd">        window(s). The search for the surface can be limited to specified</span>
+<span class="sd">        bounds during smoothing/filtering, so that observations outside</span>
+<span class="sd">        these bounds are interpolated using the bounded smoothed/filtered</span>
+<span class="sd">        series.</span>
+
+<span class="sd">        Once the entire record has been zero-offset corrected, remaining</span>
+<span class="sd">        depths below zero, are set to zero, as these are assumed to</span>
+<span class="sd">        indicate values at the surface.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        method : {&quot;filter&quot;, &quot;offset&quot;}</span>
 <span class="sd">            Name of method to use for zero offset correction.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to the chosen method (:meth:`offset_depth`,</span>
-<span class="sd">            :meth:`filter_depth`)</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to the chosen method</span>
+<span class="sd">            (:meth:`_offset_depth`, :meth:`_filter_depth`)</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        More details in diveMove&#39;s ``calibrateDepth`` function.</span>
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        .. [3] Luque, S.P. and Fried, R. (2011) Recursive filtering for</span>
+<span class="sd">           zero offset correction of diving depth time series. PLoS ONE</span>
+<span class="sd">           6:e15850.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>

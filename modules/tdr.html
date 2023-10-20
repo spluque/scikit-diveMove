@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Time-Depth Recorder time series &#8212; skdiveMove 0.3.2 documentation</title>
+    <title>Time-Depth Recorder time series &#8212; skdiveMove 0.3.2.post1 documentation</title>
   
   
   
@@ -37,12 +37,13 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../_static/documentation_options.js?v=cc64f334"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'modules/tdr';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -452,6 +453,27 @@ functions and methods of package <cite>diveMove</cite>.</p>
 </tr>
 </tbody>
 </table>
+<p>Detect and quantify periods of major activities in a TDR record,
+calibrating depth readings to generate summaries of diving behaviour. These
+procedures include wet/dry phase detection, zero-offset correction (ZOC) of
+depth, detection of dives, as well as proper labelling of the latter, among
+others utilities for the analysis of TDR records.</p>
+<p>All core procedures are encapsulated in <a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDR</span></code></a>, and are controlled by
+a set of user-defined variables in a configuration file, and systematically
+executed systematically by function <a class="reference internal" href="#skdiveMove.calibrate" title="skdiveMove.calibrate"><code class="xref py py-func docutils literal notranslate"><span class="pre">calibrate()</span></code></a>. This function can be
+used as a template for custom processing using different
+sequences. User-defined variables can also be directly specified as a
+dictionary, which is a class attribute. The standard approach follows the
+logical processing sequence described below:</p>
+<ol class="arabic simple">
+<li><p>Zero-offset correction</p></li>
+<li><p>Detection of wet phases</p></li>
+<li><p>Detection of dives</p></li>
+<li><p>Detection of dive phases</p></li>
+<li><p>Speed calibration (if required)</p></li>
+<li><p>Calculation of statistics</p></li>
+</ol>
+<p>Class <a class="reference internal" href="#skdiveMove.TDR" title="skdiveMove.TDR"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDR</span></code></a> methods implement these steps.</p>
 </section>
 <dl class="py class">
 <dt class="sig sig-object py" id="skdiveMove.TDR">
@@ -486,7 +508,9 @@ capabilities.</p>
 <dt class="sig sig-object py" id="skdiveMove.TDR.calibrate_speed">
 <span class="sig-name descname"><span class="pre">calibrate_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contour_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/skdiveMove/tdr.html#TDR.calibrate_speed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.calibrate_speed" title="Link to this definition">#</a></dt>
 <dd><p>Calibrate speed measurements</p>
-<p>Set the <cite>speed_calib_fit</cite> attribute</p>
+<p>Set the <cite>speed_calib_fit</cite> attribute. This method calibrates speed
+readings following the procedure outlined in Blackwell et.
+al. (1999) <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -497,12 +521,24 @@ regression to define the calibration line.</p></li>
 <li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Only changes in depth larger than this value will be used for
 calibration.</p></li>
 <li><p><strong>bad</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Two-element <cite>array_like</cite> indicating that only rates of depth
-change and speed greater than the given value should be used
+change and speed greater than the given values should be used
 for calibration, respectively.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">calibrate_speed()</span></code></p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments listed below.</p></li>
+<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>default True</em>) – Whether to plot calibration results.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.8.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instance to use as target.
+Default is to create one.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Blackwell S, Haverl C, Le Boeuf B, Costa D (1999). A method
+for calibrating swim-speed recorders.  Marine Mammal Science
+15(3):894-905.</p>
+</aside>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
@@ -516,20 +552,95 @@ for calibration, respectively.</p></li>
 <dt class="sig sig-object py" id="skdiveMove.TDR.detect_dive_phases">
 <span class="sig-name descname"><span class="pre">detect_dive_phases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dive_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_par</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knot_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descent_crit_q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascent_crit_q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.detect_dive_phases" title="Link to this definition">#</a></dt>
 <dd><p>Detect dive phases</p>
-<p>Complete filling the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute.</p>
+<p>Complete filling the <cite>dives</cite> attribute. The process for each dive
+begins by taking all observations below the dive detection
+threshold, and setting the beginning and end depths to zero, at
+time steps prior to the first and after the last, respectively.
+The latter ensures that descent and ascent derivatives are
+non-negative and non-positive, respectively, so that the end and
+beginning of these phases are not truncated. The next step is to
+fit a model to each dive. Two models can be chosen for this
+purpose: <cite>unimodal</cite> (default) and <cite>smooth.spline</cite> (see Notes).</p>
+<p>Both models consist of a cubic spline, and its first derivative is
+evaluated to investigate changes in vertical rate. Therefore, at
+least 4 observations are required for each dive, so the time series
+is linearly interpolated at equally spaced time steps if this limit
+is not achieved in the current dive. Wiggles at the beginning and
+end of the dive are assumed to be zero offset correction errors, so
+depth observations at these extremes are interpolated between zero
+and the next observations when this occurs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dive_model</strong> (<em>{&quot;unimodal&quot;</em><em>, </em><em>&quot;smooth.spline&quot;}</em>) – </p></li>
-<li><p><strong>smooth_par</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>knot_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>descent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>ascent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>dive_model</strong> (<em>{&quot;unimodal&quot;</em><em>, </em><em>&quot;smooth.spline&quot;}</em>) – Model to use for each dive for the purpose of dive phase
+identification.  One of <cite>smooth.spline</cite> or <cite>unimodal</cite>, to
+choose among smoothing spline or unimodal regression. For dives
+with less than five observations, smoothing spline regression
+is used regardless.</p></li>
+<li><p><strong>smooth_par</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Amount of smoothing when <code class="docutils literal notranslate"><span class="pre">dive.model=&quot;smooth.spline&quot;</span></code>. If it
+is <cite>None</cite>, then the smoothing parameter is determined by
+Generalized Cross-validation (GCV). Ignored with default
+<code class="docutils literal notranslate"><span class="pre">dive.model=&quot;unimodal&quot;</span></code>.</p></li>
+<li><p><strong>knot_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Multiplier for the number of samples in the dive.  This is used
+to construct the time predictor for the derivative.</p></li>
+<li><p><strong>descent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Critical quantile of rates of descent below which descent is
+deemed to have ended.</p></li>
+<li><p><strong>ascent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Critical quantile of rates of ascent above which ascent is
+deemed to have started.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>See details for arguments in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code>.</p>
+<p>1. Unimodal method: in this default model, the spline is
+constrained to be unimodal <a class="footnote-reference brackets" href="#id4" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, assuming the diver must return to
+the surface to breathe. The model is fitted using <cite>R</cite>’s <cite>uniReg</cite>
+package. This model and constraint are consistent with the
+definition of dives in air-breathers, so is appropriate for this
+group of divers. A major advantage of this approach over the next
+one is that the degree of smoothing is determined via restricted
+maximum likelihood, and has no influence on identifying the
+transition between descent and ascent. Therefore, unimodal
+regression splines make the latter transition clearer compared to
+using smoothing splines. Note that dives with less than five
+samples are fit using smoothing splines regardless, as they produce
+the same fit as unimodal regression but much faster. Therefore,
+ensure that the parameters for that model are appropriate for the
+data, although defaults are reasonable.</p>
+<p>2. Smooth spline: in this model, specified via
+<code class="docutils literal notranslate"><span class="pre">dive_model=&quot;smooth.spline&quot;</span></code>, a smoothing spline is used to model
+each dive, using the chosen smoothing parameter. Dive phases
+identified via this model, however, are highly sensitive to the
+degree of smoothing (<cite>smooth_par</cite>) used, thus making it difficult
+to determine what amount of smoothing is adequate.</p>
+<p>The first derivative of the spline is evaluated at a set of knots
+to calculate the vertical rate throughout the dive and determine
+the end of descent and beginning of ascent. This set of knots is
+established using a regular time sequence with beginning and end
+equal to the extremes of the input sequence, and with length equal
+to <span class="math notranslate nohighlight">\(N \times knot\_factor\)</span>. Equivalent procedures are used
+for detecting descent and ascent phases.</p>
+<p>Once one of the models above has been fitted to each dive, the
+quantile corresponding to (<cite>descent_crit_q</cite>) of all the positive
+derivatives (rate of descent) at the beginning of the dive is used
+as threshold for determining the end of descent. Descent is deemed
+to have ended at the <em>first</em> minimum derivative, and the nearest
+input time observation is considered to indicate the end of
+descent. The sign of the comparisons is reversed for detecting the
+ascent. If observed depth to the left and right of the derivative
+defining the ascent are the same, the right takes precedence.</p>
+<p>The particular dive phase categories are subsequently defined using
+simple set operations.</p>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
+<p>Koellmann, C., Ickstadt, K. and Fried, R. (2014) Beyond
+unimodal regression: modelling multimodality with piecewise
+unimodal, mixture or additive regression. Technical Report
+8. <a class="reference external" href="https://sfb876.tu-dortmund.de/FORSCHUNG/techreports.html">https://sfb876.tu-dortmund.de/FORSCHUNG/techreports.html</a>,
+SFB 876, TU Dortmund</p>
+</aside>
+</aside>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
@@ -555,14 +666,26 @@ parameters</p>
 <span class="sig-name descname"><span class="pre">detect_dives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dive_thr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.detect_dives" title="Link to this definition">#</a></dt>
 <dd><p>Identify dive events</p>
 <p>Set the <code class="docutils literal notranslate"><span class="pre">dives</span></code> attribute’s “row_ids” dictionary element, and
-update the <code class="docutils literal notranslate"><span class="pre">wet_act</span></code> attribute’s “phases” dictionary element.</p>
+update the <code class="docutils literal notranslate"><span class="pre">wet_act</span></code> attribute’s “phases” dictionary
+element. Whenever the zero-offset corrected depth in an underwater
+phase is below the specified dive threshold.  A new categorical
+variable with finer levels of activity is thus generated, including
+<code class="docutils literal notranslate"><span class="pre">U</span></code> (underwater), and <code class="docutils literal notranslate"><span class="pre">D</span></code> (diving) in addition to the ones
+described above.</p>
+<p>Once dives have been detected and assigned to a period of wet
+activity, phases within dives are identified using the descent,
+ascent and wiggle criteria (see Detection of dive phases below).
+This procedure generates a categorical variable with levels <code class="docutils literal notranslate"><span class="pre">D</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DB</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">BA</span></code>, <code class="docutils literal notranslate"><span class="pre">DA</span></code>, <code class="docutils literal notranslate"><span class="pre">A</span></code>, and <code class="docutils literal notranslate"><span class="pre">X</span></code>, breaking the input
+into descent, descent/bottom, bottom, bottom/ascent, ascent,
+descent/ascent (occurring when no bottom phase can be detected) and
+non-dive (surface), respectively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dive_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – </p>
+<dd class="field-odd"><p><strong>dive_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Threshold depth below which an underwater phase should be
+considered a dive.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>See details for arguments in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code>.</p>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
@@ -581,21 +704,56 @@ update the <code class="docutils literal notranslate"><span class="pre">wet_act<
 <dt class="sig sig-object py" id="skdiveMove.TDR.detect_wet">
 <span class="sig-name descname"><span class="pre">detect_wet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dry_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">70</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wet_cond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wet_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3610</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_wet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.detect_wet" title="Link to this definition">#</a></dt>
 <dd><p>Detect wet/dry activity phases</p>
+<p>A categorical variable is then created with value <code class="docutils literal notranslate"><span class="pre">L</span></code> (dry) for
+rows with null depth samples and value <code class="docutils literal notranslate"><span class="pre">W</span></code> (wet) otherwise. This
+assumes that TDRs were programmed to turn off recording of depth
+when instrument is dry (typically by means of a salt-water
+switch). If this assumption cannot be made for any reason, then a
+boolean vector as long as the time series can be supplied to
+indicate which observations should be considered wet. The duration
+of each of these phases of activity is subsequently calculated.  If
+the duration of a dry phase (<code class="docutils literal notranslate"><span class="pre">L</span></code>) is less than a threshold
+(configuration variable <cite>dry_thr</cite>), then the values in the factor
+for that phase are changed to <code class="docutils literal notranslate"><span class="pre">W</span></code> (wet). The duration of phases
+is then recalculated, and if the duration of a phase of wet
+activity is less than another threshold (variable <cite>wet_thr</cite>), then
+the corresponding value for the factor is changed to <code class="docutils literal notranslate"><span class="pre">Z</span></code> (trivial
+wet). The durations of all phases are recalculated a third time to
+provide final phase durations.</p>
+<p>Some instruments produce a peculiar pattern of missing data near
+the surface, at the beginning and/or end of dives. The argument
+<code class="docutils literal notranslate"><span class="pre">interp_wet</span></code> may help to rectify this problem by using an
+interpolating spline function to impute the missing data,
+constraining the result to a minimum depth of zero.  Please note
+that this optional step is performed after ZOC and before
+identifying dives, so that interpolation is performed through dry
+phases coded as wet because their duration was briefer than
+<cite>dry_thr</cite>.  Therefore, <cite>dry_thr</cite> must be chosen carefully to avoid
+interpolation through legitimate dry periods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dry_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>wet_cond</strong> (<em>bool mask</em><em>, </em><em>optional</em>) – A Pandas.Series bool mask indexed as <cite>depth</cite>.  Default is
-generated from testing for non-missing <cite>depth</cite>.</p></li>
-<li><p><strong>wet_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>interp_wet</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>dry_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Dry error threshold in seconds. Dry phases shorter than this
+threshold will be considered as wet.</p></li>
+<li><p><strong>wet_cond</strong> (<em>bool mask</em><em>, </em><em>optional</em>) – A Pandas.Series bool mask indexed as <cite>depth</cite>. It indicates
+which observations should be considered wet. If it is not
+provided, records with non-missing depth are assumed to
+correspond to wet conditions. Default is generated from testing
+for non-missing <cite>depth</cite>.</p></li>
+<li><p><strong>wet_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Wet threshold in seconds. At-sea phases shorter than this
+threshold will be considered as trivial wet.</p></li>
+<li><p><strong>interp_wet</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If <cite>True</cite>, then an interpolating spline function is used to
+impute NA depths in wet periods (after ZOC). Use with
+caution: it may only be useful in cases where the missing data
+pattern in wet periods is restricted to shallow depths near the
+beginning and end of dives. This pattern is common in some
+satellite-linked <cite>TDRs</cite>.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>See details for arguments in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code>.  Unlike
-<cite>diveMove</cite>, the beginning/ending times for each phase are not
-stored with the class instance, as this information can be
+<p>Unlike <cite>diveMove</cite>, the beginning/ending times for each phase are
+not stored with the class instance, as this information can be
 retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budget" title="skdiveMove.TDR.time_budget"><code class="xref py py-meth docutils literal notranslate"><span class="pre">time_budget()</span></code></a> method.</p>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
@@ -626,8 +784,49 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>depth_deriv</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to compute depth derivative statistics.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)">pandas.DataFrame</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>DataFrame indexed by dive number, having the following columns:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">begdesc</span></code>: time stamp for the start of each dive;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enddesc</span></code>: time stamp for the descent’s end;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">begasc</span></code>: time stamp for the beginning of the ascent;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desctime</span></code>: duration of descent;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">botttim</span></code>: duration of the bottom phase;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">asctim</span></code>: duration of ascent;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">divetim</span></code>: dive duration;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">descdist</span></code>: last descent depth;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bottdist</span></code>: sum of the absolute depth differences while
+at the bottom of the dive; a measure of the amount of
+“wiggling” while at the bottom;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ascdist</span></code>: first ascent depth;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bottdep_mean</span></code>: mean bottom depth;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bottdep_median</span></code>: median bottom depth;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bottdep_sd</span></code>: standard deviation of bottom depths;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxdep</span></code>: maximum depth;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desc_tdist</span></code>: descent total distance, estimated from speed;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desc_mean_speed</span></code>: descent mean speed;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desc_angle</span></code>: descent mean speed;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bott_tdist</span></code>: total distance at the bottom, estimated
+from speed;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bott_mean_speed</span></code>: mean speed at the bottom;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">asc_tdist</span></code>: ascent total distance, estimated from speed;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">asc_mean_speed</span></code>: ascent mean speed;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">asc_angle</span></code>: ascent angle, relative to bottom plane;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postdive_dur</span></code>: postdive duration;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postdive_tdist</span></code>: postdive total distance, estimated from
+speed;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postdive_mean_speed</span></code>: postdive mean speed.</p></li>
+</ul>
+</div></blockquote>
+<p>If <cite>depth_deriv=True</cite> (default), 21 additional columns with the
+minimum, first quartile, median, mean, third quartile, maximum,
+and standard deviation of the depth derivative for each phase
+of the dive are included.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -667,7 +866,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -694,7 +893,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;zoc&quot;}</em>) – Which depth to retrieve.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -759,7 +958,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;calibrated&quot;}</em>) – Which speed to retrieve.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -776,7 +975,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -791,7 +990,25 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
 select additional data to plot.</p></li>
 <li><p><strong>concur_var_titles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to plotting function,
+including those listed below. Additional arguments are passed
+to underlying plotting method.</p></li>
+<li><p><strong>xlim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.  Ignored when
+<code class="docutils literal notranslate"><span class="pre">concur_vars=None</span></code>.</p></li>
+<li><p><strong>ylim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">y</span></code> axis for data other than
+depth.</p></li>
+<li><p><strong>depth_lim</strong> (<em>array_like</em><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for depth to plot.</p></li>
+<li><p><strong>xlab</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Label for <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.</p></li>
+<li><p><strong>ylab_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Label for <code class="docutils literal notranslate"><span class="pre">y</span></code> axis for depth.</p></li>
+<li><p><strong>xlab_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Format string for formatting the <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.</p></li>
+<li><p><strong>sunrise_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Time of sunrise, in 24 hr format.  This is used for shading night
+time.</p></li>
+<li><p><strong>sunset_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Time of sunset, in 24 hr format.  This is used for shading night
+time.</p></li>
+<li><p><strong>night_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Color for shading night time.</p></li>
+<li><p><strong>dry_time</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)"><em>pandas.DataFrame</em></a>) – Two-column DataFrame with beginning and ending times corresponding
+to periods considered to be dry.</p></li>
+<li><p><strong>phase_cat</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v2.1.1)"><em>pandas.Series</em></a>) – Categorical series dividing rows into sections.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -816,11 +1033,17 @@ select additional data to plot.</p></li>
 <dt class="sig sig-object py" id="skdiveMove.TDR.plot_dive_model">
 <span class="sig-name descname"><span class="pre">plot_dive_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diveNo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/skdiveMove/tdr.html#TDR.plot_dive_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.plot_dive_model" title="Link to this definition">#</a></dt>
 <dd><p>Plot dive model for selected dive</p>
+<p>Diagnostic double-panel plot of dive models for selected dives. The
+top panel shows depth against time, the cubic spline smoother, the
+identified descent and ascent phases (which form the basis for
+identifying the rest of the dive phases), while the bottom panel
+shows the first derivative of the smooth trace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -858,7 +1081,8 @@ select additional data to plot.</p></li>
 select additional data to plot.</p></li>
 <li><p><strong>concur_var_titles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
 <li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot surface readings.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to plotting function.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to plotting function (see
+<a class="reference internal" href="#skdiveMove.TDR.plot" title="skdiveMove.TDR.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -888,13 +1112,17 @@ select additional data to plot.</p></li>
 <dt class="sig sig-object py" id="skdiveMove.TDR.plot_zoc">
 <span class="sig-name descname"><span class="pre">plot_zoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/skdiveMove/tdr.html#TDR.plot_zoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#skdiveMove.TDR.plot_zoc" title="Link to this definition">#</a></dt>
 <dd><p>Plot zero offset correction filters</p>
+<p>Compare the zero-offset corrected depth with the uncorrected
+signal, or the progress attained in each of the filters during
+recursive filtering for zero-offset correction, as illustrated in
+Luque and Fried (2011) <a class="footnote-reference brackets" href="#id7" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xlim</strong> (<em>2-tuple/list</em><em>, </em><em>optional</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
-respectively.</p></li>
-<li><p><strong>ylim</strong> (<em>2-tuple/list</em><em>, </em><em>optional</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis,
-respectively.</p></li>
+<li><p><strong>xlim</strong> (<em>array_like</em><em>, </em><em>optional</em>) – array_like with minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and
+<code class="docutils literal notranslate"><span class="pre">y</span></code>-axis, respectively.</p></li>
+<li><p><strong>ylim</strong> (<em>array_like</em><em>, </em><em>optional</em>) – array_like with minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and
+<code class="docutils literal notranslate"><span class="pre">y</span></code>-axis, respectively.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
 </ul>
 </dd>
@@ -932,14 +1160,14 @@ respectively.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>depth_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Name of data variable with depth measurements. Default: “depth”.</p></li>
 <li><p><strong>time_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the time dimension in the dataset.</p></li>
 <li><p><strong>subsample</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Subsample dataset at given frequency specification.  See pandas
 offset aliases.</p></li>
 <li><p><strong>has_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Weather data includes speed measurements. Column name must be
 one of [“velocity”, “speed”].  Default: False.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1025,17 +1253,60 @@ for each phase, and beginning and ending times.</p>
 <dt class="sig sig-object py" id="skdiveMove.TDR.zoc">
 <span class="sig-name descname"><span class="pre">zoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'filter'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#skdiveMove.TDR.zoc" title="Link to this definition">#</a></dt>
 <dd><p>Apply zero offset correction to depth measurements</p>
+<p>This procedure is required to correct drifts in the pressure
+transducer of TDR records and noise in depth measurements. Three
+methods are available to perform this correction.</p>
+<p>Method <cite>offset</cite> can be used when the offset is known in advance,
+and this value is used to correct the entire time series.
+Therefore, <code class="docutils literal notranslate"><span class="pre">offset=0</span></code> specifies no correction.</p>
+<p>Method <cite>filter</cite> implements a smoothing/filtering mechanism where
+running quantiles can be applied to depth measurements in a
+recursive manner <a class="footnote-reference brackets" href="#id7" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.  The method calculates the first running
+quantile defined by the first probability in a given sequence on a
+moving window of size specified by the first integer supplied in a
+second sequence.  The next running quantile, defined by the second
+supplied probability and moving window size, is applied to the
+smoothed/filtered depth measurements from the previous step, and so
+on. The corrected depth measurements (d) are calculated as:</p>
+<div class="math notranslate nohighlight">
+\[d = d_{0} - d_{n}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{0}\)</span> is original depth and <span class="math notranslate nohighlight">\(d_{n}\)</span> is the last
+smoothed/filtered depth.  This method is under development, but
+reasonable results can be achieved by applying two filters (see
+Examples). The default <cite>na_rm=True</cite> works well when there are no
+level shifts between non-NA phases in the data, but <cite>na_rm=False</cite>
+is better in the presence of such shifts. In other words, there is
+no reason to pollute the moving window with null values when
+non-null phases can be regarded as a continuum, so splicing
+non-null phases makes sense. Conversely, if there are level shifts
+between non-null phases, then it is better to retain null phases to
+help the algorithm recognize the shifts while sliding the
+window(s). The search for the surface can be limited to specified
+bounds during smoothing/filtering, so that observations outside
+these bounds are interpolated using the bounded smoothed/filtered
+series.</p>
+<p>Once the entire record has been zero-offset corrected, remaining
+depths below zero, are set to zero, as these are assumed to
+indicate values at the surface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> (<em>{&quot;filter&quot;</em><em>, </em><em>&quot;offset&quot;}</em>) – Name of method to use for zero offset correction.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to the chosen method (<code class="xref py py-meth docutils literal notranslate"><span class="pre">offset_depth()</span></code>,
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">filter_depth()</span></code>)</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to the chosen method
+(<code class="xref py py-meth docutils literal notranslate"><span class="pre">_offset_depth()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">_filter_depth()</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>More details in diveMove’s <code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code> function.</p>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id6">2</a>)</span>
+<p>Luque, S.P. and Fried, R. (2011) Recursive filtering for
+zero offset correction of diving depth time series. PLoS ONE
+6:e15850.</p>
+</aside>
+</aside>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">diveMove2skd</span>
@@ -1105,7 +1376,7 @@ guide the operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>config_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A valid string path for TDR calibration configuration file.</p></li>
 </ul>
 </dd>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imu2body &#8212; skdiveMove 0.3.2 documentation</title>
+    <title>imutools.imu2body &#8212; skdiveMove 0.3.2.post1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -440,8 +440,9 @@ document.write(`
 <span class="sd">        Whether to animate the plot.</span>
 <span class="sd">    animate_file : str, optional</span>
 <span class="sd">        Output file for the animation.</span>
-<span class="sd">    **kwargs : optional keyword arguments</span>
-<span class="sd">        Arguments passed to `pyplot.figure` (e.g. ``figsize``).</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Optional keyword arguments passed to</span>
+<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -533,8 +534,9 @@ document.write(`
 <span class="sd">        Whether to animate the plot.</span>
 <span class="sd">    animate_file : str, optional</span>
 <span class="sd">        Output file for the animation.</span>
-<span class="sd">    **kwargs : optional keyword arguments</span>
-<span class="sd">        Arguments passed to `pyplot.figure` (e.g. ``figsize``).</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Optional keyword arguments passed to</span>
+<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -622,8 +624,9 @@ document.write(`
 <span class="sd">        Output file for the animation.</span>
 <span class="sd">    cbar_label : str, optional</span>
 <span class="sd">        Title for the color bar.</span>
-<span class="sd">    **kwargs : optional keyword arguments</span>
-<span class="sd">        Arguments passed to `pyplot.figure` (e.g. ``figsize``).</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Optional keyword arguments passed to</span>
+<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -902,7 +905,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        `IMU2Body`</span>
+<span class="sd">        IMU2Body</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Read CSV</span>
@@ -1144,12 +1147,12 @@ document.write(`
 <span class="sd">            DataFrame indexed the by the rows of the surface details table,</span>
 <span class="sd">            and having the following columns:</span>
 
-<span class="sd">            - ``R``: Rotation</span>
-<span class="sd">            - ``SVD``: SVD matrices</span>
-<span class="sd">            - ``quality``: Tuple (quality index, std) for the estimate</span>
-<span class="sd">            - ``phi``: Roll angle (degrees) from body to IMU frame</span>
-<span class="sd">            - ``theta``: Pitch angle (degrees) from body to IMU frame</span>
-<span class="sd">            - ``psi``: Yaw angle (degrees) from body to IMU frame</span>
+<span class="sd">              - ``R``: Rotation</span>
+<span class="sd">              - ``SVD``: SVD matrices</span>
+<span class="sd">              - ``quality``: Tuple (quality index, std) for the estimate</span>
+<span class="sd">              - ``phi``: Roll angle (degrees) from body to IMU frame</span>
+<span class="sd">              - ``theta``: Pitch angle (degrees) from body to IMU frame</span>
+<span class="sd">              - ``psi``: Yaw angle (degrees) from body to IMU frame</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -1432,8 +1435,8 @@ document.write(`
 <span class="sd">        smoothed_accel : bool, optional</span>
 <span class="sd">            Whether to plot the smoothed acceleration (if</span>
 <span class="sd">            `vec_name=&quot;acceleration&quot;`)</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :meth:`scatterIMU3D`.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to :meth:`scatterIMU3D`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1475,9 +1478,9 @@ document.write(`
 <span class="sd">        smoothed_accel : bool, optional</span>
 <span class="sd">            Whether to plot the smoothed acceleration (if</span>
 <span class="sd">            `vec_name=&quot;acceleration&quot;`)</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :func:`~matplotlib.pyplot.subplots`</span>
-<span class="sd">            (e.g. ``figsize``).</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1538,9 +1541,9 @@ document.write(`
 <span class="sd">            Index in surface details table to be analyzed.</span>
 <span class="sd">        plot : bool, optional</span>
 <span class="sd">            Whether to generate a plot of the estimate</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and</span>
-<span class="sd">            ``animate`` are taken.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to :meth:`scatterIMU_svd`.</span>
+<span class="sd">            Only ``title`` and ``animate`` are taken.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

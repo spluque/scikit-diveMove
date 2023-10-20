@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Inertial Measurement Unit time series &#8212; skdiveMove 0.3.2 documentation</title>
+    <title>Inertial Measurement Unit time series &#8212; skdiveMove 0.3.2.post1 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../_static/documentation_options.js?v=78d8237d"></script>
+    <script src="../_static/documentation_options.js?v=cc64f334"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/thebelab-helper.js"></script>
@@ -658,14 +658,14 @@ beginning of the next interval.</p></li>
 <li><p><strong>savgol_parms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>, </em><em>optional</em>) – A 2-element tuple with the window length and polynomial order
 for the Savitzky-Golay filter to smooth acceleration.</p></li>
 <li><p><strong>load_dataset_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of optional keyword arguments passed to
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Additional arguments passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">IMUBase.__init__()</span></code> method,
 except <code class="docutils literal notranslate"><span class="pre">has_depth</span></code> or <code class="docutils literal notranslate"><span class="pre">imu_filename</span></code>.  The input
 <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> is assumed to have a depth <code class="docutils literal notranslate"><span class="pre">DataArray</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><cite>IMU2Body</cite></p>
+<dd class="field-even"><p><a class="reference internal" href="#imutools.IMU2Body" title="imutools.IMU2Body">IMU2Body</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -729,7 +729,8 @@ second singular vector (i.e. pitching axis).</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>DataFrame indexed the by the rows of the surface details table,
 and having the following columns:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">R</span></code>: Rotation</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">SVD</span></code>: SVD matrices</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">quality</span></code>: Tuple (quality index, std) for the estimate</p></li>
@@ -737,6 +738,7 @@ and having the following columns:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">theta</span></code>: Pitch angle (degrees) from body to IMU frame</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">psi</span></code>: Yaw angle (degrees) from body to IMU frame</p></li>
 </ul>
+</div></blockquote>
 </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -768,7 +770,7 @@ surface details table.</p>
 <dd class="field-even"><p><strong>vectors</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -802,7 +804,7 @@ provided, the Dataset contains an additional coordinate
 representing the surfacing period for each segment.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -833,7 +835,7 @@ the rotation from the body frame to the IMU frame.</p></li>
 <dd class="field-even"><p>The re-oriented IMU object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -866,7 +868,7 @@ was not provided, the Dataset contains an additional coordinate
 representing the surfacing period for each segment.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -886,7 +888,7 @@ representing the surfacing period for each segment.</p>
 <li><p><strong>vec_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>{&quot;acceleration&quot;</em><em>, </em><em>&quot;magnetic_density&quot;}</em>) – Name of the vector array to subset.</p></li>
 <li><p><strong>smoothed_accel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot the smoothed acceleration (if
 <cite>vec_name=”acceleration”</cite>)</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference internal" href="#imutools.scatterIMU3D" title="imutools.scatterIMU3D"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatterIMU3D()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to <a class="reference internal" href="#imutools.scatterIMU3D" title="imutools.scatterIMU3D"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatterIMU3D()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -917,8 +919,8 @@ individually.</p>
 <li><p><strong>surface_idx</strong> (<em>datetime64</em><em>, </em><em>optional</em>) – Index in surface details table to be analyzed.</p></li>
 <li><p><strong>smoothed_accel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot the smoothed acceleration (if
 <cite>vec_name=”acceleration”</cite>)</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>
-(e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -941,7 +943,7 @@ individually.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imutools.</span></span><span class="sig-name descname"><span class="pre">IMUBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceleration_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'acceleration'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_velocity_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'angular_velocity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnetic_density_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'magnetic_density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'timestamp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'depth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imu_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/imutools/imu.html#IMUBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUBase" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Define IMU data source</p>
-<p>Use <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> to ensure pseudo-standard metadata.</p>
+<p>Use <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> to ensure pseudo-standard metadata.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="imutools.IMUBase.imu_file">
 <span class="sig-name descname"><span class="pre">imu_file</span></span><a class="headerlink" href="#imutools.IMUBase.imu_file" title="Link to this definition">#</a></dt>
@@ -959,7 +961,7 @@ individually.</p>
 <dd><p>Dataset with input data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1059,13 +1061,15 @@ Allan variance described in <a class="footnote-reference brackets" href="#id2" i
 <p>Given averaging intervals <code class="docutils literal notranslate"><span class="pre">taus</span></code> and corresponding Allan
 deviation <code class="docutils literal notranslate"><span class="pre">adevs</span></code>, compute the Allan deviation coefficient for
 each error type:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p>Quantization</p></li>
 <li><p>(Angle, Velocity) Random Walk</p></li>
 <li><p>Bias Instability</p></li>
 <li><p>Rate Random Walk</p></li>
 <li><p>Rate Ramp</p></li>
 </ul>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1105,7 +1109,8 @@ inertial sensor errors using Allan variance data. Navigation
 <dd><p>Compute the orientation of IMU tri-axial signals</p>
 <p>The method must be one of the following estimators implemented in
 Python module <code class="xref py py-mod docutils literal notranslate"><span class="pre">ahrs.filters</span></code>:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">AngularRate</span></code>: Attitude from angular rate</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AQUA</span></code>: Algebraic quaternion algorithm</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Complementary</span></code>: Complementary filter</p></li>
@@ -1123,6 +1128,7 @@ Python module <code class="xref py py-mod docutils literal notranslate"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">SAAM</span></code>: Super-fast attitude from accelerometer and magnetometer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Tilt</span></code>: Attitude from gravity</p></li>
 </ul>
+</div></blockquote>
 <p>The estimated quaternions are stored in the <code class="docutils literal notranslate"><span class="pre">quats</span></code> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1171,14 +1177,15 @@ dimensions (N, 3), this is an efficient way to instantiate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>imu_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>imu_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 <li><p><strong>acceleration_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the acceleration <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p></li>
 <li><p><strong>angular_velocity_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the angular velocity <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p></li>
 <li><p><strong>magnetic_density_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the magnetic density <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p></li>
 <li><p><strong>dimension_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><em>optional</em>) – Names of the dimensions of the data in each of the sensors.</p></li>
 <li><p><strong>has_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether input data include depth measurements.</p></li>
 <li><p><strong>depth_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the depth <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1196,7 +1203,7 @@ dimensions (N, 3), this is an efficient way to instantiate.</p>
 <dd><p>Return acceleration array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1207,7 +1214,7 @@ dimensions (N, 3), this is an efficient way to instantiate.</p>
 <dd><p>Return angular velocity array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1218,7 +1225,7 @@ dimensions (N, 3), this is an efficient way to instantiate.</p>
 <dd><p>Return depth array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1229,7 +1236,7 @@ dimensions (N, 3), this is an efficient way to instantiate.</p>
 <dd><p>Return magnetic_density array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1242,7 +1249,7 @@ dimensions (N, 3), this is an efficient way to instantiate.</p>
 is retrieved from the acceleration `DataArray</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 <div class="admonition warning">
@@ -1388,7 +1395,7 @@ subtracting the offset at <span class="math notranslate nohighlight">\(T_{lpha}
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>var</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name of the variable with tri-axial data.</p></li>
-<li><p><strong>dataset</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)"><em>xarray.Dataset</em></a>) – Dataset with temperature and tri-axial data from motionless IMU.</p></li>
+<li><p><strong>dataset</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)"><em>xarray.Dataset</em></a>) – Dataset with temperature and tri-axial data from motionless IMU.</p></li>
 <li><p><strong>T_alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Reference temperature at which all measurements will be
 adjusted to.  Default is the mean temperature in the input
 dataset.</p></li>
@@ -1410,7 +1417,7 @@ specifying the period for the model to use.  Ignored if
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1418,7 +1425,8 @@ specifying the period for the model to use.  Ignored if
 <dl class="py method">
 <dt class="sig sig-object py" id="imutools.IMUcalibrate.build_tmodels">
 <span class="sig-name descname"><span class="pre">build_tmodels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_brk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_axis_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/imutools/imucalibrate.html#IMUcalibrate.build_tmodels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imutools.IMUcalibrate.build_tmodels" title="Link to this definition">#</a></dt>
-<dd><p>Build temperature models for experimental tri-axial IMU sensor signals</p>
+<dd><p>Build temperature models for experimental tri-axial IMU sensor
+signals</p>
 <p>Perform thermal compensation on <em>motionless</em> tri-axial IMU sensor
 data.  A simple approach is used for the compensation:</p>
 <blockquote>
@@ -1455,27 +1463,31 @@ period are used in the correction.</p></li>
 correction.  Default is to apply a Savitzky-Golay filter to the
 signal for characterizing the temperature relationship, and to
 calculate the standardized signal.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <cite>savgol_filter</cite> (e.g. <code class="docutils literal notranslate"><span class="pre">win_len</span></code> and
-<code class="docutils literal notranslate"><span class="pre">polyorder</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to <cite>savgol_filter</cite>
+(e.g. <code class="docutils literal notranslate"><span class="pre">win_len</span></code> and <code class="docutils literal notranslate"><span class="pre">polyorder</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>List of tuples as long as there are periods, with tuple elements:</p>
-<ul class="simple">
+<blockquote>
+<div><ul>
 <li><p>Dictionary with regression model objects for each sensor
 axis.</p></li>
 <li><p>DataFrame with hierarchical column index with sensor axis
 label at the first level.  The following columns are in the
 second level:</p>
-<ul>
+<blockquote>
+<div><ul class="simple">
 <li><p>temperature</p></li>
 <li><p>var_name</p></li>
 <li><p>var_name_pred</p></li>
 <li><p>var_name_temp_refC</p></li>
 <li><p>var_name_adj</p></li>
 </ul>
+</div></blockquote>
 </li>
 </ul>
+</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1549,8 +1561,8 @@ three-dimensional estimation of the offset.</p>
 <li><p><strong>var</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name of the variable in with tri-axial data.</p></li>
 <li><p><strong>units_label</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Label for the units of the chosen variable.  Defaults to the
 “units_label” attribute available in the DataArray.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>
-(e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1590,8 +1602,8 @@ period are used in the correction.</p></li>
 acceleration).  If provided, a horizontal line is included in
 the plot for reference.</p></li>
 <li><p><strong>axs</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Array of Axes instances to plot in.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>
-(e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1629,8 +1641,8 @@ variables.</p></li>
 <li><p><strong>units_label</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Label for the units of the chosen variable.  Defaults to the
 “units_label” attribute available in the DataArray.</p></li>
 <li><p><strong>axs</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Array of Axes instances to plot in.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>
-(e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1658,10 +1670,11 @@ with IMU signal plots.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>imu_nc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Path to NetCDF file.</p></li>
 <li><p><strong>load_dataset_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>, </em><em>optional</em>) – Dictionary of optional keyword arguments passed to
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.9.1.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Additional arguments passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">IMUcalibrate.__init__()</span></code>
-method, except <code class="docutils literal notranslate"><span class="pre">has_depth</span></code> or <code class="docutils literal notranslate"><span class="pre">imu_filename</span></code>.  The input
-<code class="docutils literal notranslate"><span class="pre">Dataset</span></code> is assumed to have a depth <code class="docutils literal notranslate"><span class="pre">DataArray</span></code>.</p></li>
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments passed to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">IMUcalibrate.__init__()</span></code> method, except <code class="docutils literal notranslate"><span class="pre">has_depth</span></code> or
+<code class="docutils literal notranslate"><span class="pre">imu_filename</span></code>.  The input <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> is assumed to have a
+depth <code class="docutils literal notranslate"><span class="pre">DataArray</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1688,7 +1701,7 @@ method, except <code class="docutils literal notranslate"><span class="pre">has_
 dimensions, and updated attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)">xarray.DataArray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1704,7 +1717,7 @@ index.</p>
 <dd class="field-odd"><p><strong>period_idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Index of the experiment period to subset.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.9.1.dev0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1759,7 +1772,8 @@ sxyz : radius x=y=z sphere</p></li>
 <li><p><strong>animate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to animate the plot.</p></li>
 <li><p><strong>animate_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Output file for the animation.</p></li>
 <li><p><strong>cbar_label</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Title for the color bar.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <cite>pyplot.figure</cite> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">figure()</span></code></a> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1788,7 +1802,8 @@ assumes input is centered.</p></li>
 <li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Title for the plot.</p></li>
 <li><p><strong>animate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to animate the plot.</p></li>
 <li><p><strong>animate_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Output file for the animation.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <cite>pyplot.figure</cite> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">figure()</span></code></a> (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1804,8 +1819,8 @@ assumes input is centered.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vectors</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)"><em>xarray.DataArray</em></a>) – Array with columns to plot in subplot.</p></li>
-<li><p><strong>depth</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.9.1.dev0)"><em>xarray.DataArray</em></a>) – Array with depth measurements.</p></li>
+<li><p><strong>vectors</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)"><em>xarray.DataArray</em></a>) – Array with columns to plot in subplot.</p></li>
+<li><p><strong>depth</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)"><em>xarray.DataArray</em></a>) – Array with depth measurements.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Arguments passed to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>
 (e.g. <code class="docutils literal notranslate"><span class="pre">figsize</span></code>).</p></li>
 </ul>

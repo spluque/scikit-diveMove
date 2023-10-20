@@ -283,4 +283,4 @@ Dive stamps
    print(tdrX.stamp_dives())
 
 Feel free to download a copy of this demo
-(:jupyter-download:script:`demo_tdr`).
+(:jupyter-download-script:`demo_tdr`).
