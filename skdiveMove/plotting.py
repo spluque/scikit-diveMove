@@ -97,7 +97,8 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
         to periods considered to be dry.
     phase_cat : pandas.Series, optional
         Categorical series dividing rows into sections.
-    **kwargs : optional keyword arguments
+    **kwargs
+        Optional keyword arguments.
 
     Returns
     -------

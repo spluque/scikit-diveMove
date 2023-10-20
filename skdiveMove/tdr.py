@@ -1,4 +1,4 @@
-"""TDR objects homologous to `R` package diveMove's main classes
+"""`TDR` objects homologous to `R` package diveMove's main classes
 
 
 """
@@ -28,15 +28,21 @@ xr.set_options(keep_attrs=True)
 class TDR(TDRPhases):
     """Base class encapsulating TDR objects and processing
 
-    TDR subclasses `TDRPhases` to provide comprehensive TDR processing
-    capabilities.
-
-    See help(TDR) for inherited attributes.
+    Comprehensive TDR processing methods.
 
     Attributes
     ----------
     speed_calib_fit : quantreg model fit
         Model object fit by quantile regression for speed calibration.
+
+    Notes
+    -----
+    See ``help(TDR)`` for inherited attributes. This class extends
+    :class:`TDRPhases`.
+
+    See Also
+    --------
+    xarray.Dataset
 
     Examples
     --------
@@ -191,14 +197,14 @@ class TDR(TDRPhases):
                 speed;
               - ``postdive_mean_speed``: postdive mean speed.
 
-            If `depth_deriv=True` (default), 21 additional columns with the
-            minimum, first quartile, median, mean, third quartile, maximum,
-            and standard deviation of the depth derivative for each phase
-            of the dive are included.
+            If ``depth_deriv=True`` (default), 21 additional columns with
+            the minimum, first quartile, median, mean, third quartile,
+            maximum, and standard deviation of the depth derivative for
+            each phase of the dive are included.
 
         Notes
         -----
-        This method homologous to diveMove's `diveStats` function.
+        This method is homologous to diveMove's `diveStats` function.
 
         Examples
         --------
@@ -299,7 +305,7 @@ class TDR(TDRPhases):
         return ones_df
 
     def plot(self, concur_vars=None, concur_var_titles=None, **kwargs):
-        """Plot TDR object
+        """Plot `TDR` object
 
         Parameters
         ----------
@@ -384,7 +390,7 @@ class TDR(TDRPhases):
         return (fig, ax)
 
     def plot_zoc(self, xlim=None, ylim=None, **kwargs):
-        """Plot zero offset correction filters
+        """Plot zero-offset correction filters
 
         Compare the zero-offset corrected depth with the uncorrected
         signal, or the progress attained in each of the filters during
@@ -396,14 +402,19 @@ class TDR(TDRPhases):
         xlim, ylim : array_like, optional
             array_like with minimum and maximum limits for ``x``- and
             ``y``-axis, respectively.
-        **kwargs : optional keyword arguments
-            Passed to :func:`~matplotlib.pyplot.subplots`.
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`~matplotlib.pyplot.subplots`.
 
         Returns
         -------
         tuple
             :class:`~matplotlib.figure.Figure`,
             :class:`~matplotlib.axes.Axes` instances.
+
+        See Also
+        --------
+        TDR.zoc
 
         Examples
         --------
@@ -456,7 +467,7 @@ class TDR(TDRPhases):
 
     def plot_phases(self, diveNo=None, concur_vars=None,
                     concur_var_titles=None, surface=False, **kwargs):
-        """Plot major phases found on the object
+        """Plot major phases found on `TDR` object
 
         Parameters
         ----------
@@ -478,6 +489,10 @@ class TDR(TDRPhases):
         tuple
             :class:`~matplotlib.figure.Figure`,
             :class:`~matplotlib.axes.Axes` instances.
+
+        See Also
+        --------
+        TDR.detect_wet
 
         Examples
         --------
@@ -573,6 +588,10 @@ class TDR(TDRPhases):
             :class:`~matplotlib.figure.Figure`,
             :class:`~matplotlib.axes.Axes` instances.
 
+        See Also
+        --------
+        TDR.detect_dive_phases
+
         Examples
         --------
         >>> from skdiveMove.tests import diveMove2skd
@@ -640,6 +659,10 @@ class TDR(TDRPhases):
         -------
         xarray.DataArray
 
+        See Also
+        --------
+        TDR.get_tdr, TDR.get_speed
+
         """
         kinds = ["measured", "zoc"]
         if kind == kinds[0]:
@@ -663,11 +686,15 @@ class TDR(TDRPhases):
         Parameters
         ----------
         kind : {"measured", "calibrated"}
-            Which speed to retrieve.
+            Type of speed to retrieve.
 
         Returns
         -------
         xarray.DataArray
+
+        See Also
+        --------
+        TDR.get_tdr, TDR.get_depth
 
         """
         kinds = ["measured", "calibrated"]
@@ -696,7 +723,7 @@ class TDR(TDRPhases):
         return ospeed
 
     def get_tdr(self, calib_depth=True, calib_speed=True):
-        """Return a copy of tdr Dataset
+        """Return a copy of `TDR` Dataset
 
         Parameters
         ----------
@@ -708,6 +735,10 @@ class TDR(TDRPhases):
         Returns
         -------
         xarray.Dataset
+
+        See Also
+        --------
+        TDR.get_depth, TDR.get_speed
 
         """
         tdr = self.tdr.copy()
@@ -731,12 +762,16 @@ class TDR(TDRPhases):
         ----------
         diveNo : array_like, optional
             List of dive numbers (1-based) to plot.
-        **kwargs : optional keyword arguments
-            Passed to :meth:`get_tdr`
+        **kwargs
+            Optional keyword arguments passed to :meth:`get_tdr`
 
         Returns
         -------
         xarray.Dataset
+
+        See Also
+        --------
+        TDR.get_tdr
 
         Examples
         --------

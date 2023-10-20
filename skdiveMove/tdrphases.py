@@ -36,8 +36,6 @@ logger.addHandler(logging.NullHandler())
 class TDRPhases(ZOC):
     """Core TDR phase identification routines
 
-    See help(TDRSource) for inherited attributes.
-
     Attributes
     ----------
     wet_dry
@@ -53,6 +51,11 @@ class TDRPhases(ZOC):
         'knot_factor': int, 'descent_crit_q': float, 'ascent_crit_q':
         float}}
 
+    Notes
+    -----
+    See `help(TDRPhases)` for inherited attributes. This class extends
+    :class:`ZOC`.
+
     """
     def __init__(self, *args, **kwargs):
         """Initialize TDRPhases instance
@@ -61,8 +64,8 @@ class TDRPhases(ZOC):
         ----------
         *args : positional arguments
             Passed to :meth:`ZOC.__init__`
-        **kwargs : keyword arguments
-            Passed to :meth:`ZOC.__init__`
+        **kwargs
+            Optional keyword arguments passed to :meth:`ZOC.__init__`
 
         """
         ZOC.__init__(self, *args, **kwargs)
@@ -84,8 +87,8 @@ class TDRPhases(ZOC):
                    interp_wet=False):
         """Detect wet/dry activity phases
 
-        A categorical variable is then created with value ``L`` (dry) for
-        rows with null depth samples and value ``W`` (wet) otherwise. This
+        A categorical variable is created with value ``L`` (dry) for rows
+        with null depth samples and value ``W`` (wet) otherwise. This
         assumes that TDRs were programmed to turn off recording of depth
         when instrument is dry (typically by means of a salt-water
         switch). If this assumption cannot be made for any reason, then a
@@ -103,7 +106,7 @@ class TDRPhases(ZOC):
 
         Some instruments produce a peculiar pattern of missing data near
         the surface, at the beginning and/or end of dives. The argument
-        ``interp_wet`` may help to rectify this problem by using an
+        `interp_wet` may help to rectify this problem by using an
         interpolating spline function to impute the missing data,
         constraining the result to a minimum depth of zero.  Please note
         that this optional step is performed after ZOC and before
@@ -209,22 +212,13 @@ class TDRPhases(ZOC):
     def detect_dives(self, dive_thr):
         """Identify dive events
 
-        Set the ``dives`` attribute's "row_ids" dictionary element, and
-        update the ``wet_act`` attribute's "phases" dictionary
+        Set the `dives` attribute's `row_ids` dictionary element, and
+        update the `wet_act` attribute's `phases` dictionary
         element. Whenever the zero-offset corrected depth in an underwater
         phase is below the specified dive threshold.  A new categorical
         variable with finer levels of activity is thus generated, including
         ``U`` (underwater), and ``D`` (diving) in addition to the ones
         described above.
-
-        Once dives have been detected and assigned to a period of wet
-        activity, phases within dives are identified using the descent,
-        ascent and wiggle criteria (see Detection of dive phases below).
-        This procedure generates a categorical variable with levels ``D``,
-        ``DB``, ``B``, ``BA``, ``DA``, ``A``, and ``X``, breaking the input
-        into descent, descent/bottom, bottom, bottom/ascent, ascent,
-        descent/ascent (occurring when no bottom phase can be detected) and
-        non-dive (surface), respectively.
 
         Parameters
         ----------
@@ -232,9 +226,13 @@ class TDRPhases(ZOC):
             Threshold depth below which an underwater phase should be
             considered a dive.
 
+        See Also
+        --------
+        TDR.detect_dive_phases
+
         Examples
         --------
-        ZOC using the "offset" method for convenience
+        ZOC using the ``offset`` method for convenience
 
         >>> from skdiveMove.tests import diveMove2skd
         >>> tdrX = diveMove2skd("TDRPhases")
@@ -291,6 +289,12 @@ class TDRPhases(ZOC):
         end of the dive are assumed to be zero offset correction errors, so
         depth observations at these extremes are interpolated between zero
         and the next observations when this occurs.
+
+        This procedure generates a categorical variable with levels ``D``,
+        ``DB``, ``B``, ``BA``, ``DA``, ``A``, and ``X``, breaking the input
+        into descent, descent/bottom, bottom, bottom/ascent, ascent,
+        descent/ascent (occurring when no bottom phase can be detected) and
+        non-dive (surface), respectively.
 
         Parameters
         ----------
@@ -370,6 +374,10 @@ class TDRPhases(ZOC):
            unimodal, mixture or additive regression. Technical Report
            8. `<https://sfb876.tu-dortmund.de/FORSCHUNG/techreports.html>`_,
            SFB 876, TU Dortmund
+
+        See Also
+        --------
+        TDR.detect_dives
 
         Examples
         --------

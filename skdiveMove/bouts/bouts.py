@@ -179,7 +179,7 @@ def _plot_bec(bec_x, bec_y, ax, xytext, horizontalalignment="left"):
         Argument passed to `matplotlib.annotate`; interpreted with
         textcoords="offset points".
     horizontalalignment : str
-        Argument passed to `matplotlib.annotate`.
+        Argument passed to :meth:`~matplotlib.axes.Axes.annotate`.
 
     """
     ylims = ax.get_ylim()
@@ -234,8 +234,6 @@ class Bouts(metaclass=ABCMeta):
             Method to use for calculating the frequencies: "standard"
             simply uses `x`, which "seq_diff" uses the sequential
             differences method.
-        **kwargs : optional keywords
-            Passed to histogram
 
         """
         self.x = x
@@ -273,7 +271,7 @@ class Bouts(metaclass=ABCMeta):
         return objcls + meth_str + lnfreq_str
 
     def init_pars(self, x_break, plot=True, ax=None, **kwargs):
-        """Find starting values for mixtures of random Poisson processes
+        r"""Find starting values for mixtures of random Poisson processes
 
         Starting values are calculated using the "broken stick" method.
 
@@ -281,15 +279,15 @@ class Bouts(metaclass=ABCMeta):
         ----------
         x_break : array_like
             One- or two-element array with values determining the break(s)
-            for broken stick model, such that x < x_break[0] is first
-            process, x >= x_break[1] & x < x_break[2] is second process,
-            and x >= x_break[2] is third one.
+            for broken stick model, such that :math:`x < x\_break_0` is
+            first process, :math:`x >= x\_break_1` & :math:`x < x\_break_2`
+            is second process, and :math:`x >= x\_break_2` is third one.
         plot : bool, optional
             Whether to plot the broken stick model.
         ax : matplotlib.Axes, optional
             An Axes instance to use as target.  Default is to create one.
         **kwargs : optional keyword arguments
-            Passed to plotting function.
+            Passed to plotting function. Ignored currently.
 
         Returns
         -------
@@ -365,8 +363,9 @@ class Bouts(metaclass=ABCMeta):
         ----------
         start : pandas.DataFrame
             DataFrame with coefficients for each process in columns.
-        **kwargs : optional keyword arguments
-            Passed to `scipy.optimize.curve_fit`.
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`scipy.optimize.curve_fit`.
 
         Returns
         -------
@@ -411,7 +410,7 @@ class Bouts(metaclass=ABCMeta):
         -------
         out : numpy.ndarray, shape (n,)
             1-D array with BECs implied by `coefs`.  Length is
-            coefs.shape[1]
+            ``coefs.shape[1]``
 
         """
         # Find bec's per process by pairing columns

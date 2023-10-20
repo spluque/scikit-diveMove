@@ -5,9 +5,9 @@
 ==========================
 
 Allan deviation analysis is a technique for quantifying the different
-sources of error affecting IMU measurements.  The `IMU` class features
-methods to fit a model to averaging times :math:`\tau` and Allan deviation
-estimates :math:`\sigma`.
+sources of error affecting IMU measurements.  The
+:py:mod:`imutools.IMUBase` class features methods to fit a model to
+averaging times :math:`\tau` and Allan deviation estimates :math:`\sigma`.
 
 .. jupyter-execute::
 
@@ -33,13 +33,13 @@ estimates :math:`\sigma`.
    pd.set_option("display.precision", 3)
    %matplotlib inline
 
-For demonstrating the methods available in the ``IMUBase`` class, IMU
-measurements from an Android mobile phone were collected for 6 hours at 100
-Hz frequency, but subsequently decimated to 10 Hz with a forward/backward
-filter to avoid phase shift.  The phone was kept immobile on a table,
-facing up, for the data collection period.  Note that two sets of
-measurements for the magnetometer and gyroscope were recorded: output and
-measured.  The type of measurement and the sensor axis constitute a
+For demonstrating the methods available in the :py:mod:`imutools.IMUBase`
+class, IMU measurements from an Android mobile phone were collected for 6
+hours at 100 Hz frequency, but subsequently decimated to 10 Hz with a
+forward/backward filter to avoid phase shift.  The phone was kept immobile
+on a table, facing up, for the data collection period.  Note that two sets
+of measurements for the magnetometer and gyroscope were recorded: output
+and measured.  The type of measurement and the sensor axis constitute a
 multi-index, which provide significant advantages for indexing, so these
 are rebuilt:
 

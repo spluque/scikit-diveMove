@@ -66,8 +66,9 @@ class BoutsNLS(bouts.Bouts):
         ----------
         start : pandas.DataFrame
             DataFrame with coefficients for each process in columns.
-        **kwargs : optional keyword arguments
-            Passed to `scipy.optimize.curve_fit`.
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`scipy.optimize.curve_fit`.
 
         Returns
         -------
@@ -93,7 +94,7 @@ class BoutsNLS(bouts.Bouts):
         -------
         out : numpy.ndarray, shape (n,)
             1-D array with BECs implied by `coefs`.  Length is
-            coefs.shape[1]
+            ``coefs.shape[1]``
 
         """
         # The metaclass implements this method
@@ -108,8 +109,9 @@ class BoutsNLS(bouts.Bouts):
             DataFrame with model coefficients in columns.
         ax : matplotlib.axes.Axes instance
             An Axes instance to use as target.
-        **kwargs : optional keyword arguments
-            Passed to `matplotlib.pyplot.gca`.
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`matplotlib.pyplot.gca`.
 
         Returns
         -------

@@ -43,7 +43,7 @@ def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
 
     Notes
     -----
-    See `skdiveMove.TDR.calibrate_speed` for details.
+    See :func:`~skdiveMove.TDR.calibrate_speed` for details.
 
     """
     # `gaussian_kde` expects variables in rows

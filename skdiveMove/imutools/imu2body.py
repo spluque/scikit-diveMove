@@ -71,7 +71,7 @@ def scatterIMU_svd(vectors, svd, R_ctr2i, normalize=False, center=False,
         vectors, sigma, right singular vectors).
     R_ctr2i : Rotation
         :class:`~scipy.spatial.transforms.Rotation` object describing the
-        rotation from the *centered* body frame to the ``IMU`` frame.
+        rotation from the *centered* body frame to the `IMU` frame.
     normalize : bool, optional
         Whether to normalize vectors.  Default assumes input is normalized.
     center : bool, optional
@@ -85,7 +85,7 @@ def scatterIMU_svd(vectors, svd, R_ctr2i, normalize=False, center=False,
         Output file for the animation.
     **kwargs
         Optional keyword arguments passed to
-        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).
+        :func:`~matplotlib.pyplot.figure` (e.g. `figsize`).
 
     Returns
     -------
@@ -178,7 +178,7 @@ def _scatterIMU_svd(vectors, svd, R_b2i, normalize=False, title=None,
         Output file for the animation.
     **kwargs
         Optional keyword arguments passed to
-        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).
+        :func:`~matplotlib.pyplot.figure` (e.g. `figsize`).
 
     Returns
     -------
@@ -266,7 +266,7 @@ def scatterIMU3D(vectors, col_vector, normalize=True, title=None,
         Title for the color bar.
     **kwargs
         Optional keyword arguments passed to
-        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).
+        :func:`~matplotlib.pyplot.figure` (e.g. `figsize`).
 
     Returns
     -------
@@ -316,7 +316,7 @@ def tsplotIMU_depth(vectors, depth, time_name=_TIME_NAME, **kwargs):
         Array with depth measurements.
     **kwargs : optional keyword arguments
         Arguments passed to :func:`~matplotlib.pyplot.subplots`
-        (e.g. ``figsize``).
+        (e.g. `figsize`).
 
     Returns
     -------
@@ -377,7 +377,7 @@ class IMU2Body(IMUBase):
     covariance matrix, rather than the unscaled correlation (outer product)
     of acceleration as the input for Singular Value Decomposition.
 
-    In addition to attributes in :class:`IMUBase`, ``IMU2Body`` adds the
+    In addition to attributes in :class:`IMUBase`, `IMU2Body` adds the
     attributes listed below.
 
     Attributes
@@ -466,7 +466,8 @@ class IMU2Body(IMUBase):
             diveMove's `diveStats` function.
         savgol_parms : tuple, optional
             A 2-element tuple with the window length and polynomial order
-            for the Savitzky-Golay filter to smooth acceleration.
+            for the Savitzky-Golay filter
+            (:func:`~scipy.signal.savgol_filter`) to smooth acceleration.
         **kwargs : optional keyword arguments
             Arguments passed to the `IMUBase.__init__` for instantiation,
             except `has_depth` because the input `Dataset` is assumed to
@@ -526,14 +527,15 @@ class IMU2Body(IMUBase):
             beginning of the next interval.
         savgol_parms : tuple, optional
             A 2-element tuple with the window length and polynomial order
-            for the Savitzky-Golay filter to smooth acceleration.
+            for the Savitzky-Golay filter
+            (:func:`~scipy.signal.savgol_filter`) to smooth acceleration.
         load_dataset_kwargs : dict, optional
             Dictionary of optional keyword arguments passed to
             :func:`xarray.load_dataset`.
-        **kwargs : optional keyword arguments
-            Additional arguments passed to :meth:`IMUBase.__init__` method,
-            except ``has_depth`` or ``imu_filename``.  The input
-            ``Dataset`` is assumed to have a depth ``DataArray``.
+        **kwargs
+            Optional keyword arguments passed to :meth:`IMUBase.__init__`
+            method, except `has_depth` or `imu_filename`.  The input
+            `Dataset` is assumed to have a depth `DataArray`.
 
         Returns
         -------
@@ -669,9 +671,9 @@ class IMU2Body(IMUBase):
             Index in surface details table to be analyzed.
         plot : bool, optional
             Whether to generate a plot of the estimate
-        **kwargs : optional keyword arguments
-            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and
-            ``animate`` are taken.
+        **kwargs
+            Optional keyword arguments passed to :meth:`scatterIMU_svd`.
+            Only `title` and `animate` are taken.
 
         Returns
         -------
@@ -749,7 +751,7 @@ class IMU2Body(IMUBase):
     def get_orientations(self):
         r"""Obtain orientation for all periods in surface details table
 
-        A quality index (``q``) for each estimate is calculated as:
+        A quality index (:math:`q`) for each estimate is calculated as:
 
         .. math::
 
@@ -814,8 +816,8 @@ class IMU2Body(IMUBase):
 
         Re-orient acceleration and magnetic density of IMU object relative
         to body frame, and return re-oriented IMU object.  Note that the
-        provided ``R_b2i`` must describe the rotation from the body frame
-        to the IMU frame.  The opposite rotation is applied to the
+        provided `R_b2i` must describe the rotation from the body frame to
+        the IMU frame.  The opposite rotation is applied to the
         acceleration and magnetic field vectors of the selected surface
         segment to orient the data in the body frame.
 
@@ -851,7 +853,7 @@ class IMU2Body(IMUBase):
     def orient_surfacings(self, R_all=None):
         """Apply orientation to all periods in surface details table
 
-        If the ``orientations`` attribute was filled, use it to build
+        If the `orientations` attribute was filled, use it to build
         multi-index dataframe, othewise, fill it.
 
         This method orients each segment independently, as opposed to a
@@ -871,7 +873,7 @@ class IMU2Body(IMUBase):
         Returns
         -------
         xarray.Dataset
-            Dataset with the re-oriented surface IMU objects.  If ``R_all``
+            Dataset with the re-oriented surface IMU objects.  If `R_all`
             was not provided, the Dataset contains an additional coordinate
             representing the surfacing period for each segment.
 
@@ -929,7 +931,7 @@ class IMU2Body(IMUBase):
         Returns
         -------
         xarray.Dataset
-            Dataset with the re-oriented IMU object.  If ``R_all`` was not
+            Dataset with the re-oriented IMU object.  If `R_all` was not
             provided, the Dataset contains an additional coordinate
             representing the surfacing period for each segment.
 
@@ -997,10 +999,10 @@ class IMU2Body(IMUBase):
         return imus
 
     def filter_surfacings(self, qual_thresh):
-        """Filter records from ``surface_details`` and ``orientations``
+        """Filter records from `surface_details` and `orientations`
 
-        Remove records from the ``surface_details`` and ``orientations``
-        attributes, based on ``quality`` and, optionally, duration of the
+        Remove records from the `surface_details` and `orientations`
+        attributes, based on `quality` and, optionally, duration of the
         surface period.  Records with quality higher than the specified
         value, and (optionally) duration lower than the specified number of
         seconds, are removed.
@@ -1082,7 +1084,7 @@ class IMU2Body(IMUBase):
             `vec_name="acceleration"`)
         **kwargs
             Optional keyword arguments passed to
-            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
+            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).
 
         Returns
         -------
@@ -1143,7 +1145,7 @@ class _TagTools(IMU2Body):
             Whether to generate a plot of the estimate
         **kwargs
             Optional keyword arguments passed to :meth:`scatterIMU_svd`.
-            Only ``title`` and ``animate`` are taken.
+            Only `title` and `animate` are taken.
 
         Returns
         -------

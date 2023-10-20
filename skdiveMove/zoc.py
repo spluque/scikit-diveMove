@@ -17,7 +17,6 @@ logger.addHandler(logging.NullHandler())
 class ZOC(TDRSource):
     """Perform zero offset correction
 
-    See help(ZOC) for inherited attributes.
 
     Attributes
     ----------
@@ -28,6 +27,11 @@ class ZOC(TDRSource):
         Name of the ZOC method used.
     zoc_filters : pandas.DataFrame
         DataFrame with output filters for method="filter"
+
+    Notes
+    -----
+    See ``help(ZOC)`` for inherited attributes. This class extends
+    :class:`TDRSource`.
 
     """
 
@@ -84,7 +88,7 @@ class ZOC(TDRSource):
         k : array_like
         probs : array_like
         **kwargs
-            Optional keyword arguments. For this method: ('depth_bounds'
+            Optional keyword arguments; for this method: ('depth_bounds'
             (defaults to range), 'na_rm' (defaults to True)).
 
         """

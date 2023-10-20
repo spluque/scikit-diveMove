@@ -54,14 +54,14 @@ class IMUcalibrate(IMUBase):
     temperature effects from an IMU device measuring motions of interest,
     provided the temperature is within the range observed in experiments.
 
-    In addition to attributes in :class:`IMUBase`, ``IMUcalibrate`` adds
-    the attributes listed below.
+    In addition to attributes in :class:`IMUBase`, `IMUcalibrate` adds the
+    attributes listed below.
 
     Attributes
     ----------
     periods : list
         List of slices with the beginning and ending timestamps defining
-        periods in ``x_calib`` where valid calibration data are available.
+        periods in `x_calib` where valid calibration data are available.
         Periods are assumed to be ordered chronologically.
     models_l : list
         List of dictionaries as long as there are periods, with each
@@ -70,7 +70,7 @@ class IMUcalibrate(IMUBase):
     axis_order : list
         List of characters specifying which axis ``x``, ``y``, or ``z`` was
         pointing in the same direction as gravity in each period in
-        ``periods``.
+        `periods`.
 
     Examples
     --------
@@ -150,7 +150,7 @@ class IMUcalibrate(IMUBase):
         axis_order : list
             List of characters specifying which axis ``x``, ``y``, or ``z``
             was pointing in the same direction as gravity in each period in
-            ``periods``.
+            `periods`.
         **kwargs
             Optional keyword arguments passed to the `IMUBase.__init__` for
             instantiation.
@@ -185,10 +185,10 @@ class IMUcalibrate(IMUBase):
             Dictionary of optional keyword arguments passed to
             :func:`xarray.load_dataset`.
         **kwargs
-            Additional keyword arguments passed to
-            :meth:`IMUcalibrate.__init__` method, except ``has_depth`` or
-            ``imu_filename``.  The input ``Dataset`` is assumed to have a
-            depth ``DataArray``.
+            Optional keyword arguments passed to
+            :meth:`IMUcalibrate.__init__` method, except `has_depth` or
+            `imu_filename`.  The input `Dataset` is assumed to have a depth
+            `DataArray`.
 
         Returns
         -------
@@ -215,7 +215,7 @@ class IMUcalibrate(IMUBase):
         Parameters
         ----------
         var : str
-            Name of the variable in ``x`` with tri-axial signals.
+            Name of the variable in `x` with tri-axial signals.
         period_idx : int
             Index of period to plot (zero-based).
         win_len : int
@@ -289,8 +289,9 @@ class IMUcalibrate(IMUBase):
             signal for characterizing the temperature relationship, and to
             calculate the standardized signal.
         **kwargs
-            Optional keyword arguments passed to `savgol_filter`
-            (e.g. ``win_len`` and ``polyorder``).
+            Optional keyword arguments passed to
+            :func:`~scipy.signal.savgol_filter` (e.g. `win_len` and
+            `polyorder`).
 
         Returns
         -------
@@ -442,17 +443,17 @@ class IMUcalibrate(IMUBase):
             "units_label" attribute available in the DataArray.
         **kwargs
             Optional keyword arguments passed to
-            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
+            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).
 
         Returns
         -------
         fig : matplotlib.Figure
         axs : array_like
-            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``
-            with IMU signal plots.
+            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with
+            IMU signal plots.
         axs_temp : array_like
-            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``
-            with temperature plots.
+            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with
+            temperature plots.
 
         See Also
         --------
@@ -545,14 +546,14 @@ class IMUcalibrate(IMUBase):
             Array of Axes instances to plot in.
         **kwargs
             Optional keyword arguments passed to
-            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
+            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).
 
         Returns
         -------
         fig : matplotlib.Figure
         axs : array_like
-            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``
-            with IMU signal plots.
+            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with
+            IMU signal plots.
 
         See Also
         --------
@@ -674,17 +675,17 @@ class IMUcalibrate(IMUBase):
             Array of Axes instances to plot in.
         **kwargs
             Optional keyword arguments passed to
-            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
+            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).
 
         Returns
         -------
         fig : matplotlib.Figure
         axs : array_like
-            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``
-            with IMU signal plots.
+            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with
+            IMU signal plots.
         axs_temp : array_like
-            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``
-            with temperature plots.
+            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with
+            temperature plots.
 
         See Also
         --------
@@ -869,7 +870,7 @@ class IMUcalibrate(IMUBase):
            Reference value for the chosen variable (e.g. gravity, for
            acceleration).
         axis : str, optional
-            Name of the sensor axis the signal comes from, if ``var`` is
+            Name of the sensor axis the signal comes from, if `var` is
             tri-axial; ignored otherwise.
 
         Returns
@@ -897,7 +898,7 @@ class IMUcalibrate(IMUBase):
 
     def apply_model(self, var, dataset, T_alpha=None, ref_vals=None,
                     use_axis_order=True, model_idx=None):
-        """Apply fitted temperature compensation model to Dataset
+        r"""Apply fitted temperature compensation model to Dataset
 
         The selected models for tri-axial sensor data are applied to input
         Dataset, standardizing signals at :math:`T_{\alpha}`, optionally
@@ -922,15 +923,15 @@ class IMUcalibrate(IMUBase):
             True, or ``x``, ``y``, ``z`` otherwise.
         use_axis_order : bool, optional
             Whether to use axis order from the instance.  If True, retrieve
-            model to apply using instance's ``axis_order`` attribute.
-            Otherwise, use the models defined by ``model_idx`` argument.
+            model to apply using instance's `axis_order` attribute.
+            Otherwise, use the models defined by `model_idx` argument.
             Ignored if `var` is monoaxial.
         model_idx : list or int, optional
             Sequence of three integers identifying the period (zero-based)
             from which to retrieve the models for ``x``, ``y``, and ``z``
-            sensor axes, in that order.  If ``var`` is monoaxial, an integer
+            sensor axes, in that order.  If `var` is monoaxial, an integer
             specifying the period for the model to use.  Ignored if
-            ``use_axis_order`` is True.
+            `use_axis_order` is True.
 
         Returns
         -------

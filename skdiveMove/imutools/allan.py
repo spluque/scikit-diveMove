@@ -63,8 +63,8 @@ def _line_fun(t, alpha, tau_crit, adev_crit):
 def allan_coefs(taus, adevs):
     """Compute Allan deviation coefficients for each error type
 
-    Given averaging intervals ``taus`` and corresponding Allan deviation
-    ``adevs``, compute the Allan deviation coefficient for each error type:
+    Given averaging intervals `taus` and corresponding Allan deviation
+    `adevs`, compute the Allan deviation coefficient for each error type:
 
     - Quantization
     - (Angle, Velocity) Random Walk

@@ -1,7 +1,8 @@
 """Tools to read and write DataArray and Dataset attributes
 
-Easily dump a template to set up metadata for a given Dataset or DataArray
-that can subsequenty be read-in and append attributes to the objects.
+Easily dump a template to set up metadata for a given
+:class:`~xarray.Dataset` or :class:`~xarray.DataArray` that can
+subsequently be read-in and append attributes to instances.
 
 
 Functions
@@ -90,8 +91,8 @@ _DATASET_CONFIG = {
 def dump_config_template(fname, config_type):
     """Dump configuration file
 
-    Dump a json configuration template file to build metadata for a Dataset
-    or DataArray.
+    Dump a json configuration template file to build metadata for a
+    :class:`~xarray.Dataset` or :class:`~xarray.DataArray`.
 
     Parameters
     ----------
@@ -120,7 +121,8 @@ def dump_config_template(fname, config_type):
 
 
 def assign_xr_attrs(obj, config_file):
-    """Assign attributes to xarray.Dataset or xarray.DataArray
+    """Assign attributes to :class:`~xarray.Dataset` or
+    :class:`~xarray.DataArray`
 
     The `config_file` should have only one-level of nesting.
 

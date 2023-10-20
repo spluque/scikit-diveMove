@@ -47,7 +47,7 @@ class IMUBase:
     Examples
     --------
     This example illustrates some of the issues encountered while reading
-    data files in a real-world scenario.  ``scikit-diveMove`` includes a
+    data files in a real-world scenario.  `scikit-diveMove` includes a
     NetCDF file with IMU signals collected using a Samsung Galaxy S5 mobile
     phone.  Set up instance from NetCDF example data:
 
@@ -90,19 +90,22 @@ class IMUBase:
             Dataset containing IMU sensor DataArrays, and optionally other
             DataArrays.
         acceleration_name : str, optional
-            Name of the acceleration ``DataArray`` in the ``Dataset``.
+            Name of the acceleration :class:`~xarray.DataArray` in the
+            `dataset`.
         angular_velocity_name : str, optional
-            Name of the angular velocity ``DataArray`` in the ``Dataset``.
+            Name of the angular velocity :class:`~xarray.DataArray` in the
+            `dataset`.
         magnetic_density_name : str, optional
-            Name of the magnetic density ``DataArray`` in the ``Dataset``.
+            Name of the magnetic density :class:`~xarray.DataArray` in the
+            `dataset`.
         time_name : str, optional
-            Name of the time dimension in the dataset.
+            Name of the time dimension in the `dataset`.
         has_depth : bool, optional
             Whether input data include depth measurements.
         depth_name : str, optional
-            Name of the depth ``DataArray`` in the ``Dataset``.
+            Name of the depth :class:`~xarray.DataArray` in the `dataset`.
         imu_filename : str, optional
-            Name of the file from which ``dataset`` originated.
+            Name of the file from which `dataset` originated.
 
         """
         self.time_name = time_name
@@ -130,7 +133,7 @@ class IMUBase:
                     **kwargs):
         """Instantiate object by loading Dataset from NetCDF file
 
-        Provided all ``DataArray`` in the NetCDF file have the same
+        Provided all `DataArrays` in the NetCDF file have the same
         dimensions (N, 3), this is an efficient way to instantiate.
 
         Parameters
@@ -138,17 +141,19 @@ class IMUBase:
         imu_file : str
             As first argument for :func:`xarray.load_dataset`.
         acceleration_name : str, optional
-            Name of the acceleration ``DataArray`` in the ``Dataset``.
+            Name of the acceleration :class:`~xarray.DataArray` in the
+            :class:`~xarray.Dataset`.
         angular_velocity_name : str, optional
-            Name of the angular velocity ``DataArray`` in the ``Dataset``.
+            Name of the angular velocity :class:`~xarray.DataArray` in the
+            :class:`~xarray.Dataset`.
         magnetic_density_name : str, optional
-            Name of the magnetic density ``DataArray`` in the ``Dataset``.
-        dimension_names : list, optional
-            Names of the dimensions of the data in each of the sensors.
+            Name of the magnetic density :class:`~xarray.DataArray` in the
+            :class:`~xarray.Dataset`.
         has_depth : bool, optional
             Whether input data include depth measurements.
         depth_name : str, optional
-            Name of the depth ``DataArray`` in the ``Dataset``.
+            Name of the depth :class:`~xarray.DataArray` in the
+            :class:`~xarray.Dataset`.
         **kwargs
             Optional keyword arguments passed to
             :func:`xarray.load_dataset`.
@@ -185,7 +190,7 @@ class IMUBase:
         ----------
         sensor : str
             Attribute name of the sensor of interest
-        taus : float, str
+        taus : {float, str}
             Tau value, in seconds, for which to compute statistic.  Can be
             one of "octave" or "decade" for automatic generation of the
             value.
@@ -222,9 +227,9 @@ class IMUBase:
         This procedure implements the autonomous regression method for
         Allan variance described in [1]_.
 
-        Given averaging intervals ``taus`` and corresponding Allan
-        deviation ``adevs``, compute the Allan deviation coefficient for
-        each error type:
+        Given averaging intervals `taus` and corresponding Allan deviation
+        `adevs`, compute the Allan deviation coefficient for each error
+        type:
 
           - Quantization
           - (Angle, Velocity) Random Walk
@@ -236,7 +241,7 @@ class IMUBase:
         ----------
         sensor : str
             Attribute name of the sensor of interest
-        taus : float, str
+        taus : {float, str}
             Tau value, in seconds, for which to compute statistic.  Can be
             one of "octave" or "decade" for automatic generation of the
             value.
@@ -247,9 +252,9 @@ class IMUBase:
             Allan deviation coefficient and corresponding averaging time
             for each sensor axis and error type.
         adevs : pandas.DataFrame
-            `MultiIndex` DataFrame with Allan deviation, corresponding
-            averaging time, and fitted ARMAV model estimates of the
-            coefficients for each sensor axis and error type.
+            :class:`~pandas.MultiIndex` DataFrame with Allan deviation,
+            corresponding averaging time, and fitted ARMAV model estimates
+            of the coefficients for each sensor axis and error type.
 
         Notes
         -----
@@ -313,8 +318,8 @@ class IMUBase:
         ----------
         method : str, optional
             Name of the filtering method to use.
-        **kwargs : optional keyword arguments
-            Arguments passed to filtering method.
+        **kwargs
+            Optional keyword arguments passed to filtering method.
 
         """
         orienter_cls = getattr(filters, method)

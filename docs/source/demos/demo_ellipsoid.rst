@@ -55,10 +55,10 @@ axes to cover a large surface of the sphere.
    magnt = magnt_accel["magnetic_density"].to_numpy()
    accel = magnt_accel["acceleration"].to_numpy()
 
-The function `fit_ellipsoid` returns the offset, gain, and rotation matrix
-(if requested) necessary to correct the sensor's data.  There are six types
-of constraint to impose on the result, including which radii should be
-equal, and whether the data should be rotated.
+The function :func:`imutools.fit_ellipsoid` returns the offset, gain, and
+rotation matrix (if requested) necessary to correct the sensor's data.
+There are six types of constraint to impose on the result, including which
+radii should be equal, and whether the data should be rotated.
 
 .. jupyter-execute::
    :linenos:

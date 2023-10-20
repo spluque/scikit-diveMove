@@ -330,8 +330,9 @@ class BoutsMLE(bouts.Bouts):
             with coefficients of the solution.
         ax : matplotlib.axes.Axes instance
             An Axes instance to use as target.
-        **kwargs : optional keyword arguments
-            Passed to `matplotlib.pyplot.gca`.
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`matplotlib.pyplot.gca`.
 
         Returns
         -------

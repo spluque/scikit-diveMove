@@ -19,7 +19,7 @@ def _load_dataset(filename_or_obj, **kwargs):
     ----------
     filename_or_obj : str, Path or xarray.backends.*DataStore
         String indicating the file where the data comes from.
-    **kwargs :
+    **kwargs
         Keyword arguments passed to :func:`~xarray.load_dataset`.
 
     Returns

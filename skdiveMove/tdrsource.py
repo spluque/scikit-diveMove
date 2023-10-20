@@ -12,7 +12,7 @@ _SPEED_NAMES = ["velocity", "speed"]
 class TDRSource:
     """Define TDR data source
 
-    Use xarray.Dataset to ensure pseudo-standard metadata
+    Use :class:`~xarray.Dataset` to ensure pseudo-standard metadata
 
     Attributes
     ----------
@@ -103,8 +103,12 @@ class TDRSource:
         has_speed : bool, optional
             Weather data includes speed measurements. Column name must be
             one of ["velocity", "speed"].  Default: False.
-        **kwargs : optional keyword arguments
-            Arguments passed to :func:`xarray.load_dataset`.
+        **kwargs
+            Optional keyword arguments passed to :func:`xarray.load_dataset`.
+
+        See Also
+        --------
+        xarray.Dataset, xarray.load_dataset
 
         Returns
         -------
