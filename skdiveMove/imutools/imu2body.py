@@ -83,8 +83,9 @@ def scatterIMU_svd(vectors, svd, R_ctr2i, normalize=False, center=False,
         Whether to animate the plot.
     animate_file : str, optional
         Output file for the animation.
-    **kwargs : optional keyword arguments
-        Arguments passed to `pyplot.figure` (e.g. ``figsize``).
+    **kwargs
+        Optional keyword arguments passed to
+        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).
 
     Returns
     -------
@@ -175,8 +176,9 @@ def _scatterIMU_svd(vectors, svd, R_b2i, normalize=False, title=None,
         Whether to animate the plot.
     animate_file : str, optional
         Output file for the animation.
-    **kwargs : optional keyword arguments
-        Arguments passed to `pyplot.figure` (e.g. ``figsize``).
+    **kwargs
+        Optional keyword arguments passed to
+        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).
 
     Returns
     -------
@@ -262,8 +264,9 @@ def scatterIMU3D(vectors, col_vector, normalize=True, title=None,
         Output file for the animation.
     cbar_label : str, optional
         Title for the color bar.
-    **kwargs : optional keyword arguments
-        Arguments passed to `pyplot.figure` (e.g. ``figsize``).
+    **kwargs
+        Optional keyword arguments passed to
+        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).
 
     Returns
     -------
@@ -534,7 +537,7 @@ class IMU2Body(IMUBase):
 
         Returns
         -------
-        `IMU2Body`
+        IMU2Body
 
         """
         # Read CSV
@@ -764,12 +767,12 @@ class IMU2Body(IMUBase):
             DataFrame indexed the by the rows of the surface details table,
             and having the following columns:
 
-            - ``R``: Rotation
-            - ``SVD``: SVD matrices
-            - ``quality``: Tuple (quality index, std) for the estimate
-            - ``phi``: Roll angle (degrees) from body to IMU frame
-            - ``theta``: Pitch angle (degrees) from body to IMU frame
-            - ``psi``: Yaw angle (degrees) from body to IMU frame
+              - ``R``: Rotation
+              - ``SVD``: SVD matrices
+              - ``quality``: Tuple (quality index, std) for the estimate
+              - ``phi``: Roll angle (degrees) from body to IMU frame
+              - ``theta``: Pitch angle (degrees) from body to IMU frame
+              - ``psi``: Yaw angle (degrees) from body to IMU frame
 
         See Also
         --------
@@ -1037,8 +1040,8 @@ class IMU2Body(IMUBase):
         smoothed_accel : bool, optional
             Whether to plot the smoothed acceleration (if
             `vec_name="acceleration"`)
-        **kwargs : optional keyword arguments
-            Arguments passed to :meth:`scatterIMU3D`.
+        **kwargs
+            Optional keyword arguments passed to :meth:`scatterIMU3D`.
 
         Returns
         -------
@@ -1077,9 +1080,9 @@ class IMU2Body(IMUBase):
         smoothed_accel : bool, optional
             Whether to plot the smoothed acceleration (if
             `vec_name="acceleration"`)
-        **kwargs : optional keyword arguments
-            Arguments passed to :func:`~matplotlib.pyplot.subplots`
-            (e.g. ``figsize``).
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
 
         Returns
         -------
@@ -1138,9 +1141,9 @@ class _TagTools(IMU2Body):
             Index in surface details table to be analyzed.
         plot : bool, optional
             Whether to generate a plot of the estimate
-        **kwargs : optional keyword arguments
-            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and
-            ``animate`` are taken.
+        **kwargs
+            Optional keyword arguments passed to :meth:`scatterIMU_svd`.
+            Only ``title`` and ``animate`` are taken.
 
         Returns
         -------

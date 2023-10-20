@@ -20,7 +20,7 @@ def _load_dataset(filename_or_obj, **kwargs):
     filename_or_obj : str, Path or xarray.backends.*DataStore
         String indicating the file where the data comes from.
     **kwargs :
-        Arguments passed to `xarray.load_dataset`.
+        Keyword arguments passed to :func:`~xarray.load_dataset`.
 
     Returns
     -------
@@ -194,7 +194,6 @@ def _speed_stats(x, vdist=None):
     ----------
     x : pandas.Series
         Series with speed measurements.
-
     vdist : float, optional
         Vertical distance corresponding to `x`.
 

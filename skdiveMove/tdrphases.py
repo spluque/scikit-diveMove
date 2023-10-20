@@ -84,21 +84,61 @@ class TDRPhases(ZOC):
                    interp_wet=False):
         """Detect wet/dry activity phases
 
+        A categorical variable is then created with value ``L`` (dry) for
+        rows with null depth samples and value ``W`` (wet) otherwise. This
+        assumes that TDRs were programmed to turn off recording of depth
+        when instrument is dry (typically by means of a salt-water
+        switch). If this assumption cannot be made for any reason, then a
+        boolean vector as long as the time series can be supplied to
+        indicate which observations should be considered wet. The duration
+        of each of these phases of activity is subsequently calculated.  If
+        the duration of a dry phase (``L``) is less than a threshold
+        (configuration variable `dry_thr`), then the values in the factor
+        for that phase are changed to ``W`` (wet). The duration of phases
+        is then recalculated, and if the duration of a phase of wet
+        activity is less than another threshold (variable `wet_thr`), then
+        the corresponding value for the factor is changed to ``Z`` (trivial
+        wet). The durations of all phases are recalculated a third time to
+        provide final phase durations.
+
+        Some instruments produce a peculiar pattern of missing data near
+        the surface, at the beginning and/or end of dives. The argument
+        ``interp_wet`` may help to rectify this problem by using an
+        interpolating spline function to impute the missing data,
+        constraining the result to a minimum depth of zero.  Please note
+        that this optional step is performed after ZOC and before
+        identifying dives, so that interpolation is performed through dry
+        phases coded as wet because their duration was briefer than
+        `dry_thr`.  Therefore, `dry_thr` must be chosen carefully to avoid
+        interpolation through legitimate dry periods.
+
         Parameters
         ----------
         dry_thr : float, optional
+            Dry error threshold in seconds. Dry phases shorter than this
+            threshold will be considered as wet.
         wet_cond : bool mask, optional
-            A Pandas.Series bool mask indexed as `depth`.  Default is
-            generated from testing for non-missing `depth`.
+            A Pandas.Series bool mask indexed as `depth`. It indicates
+            which observations should be considered wet. If it is not
+            provided, records with non-missing depth are assumed to
+            correspond to wet conditions. Default is generated from testing
+            for non-missing `depth`.
         wet_thr : float, optional
+            Wet threshold in seconds. At-sea phases shorter than this
+            threshold will be considered as trivial wet.
         interp_wet : bool, optional
+            If `True`, then an interpolating spline function is used to
+            impute NA depths in wet periods (after ZOC). Use with
+            caution: it may only be useful in cases where the missing data
+            pattern in wet periods is restricted to shallow depths near the
+            beginning and end of dives. This pattern is common in some
+            satellite-linked `TDRs`.
 
         Notes
         -----
 
-        See details for arguments in diveMove's ``calibrateDepth``.  Unlike
-        `diveMove`, the beginning/ending times for each phase are not
-        stored with the class instance, as this information can be
+        Unlike `diveMove`, the beginning/ending times for each phase are
+        not stored with the class instance, as this information can be
         retrieved via the :meth:`~TDR.time_budget` method.
 
         Examples
@@ -170,15 +210,27 @@ class TDRPhases(ZOC):
         """Identify dive events
 
         Set the ``dives`` attribute's "row_ids" dictionary element, and
-        update the ``wet_act`` attribute's "phases" dictionary element.
+        update the ``wet_act`` attribute's "phases" dictionary
+        element. Whenever the zero-offset corrected depth in an underwater
+        phase is below the specified dive threshold.  A new categorical
+        variable with finer levels of activity is thus generated, including
+        ``U`` (underwater), and ``D`` (diving) in addition to the ones
+        described above.
+
+        Once dives have been detected and assigned to a period of wet
+        activity, phases within dives are identified using the descent,
+        ascent and wiggle criteria (see Detection of dive phases below).
+        This procedure generates a categorical variable with levels ``D``,
+        ``DB``, ``B``, ``BA``, ``DA``, ``A``, and ``X``, breaking the input
+        into descent, descent/bottom, bottom, bottom/ascent, ascent,
+        descent/ascent (occurring when no bottom phase can be detected) and
+        non-dive (surface), respectively.
 
         Parameters
         ----------
         dive_thr : float
-
-        Notes
-        -----
-        See details for arguments in diveMove's ``calibrateDepth``.
+            Threshold depth below which an underwater phase should be
+            considered a dive.
 
         Examples
         --------
@@ -219,21 +271,105 @@ class TDRPhases(ZOC):
     def detect_dive_phases(self, dive_model, smooth_par=0.1,
                            knot_factor=3, descent_crit_q=0,
                            ascent_crit_q=0):
-        """Detect dive phases
+        r"""Detect dive phases
 
-        Complete filling the ``dives`` attribute.
+        Complete filling the `dives` attribute. The process for each dive
+        begins by taking all observations below the dive detection
+        threshold, and setting the beginning and end depths to zero, at
+        time steps prior to the first and after the last, respectively.
+        The latter ensures that descent and ascent derivatives are
+        non-negative and non-positive, respectively, so that the end and
+        beginning of these phases are not truncated. The next step is to
+        fit a model to each dive. Two models can be chosen for this
+        purpose: `unimodal` (default) and `smooth.spline` (see Notes).
+
+        Both models consist of a cubic spline, and its first derivative is
+        evaluated to investigate changes in vertical rate. Therefore, at
+        least 4 observations are required for each dive, so the time series
+        is linearly interpolated at equally spaced time steps if this limit
+        is not achieved in the current dive. Wiggles at the beginning and
+        end of the dive are assumed to be zero offset correction errors, so
+        depth observations at these extremes are interpolated between zero
+        and the next observations when this occurs.
 
         Parameters
         ----------
         dive_model : {"unimodal", "smooth.spline"}
+            Model to use for each dive for the purpose of dive phase
+            identification.  One of `smooth.spline` or `unimodal`, to
+            choose among smoothing spline or unimodal regression. For dives
+            with less than five observations, smoothing spline regression
+            is used regardless.
         smooth_par : float, optional
+            Amount of smoothing when ``dive.model="smooth.spline"``. If it
+            is `None`, then the smoothing parameter is determined by
+            Generalized Cross-validation (GCV). Ignored with default
+            ``dive.model="unimodal"``.
         knot_factor : int, optional
+            Multiplier for the number of samples in the dive.  This is used
+            to construct the time predictor for the derivative.
         descent_crit_q : float, optional
+            Critical quantile of rates of descent below which descent is
+            deemed to have ended.
         ascent_crit_q : float, optional
+            Critical quantile of rates of ascent above which ascent is
+            deemed to have started.
 
         Notes
         -----
-        See details for arguments in diveMove's ``calibrateDepth``.
+
+        1. Unimodal method: in this default model, the spline is
+        constrained to be unimodal [2]_, assuming the diver must return to
+        the surface to breathe. The model is fitted using `R`'s `uniReg`
+        package. This model and constraint are consistent with the
+        definition of dives in air-breathers, so is appropriate for this
+        group of divers. A major advantage of this approach over the next
+        one is that the degree of smoothing is determined via restricted
+        maximum likelihood, and has no influence on identifying the
+        transition between descent and ascent. Therefore, unimodal
+        regression splines make the latter transition clearer compared to
+        using smoothing splines. Note that dives with less than five
+        samples are fit using smoothing splines regardless, as they produce
+        the same fit as unimodal regression but much faster. Therefore,
+        ensure that the parameters for that model are appropriate for the
+        data, although defaults are reasonable.
+
+        2. Smooth spline: in this model, specified via
+        ``dive_model="smooth.spline"``, a smoothing spline is used to model
+        each dive, using the chosen smoothing parameter. Dive phases
+        identified via this model, however, are highly sensitive to the
+        degree of smoothing (`smooth_par`) used, thus making it difficult
+        to determine what amount of smoothing is adequate.
+
+        The first derivative of the spline is evaluated at a set of knots
+        to calculate the vertical rate throughout the dive and determine
+        the end of descent and beginning of ascent. This set of knots is
+        established using a regular time sequence with beginning and end
+        equal to the extremes of the input sequence, and with length equal
+        to :math:`N \times knot\_factor`. Equivalent procedures are used
+        for detecting descent and ascent phases.
+
+        Once one of the models above has been fitted to each dive, the
+        quantile corresponding to (`descent_crit_q`) of all the positive
+        derivatives (rate of descent) at the beginning of the dive is used
+        as threshold for determining the end of descent. Descent is deemed
+        to have ended at the *first* minimum derivative, and the nearest
+        input time observation is considered to indicate the end of
+        descent. The sign of the comparisons is reversed for detecting the
+        ascent. If observed depth to the left and right of the derivative
+        defining the ascent are the same, the right takes precedence.
+
+        The particular dive phase categories are subsequently defined using
+        simple set operations.
+
+        References
+        ----------
+
+        .. [2] Koellmann, C., Ickstadt, K. and Fried, R. (2014) Beyond
+           unimodal regression: modelling multimodality with piecewise
+           unimodal, mixture or additive regression. Technical Report
+           8. `<https://sfb876.tu-dortmund.de/FORSCHUNG/techreports.html>`_,
+           SFB 876, TU Dortmund
 
         Examples
         --------

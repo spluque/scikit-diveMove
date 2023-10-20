@@ -151,8 +151,9 @@ class IMUcalibrate(IMUBase):
             List of characters specifying which axis ``x``, ``y``, or ``z``
             was pointing in the same direction as gravity in each period in
             ``periods``.
-        **kwargs : optional keyword arguments
-            Arguments passed to the `IMUBase.__init__` for instantiation.
+        **kwargs
+            Optional keyword arguments passed to the `IMUBase.__init__` for
+            instantiation.
 
         """
         super(IMUcalibrate, self).__init__(x_calib, **kwargs)
@@ -183,10 +184,11 @@ class IMUcalibrate(IMUBase):
         load_dataset_kwargs : dict, optional
             Dictionary of optional keyword arguments passed to
             :func:`xarray.load_dataset`.
-        **kwargs : optional keyword arguments
-            Additional arguments passed to :meth:`IMUcalibrate.__init__`
-            method, except ``has_depth`` or ``imu_filename``.  The input
-            ``Dataset`` is assumed to have a depth ``DataArray``.
+        **kwargs
+            Additional keyword arguments passed to
+            :meth:`IMUcalibrate.__init__` method, except ``has_depth`` or
+            ``imu_filename``.  The input ``Dataset`` is assumed to have a
+            depth ``DataArray``.
 
         Returns
         -------
@@ -245,7 +247,8 @@ class IMUcalibrate(IMUBase):
 
     def build_tmodels(self, var, T_alpha=None, T_brk=None,
                       use_axis_order=False, filter_sig=True, **kwargs):
-        r"""Build temperature models for experimental tri-axial IMU sensor signals
+        r"""Build temperature models for experimental tri-axial IMU sensor
+        signals
 
         Perform thermal compensation on *motionless* tri-axial IMU sensor
         data.  A simple approach is used for the compensation:
@@ -285,26 +288,26 @@ class IMUcalibrate(IMUBase):
             correction.  Default is to apply a Savitzky-Golay filter to the
             signal for characterizing the temperature relationship, and to
             calculate the standardized signal.
-        **kwargs : optional keyword arguments
-            Arguments passed to `savgol_filter` (e.g. ``win_len`` and
-            ``polyorder``).
+        **kwargs
+            Optional keyword arguments passed to `savgol_filter`
+            (e.g. ``win_len`` and ``polyorder``).
 
         Returns
         -------
         list
             List of tuples as long as there are periods, with tuple elements:
 
-            - Dictionary with regression model objects for each sensor
-              axis.
-            - DataFrame with hierarchical column index with sensor axis
-              label at the first level.  The following columns are in the
-              second level:
+              - Dictionary with regression model objects for each sensor
+                axis.
+              - DataFrame with hierarchical column index with sensor axis
+                label at the first level.  The following columns are in the
+                second level:
 
-              - temperature
-              - var_name
-              - var_name_pred
-              - var_name_temp_refC
-              - var_name_adj
+                  - temperature
+                  - var_name
+                  - var_name_pred
+                  - var_name_temp_refC
+                  - var_name_adj
 
         Notes
         -----
@@ -437,9 +440,9 @@ class IMUcalibrate(IMUBase):
         units_label : str, optional
             Label for the units of the chosen variable.  Defaults to the
             "units_label" attribute available in the DataArray.
-        **kwargs : optional keyword arguments
-            Arguments passed to :func:`~matplotlib.pyplot.subplots`
-            (e.g. ``figsize``).
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
 
         Returns
         -------
@@ -540,9 +543,9 @@ class IMUcalibrate(IMUBase):
             "units_label" attribute available in the DataArray.
         axs : array_like, optional
             Array of Axes instances to plot in.
-        **kwargs : optional keyword arguments
-            Arguments passed to :func:`~matplotlib.pyplot.subplots`
-            (e.g. ``figsize``).
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
 
         Returns
         -------
@@ -669,9 +672,9 @@ class IMUcalibrate(IMUBase):
             the plot for reference.
         axs : array_like, optional
             Array of Axes instances to plot in.
-        **kwargs : optional keyword arguments
-            Arguments passed to :func:`~matplotlib.pyplot.subplots`
-            (e.g. ``figsize``).
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).
 
         Returns
         -------

@@ -275,4 +275,4 @@ Compare cumulative frequency distributions:
    x_mle.plot_ecdf(fit2, ax=axs[1]);
 
 Feel free to download a copy of this demo
-(:jupyter-download:script:`demo_simulbouts`).
+(:jupyter-download-script:`demo_simulbouts`).

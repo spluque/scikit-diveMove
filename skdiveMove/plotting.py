@@ -47,7 +47,7 @@ def _plot_dry_time(times_dataframe, ax):
     Parameters
     ----------
     times_dataframe : pandas.DataFrame
-    ax: Axes object
+    ax: matplotlib.axes.Axes
 
     """
     for idx, row in times_dataframe.iterrows():
@@ -69,12 +69,12 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
         (N,) array with depth measurements.
     concur_vars : pandas.Series or pandas.Dataframe
         (N,) Series or dataframe with additional data to plot in subplot.
-    xlim : 2-tuple/list, optional
+    xlim : array_like, optional
         Minimum and maximum limits for ``x`` axis.  Ignored when
         ``concur_vars=None``.
-    ylim : 2-tuple/list, optional
+    ylim : array_like, optional
         Minimum and maximum limits for ``y`` axis for data other than depth.
-    depth_lim : 2-tuple/list, optional
+    depth_lim : array_like, optional
         Minimum and maximum limits for depth to plot.
     xlab : str, optional
         Label for ``x`` axis.
@@ -102,7 +102,8 @@ def plot_tdr(depth, concur_vars=None, xlim=None, depth_lim=None,
     Returns
     -------
     tuple
-        Pyplot Figure and Axes instances.
+        :class:`~matplotlib.figure.Figure`,
+        :class:`~matplotlib.axes.Axes` instances.
 
     """
     sunsets, sunrises = _night(depth.index,
@@ -194,18 +195,18 @@ def _plot_zoc_filters(depth, zoc_filters, xlim=None, ylim=None,
     zoc_filters : pandas.DataFrame
         DataFrame with ZOC filters in columns.  Must have the same number
         of records as `depth`.
-    xlim : 2-tuple/list
-    ylim : 2-tuple/list
+    xlim, ylim : array_like
     ylab : str
         Label for `y` axis.
-    **kwargs : optional keyword arguments
-        Passed to `matplotlib.pyplot.subplots`.  It can be any keyword,
-        except for `sharex` or `sharey`.
+    **kwargs
+        Optional keyword arguments passed to `matplotlib.pyplot.subplots`.
+        It can be any keyword, except for `sharex` or `sharey`.
 
     Returns
     -------
     tuple
-        Pyplot Figure and Axes instances.
+        :class:`~matplotlib.figure.Figure`,
+        :class:`~matplotlib.axes.Axes` instances.
 
     """
     nfilters = zoc_filters.shape[1]
@@ -260,31 +261,29 @@ def plot_dive_model(x, depth_s, depth_deriv, d_crit, a_crit,
     Parameters
     ----------
     x : pandas.Series
-      Time-indexed depth measurements.
+        Time-indexed depth measurements.
     depth_s : pandas.Series
-      Time-indexed smoothed depth.
+        Time-indexed smoothed depth.
     depth_deriv : pandas.Series
-      Time-indexed derivative of depth smoothing spline.
-    d_crit : int
-      Integer denoting the index where the descent ends in the observed
-      time series.
-    a_crit : int
-      Integer denoting the index where the ascent begins in the observed
-      time series.
-    d_crit_rate : float
-      Vertical rate of descent corresponding to the quantile used.
-    a_crit_rate :
-      Vertical rate of ascent corresponding to the quantile used.
+        Time-indexed derivative of depth smoothing spline.
+    d_crit, a_crit : int
+        Integer denoting the index where the descent ends, or the ascent
+        begins in the observed time series, respectively.
+    d_crit_rate, a_crit_rate : float
+        Vertical rate of descent or ascent corresponding to the quantile
+        used, respectively.
     leg_title : str, optional
-      Title for the plot legend (e.g. dive number being plotted).
-    **kwargs : optional keyword arguments
-        Passed to `matplotlib.pyplot.subplots`.  It can be any keyword,
-        except `sharex`.
+        Title for the plot legend (e.g. dive number being plotted).
+    **kwargs
+        Optional keyword arguments passed to
+        :func:`~matplotlib.pyplot.subplots`. It can be any keyword, except
+        `sharex`.
 
     Returns
     -------
     tuple
-        Pyplot Figure and Axes instances.
+        :class:`~matplotlib.figure.Figure`,
+        :class:`~matplotlib.axes.Axes` instances.
 
     Notes
     -----

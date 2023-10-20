@@ -1,5 +1,6 @@
 """TDR objects homologous to `R` package diveMove's main classes
 
+
 """
 
 import logging
@@ -58,8 +59,9 @@ class TDR(TDRPhases):
         ----------
         *args : positional arguments
             Passed to :meth:`TDRPhases.__init__`
-        **kwargs : keyword arguments
-            Passed to :meth:`TDRPhases.__init__`
+        **kwargs
+            Optional keyword arguments passed to
+            :meth:`TDRPhases.__init__`.
 
         """
         TDRPhases.__init__(self, *args, **kwargs)
@@ -87,7 +89,9 @@ class TDR(TDRPhases):
                         **kwargs):
         """Calibrate speed measurements
 
-        Set the `speed_calib_fit` attribute
+        Set the `speed_calib_fit` attribute. This method calibrates speed
+        readings following the procedure outlined in Blackwell et.
+        al. (1999) [1]_.
 
         Parameters
         ----------
@@ -102,10 +106,22 @@ class TDR(TDRPhases):
             calibration.
         bad : array_like, optional
             Two-element `array_like` indicating that only rates of depth
-            change and speed greater than the given value should be used
+            change and speed greater than the given values should be used
             for calibration, respectively.
-        **kwargs : optional keyword arguments
-            Passed to :func:`~speedcal.calibrate_speed`
+        **kwargs
+            Optional keyword arguments listed below.
+        plot : bool, default True
+            Whether to plot calibration results.
+        ax : matplotlib.Axes, optional
+            A :class:`~matplotlib.axes.Axes` instance to use as target.
+            Default is to create one.
+
+        References
+        ----------
+
+        .. [1] Blackwell S, Haverl C, Le Boeuf B, Costa D (1999). A method
+           for calibrating swim-speed recorders.  Marine Mammal Science
+           15(3):894-905.
 
         Examples
         --------
@@ -143,6 +159,42 @@ class TDR(TDRPhases):
         Returns
         -------
         pandas.DataFrame
+            DataFrame indexed by dive number, having the following columns:
+
+              - ``begdesc``: time stamp for the start of each dive;
+              - ``enddesc``: time stamp for the descent's end;
+              - ``begasc``: time stamp for the beginning of the ascent;
+              - ``desctime``: duration of descent;
+              - ``botttim``: duration of the bottom phase;
+              - ``asctim``: duration of ascent;
+              - ``divetim``: dive duration;
+              - ``descdist``: last descent depth;
+              - ``bottdist``: sum of the absolute depth differences while
+                at the bottom of the dive; a measure of the amount of
+                "wiggling" while at the bottom;
+              - ``ascdist``: first ascent depth;
+              - ``bottdep_mean``: mean bottom depth;
+              - ``bottdep_median``: median bottom depth;
+              - ``bottdep_sd``: standard deviation of bottom depths;
+              - ``maxdep``: maximum depth;
+              - ``desc_tdist``: descent total distance, estimated from speed;
+              - ``desc_mean_speed``: descent mean speed;
+              - ``desc_angle``: descent mean speed;
+              - ``bott_tdist``: total distance at the bottom, estimated
+                from speed;
+              - ``bott_mean_speed``: mean speed at the bottom;
+              - ``asc_tdist``: ascent total distance, estimated from speed;
+              - ``asc_mean_speed``: ascent mean speed;
+              - ``asc_angle``: ascent angle, relative to bottom plane;
+              - ``postdive_dur``: postdive duration;
+              - ``postdive_tdist``: postdive total distance, estimated from
+                speed;
+              - ``postdive_mean_speed``: postdive mean speed.
+
+            If `depth_deriv=True` (default), 21 additional columns with the
+            minimum, first quartile, median, mean, third quartile, maximum,
+            and standard deviation of the depth derivative for each phase
+            of the dive are included.
 
         Notes
         -----
@@ -256,8 +308,37 @@ class TDR(TDRPhases):
             select additional data to plot.
         concur_var_titles : str or list, optional
             String or list of strings with y-axis labels for `concur_vars`.
-        **kwargs : optional keyword arguments
-            Arguments passed to plotting function.
+        **kwargs
+            Optional keyword arguments passed to plotting function,
+            including those listed below. Additional arguments are passed
+            to underlying plotting method.
+        xlim : tuple of (float, float)
+            Minimum and maximum limits for ``x`` axis.  Ignored when
+            ``concur_vars=None``.
+        ylim : tuple of (float, float)
+            Minimum and maximum limits for ``y`` axis for data other than
+            depth.
+        depth_lim : array_like of (float, float)
+            Minimum and maximum limits for depth to plot.
+        xlab : str
+            Label for ``x`` axis.
+        ylab_depth : str
+            Label for ``y`` axis for depth.
+        xlab_format : str
+            Format string for formatting the ``x`` axis.
+        sunrise_time : str
+            Time of sunrise, in 24 hr format.  This is used for shading night
+            time.
+        sunset_time : str
+            Time of sunset, in 24 hr format.  This is used for shading night
+            time.
+        night_col : str
+            Color for shading night time.
+        dry_time : pandas.DataFrame
+            Two-column DataFrame with beginning and ending times corresponding
+            to periods considered to be dry.
+        phase_cat : pandas.Series
+            Categorical series dividing rows into sections.
 
         Returns
         -------
@@ -305,11 +386,16 @@ class TDR(TDRPhases):
     def plot_zoc(self, xlim=None, ylim=None, **kwargs):
         """Plot zero offset correction filters
 
+        Compare the zero-offset corrected depth with the uncorrected
+        signal, or the progress attained in each of the filters during
+        recursive filtering for zero-offset correction, as illustrated in
+        Luque and Fried (2011) [3]_.
+
         Parameters
         ----------
-        xlim, ylim : 2-tuple/list, optional
-            Minimum and maximum limits for ``x``- and ``y``-axis,
-            respectively.
+        xlim, ylim : array_like, optional
+            array_like with minimum and maximum limits for ``x``- and
+            ``y``-axis, respectively.
         **kwargs : optional keyword arguments
             Passed to :func:`~matplotlib.pyplot.subplots`.
 
@@ -383,8 +469,9 @@ class TDR(TDRPhases):
             String or list of strings with y-axis labels for `concur_vars`.
         surface : bool, optional
             Whether to plot surface readings.
-        **kwargs : optional keyword arguments
-            Arguments passed to plotting function.
+        **kwargs
+            Optional keyword arguments passed to plotting function (see
+            :meth:`plot`)
 
         Returns
         -------
@@ -466,12 +553,19 @@ class TDR(TDRPhases):
     def plot_dive_model(self, diveNo=None, **kwargs):
         """Plot dive model for selected dive
 
+        Diagnostic double-panel plot of dive models for selected dives. The
+        top panel shows depth against time, the cubic spline smoother, the
+        identified descent and ascent phases (which form the basis for
+        identifying the rest of the dive phases), while the bottom panel
+        shows the first derivative of the smooth trace.
+
         Parameters
         ----------
         diveNo : array_like, optional
             List of dive numbers (1-based) to plot.
-        **kwargs : optional keyword arguments
-            Arguments passed to plotting function.
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`~matplotlib.pyplot.subplots`.
 
         Returns
         -------

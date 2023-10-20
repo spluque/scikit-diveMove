@@ -179,4 +179,4 @@ Or compare visually on a 3D plot:
 
 
 Feel free to download a copy of this demo
-(:jupyter-download:script:`demo_ellipsoid`).
+(:jupyter-download-script:`demo_ellipsoid`).

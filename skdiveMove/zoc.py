@@ -36,10 +36,10 @@ class ZOC(TDRSource):
 
         Parameters
         ----------
-        *args : positional arguments
-            Passed to :meth:`TDRSource.__init__`
-        **kwargs : keyword arguments
-            Passed to :meth:`TDRSource.__init__`
+        *args
+            Positional arguments passed to :meth:`TDRSource.__init__`
+        **kwargs
+            Keyword arguments passed to :meth:`TDRSource.__init__`
 
         """
         TDRSource.__init__(self, *args, **kwargs)
@@ -63,10 +63,6 @@ class ZOC(TDRSource):
         offset : float, optional
             Value to subtract from measured depth.
 
-        Notes
-        -----
-        More details in diveMove's ``calibrateDepth`` function.
-
         """
         # Retrieve copy of depth from our own property
         depth = self.depth
@@ -87,13 +83,9 @@ class ZOC(TDRSource):
         ----------
         k : array_like
         probs : array_like
-        **kwargs : optional keyword arguments
-            For this method: ('depth_bounds' (defaults to range), 'na_rm'
-            (defaults to True)).
-
-        Notes
-        -----
-        More details in diveMove's ``calibrateDepth`` function.
+        **kwargs
+            Optional keyword arguments. For this method: ('depth_bounds'
+            (defaults to range), 'na_rm' (defaults to True)).
 
         """
         self.zoc_method = "filter"
@@ -115,17 +107,62 @@ class ZOC(TDRSource):
     def zoc(self, method="filter", **kwargs):
         """Apply zero offset correction to depth measurements
 
+        This procedure is required to correct drifts in the pressure
+        transducer of TDR records and noise in depth measurements. Three
+        methods are available to perform this correction.
+
+        Method `offset` can be used when the offset is known in advance,
+        and this value is used to correct the entire time series.
+        Therefore, ``offset=0`` specifies no correction.
+
+        Method `filter` implements a smoothing/filtering mechanism where
+        running quantiles can be applied to depth measurements in a
+        recursive manner [3]_.  The method calculates the first running
+        quantile defined by the first probability in a given sequence on a
+        moving window of size specified by the first integer supplied in a
+        second sequence.  The next running quantile, defined by the second
+        supplied probability and moving window size, is applied to the
+        smoothed/filtered depth measurements from the previous step, and so
+        on. The corrected depth measurements (d) are calculated as:
+
+        .. math::
+
+           d = d_{0} - d_{n}
+
+        where :math:`d_{0}` is original depth and :math:`d_{n}` is the last
+        smoothed/filtered depth.  This method is under development, but
+        reasonable results can be achieved by applying two filters (see
+        Examples). The default `na_rm=True` works well when there are no
+        level shifts between non-NA phases in the data, but `na_rm=False`
+        is better in the presence of such shifts. In other words, there is
+        no reason to pollute the moving window with null values when
+        non-null phases can be regarded as a continuum, so splicing
+        non-null phases makes sense. Conversely, if there are level shifts
+        between non-null phases, then it is better to retain null phases to
+        help the algorithm recognize the shifts while sliding the
+        window(s). The search for the surface can be limited to specified
+        bounds during smoothing/filtering, so that observations outside
+        these bounds are interpolated using the bounded smoothed/filtered
+        series.
+
+        Once the entire record has been zero-offset corrected, remaining
+        depths below zero, are set to zero, as these are assumed to
+        indicate values at the surface.
+
         Parameters
         ----------
         method : {"filter", "offset"}
             Name of method to use for zero offset correction.
-        **kwargs : optional keyword arguments
-            Passed to the chosen method (:meth:`offset_depth`,
-            :meth:`filter_depth`)
+        **kwargs
+            Optional keyword arguments passed to the chosen method
+            (:meth:`_offset_depth`, :meth:`_filter_depth`)
 
-        Notes
-        -----
-        More details in diveMove's ``calibrateDepth`` function.
+        References
+        ----------
+
+        .. [3] Luque, S.P. and Fried, R. (2011) Recursive filtering for
+           zero offset correction of diving depth time series. PLoS ONE
+           6:e15850.
 
         Examples
         --------

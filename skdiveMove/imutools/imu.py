@@ -149,8 +149,9 @@ class IMUBase:
             Whether input data include depth measurements.
         depth_name : str, optional
             Name of the depth ``DataArray`` in the ``Dataset``.
-        **kwargs : optional keyword arguments
-            Arguments passed to :func:`xarray.load_dataset`.
+        **kwargs
+            Optional keyword arguments passed to
+            :func:`xarray.load_dataset`.
 
         Returns
         -------
@@ -225,11 +226,11 @@ class IMUBase:
         deviation ``adevs``, compute the Allan deviation coefficient for
         each error type:
 
-        - Quantization
-        - (Angle, Velocity) Random Walk
-        - Bias Instability
-        - Rate Random Walk
-        - Rate Ramp
+          - Quantization
+          - (Angle, Velocity) Random Walk
+          - Bias Instability
+          - Rate Random Walk
+          - Rate Ramp
 
         Parameters
         ----------
@@ -289,22 +290,22 @@ class IMUBase:
         The method must be one of the following estimators implemented in
         Python module :mod:`ahrs.filters`:
 
-        - ``AngularRate``: Attitude from angular rate
-        - ``AQUA``: Algebraic quaternion algorithm
-        - ``Complementary``: Complementary filter
-        - ``Davenport``: Davenport's q-method
-        - ``EKF``: Extended Kalman filter
-        - ``FAAM``: Fast accelerometer-magnetometer combination
-        - ``FLAE``: Fast linear attitude estimator
-        - ``Fourati``: Fourati's nonlinear attitude estimation
-        - ``FQA``: Factored quaternion algorithm
-        - ``Madgwick``: Madgwick orientation filter
-        - ``Mahony``: Mahony orientation filter
-        - ``OLEQ``: Optimal linear estimator quaternion
-        - ``QUEST``
-        - ``ROLEQ``: Recursive optimal linear estimator of quaternion
-        - ``SAAM``: Super-fast attitude from accelerometer and magnetometer
-        - ``Tilt``: Attitude from gravity
+          - ``AngularRate``: Attitude from angular rate
+          - ``AQUA``: Algebraic quaternion algorithm
+          - ``Complementary``: Complementary filter
+          - ``Davenport``: Davenport's q-method
+          - ``EKF``: Extended Kalman filter
+          - ``FAAM``: Fast accelerometer-magnetometer combination
+          - ``FLAE``: Fast linear attitude estimator
+          - ``Fourati``: Fourati's nonlinear attitude estimation
+          - ``FQA``: Factored quaternion algorithm
+          - ``Madgwick``: Madgwick orientation filter
+          - ``Mahony``: Mahony orientation filter
+          - ``OLEQ``: Optimal linear estimator quaternion
+          - ``QUEST``
+          - ``ROLEQ``: Recursive optimal linear estimator of quaternion
+          - ``SAAM``: Super-fast attitude from accelerometer and magnetometer
+          - ``Tilt``: Attitude from gravity
 
         The estimated quaternions are stored in the ``quats`` attribute.
 

@@ -122,4 +122,4 @@ ramp).
 
 
 Feel free to download a copy of this demo
-(:jupyter-download:script:`demo_allan`).
+(:jupyter-download-script:`demo_allan`).

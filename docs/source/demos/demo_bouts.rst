@@ -269,4 +269,4 @@ type needs to be converted to total seconds to allow comparison with BEC.
    skbouts.label_bouts(postdives.dt.total_seconds(), bec, as_diff=True)
 
 Feel free to download a copy of this demo
-(:jupyter-download:script:`demo_bouts`).
+(:jupyter-download-script:`demo_bouts`).
