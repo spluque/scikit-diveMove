@@ -10,7 +10,7 @@ from skdiveMove.zoc import ZOC
 from skdiveMove.imutools import IMU2Body
 
 
-def diveMove2skd(oclass="TDR", has_speed=True):
+def diveMove2skd(oclass="TDR", **kwargs):
     """Create a `TDRSource` instance from `diveMove` example data set
 
     The sample data set has been converted to NetCDF4 format, to include
@@ -20,8 +20,8 @@ def diveMove2skd(oclass="TDR", has_speed=True):
     ----------
     oclass : {"TDRSource", "ZOC", "TDRPhases", "TDR"}
         The class to return.
-    has_speed : bool, optional
-        Whether to set the `has_speed` attribute
+    **kwargs
+        Optional keyword arguments passed to class instantiator.
 
     Returns
     -------
@@ -38,7 +38,7 @@ def diveMove2skd(oclass="TDR", has_speed=True):
         class_map = dict(zip(class_names, classes))
         tdrX = class_map[oclass].read_netcdf(ifile, depth_name="depth",
                                              time_name="date_time",
-                                             has_speed=has_speed)
+                                             **kwargs)
     else:
         raise LookupError(("Requested class ({}) does not exist"
                            .format(oclass)))

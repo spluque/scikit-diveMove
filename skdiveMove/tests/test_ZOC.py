@@ -15,7 +15,7 @@ class TestZOC(ut.TestCase):
     """
     def setUp(self):
         # An instance to work with
-        self.zocX = diveMove2skd("ZOC", True)
+        self.zocX = diveMove2skd("ZOC", has_speed=True)
 
     def test_init(self):
         self.assertIsInstance(self.zocX, ZOC)

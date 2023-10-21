@@ -51,7 +51,7 @@ class TDRSource:
             Name of the time dimension in the dataset.
         subsample : str, optional
             Subsample dataset at given frequency specification.  See pandas
-            offset aliases.
+            offset aliases, as in :func:`pandas.Timedelta`.
         has_speed : bool, optional
             Weather data includes speed measurements. Column name must be
             one of ["velocity", "speed"].

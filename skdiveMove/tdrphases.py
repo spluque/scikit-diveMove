@@ -574,7 +574,7 @@ class TDRPhases(ZOC):
             x = pd.TimedeltaIndex(np.array(idata["x"]), unit="s")
             odata = pd.Series(np.array(idata["y"]), index=x)
         elif name in scalars:
-            odata = np.float(idata[name][0])
+            odata = float(idata[name][0])
         else:
             odata = np.array(idata[name])
 

@@ -20,7 +20,7 @@ class TestTDR(ut.TestCase):
     """
     def setUp(self):
         # An instance to work with
-        self.tdrX = diveMove2skd("TDR")
+        self.tdrX = diveMove2skd("TDR", has_speed=True)
         zoc_offset = 3
         dry_thr = 70
         wet_thr = 3610
@@ -39,7 +39,7 @@ class TestTDR(ut.TestCase):
                              "knot_factor": knot_factor,
                              "descent_crit_q": descent_crit_q,
                              "ascent_crit_q": ascent_crit_q}
-        tdr_calib = diveMove2skd("TDR")
+        tdr_calib = diveMove2skd("TDR", has_speed=True)
         tdr_calib.zoc(method="offset", offset=zoc_offset)
         tdr_calib.detect_wet(dry_thr=dry_thr, wet_thr=wet_thr)
         tdr_calib.detect_dives(dive_thr=dive_thr)
@@ -69,6 +69,8 @@ class TestTDR(ut.TestCase):
         self.assertIsInstance(tdr_calib.speed_calib_fit,
                               (statsmodels.regression.linear_model
                                .RegressionResultsWrapper))
+        # Check whether coefficients are in __str__ method
+        self.assertIn("Speed calibration coefficients: ", tdr_calib.__str__())
 
     def test_dive_stats(self):
         speed_calib_z = 2

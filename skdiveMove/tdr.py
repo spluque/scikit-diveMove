@@ -132,7 +132,7 @@ class TDR(TDRPhases):
         Examples
         --------
         >>> from skdiveMove.tests import diveMove2skd
-        >>> tdrX = diveMove2skd()
+        >>> tdrX = diveMove2skd(has_speed=True)
         >>> tdrX.zoc("offset", offset=3)
         >>> tdrX.calibrate_speed(z=2)
 
@@ -211,7 +211,7 @@ class TDR(TDRPhases):
         ZOC using the "filter" method
 
         >>> from skdiveMove.tests import diveMove2skd
-        >>> tdrX = diveMove2skd()
+        >>> tdrX = diveMove2skd(has_speed=True)
 
         >>> # Window lengths and probabilities
         >>> DB = [-2, 5]
@@ -776,7 +776,7 @@ class TDR(TDRPhases):
         Examples
         --------
         >>> from skdiveMove.tests import diveMove2skd
-        >>> tdrX = diveMove2skd(has_speed=False)
+        >>> tdrX = diveMove2skd()
         >>> tdrX.zoc("offset", offset=3)
         >>> tdrX.detect_wet()
         >>> tdrX.detect_dives(3)

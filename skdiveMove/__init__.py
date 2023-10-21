@@ -88,5 +88,5 @@ from skdiveMove.calibconfig import dump_config_template
 
 __author__ = "Sebastian Luque <spluque@gmail.com>"
 __license__ = "AGPLv3"
-__version__ = "0.3.2.post1"
+__version__ = "0.3.2.post2"
 __all__ = ["TDR", "calibrate", "dump_config_template"]

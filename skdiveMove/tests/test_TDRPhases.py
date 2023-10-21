@@ -4,7 +4,7 @@
 
 import unittest as ut
 import numpy as np
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas.testing import assert_frame_equal
 from skdiveMove.tdrphases import TDRPhases
 from skdiveMove.tests import diveMove2skd
@@ -16,7 +16,7 @@ class TestTDRPhases(ut.TestCase):
     """
     def setUp(self):
         # An instance to work with
-        tdrX = diveMove2skd("TDRPhases")
+        tdrX = diveMove2skd("TDRPhases", has_speed=True)
         zoc_offset = 3
         dry_thr = 70
         wet_thr = 3610
@@ -38,7 +38,7 @@ class TestTDRPhases(ut.TestCase):
         tdrX.zoc("offset", offset=zoc_offset)
         self.phases = tdrX
 
-        tdrX = diveMove2skd("TDRPhases")
+        tdrX = diveMove2skd("TDRPhases", has_speed=True)
         tdrX.zoc("offset", offset=zoc_offset)
         tdrX.detect_wet(dry_thr=dry_thr, wet_cond=None,
                         wet_thr=wet_thr, interp_wet=False)
@@ -149,10 +149,12 @@ class TestTDRPhases(ut.TestCase):
 
     def test_get_dives_details(self):
         calib = self.calib
+        phases = self.phases
         # Test wrong key
         self.assertRaises(KeyError, calib.get_dives_details, "foo")
         self.assertRaises(KeyError, calib.get_dives_details,
                           "row_ids", "foo")
+        self.assertRaises(KeyError, phases.get_dives_details, "foo")
 
     def test_get_dive_deriv(self):
         calib = self.calib
@@ -180,6 +182,23 @@ class TestTDRPhases(ut.TestCase):
         self.assertRaises(KeyError, calib.get_phases_params, "foo")
         # ZOC params should be tuple
         self.assertIsInstance(calib.zoc_params, tuple)
+
+        # dive spline slots
+        self.assertIsInstance(calib.
+                              _get_dive_spline_slot(diveNo=300,
+                                                    name="data"),
+                              Series)
+        self.assertIsInstance(calib.
+                              _get_dive_spline_slot(diveNo=300,
+                                                    name="xy"),
+                              Series)
+        scalars = ["order", "lambda.opt", "sigmasq", "degree",
+                   "g", "a", "b", "variter"]
+        for name in scalars:
+            self.assertIsInstance(calib.
+                                  _get_dive_spline_slot(diveNo=300,
+                                                        name=name),
+                                  float)
 
 
 if __name__ == '__main__':
