@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Bout analysis &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/thebelab-helper.js"></script>
@@ -533,7 +533,7 @@ parameter names “a” and “lambda”.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
-coefs.shape[1]</p>
+<code class="docutils literal notranslate"><span class="pre">coefs.shape[1]</span></code></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a>, shape (n,)</p>
@@ -550,7 +550,8 @@ coefs.shape[1]</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.11.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -572,12 +573,12 @@ coefs.shape[1]</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x_break</strong> (<em>array_like</em>) – One- or two-element array with values determining the break(s)
-for broken stick model, such that x &lt; x_break[0] is first
-process, x &gt;= x_break[1] &amp; x &lt; x_break[2] is second process,
-and x &gt;= x_break[2] is third one.</p></li>
+for broken stick model, such that <span class="math notranslate nohighlight">\(x &lt; x\_break_0\)</span> is
+first process, <span class="math notranslate nohighlight">\(x &gt;= x\_break_1\)</span> &amp; <span class="math notranslate nohighlight">\(x &lt; x\_break_2\)</span>
+is second process, and <span class="math notranslate nohighlight">\(x &gt;= x\_break_2\)</span> is third one.</p></li>
 <li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot the broken stick model.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – An Axes instance to use as target.  Default is to create one.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to plotting function.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to plotting function. Ignored currently.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -761,7 +762,8 @@ to calculate the likelihood.</p></li>
 <li><p><strong>fit</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.11.3)"><em>scipy.optimize.OptimizeResult</em></a>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – An Axes instance to use as target.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.gca()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -858,7 +860,7 @@ probability.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
-coefs.shape[1]</p>
+<code class="docutils literal notranslate"><span class="pre">coefs.shape[1]</span></code></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a>, shape (n,)</p>
@@ -875,7 +877,8 @@ coefs.shape[1]</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>scipy.optimize.curve_fit</cite>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.11.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -897,7 +900,8 @@ coefs.shape[1]</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – An Axes instance to use as target.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to <cite>matplotlib.pyplot.gca</cite>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.gca()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

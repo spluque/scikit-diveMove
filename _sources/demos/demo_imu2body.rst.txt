@@ -4,8 +4,8 @@
  IMU-frame to body-frame transformations
 =========================================
 
-Consider loading the `logging` module and setting up a logger to monitor
-progress:
+Consider loading the :py:mod:`logging` module and setting up a logger to
+monitor progress:
 
 .. jupyter-execute::
 
@@ -58,7 +58,8 @@ Set up an instance to use throughout:
    idx = imu2whale.surface_details.index[33]
    idx_title = idx.strftime("%Y%m%dT%H%M%S")
 
-Visualize low-pass filter (Savitzky-Golay filter) job:
+Visualize low-pass filter (Savitzky-Golay filter;
+:func:`~scipy.signal.savgol_filter`) job:
 
 .. jupyter-execute::
    :hide-code:
@@ -106,7 +107,7 @@ the method of the same name to produce the plot:
 
 Calculate orientation for the segment above, and produce an animated plot
 of the orientation.  This can be done in a single step with
-`IMU2Body.get_orientation`.
+:meth:`imutools.IMU2Body.get_orientation`.
 
 .. jupyter-execute::
    :linenos:
@@ -122,7 +123,7 @@ of the orientation.  This can be done in a single step with
 .. raw:: html
 
    <video controls width="800" height="420">
-   <source src="_static/video/gert_imu_20170810T120654.mp4" type="video/mp4">
+   <source src="../_static/video/gert_imu_20170810T120654.mp4" type="video/mp4">
    </video>
 
 Apply the inverse transformation to get to the animal frame:
@@ -150,7 +151,7 @@ An animation may be useful to visualize the normalized animal-frame data:
 .. raw:: html
 
    <video controls width="800" height="420">
-   <source src="_static/video/gert_body_20170810T120654.mp4" type="video/mp4">
+   <source src="../_static/video/gert_body_20170810T120654.mp4" type="video/mp4">
    </video>
 
 Obtain orientations for all surface periods, and retrieve the quality
@@ -270,7 +271,7 @@ hierarchical dataframe output:
    leg = axs[2].legend(loc=9, bbox_to_anchor=_LEG3X1_ANCHOR,
                        frameon=False, borderaxespad=0, ncol=2);
 
-Orient the entire `IMU` object with common rotation:
+Orient the entire :class:`~imutools.IMU2Body` object with common rotation:
 
 .. jupyter-execute::
 

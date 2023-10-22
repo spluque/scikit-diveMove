@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdr &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>skdiveMove.tdr &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -353,7 +353,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for skdiveMove.tdr</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;TDR objects homologous to `R` package diveMove&#39;s main classes</span>
+<span></span><span class="sd">&quot;&quot;&quot;`TDR` objects homologous to `R` package diveMove&#39;s main classes</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -385,15 +385,21 @@ document.write(`
 <span class="k">class</span> <span class="nc">TDR</span><span class="p">(</span><span class="n">TDRPhases</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class encapsulating TDR objects and processing</span>
 
-<span class="sd">    TDR subclasses `TDRPhases` to provide comprehensive TDR processing</span>
-<span class="sd">    capabilities.</span>
-
-<span class="sd">    See help(TDR) for inherited attributes.</span>
+<span class="sd">    Comprehensive TDR processing methods.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    speed_calib_fit : quantreg model fit</span>
 <span class="sd">        Model object fit by quantile regression for speed calibration.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See ``help(TDR)`` for inherited attributes. This class extends</span>
+<span class="sd">    :class:`TDRPhases`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    xarray.Dataset</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -485,7 +491,7 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
-<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd()</span>
+<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd(has_speed=True)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.zoc(&quot;offset&quot;, offset=3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.calibrate_speed(z=2)</span>
 
@@ -553,21 +559,21 @@ document.write(`
 <span class="sd">                speed;</span>
 <span class="sd">              - ``postdive_mean_speed``: postdive mean speed.</span>
 
-<span class="sd">            If `depth_deriv=True` (default), 21 additional columns with the</span>
-<span class="sd">            minimum, first quartile, median, mean, third quartile, maximum,</span>
-<span class="sd">            and standard deviation of the depth derivative for each phase</span>
-<span class="sd">            of the dive are included.</span>
+<span class="sd">            If ``depth_deriv=True`` (default), 21 additional columns with</span>
+<span class="sd">            the minimum, first quartile, median, mean, third quartile,</span>
+<span class="sd">            maximum, and standard deviation of the depth derivative for</span>
+<span class="sd">            each phase of the dive are included.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This method homologous to diveMove&#39;s `diveStats` function.</span>
+<span class="sd">        This method is homologous to diveMove&#39;s `diveStats` function.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        ZOC using the &quot;filter&quot; method</span>
 
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
-<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd()</span>
+<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd(has_speed=True)</span>
 
 <span class="sd">        &gt;&gt;&gt; # Window lengths and probabilities</span>
 <span class="sd">        &gt;&gt;&gt; DB = [-2, 5]</span>
@@ -664,7 +670,7 @@ document.write(`
 <div class="viewcode-block" id="TDR.plot">
 <a class="viewcode-back" href="../../modules/tdr.html#skdiveMove.TDR.plot">[docs]</a>
     <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concur_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">concur_var_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot TDR object</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot `TDR` object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -752,7 +758,7 @@ document.write(`
 <div class="viewcode-block" id="TDR.plot_zoc">
 <a class="viewcode-back" href="../../modules/tdr.html#skdiveMove.TDR.plot_zoc">[docs]</a>
     <span class="k">def</span> <span class="nf">plot_zoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot zero offset correction filters</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot zero-offset correction filters</span>
 
 <span class="sd">        Compare the zero-offset corrected depth with the uncorrected</span>
 <span class="sd">        signal, or the progress attained in each of the filters during</span>
@@ -764,14 +770,19 @@ document.write(`
 <span class="sd">        xlim, ylim : array_like, optional</span>
 <span class="sd">            array_like with minimum and maximum limits for ``x``- and</span>
 <span class="sd">            ``y``-axis, respectively.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to :func:`~matplotlib.pyplot.subplots`.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
 <span class="sd">            :class:`~matplotlib.figure.Figure`,</span>
 <span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.zoc</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -827,7 +838,7 @@ document.write(`
 <a class="viewcode-back" href="../../modules/tdr.html#skdiveMove.TDR.plot_phases">[docs]</a>
     <span class="k">def</span> <span class="nf">plot_phases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diveNo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">concur_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">concur_var_titles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot major phases found on the object</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot major phases found on `TDR` object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -849,6 +860,10 @@ document.write(`
 <span class="sd">        tuple</span>
 <span class="sd">            :class:`~matplotlib.figure.Figure`,</span>
 <span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.detect_wet</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -947,6 +962,10 @@ document.write(`
 <span class="sd">            :class:`~matplotlib.figure.Figure`,</span>
 <span class="sd">            :class:`~matplotlib.axes.Axes` instances.</span>
 
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.detect_dive_phases</span>
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
@@ -1017,6 +1036,10 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        xarray.DataArray</span>
 
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.get_tdr, TDR.get_speed</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kinds</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;measured&quot;</span><span class="p">,</span> <span class="s2">&quot;zoc&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="n">kinds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
@@ -1043,11 +1066,15 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        kind : {&quot;measured&quot;, &quot;calibrated&quot;}</span>
-<span class="sd">            Which speed to retrieve.</span>
+<span class="sd">            Type of speed to retrieve.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xarray.DataArray</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.get_tdr, TDR.get_depth</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kinds</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;measured&quot;</span><span class="p">,</span> <span class="s2">&quot;calibrated&quot;</span><span class="p">]</span>
@@ -1079,7 +1106,7 @@ document.write(`
 <div class="viewcode-block" id="TDR.get_tdr">
 <a class="viewcode-back" href="../../modules/tdr.html#skdiveMove.TDR.get_tdr">[docs]</a>
     <span class="k">def</span> <span class="nf">get_tdr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calib_depth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">calib_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of tdr Dataset</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of `TDR` Dataset</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1091,6 +1118,10 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xarray.Dataset</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.get_depth, TDR.get_speed</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tdr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1117,17 +1148,21 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        diveNo : array_like, optional</span>
 <span class="sd">            List of dive numbers (1-based) to plot.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to :meth:`get_tdr`</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to :meth:`get_tdr`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xarray.Dataset</span>
 
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.get_tdr</span>
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
-<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd(has_speed=False)</span>
+<span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd()</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.zoc(&quot;offset&quot;, offset=3)</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_wet()</span>
 <span class="sd">        &gt;&gt;&gt; tdrX.detect_dives(3)</span>

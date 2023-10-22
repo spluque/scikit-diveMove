@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imu &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>imutools.imu &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -404,7 +404,7 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    This example illustrates some of the issues encountered while reading</span>
-<span class="sd">    data files in a real-world scenario.  ``scikit-diveMove`` includes a</span>
+<span class="sd">    data files in a real-world scenario.  `scikit-diveMove` includes a</span>
 <span class="sd">    NetCDF file with IMU signals collected using a Samsung Galaxy S5 mobile</span>
 <span class="sd">    phone.  Set up instance from NetCDF example data:</span>
 
@@ -447,19 +447,22 @@ document.write(`
 <span class="sd">            Dataset containing IMU sensor DataArrays, and optionally other</span>
 <span class="sd">            DataArrays.</span>
 <span class="sd">        acceleration_name : str, optional</span>
-<span class="sd">            Name of the acceleration ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">            Name of the acceleration :class:`~xarray.DataArray` in the</span>
+<span class="sd">            `dataset`.</span>
 <span class="sd">        angular_velocity_name : str, optional</span>
-<span class="sd">            Name of the angular velocity ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">            Name of the angular velocity :class:`~xarray.DataArray` in the</span>
+<span class="sd">            `dataset`.</span>
 <span class="sd">        magnetic_density_name : str, optional</span>
-<span class="sd">            Name of the magnetic density ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">            Name of the magnetic density :class:`~xarray.DataArray` in the</span>
+<span class="sd">            `dataset`.</span>
 <span class="sd">        time_name : str, optional</span>
-<span class="sd">            Name of the time dimension in the dataset.</span>
+<span class="sd">            Name of the time dimension in the `dataset`.</span>
 <span class="sd">        has_depth : bool, optional</span>
 <span class="sd">            Whether input data include depth measurements.</span>
 <span class="sd">        depth_name : str, optional</span>
-<span class="sd">            Name of the depth ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">            Name of the depth :class:`~xarray.DataArray` in the `dataset`.</span>
 <span class="sd">        imu_filename : str, optional</span>
-<span class="sd">            Name of the file from which ``dataset`` originated.</span>
+<span class="sd">            Name of the file from which `dataset` originated.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_name</span> <span class="o">=</span> <span class="n">time_name</span>
@@ -489,7 +492,7 @@ document.write(`
                     <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate object by loading Dataset from NetCDF file</span>
 
-<span class="sd">        Provided all ``DataArray`` in the NetCDF file have the same</span>
+<span class="sd">        Provided all `DataArrays` in the NetCDF file have the same</span>
 <span class="sd">        dimensions (N, 3), this is an efficient way to instantiate.</span>
 
 <span class="sd">        Parameters</span>
@@ -497,17 +500,19 @@ document.write(`
 <span class="sd">        imu_file : str</span>
 <span class="sd">            As first argument for :func:`xarray.load_dataset`.</span>
 <span class="sd">        acceleration_name : str, optional</span>
-<span class="sd">            Name of the acceleration ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">            Name of the acceleration :class:`~xarray.DataArray` in the</span>
+<span class="sd">            :class:`~xarray.Dataset`.</span>
 <span class="sd">        angular_velocity_name : str, optional</span>
-<span class="sd">            Name of the angular velocity ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">            Name of the angular velocity :class:`~xarray.DataArray` in the</span>
+<span class="sd">            :class:`~xarray.Dataset`.</span>
 <span class="sd">        magnetic_density_name : str, optional</span>
-<span class="sd">            Name of the magnetic density ``DataArray`` in the ``Dataset``.</span>
-<span class="sd">        dimension_names : list, optional</span>
-<span class="sd">            Names of the dimensions of the data in each of the sensors.</span>
+<span class="sd">            Name of the magnetic density :class:`~xarray.DataArray` in the</span>
+<span class="sd">            :class:`~xarray.Dataset`.</span>
 <span class="sd">        has_depth : bool, optional</span>
 <span class="sd">            Whether input data include depth measurements.</span>
 <span class="sd">        depth_name : str, optional</span>
-<span class="sd">            Name of the depth ``DataArray`` in the ``Dataset``.</span>
+<span class="sd">            Name of the depth :class:`~xarray.DataArray` in the</span>
+<span class="sd">            :class:`~xarray.Dataset`.</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Optional keyword arguments passed to</span>
 <span class="sd">            :func:`xarray.load_dataset`.</span>
@@ -545,7 +550,7 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        sensor : str</span>
 <span class="sd">            Attribute name of the sensor of interest</span>
-<span class="sd">        taus : float, str</span>
+<span class="sd">        taus : {float, str}</span>
 <span class="sd">            Tau value, in seconds, for which to compute statistic.  Can be</span>
 <span class="sd">            one of &quot;octave&quot; or &quot;decade&quot; for automatic generation of the</span>
 <span class="sd">            value.</span>
@@ -584,9 +589,9 @@ document.write(`
 <span class="sd">        This procedure implements the autonomous regression method for</span>
 <span class="sd">        Allan variance described in [1]_.</span>
 
-<span class="sd">        Given averaging intervals ``taus`` and corresponding Allan</span>
-<span class="sd">        deviation ``adevs``, compute the Allan deviation coefficient for</span>
-<span class="sd">        each error type:</span>
+<span class="sd">        Given averaging intervals `taus` and corresponding Allan deviation</span>
+<span class="sd">        `adevs`, compute the Allan deviation coefficient for each error</span>
+<span class="sd">        type:</span>
 
 <span class="sd">          - Quantization</span>
 <span class="sd">          - (Angle, Velocity) Random Walk</span>
@@ -598,7 +603,7 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        sensor : str</span>
 <span class="sd">            Attribute name of the sensor of interest</span>
-<span class="sd">        taus : float, str</span>
+<span class="sd">        taus : {float, str}</span>
 <span class="sd">            Tau value, in seconds, for which to compute statistic.  Can be</span>
 <span class="sd">            one of &quot;octave&quot; or &quot;decade&quot; for automatic generation of the</span>
 <span class="sd">            value.</span>
@@ -609,9 +614,9 @@ document.write(`
 <span class="sd">            Allan deviation coefficient and corresponding averaging time</span>
 <span class="sd">            for each sensor axis and error type.</span>
 <span class="sd">        adevs : pandas.DataFrame</span>
-<span class="sd">            `MultiIndex` DataFrame with Allan deviation, corresponding</span>
-<span class="sd">            averaging time, and fitted ARMAV model estimates of the</span>
-<span class="sd">            coefficients for each sensor axis and error type.</span>
+<span class="sd">            :class:`~pandas.MultiIndex` DataFrame with Allan deviation,</span>
+<span class="sd">            corresponding averaging time, and fitted ARMAV model estimates</span>
+<span class="sd">            of the coefficients for each sensor axis and error type.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -678,8 +683,8 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        method : str, optional</span>
 <span class="sd">            Name of the filtering method to use.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to filtering method.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to filtering method.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">orienter_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>

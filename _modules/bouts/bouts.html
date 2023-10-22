@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bouts.bouts &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>bouts.bouts &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -537,7 +537,7 @@ document.write(`
 <span class="sd">        Argument passed to `matplotlib.annotate`; interpreted with</span>
 <span class="sd">        textcoords=&quot;offset points&quot;.</span>
 <span class="sd">    horizontalalignment : str</span>
-<span class="sd">        Argument passed to `matplotlib.annotate`.</span>
+<span class="sd">        Argument passed to :meth:`~matplotlib.axes.Axes.annotate`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ylims</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
@@ -594,8 +594,6 @@ document.write(`
 <span class="sd">            Method to use for calculating the frequencies: &quot;standard&quot;</span>
 <span class="sd">            simply uses `x`, which &quot;seq_diff&quot; uses the sequential</span>
 <span class="sd">            differences method.</span>
-<span class="sd">        **kwargs : optional keywords</span>
-<span class="sd">            Passed to histogram</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
@@ -635,7 +633,7 @@ document.write(`
 <div class="viewcode-block" id="Bouts.init_pars">
 <a class="viewcode-back" href="../../modules/bouts.html#bouts.Bouts.init_pars">[docs]</a>
     <span class="k">def</span> <span class="nf">init_pars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_break</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find starting values for mixtures of random Poisson processes</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Find starting values for mixtures of random Poisson processes</span>
 
 <span class="sd">        Starting values are calculated using the &quot;broken stick&quot; method.</span>
 
@@ -643,15 +641,15 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        x_break : array_like</span>
 <span class="sd">            One- or two-element array with values determining the break(s)</span>
-<span class="sd">            for broken stick model, such that x &lt; x_break[0] is first</span>
-<span class="sd">            process, x &gt;= x_break[1] &amp; x &lt; x_break[2] is second process,</span>
-<span class="sd">            and x &gt;= x_break[2] is third one.</span>
+<span class="sd">            for broken stick model, such that :math:`x &lt; x\_break_0` is</span>
+<span class="sd">            first process, :math:`x &gt;= x\_break_1` &amp; :math:`x &lt; x\_break_2`</span>
+<span class="sd">            is second process, and :math:`x &gt;= x\_break_2` is third one.</span>
 <span class="sd">        plot : bool, optional</span>
 <span class="sd">            Whether to plot the broken stick model.</span>
 <span class="sd">        ax : matplotlib.Axes, optional</span>
 <span class="sd">            An Axes instance to use as target.  Default is to create one.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to plotting function.</span>
+<span class="sd">            Passed to plotting function. Ignored currently.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -730,8 +728,9 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        start : pandas.DataFrame</span>
 <span class="sd">            DataFrame with coefficients for each process in columns.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Passed to `scipy.optimize.curve_fit`.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`scipy.optimize.curve_fit`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -779,7 +778,7 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        out : numpy.ndarray, shape (n,)</span>
 <span class="sd">            1-D array with BECs implied by `coefs`.  Length is</span>
-<span class="sd">            coefs.shape[1]</span>
+<span class="sd">            ``coefs.shape[1]``</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Find bec&#39;s per process by pairing columns</span>

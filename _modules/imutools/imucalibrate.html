@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imucalibrate &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>imutools.imucalibrate &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -411,14 +411,14 @@ document.write(`
 <span class="sd">    temperature effects from an IMU device measuring motions of interest,</span>
 <span class="sd">    provided the temperature is within the range observed in experiments.</span>
 
-<span class="sd">    In addition to attributes in :class:`IMUBase`, ``IMUcalibrate`` adds</span>
-<span class="sd">    the attributes listed below.</span>
+<span class="sd">    In addition to attributes in :class:`IMUBase`, `IMUcalibrate` adds the</span>
+<span class="sd">    attributes listed below.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    periods : list</span>
 <span class="sd">        List of slices with the beginning and ending timestamps defining</span>
-<span class="sd">        periods in ``x_calib`` where valid calibration data are available.</span>
+<span class="sd">        periods in `x_calib` where valid calibration data are available.</span>
 <span class="sd">        Periods are assumed to be ordered chronologically.</span>
 <span class="sd">    models_l : list</span>
 <span class="sd">        List of dictionaries as long as there are periods, with each</span>
@@ -427,7 +427,7 @@ document.write(`
 <span class="sd">    axis_order : list</span>
 <span class="sd">        List of characters specifying which axis ``x``, ``y``, or ``z`` was</span>
 <span class="sd">        pointing in the same direction as gravity in each period in</span>
-<span class="sd">        ``periods``.</span>
+<span class="sd">        `periods`.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -507,7 +507,7 @@ document.write(`
 <span class="sd">        axis_order : list</span>
 <span class="sd">            List of characters specifying which axis ``x``, ``y``, or ``z``</span>
 <span class="sd">            was pointing in the same direction as gravity in each period in</span>
-<span class="sd">            ``periods``.</span>
+<span class="sd">            `periods`.</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Optional keyword arguments passed to the `IMUBase.__init__` for</span>
 <span class="sd">            instantiation.</span>
@@ -544,10 +544,10 @@ document.write(`
 <span class="sd">            Dictionary of optional keyword arguments passed to</span>
 <span class="sd">            :func:`xarray.load_dataset`.</span>
 <span class="sd">        **kwargs</span>
-<span class="sd">            Additional keyword arguments passed to</span>
-<span class="sd">            :meth:`IMUcalibrate.__init__` method, except ``has_depth`` or</span>
-<span class="sd">            ``imu_filename``.  The input ``Dataset`` is assumed to have a</span>
-<span class="sd">            depth ``DataArray``.</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :meth:`IMUcalibrate.__init__` method, except `has_depth` or</span>
+<span class="sd">            `imu_filename`.  The input `Dataset` is assumed to have a depth</span>
+<span class="sd">            `DataArray`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -577,7 +577,7 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        var : str</span>
-<span class="sd">            Name of the variable in ``x`` with tri-axial signals.</span>
+<span class="sd">            Name of the variable in `x` with tri-axial signals.</span>
 <span class="sd">        period_idx : int</span>
 <span class="sd">            Index of period to plot (zero-based).</span>
 <span class="sd">        win_len : int</span>
@@ -654,8 +654,9 @@ document.write(`
 <span class="sd">            signal for characterizing the temperature relationship, and to</span>
 <span class="sd">            calculate the standardized signal.</span>
 <span class="sd">        **kwargs</span>
-<span class="sd">            Optional keyword arguments passed to `savgol_filter`</span>
-<span class="sd">            (e.g. ``win_len`` and ``polyorder``).</span>
+<span class="sd">            Optional keyword arguments passed to</span>
+<span class="sd">            :func:`~scipy.signal.savgol_filter` (e.g. `win_len` and</span>
+<span class="sd">            `polyorder`).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -810,17 +811,17 @@ document.write(`
 <span class="sd">            &quot;units_label&quot; attribute available in the DataArray.</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Optional keyword arguments passed to</span>
-<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        fig : matplotlib.Figure</span>
 <span class="sd">        axs : array_like</span>
-<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``</span>
-<span class="sd">            with IMU signal plots.</span>
+<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with</span>
+<span class="sd">            IMU signal plots.</span>
 <span class="sd">        axs_temp : array_like</span>
-<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``</span>
-<span class="sd">            with temperature plots.</span>
+<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with</span>
+<span class="sd">            temperature plots.</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -916,14 +917,14 @@ document.write(`
 <span class="sd">            Array of Axes instances to plot in.</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Optional keyword arguments passed to</span>
-<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        fig : matplotlib.Figure</span>
 <span class="sd">        axs : array_like</span>
-<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``</span>
-<span class="sd">            with IMU signal plots.</span>
+<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with</span>
+<span class="sd">            IMU signal plots.</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -1048,17 +1049,17 @@ document.write(`
 <span class="sd">            Array of Axes instances to plot in.</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Optional keyword arguments passed to</span>
-<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        fig : matplotlib.Figure</span>
 <span class="sd">        axs : array_like</span>
-<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``</span>
-<span class="sd">            with IMU signal plots.</span>
+<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with</span>
+<span class="sd">            IMU signal plots.</span>
 <span class="sd">        axs_temp : array_like</span>
-<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in ``fig``</span>
-<span class="sd">            with temperature plots.</span>
+<span class="sd">            Array of :class:`~matplotlib.axes.Axes` instances in `fig` with</span>
+<span class="sd">            temperature plots.</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -1249,7 +1250,7 @@ document.write(`
 <span class="sd">           Reference value for the chosen variable (e.g. gravity, for</span>
 <span class="sd">           acceleration).</span>
 <span class="sd">        axis : str, optional</span>
-<span class="sd">            Name of the sensor axis the signal comes from, if ``var`` is</span>
+<span class="sd">            Name of the sensor axis the signal comes from, if `var` is</span>
 <span class="sd">            tri-axial; ignored otherwise.</span>
 
 <span class="sd">        Returns</span>
@@ -1280,7 +1281,7 @@ document.write(`
 <a class="viewcode-back" href="../../modules/imutools.html#imutools.IMUcalibrate.apply_model">[docs]</a>
     <span class="k">def</span> <span class="nf">apply_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">T_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">use_axis_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">model_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply fitted temperature compensation model to Dataset</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Apply fitted temperature compensation model to Dataset</span>
 
 <span class="sd">        The selected models for tri-axial sensor data are applied to input</span>
 <span class="sd">        Dataset, standardizing signals at :math:`T_{\alpha}`, optionally</span>
@@ -1305,15 +1306,15 @@ document.write(`
 <span class="sd">            True, or ``x``, ``y``, ``z`` otherwise.</span>
 <span class="sd">        use_axis_order : bool, optional</span>
 <span class="sd">            Whether to use axis order from the instance.  If True, retrieve</span>
-<span class="sd">            model to apply using instance&#39;s ``axis_order`` attribute.</span>
-<span class="sd">            Otherwise, use the models defined by ``model_idx`` argument.</span>
+<span class="sd">            model to apply using instance&#39;s `axis_order` attribute.</span>
+<span class="sd">            Otherwise, use the models defined by `model_idx` argument.</span>
 <span class="sd">            Ignored if `var` is monoaxial.</span>
 <span class="sd">        model_idx : list or int, optional</span>
 <span class="sd">            Sequence of three integers identifying the period (zero-based)</span>
 <span class="sd">            from which to retrieve the models for ``x``, ``y``, and ``z``</span>
-<span class="sd">            sensor axes, in that order.  If ``var`` is monoaxial, an integer</span>
+<span class="sd">            sensor axes, in that order.  If `var` is monoaxial, an integer</span>
 <span class="sd">            specifying the period for the model to use.  Ignored if</span>
-<span class="sd">            ``use_axis_order`` is True.</span>
+<span class="sd">            `use_axis_order` is True.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

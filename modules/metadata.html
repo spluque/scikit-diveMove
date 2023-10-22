@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Read and write metadata &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>Read and write metadata &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/thebelab-helper.js"></script>
@@ -376,8 +376,9 @@ document.write(`
   <section id="module-metadata">
 <span id="read-and-write-metadata"></span><h1>Read and write metadata<a class="headerlink" href="#module-metadata" title="Link to this heading">#</a></h1>
 <p>Tools to read and write DataArray and Dataset attributes</p>
-<p>Easily dump a template to set up metadata for a given Dataset or DataArray
-that can subsequenty be read-in and append attributes to the objects.</p>
+<p>Easily dump a template to set up metadata for a given
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a> that can
+subsequently be read-in and append attributes to instances.</p>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
@@ -386,7 +387,7 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 <td><p>Dump configuration file</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metadata.assign_xr_attrs" title="metadata.assign_xr_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_xr_attrs</span></code></a>(obj, config_file)</p></td>
-<td><p>Assign attributes to xarray.Dataset or xarray.DataArray</p></td>
+<td><p>Assign attributes to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -394,7 +395,8 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="metadata.assign_xr_attrs">
 <span class="sig-prename descclassname"><span class="pre">metadata.</span></span><span class="sig-name descname"><span class="pre">assign_xr_attrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/metadata.html#assign_xr_attrs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metadata.assign_xr_attrs" title="Link to this definition">#</a></dt>
-<dd><p>Assign attributes to xarray.Dataset or xarray.DataArray</p>
+<dd><p>Assign attributes to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> or
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a></p>
 <p>The <cite>config_file</cite> should have only one-level of nesting.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -448,8 +450,8 @@ that can subsequenty be read-in and append attributes to the objects.</p>
 <dt class="sig sig-object py" id="metadata.dump_config_template">
 <span class="sig-prename descclassname"><span class="pre">metadata.</span></span><span class="sig-name descname"><span class="pre">dump_config_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/metadata.html#dump_config_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metadata.dump_config_template" title="Link to this definition">#</a></dt>
 <dd><p>Dump configuration file</p>
-<p>Dump a json configuration template file to build metadata for a Dataset
-or DataArray.</p>
+<p>Dump a json configuration template file to build metadata for a
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2023.10.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataArray</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdrphases &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>skdiveMove.tdrphases &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -391,8 +391,6 @@ document.write(`
 <span class="k">class</span> <span class="nc">TDRPhases</span><span class="p">(</span><span class="n">ZOC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Core TDR phase identification routines</span>
 
-<span class="sd">    See help(TDRSource) for inherited attributes.</span>
-
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    wet_dry</span>
@@ -408,6 +406,11 @@ document.write(`
 <span class="sd">        &#39;knot_factor&#39;: int, &#39;descent_crit_q&#39;: float, &#39;ascent_crit_q&#39;:</span>
 <span class="sd">        float}}</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See `help(TDRPhases)` for inherited attributes. This class extends</span>
+<span class="sd">    :class:`ZOC`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize TDRPhases instance</span>
@@ -416,8 +419,8 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        *args : positional arguments</span>
 <span class="sd">            Passed to :meth:`ZOC.__init__`</span>
-<span class="sd">        **kwargs : keyword arguments</span>
-<span class="sd">            Passed to :meth:`ZOC.__init__`</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to :meth:`ZOC.__init__`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ZOC</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -439,8 +442,8 @@ document.write(`
                    <span class="n">interp_wet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect wet/dry activity phases</span>
 
-<span class="sd">        A categorical variable is then created with value ``L`` (dry) for</span>
-<span class="sd">        rows with null depth samples and value ``W`` (wet) otherwise. This</span>
+<span class="sd">        A categorical variable is created with value ``L`` (dry) for rows</span>
+<span class="sd">        with null depth samples and value ``W`` (wet) otherwise. This</span>
 <span class="sd">        assumes that TDRs were programmed to turn off recording of depth</span>
 <span class="sd">        when instrument is dry (typically by means of a salt-water</span>
 <span class="sd">        switch). If this assumption cannot be made for any reason, then a</span>
@@ -458,7 +461,7 @@ document.write(`
 
 <span class="sd">        Some instruments produce a peculiar pattern of missing data near</span>
 <span class="sd">        the surface, at the beginning and/or end of dives. The argument</span>
-<span class="sd">        ``interp_wet`` may help to rectify this problem by using an</span>
+<span class="sd">        `interp_wet` may help to rectify this problem by using an</span>
 <span class="sd">        interpolating spline function to impute the missing data,</span>
 <span class="sd">        constraining the result to a minimum depth of zero.  Please note</span>
 <span class="sd">        that this optional step is performed after ZOC and before</span>
@@ -564,22 +567,13 @@ document.write(`
     <span class="k">def</span> <span class="nf">detect_dives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dive_thr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify dive events</span>
 
-<span class="sd">        Set the ``dives`` attribute&#39;s &quot;row_ids&quot; dictionary element, and</span>
-<span class="sd">        update the ``wet_act`` attribute&#39;s &quot;phases&quot; dictionary</span>
+<span class="sd">        Set the `dives` attribute&#39;s `row_ids` dictionary element, and</span>
+<span class="sd">        update the `wet_act` attribute&#39;s `phases` dictionary</span>
 <span class="sd">        element. Whenever the zero-offset corrected depth in an underwater</span>
 <span class="sd">        phase is below the specified dive threshold.  A new categorical</span>
 <span class="sd">        variable with finer levels of activity is thus generated, including</span>
 <span class="sd">        ``U`` (underwater), and ``D`` (diving) in addition to the ones</span>
 <span class="sd">        described above.</span>
-
-<span class="sd">        Once dives have been detected and assigned to a period of wet</span>
-<span class="sd">        activity, phases within dives are identified using the descent,</span>
-<span class="sd">        ascent and wiggle criteria (see Detection of dive phases below).</span>
-<span class="sd">        This procedure generates a categorical variable with levels ``D``,</span>
-<span class="sd">        ``DB``, ``B``, ``BA``, ``DA``, ``A``, and ``X``, breaking the input</span>
-<span class="sd">        into descent, descent/bottom, bottom, bottom/ascent, ascent,</span>
-<span class="sd">        descent/ascent (occurring when no bottom phase can be detected) and</span>
-<span class="sd">        non-dive (surface), respectively.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -587,9 +581,13 @@ document.write(`
 <span class="sd">            Threshold depth below which an underwater phase should be</span>
 <span class="sd">            considered a dive.</span>
 
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.detect_dive_phases</span>
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        ZOC using the &quot;offset&quot; method for convenience</span>
+<span class="sd">        ZOC using the ``offset`` method for convenience</span>
 
 <span class="sd">        &gt;&gt;&gt; from skdiveMove.tests import diveMove2skd</span>
 <span class="sd">        &gt;&gt;&gt; tdrX = diveMove2skd(&quot;TDRPhases&quot;)</span>
@@ -646,6 +644,12 @@ document.write(`
 <span class="sd">        end of the dive are assumed to be zero offset correction errors, so</span>
 <span class="sd">        depth observations at these extremes are interpolated between zero</span>
 <span class="sd">        and the next observations when this occurs.</span>
+
+<span class="sd">        This procedure generates a categorical variable with levels ``D``,</span>
+<span class="sd">        ``DB``, ``B``, ``BA``, ``DA``, ``A``, and ``X``, breaking the input</span>
+<span class="sd">        into descent, descent/bottom, bottom, bottom/ascent, ascent,</span>
+<span class="sd">        descent/ascent (occurring when no bottom phase can be detected) and</span>
+<span class="sd">        non-dive (surface), respectively.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -725,6 +729,10 @@ document.write(`
 <span class="sd">           unimodal, mixture or additive regression. Technical Report</span>
 <span class="sd">           8. `&lt;https://sfb876.tu-dortmund.de/FORSCHUNG/techreports.html&gt;`_,</span>
 <span class="sd">           SFB 876, TU Dortmund</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        TDR.detect_dives</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -921,7 +929,7 @@ document.write(`
             <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">TimedeltaIndex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
             <span class="n">odata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span> <span class="n">index</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">scalars</span><span class="p">:</span>
-            <span class="n">odata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">odata</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">odata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idata</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
 

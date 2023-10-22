@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>IMU-frame to body-frame transformations &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>IMU-frame to body-frame transformations &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/thebelab-helper.js"></script>
@@ -383,8 +383,8 @@ document.write(`
                   
   <section id="imu-frame-to-body-frame-transformations">
 <span id="demo-imu2body-label"></span><h1>IMU-frame to body-frame transformations<a class="headerlink" href="#imu-frame-to-body-frame-transformations" title="Link to this heading">#</a></h1>
-<p>Consider loading the <cite>logging</cite> module and setting up a logger to monitor
-progress:</p>
+<p>Consider loading the <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.12)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> module and setting up a logger to
+monitor progress:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Set up</span>
@@ -480,7 +480,8 @@ dtype: object
 </div>
 </div>
 </div>
-<p>Visualize low-pass filter (Savitzky-Golay filter) job:</p>
+<p>Visualize low-pass filter (Savitzky-Golay filter;
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter" title="(in SciPy v1.11.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">savgol_filter()</span></code></a>) job:</p>
 <div class="jupyter_cell docutils container">
 <div class="cell_output docutils container">
 <img alt="../_images/demo_imu2body_3_0.png" src="../_images/demo_imu2body_3_0.png" />
@@ -521,7 +522,7 @@ the method of the same name to produce the plot:</p>
 </div>
 <p>Calculate orientation for the segment above, and produce an animated plot
 of the orientation.  This can be done in a single step with
-<cite>IMU2Body.get_orientation</cite>.</p>
+<a class="reference internal" href="../modules/imutools.html#imutools.IMU2Body.get_orientation" title="imutools.IMU2Body.get_orientation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">imutools.IMU2Body.get_orientation()</span></code></a>.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">61</span><span class="n">Rctr2i</span><span class="p">,</span> <span class="n">svd</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -537,7 +538,7 @@ of the orientation.  This can be done in a single step with
 </div>
 </div>
 <video controls width="800" height="420">
-<source src="_static/video/gert_imu_20170810T120654.mp4" type="video/mp4">
+<source src="../_static/video/gert_imu_20170810T120654.mp4" type="video/mp4">
 </video><p>Apply the inverse transformation to get to the animal frame:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
@@ -566,7 +567,7 @@ of the orientation.  This can be done in a single step with
 </div>
 </div>
 <video controls width="800" height="420">
-<source src="_static/video/gert_body_20170810T120654.mp4" type="video/mp4">
+<source src="../_static/video/gert_body_20170810T120654.mp4" type="video/mp4">
 </video><p>Obtain orientations for all surface periods, and retrieve the quality
 indices for each estimate:</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -739,7 +740,7 @@ hierarchical dataframe output:</p>
 <img alt="../_images/demo_imu2body_16_0.png" src="../_images/demo_imu2body_16_0.png" />
 </div>
 </div>
-<p>Orient the entire <cite>IMU</cite> object with common rotation:</p>
+<p>Orient the entire <a class="reference internal" href="../modules/imutools.html#imutools.IMU2Body" title="imutools.IMU2Body"><code class="xref py py-class docutils literal notranslate"><span class="pre">IMU2Body</span></code></a> object with common rotation:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">143</span><span class="n">gert_frame</span> <span class="o">=</span> <span class="n">imu2whale</span><span class="o">.</span><span class="n">orient_IMU</span><span class="p">(</span><span class="n">Rctr2i_avg</span><span class="p">)</span>

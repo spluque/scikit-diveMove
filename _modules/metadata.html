@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metadata &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>metadata &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/thebelab-helper.js"></script>
@@ -355,8 +355,9 @@ document.write(`
   <h1>Source code for metadata</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Tools to read and write DataArray and Dataset attributes</span>
 
-<span class="sd">Easily dump a template to set up metadata for a given Dataset or DataArray</span>
-<span class="sd">that can subsequenty be read-in and append attributes to the objects.</span>
+<span class="sd">Easily dump a template to set up metadata for a given</span>
+<span class="sd">:class:`~xarray.Dataset` or :class:`~xarray.DataArray` that can</span>
+<span class="sd">subsequently be read-in and append attributes to instances.</span>
 
 
 <span class="sd">Functions</span>
@@ -447,8 +448,8 @@ document.write(`
 <span class="k">def</span> <span class="nf">dump_config_template</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config_type</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dump configuration file</span>
 
-<span class="sd">    Dump a json configuration template file to build metadata for a Dataset</span>
-<span class="sd">    or DataArray.</span>
+<span class="sd">    Dump a json configuration template file to build metadata for a</span>
+<span class="sd">    :class:`~xarray.Dataset` or :class:`~xarray.DataArray`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -480,7 +481,8 @@ document.write(`
 <div class="viewcode-block" id="assign_xr_attrs">
 <a class="viewcode-back" href="../modules/metadata.html#metadata.assign_xr_attrs">[docs]</a>
 <span class="k">def</span> <span class="nf">assign_xr_attrs</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">config_file</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assign attributes to xarray.Dataset or xarray.DataArray</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assign attributes to :class:`~xarray.Dataset` or</span>
+<span class="sd">    :class:`~xarray.DataArray`</span>
 
 <span class="sd">    The `config_file` should have only one-level of nesting.</span>
 

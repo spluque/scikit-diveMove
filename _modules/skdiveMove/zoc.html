@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.zoc &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>skdiveMove.zoc &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -372,7 +372,6 @@ document.write(`
 <span class="k">class</span> <span class="nc">ZOC</span><span class="p">(</span><span class="n">TDRSource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform zero offset correction</span>
 
-<span class="sd">    See help(ZOC) for inherited attributes.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -383,6 +382,11 @@ document.write(`
 <span class="sd">        Name of the ZOC method used.</span>
 <span class="sd">    zoc_filters : pandas.DataFrame</span>
 <span class="sd">        DataFrame with output filters for method=&quot;filter&quot;</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    See ``help(ZOC)`` for inherited attributes. This class extends</span>
+<span class="sd">    :class:`TDRSource`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -439,7 +443,7 @@ document.write(`
 <span class="sd">        k : array_like</span>
 <span class="sd">        probs : array_like</span>
 <span class="sd">        **kwargs</span>
-<span class="sd">            Optional keyword arguments. For this method: (&#39;depth_bounds&#39;</span>
+<span class="sd">            Optional keyword arguments; for this method: (&#39;depth_bounds&#39;</span>
 <span class="sd">            (defaults to range), &#39;na_rm&#39; (defaults to True)).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

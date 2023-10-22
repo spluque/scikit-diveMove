@@ -9,8 +9,8 @@ loosely following `diveMove`'s `vignette`_.
 
 .. _vignette: https://cran.r-project.org/web/packages/diveMove/vignettes/diveMove.html
 
-Set up the environment.  Consider loading the `logging` module and setting
-up a logger to monitor progress to this section.
+Set up the environment.  Consider loading the :py:mod:`logging` module and
+setting up a logger to monitor progress to this section.
 
 .. jupyter-execute::
 
@@ -41,7 +41,8 @@ up a logger to monitor progress to this section.
 Reading data files
 ==================
 
-Load `diveMove`'s example data, using ``TDR.__init__`` method, and print:
+Load `diveMove`'s example data, using :meth:`TDR.__init__` method, and
+print:
 
 .. jupyter-execute::
    :linenos:
@@ -54,13 +55,14 @@ Load `diveMove`'s example data, using ``TDR.__init__`` method, and print:
    # same with this particular data set.
    print(tdrX)
 
-Notice that `TDR` reads files in `NetCDF4`_ format, which is a very
-versatile file format, and encourages using properly documented data sets.
-`skdiveMove` relies on `xarray.Dataset` objects to represent such data
-sets.  It is easy to generate a `xarray.Dataset` objects from Pandas
-DataFrames by using method :meth:`.to_xarray`. `skdiveMove` documents
-processing steps by appending to the `history` attribute, in an effort
-towards building metadata standards.
+Notice that :meth:`TDR.__init__` reads files in `NetCDF4`_ format, which is
+a very versatile file format, and encourages using properly documented data
+sets.  `skdiveMove` relies on :class:`xarray.Dataset` objects to represent
+such data sets.  It is easy to generate a :class:`xarray.Dataset` objects
+from Pandas DataFrames by using method
+:meth:`~pandas.DataFrame.to_xarray`. `skdiveMove` documents processing
+steps by appending to the `history` attribute, in an effort towards
+building metadata standards.
 
 .. _NetCDF4: https://www.unidata.ucar.edu/software/netcdf
 
@@ -100,7 +102,7 @@ data from pressure sensors (barometers):
 Zero offset correction (ZOC) of depth measurements
 --------------------------------------------------
 
-Using the "offset" method here for speed performance reasons:
+Using the `offset` method here for speed performance reasons:
 
 .. jupyter-execute::
    :linenos:
@@ -155,8 +157,8 @@ to have started, ending when measurements cross that threshold again.
 Detection of dive phases
 ------------------------
 
-Two methods for dive phase detection are available ("unimodal" and
-"smooth_spline"), and this demo uses the default "unimodal" method:
+Two methods for dive phase detection are available (`unimodal` and
+`smooth.spline`), and this demo uses the default `unimodal` method:
 
 .. jupyter-execute::
    :linenos:
@@ -169,7 +171,7 @@ Two methods for dive phase detection are available ("unimodal" and
    print(tdrX)
 
 Alternatively, all these steps can be performed together via the
-`calibrate` function:
+:func:`~skdiveMove.calibrate` function:
 
 .. jupyter-execute::
    :linenos:
@@ -213,7 +215,7 @@ relationship with the rate of change in depth in the vertical dimension.
    print(tdrX.speed_calib_fit.summary())
 
 Notice processing steps have been appended to the `history` attribute of
-the `DataArray`:
+the :class:`xarray.DataArray`:
 
 .. jupyter-execute::
 

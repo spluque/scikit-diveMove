@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Ellipsoid modelling for calibration purposes &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>Ellipsoid modelling for calibration purposes &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/thebelab-helper.js"></script>
@@ -426,10 +426,10 @@ axes to cover a large surface of the sphere.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>The function <cite>fit_ellipsoid</cite> returns the offset, gain, and rotation matrix
-(if requested) necessary to correct the sensor’s data.  There are six types
-of constraint to impose on the result, including which radii should be
-equal, and whether the data should be rotated.</p>
+<p>The function <a class="reference internal" href="../modules/imutools.html#imutools.fit_ellipsoid" title="imutools.fit_ellipsoid"><code class="xref py py-func docutils literal notranslate"><span class="pre">imutools.fit_ellipsoid()</span></code></a> returns the offset, gain, and
+rotation matrix (if requested) necessary to correct the sensor’s data.
+There are six types of constraint to impose on the result, including which
+radii should be equal, and whether the data should be rotated.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">28</span><span class="c1"># Here, a symmetrical constraint whereby any plane passing through the</span>

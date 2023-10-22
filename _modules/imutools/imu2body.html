@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imutools.imu2body &#8212; skdiveMove 0.3.2.post1 documentation</title>
+    <title>imutools.imu2body &#8212; skdiveMove 0.3.2.post2 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=cc64f334"></script>
+    <script src="../../_static/documentation_options.js?v=ecd569df"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -428,7 +428,7 @@ document.write(`
 <span class="sd">        vectors, sigma, right singular vectors).</span>
 <span class="sd">    R_ctr2i : Rotation</span>
 <span class="sd">        :class:`~scipy.spatial.transforms.Rotation` object describing the</span>
-<span class="sd">        rotation from the *centered* body frame to the ``IMU`` frame.</span>
+<span class="sd">        rotation from the *centered* body frame to the `IMU` frame.</span>
 <span class="sd">    normalize : bool, optional</span>
 <span class="sd">        Whether to normalize vectors.  Default assumes input is normalized.</span>
 <span class="sd">    center : bool, optional</span>
@@ -442,7 +442,7 @@ document.write(`
 <span class="sd">        Output file for the animation.</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Optional keyword arguments passed to</span>
-<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).</span>
+<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. `figsize`).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -536,7 +536,7 @@ document.write(`
 <span class="sd">        Output file for the animation.</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Optional keyword arguments passed to</span>
-<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).</span>
+<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. `figsize`).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -626,7 +626,7 @@ document.write(`
 <span class="sd">        Title for the color bar.</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Optional keyword arguments passed to</span>
-<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. ``figsize``).</span>
+<span class="sd">        :func:`~matplotlib.pyplot.figure` (e.g. `figsize`).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -679,7 +679,7 @@ document.write(`
 <span class="sd">        Array with depth measurements.</span>
 <span class="sd">    **kwargs : optional keyword arguments</span>
 <span class="sd">        Arguments passed to :func:`~matplotlib.pyplot.subplots`</span>
-<span class="sd">        (e.g. ``figsize``).</span>
+<span class="sd">        (e.g. `figsize`).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -743,7 +743,7 @@ document.write(`
 <span class="sd">    covariance matrix, rather than the unscaled correlation (outer product)</span>
 <span class="sd">    of acceleration as the input for Singular Value Decomposition.</span>
 
-<span class="sd">    In addition to attributes in :class:`IMUBase`, ``IMU2Body`` adds the</span>
+<span class="sd">    In addition to attributes in :class:`IMUBase`, `IMU2Body` adds the</span>
 <span class="sd">    attributes listed below.</span>
 
 <span class="sd">    Attributes</span>
@@ -832,7 +832,8 @@ document.write(`
 <span class="sd">            diveMove&#39;s `diveStats` function.</span>
 <span class="sd">        savgol_parms : tuple, optional</span>
 <span class="sd">            A 2-element tuple with the window length and polynomial order</span>
-<span class="sd">            for the Savitzky-Golay filter to smooth acceleration.</span>
+<span class="sd">            for the Savitzky-Golay filter</span>
+<span class="sd">            (:func:`~scipy.signal.savgol_filter`) to smooth acceleration.</span>
 <span class="sd">        **kwargs : optional keyword arguments</span>
 <span class="sd">            Arguments passed to the `IMUBase.__init__` for instantiation,</span>
 <span class="sd">            except `has_depth` because the input `Dataset` is assumed to</span>
@@ -894,14 +895,15 @@ document.write(`
 <span class="sd">            beginning of the next interval.</span>
 <span class="sd">        savgol_parms : tuple, optional</span>
 <span class="sd">            A 2-element tuple with the window length and polynomial order</span>
-<span class="sd">            for the Savitzky-Golay filter to smooth acceleration.</span>
+<span class="sd">            for the Savitzky-Golay filter</span>
+<span class="sd">            (:func:`~scipy.signal.savgol_filter`) to smooth acceleration.</span>
 <span class="sd">        load_dataset_kwargs : dict, optional</span>
 <span class="sd">            Dictionary of optional keyword arguments passed to</span>
 <span class="sd">            :func:`xarray.load_dataset`.</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Additional arguments passed to :meth:`IMUBase.__init__` method,</span>
-<span class="sd">            except ``has_depth`` or ``imu_filename``.  The input</span>
-<span class="sd">            ``Dataset`` is assumed to have a depth ``DataArray``.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to :meth:`IMUBase.__init__`</span>
+<span class="sd">            method, except `has_depth` or `imu_filename`.  The input</span>
+<span class="sd">            `Dataset` is assumed to have a depth `DataArray`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1046,9 +1048,9 @@ document.write(`
 <span class="sd">            Index in surface details table to be analyzed.</span>
 <span class="sd">        plot : bool, optional</span>
 <span class="sd">            Whether to generate a plot of the estimate</span>
-<span class="sd">        **kwargs : optional keyword arguments</span>
-<span class="sd">            Arguments passed to :meth:`scatterIMU_svd`.  Only ``title`` and</span>
-<span class="sd">            ``animate`` are taken.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Optional keyword arguments passed to :meth:`scatterIMU_svd`.</span>
+<span class="sd">            Only `title` and `animate` are taken.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1129,7 +1131,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">get_orientations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Obtain orientation for all periods in surface details table</span>
 
-<span class="sd">        A quality index (``q``) for each estimate is calculated as:</span>
+<span class="sd">        A quality index (:math:`q`) for each estimate is calculated as:</span>
 
 <span class="sd">        .. math::</span>
 
@@ -1197,8 +1199,8 @@ document.write(`
 
 <span class="sd">        Re-orient acceleration and magnetic density of IMU object relative</span>
 <span class="sd">        to body frame, and return re-oriented IMU object.  Note that the</span>
-<span class="sd">        provided ``R_b2i`` must describe the rotation from the body frame</span>
-<span class="sd">        to the IMU frame.  The opposite rotation is applied to the</span>
+<span class="sd">        provided `R_b2i` must describe the rotation from the body frame to</span>
+<span class="sd">        the IMU frame.  The opposite rotation is applied to the</span>
 <span class="sd">        acceleration and magnetic field vectors of the selected surface</span>
 <span class="sd">        segment to orient the data in the body frame.</span>
 
@@ -1237,7 +1239,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">orient_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R_all</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply orientation to all periods in surface details table</span>
 
-<span class="sd">        If the ``orientations`` attribute was filled, use it to build</span>
+<span class="sd">        If the `orientations` attribute was filled, use it to build</span>
 <span class="sd">        multi-index dataframe, othewise, fill it.</span>
 
 <span class="sd">        This method orients each segment independently, as opposed to a</span>
@@ -1257,7 +1259,7 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xarray.Dataset</span>
-<span class="sd">            Dataset with the re-oriented surface IMU objects.  If ``R_all``</span>
+<span class="sd">            Dataset with the re-oriented surface IMU objects.  If `R_all`</span>
 <span class="sd">            was not provided, the Dataset contains an additional coordinate</span>
 <span class="sd">            representing the surfacing period for each segment.</span>
 
@@ -1318,7 +1320,7 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xarray.Dataset</span>
-<span class="sd">            Dataset with the re-oriented IMU object.  If ``R_all`` was not</span>
+<span class="sd">            Dataset with the re-oriented IMU object.  If `R_all` was not</span>
 <span class="sd">            provided, the Dataset contains an additional coordinate</span>
 <span class="sd">            representing the surfacing period for each segment.</span>
 
@@ -1389,10 +1391,10 @@ document.write(`
 <div class="viewcode-block" id="IMU2Body.filter_surfacings">
 <a class="viewcode-back" href="../../modules/imutools.html#imutools.IMU2Body.filter_surfacings">[docs]</a>
     <span class="k">def</span> <span class="nf">filter_surfacings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qual_thresh</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter records from ``surface_details`` and ``orientations``</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter records from `surface_details` and `orientations`</span>
 
-<span class="sd">        Remove records from the ``surface_details`` and ``orientations``</span>
-<span class="sd">        attributes, based on ``quality`` and, optionally, duration of the</span>
+<span class="sd">        Remove records from the `surface_details` and `orientations`</span>
+<span class="sd">        attributes, based on `quality` and, optionally, duration of the</span>
 <span class="sd">        surface period.  Records with quality higher than the specified</span>
 <span class="sd">        value, and (optionally) duration lower than the specified number of</span>
 <span class="sd">        seconds, are removed.</span>
@@ -1480,7 +1482,7 @@ document.write(`
 <span class="sd">            `vec_name=&quot;acceleration&quot;`)</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Optional keyword arguments passed to</span>
-<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. ``figsize``).</span>
+<span class="sd">            :func:`~matplotlib.pyplot.subplots` (e.g. `figsize`).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1543,7 +1545,7 @@ document.write(`
 <span class="sd">            Whether to generate a plot of the estimate</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Optional keyword arguments passed to :meth:`scatterIMU_svd`.</span>
-<span class="sd">            Only ``title`` and ``animate`` are taken.</span>
+<span class="sd">            Only `title` and `animate` are taken.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
