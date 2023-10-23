@@ -85,6 +85,24 @@ class TestIMUcalibrate(ut.TestCase):
                                          len(mag_cal),
                                          len(depth_cal)]),
                                np.array([3, 3, 3, 3]))
+        # Repeat with temperature break scenario
+        T_brk = 10.0
+        acc_cal = imucal.build_tmodels(_ACCEL_NAME, use_axis_order=True,
+                                       win_len=win_len, T_brk=T_brk)
+        gyro_cal = imucal.build_tmodels(_OMEGA_NAME,
+                                        use_axis_order=False,
+                                        win_len=win_len, T_brk=T_brk)
+        mag_cal = imucal.build_tmodels(_MAGNT_NAME,
+                                       use_axis_order=True,
+                                       win_len=win_len, T_brk=T_brk)
+        depth_cal = imucal.build_tmodels("depth",
+                                         use_axis_order=False,
+                                         win_len=win_len, T_brk=T_brk)
+        npt.assert_array_equal(np.array([len(acc_cal),
+                                         len(gyro_cal),
+                                         len(mag_cal),
+                                         len(depth_cal)]),
+                               np.array([3, 3, 3, 3]))
 
     def test_plot_var_model(self):
         imucal = self.imucalibrated
