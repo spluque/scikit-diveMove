@@ -442,7 +442,8 @@ class TDRPhases(ZOC):
                 spl_list.append(spl_dict)
                 # Spline derivatives
                 spl_der = res.pop("spline_deriv")
-                spl_der_idx = pd.TimedeltaIndex(spl_der[:, 0], unit="s")
+                spl_der_idx = pd.TimedeltaIndex(
+                    pd.to_timedelta(spl_der[:, 0], unit="s"))
                 spl_der = pd.DataFrame({'y': spl_der[:, 1]},
                                        index=spl_der_idx)
                 spl_der_list.append(spl_der)
@@ -568,10 +569,12 @@ class TDRPhases(ZOC):
                    "g", "a", "b", "variter"]
         idata = self.get_dives_details("splines")[diveNo]
         if name == "data":
-            x = pd.TimedeltaIndex(np.array(idata[name][0]), unit="s")
+            x = pd.TimedeltaIndex(
+                pd.to_timedelta(np.array(idata[name][0]), unit="s"))
             odata = pd.Series(np.array(idata[name][1]), index=x)
         elif name == "xy":
-            x = pd.TimedeltaIndex(np.array(idata["x"]), unit="s")
+            x = pd.TimedeltaIndex(
+                pd.to_timedelta(np.array(idata["x"]), unit="s"))
             odata = pd.Series(np.array(idata["y"]), index=x)
         elif name in scalars:
             odata = float(idata[name][0])

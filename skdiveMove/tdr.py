@@ -253,7 +253,8 @@ class TDR(TDRPhases):
 
         postdive_dur = (postdive_ids.reset_index()
                         .groupby("postdive_id")
-                        .apply(lambda x: x.iloc[-1] - x.iloc[0]))
+                        .apply(lambda x: x.iloc[-1] - x.iloc[0],
+                               include_groups=False))
 
         # Enforce UTC, as otherwise rpy2 uses our locale in the output of
         # OneDiveStats
@@ -783,7 +784,7 @@ class TDR(TDRPhases):
         >>> tdrX.detect_dive_phases("unimodal", descent_crit_q=0.01,
         ...                         ascent_crit_q=0, knot_factor=20)
         >>> tdrX.extract_dives(diveNo=20)  # doctest: +ELLIPSIS
-        <xarray.Dataset>
+        <xarray.Dataset> ...
         Dimensions: ...
 
         """

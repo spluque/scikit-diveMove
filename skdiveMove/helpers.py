@@ -177,10 +177,9 @@ def _one_dive_stats(x, interval, has_speed=False):
         onames = onames_nospeed
 
     res_df = pd.DataFrame(res, columns=onames)
-    for tcol in range(3):
+    for tcol in onames[:3]:
         # This is per POSIXct convention in R
-        res_df.iloc[:, tcol] = pd.to_datetime(res_df.iloc[:, tcol],
-                                              unit="s")
+        res_df[tcol] = pd.to_datetime(res_df[tcol], unit="s")
 
     return res_df
 
@@ -252,7 +251,7 @@ def rle_key(x):
     2020-01-01 00:02:30+00:00    6
     2020-01-01 00:02:40+00:00    6
     2020-01-01 00:02:50+00:00    6
-    Freq: 10S, dtype: int64
+    Freq: 10s, dtype: int64
 
     """
     xout = x.ne(x.shift()).cumsum()

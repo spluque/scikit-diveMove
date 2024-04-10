@@ -197,12 +197,12 @@ class TestBoutsMLE(ut.TestCase):
         _ = xbouts.plot_fit(fit2, ax=ax)
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
-        plt.close()
+        plt.close("all")
         # Without Axes
         _ = xbouts.plot_fit(fit2)
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
-        plt.close()
+        plt.close("all")
 
         # Three process
         # -------------
@@ -219,7 +219,7 @@ class TestBoutsMLE(ut.TestCase):
         _ = xbouts.plot_fit(fit2, ax=ax)
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
-        plt.close()
+        plt.close("all")
 
     def test_plot_ecdf(self):
         # Two process
@@ -237,12 +237,12 @@ class TestBoutsMLE(ut.TestCase):
         _ = xbouts.plot_ecdf(fit2, ax=ax)
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
-        plt.close()
+        plt.close("all")
         # Without Axes
         _ = xbouts.plot_ecdf(fit2)
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
-        plt.close()
+        plt.close("all")
 
         # Three process
         # -------------
@@ -259,7 +259,7 @@ class TestBoutsMLE(ut.TestCase):
         _ = xbouts.plot_ecdf(fit2, ax=ax)
         lines = ax.get_lines()
         self.assertEqual(len(lines), 2)
-        plt.close()
+        plt.close("all")
 
     def test_compare2r(self):
         # Two process

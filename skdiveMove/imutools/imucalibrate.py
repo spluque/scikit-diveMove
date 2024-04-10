@@ -91,10 +91,10 @@ class IMUcalibrate(IMUBase):
     >>> print(imucal)  # doctest: +ELLIPSIS
     IMU -- Class IMUcalibrate object
     Source File          None
-    IMU: <xarray.Dataset>
+    IMU: <xarray.Dataset> ...
     Dimensions:           (timestamp_utc: 268081, axis: 3)
     Coordinates:
-      * axis              (axis) object 'x' 'y' 'z'
+      * axis              (axis) <U1 12B 'x' 'y' 'z'
       * timestamp_utc     (timestamp_utc) datetime64[ns] ...
     Data variables:
         acceleration      (timestamp_utc, axis) float64 ...
