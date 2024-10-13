@@ -203,7 +203,7 @@ class IMUBase:
 
         """
         sensor_obj = getattr(self, sensor)
-        sampling_rate = sensor_obj.attrs["sampling_rate"]
+        sampling_rate = float(sensor_obj.attrs["sampling_rate"])
         sensor_std = preprocessing.scale(sensor_obj, with_std=False)
 
         allan_l = []

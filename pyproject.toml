@@ -9,7 +9,7 @@ description = "Python interface to R package diveMove"
 readme = "README.rst"
 license = {file = "LICENSE"}
 authors = [{name = "Sebastian Luque", email = "spluque@gmail.com"}]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = ["ahrs",
 	        "allantools",
 		"bottleneck",
