@@ -14,7 +14,7 @@ jobs:
     name: Build Python package
     runs-on: ubuntu-latest
     env:
-      PY_LATEST: "3.12"
+      PY_LATEST: "3.12.6"
 
     steps:
       - uses: actions/checkout@v4
@@ -53,13 +53,12 @@ jobs:
       - name: Build Sphinx docs
         run: |
           python -m pip install --upgrade .['dev']
+          python -m ipykernel install --user
           make -C docs/ html
 
       - name: Upload products
         uses: actions/upload-artifact@v4
-        if:
-          (matrix.python-version == env.PY_LATEST) &&
-          startsWith(github.ref, 'refs/tags')
+        if: startsWith(github.ref, 'refs/tags')
         with:
           name: dist-pkg
           path: |

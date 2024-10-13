@@ -124,7 +124,7 @@ Collect and display NLS results from the simulations:
 .. jupyter-execute::
    :linenos:
 
-   nls_coefs = pd.DataFrame(np.row_stack(coefs_nls),
+   nls_coefs = pd.DataFrame(np.vstack(coefs_nls),
                             columns=["lambda0", "lambda1", "p"])
    # Centrality and variance
    nls_coefs.describe()
@@ -138,7 +138,7 @@ Collect and display MLE results from the simulations:
 .. jupyter-execute::
    :linenos:
 
-   mle_coefs = pd.DataFrame(np.row_stack(coefs_mle),
+   mle_coefs = pd.DataFrame(np.vstack(coefs_mle),
                             columns=["lambda0", "lambda1", "p"])
    # Centrality and variance
    mle_coefs.describe()

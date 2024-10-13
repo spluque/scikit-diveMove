@@ -94,7 +94,7 @@ def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
         ax.clabel(cntr, fmt="%1.2f")
         # Plot the binned data, adding some noise for clarity
         xjit_binned = np.random.normal(binned[:, 0],
-                                       xnpy[:, 0].ptp() / (2 * n_eval))
+                                       np.ptp(xnpy[:, 0]) / (2 * n_eval))
         ax.scatter(xjit_binned, binned[:, 1], s=6, alpha=0.3)
         # Plot line
         xnew = np.linspace(mins[0], maxs[0])
