@@ -92,7 +92,7 @@ for i in range(nsims):
 # In[7]:
 
 
-nls_coefs = pd.DataFrame(np.row_stack(coefs_nls),
+nls_coefs = pd.DataFrame(np.vstack(coefs_nls),
                          columns=["lambda0", "lambda1", "p"])
 # Centrality and variance
 nls_coefs.describe()
@@ -101,7 +101,7 @@ nls_coefs.describe()
 # In[8]:
 
 
-mle_coefs = pd.DataFrame(np.row_stack(coefs_mle),
+mle_coefs = pd.DataFrame(np.vstack(coefs_mle),
                          columns=["lambda0", "lambda1", "p"])
 # Centrality and variance
 mle_coefs.describe()
