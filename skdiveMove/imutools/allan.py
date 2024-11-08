@@ -6,7 +6,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 # Mapping of error type with corresponding tau and slope
-_ERROR_DEFS = {"Q": [np.sqrt(3), -1], "ARW": [1.0, -0.5],
+_ERROR_DEFS = {"Q": [np.sqrt(3), -1], "RW": [1.0, -0.5],
                "BI": [np.nan, 0], "RRW": [3.0, 0.5],
                "RR": [np.sqrt(2), 1]}
 

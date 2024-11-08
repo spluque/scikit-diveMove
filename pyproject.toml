@@ -13,15 +13,15 @@ requires-python = ">=3.10"
 dependencies = ["ahrs",
 	        "allantools",
 		"bottleneck",
-		"docutils>=0.3",
-		"matplotlib>=3.0",
-		"netcdf4>=1.5",
-		"numpy>=2.0",
-		"pandas>=2.0",
+		"docutils>=0.20",
+		"matplotlib>=3.9",
+		"netCDF4>=1.7.2",
+		"numpy>=2.1",
+		"pandas>=2.1",
 		"rpy2>=3.5",
-		"scikit-learn>=0.20.0",
+		"scikit-learn>=1.5",
 		"scipy>=1.14",
-		"statsmodels>=0.11",
+		"statsmodels>=0.14",
 		"xarray>=2024"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -38,7 +38,7 @@ keywords = ["animal behaviour",
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["ipykernel>=6.20", "jupyter-sphinx", "pydata-sphinx-theme"]
+dev = ["ipykernel>=6.29", "jupyter-sphinx", "pydata-sphinx-theme"]
 test = ["pytest", "coverage"]
 
 [project.urls]
