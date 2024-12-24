@@ -18,8 +18,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
-                    plot=True, ax=None):
+def calibrate_speed(x, tau, contour_level, plot=True, ax=None):
     """Calibration based on kernel density estimation
 
     Parameters
@@ -28,8 +27,6 @@ def calibrate_speed(x, tau, contour_level, z=0, bad=[0, 0],
         DataFrame with depth rate and speed
     tau : float
     contour_level : float
-    z : float, optional
-    bad : array_like, optional
     plot : bool, optional
         Whether to plot calibration results.
     ax : matplotlib.Axes, optional

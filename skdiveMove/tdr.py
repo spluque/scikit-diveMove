@@ -150,7 +150,7 @@ class TDR(TDRPhases):
                               curspeed), axis=1)
         qfit, ax = speedcal.calibrate_speed(kde_data, tau=tau,
                                             contour_level=contour_level,
-                                            z=z, bad=bad, **kwargs)
+                                            **kwargs)
         self.speed_calib_fit = qfit
         logger.info("Finished calibrating speed")
 
