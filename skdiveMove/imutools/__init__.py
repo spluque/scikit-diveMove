@@ -87,8 +87,9 @@ from .imu import IMUBase
 from .imu2body import (IMU2Body, scatterIMU3D,
                        scatterIMU_svd, tsplotIMU_depth)
 from .imucalibrate import IMUcalibrate
-from .ellipsoid import fit_ellipsoid, apply_ellipsoid
+from .ellipsoid import (MagnetometerCalibrator, fit_ellipsoid,
+                        apply_ellipsoid)
 
 __all__ = ["IMUBase", "IMU2Body", "IMUcalibrate",
-           "fit_ellipsoid", "apply_ellipsoid",
+           "MagnetometerCalibrator", "fit_ellipsoid", "apply_ellipsoid",
            "scatterIMU_svd", "scatterIMU3D", "tsplotIMU_depth"]
