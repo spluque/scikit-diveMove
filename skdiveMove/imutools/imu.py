@@ -323,9 +323,9 @@ class IMUBase:
 
         """
         orienter_cls = getattr(filters, method)
-        orienter = orienter_cls(acc=self.acceleration,
-                                gyr=self.angular_velocity,
-                                mag=self.magnetic_density,
+        orienter = orienter_cls(acc=self.acceleration.to_numpy(),
+                                gyr=self.angular_velocity.to_numpy(),
+                                mag=self.magnetic_density.to_numpy(),
                                 Dt=self.sampling_interval,
                                 **kwargs)
 
