@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12.6"]
+        python-version: ["3.11", "3.12", "3.13"]
     env:
-      PY_LATEST: "3.12.6"
+      PY_LATEST: "3.13"
 
     steps:
       - name: Checkout
