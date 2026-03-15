@@ -899,7 +899,7 @@ class IMU2Body(IMUBase):
 
             sfces.append(sfci)
 
-        return xr.concat(sfces, dim=self.orientations.index)
+        return xr.concat(sfces, dim=self.orientations.index, join="outer")
 
     def orient_IMU(self, R_all=None):
         """Apply orientations to the IMU object
@@ -993,7 +993,7 @@ class IMU2Body(IMUBase):
             sel_d = {self.time_name: slice(next_desc, None)}
             seg_end = orient_segment(imu.loc[sel_d], row["R"])
             imu_l.append(seg_end)
-            imus = xr.concat(imu_l, dim=self.orientations.index)
+            imus = xr.concat(imu_l, dim=self.orientations.index, join="outer")
         else:
             imus = orient_segment(imu, R_all)
 

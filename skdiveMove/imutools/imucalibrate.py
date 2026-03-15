@@ -746,7 +746,7 @@ class IMUcalibrate(IMUBase):
         if axs is not None:
             fig = plt.gcf()
 
-        std_ds = xr.merge(self._stdda_l)
+        std_ds = xr.merge(self._stdda_l, join="outer", compat="no_conflicts")
 
         if var in _MONOAXIAL_VARS:
             if axs is None:

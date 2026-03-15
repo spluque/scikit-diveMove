@@ -33,8 +33,8 @@ def _night(times, sunrise_time, sunset_time):
     sunsets = pd.date_range(start=tmin + sunset_time,
                             end=tmax + sunset_time,
                             freq="1D")
-    tmin1 = (times.min() + pd.Timedelta(1, unit="d")).strftime("%Y-%m-%d ")
-    tmax1 = (times.max() + pd.Timedelta(1, unit="d")).strftime("%Y-%m-%d ")
+    tmin1 = (times.min() + pd.Timedelta(1, unit="D")).strftime("%Y-%m-%d ")
+    tmax1 = (times.max() + pd.Timedelta(1, unit="D")).strftime("%Y-%m-%d ")
     sunrises = pd.date_range(start=tmin1 + sunrise_time,
                              end=tmax1 + sunrise_time,
                              freq="1D")
