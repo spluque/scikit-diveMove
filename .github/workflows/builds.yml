@@ -65,7 +65,7 @@ jobs:
         if: matrix.python-version == env.PY_LATEST
         run: |
           python -m pip install --upgrade .['dev']
-          python -m ipykernel install --user
+          python -m ipykernel install --user --name="diveMove"
           make -C docs/ html
           touch docs/build/html/.nojekyll
 

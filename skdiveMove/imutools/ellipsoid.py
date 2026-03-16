@@ -125,6 +125,8 @@ def apply_ellipsoid(vectors, offset, gain, rotM, ref_r):
 class MagnetometerCalibrator:
     """Magnetometer calibration process and application
 
+    Implements the calibration procedure in [2]_.
+
     Attributes
     ----------
     F : float
@@ -136,9 +138,9 @@ class MagnetometerCalibrator:
 
     References
     ----------
-    .. [1] Qingde Li; Griffiths, J.G., "Least squares ellipsoid specific
-        fitting," in Geometric Modeling and Processing, 2004.  Proceedings,
-        vol., no., pp.335-340, 2004
+    .. [2] Qingde Li; Griffiths, J.G., "Least squares ellipsoid specific
+           fitting," in Geometric Modeling and Processing, 2004.
+           Proceedings, vol., no., pp.335-340, 2004
 
     """
 

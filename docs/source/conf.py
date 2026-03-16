@@ -20,7 +20,7 @@ sys.path.append("../skdiveMove")
 # -- Project information -----------------------------------------------------
 
 project = 'skdiveMove'
-copyright = '2020-{}, Sebastian Luque'.format(date.today().year)
+copyright = '2020-{} Sebastian Luque'.format(date.today().year)
 author = 'Sebastian Luque'
 
 # The short X.Y version
@@ -43,7 +43,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
-    'jupyter_sphinx'
+    'myst_nb'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -60,9 +60,6 @@ exclude_patterns = ['Thumbs.db', '.DS_Store']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
-# jupyter_sphinx
-jupyter_sphinx_linenos = True
-jupyter_sphinx_continue_linenos = True
 
 # autodoc
 autodoc_default_options = {
