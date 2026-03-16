@@ -189,6 +189,7 @@ def _plot_bec(bec_x, bec_y, ax, xytext, horizontalalignment="left"):
     fmtstr = "bec_{0} = {1:.3f}"
     if bec_x.size == 1:
         bec_x = bec_x.item()
+        bec_y = bec_y.item()
         ax.annotate(fmtstr.format(0, bec_x),
                     (bec_x, bec_y), xytext=xytext,
                     textcoords="offset points",
