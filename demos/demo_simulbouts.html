@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Simulating bouts &#8212; skdiveMove 0.4.0 documentation</title>
+    <title>Simulating bouts &#8212; skdiveMove 1.0.0 documentation</title>
   
   
   
@@ -16,41 +16,41 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=6c02275b"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/thebelab-helper.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'demos/demo_simulbouts';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Working with tri-axial IMUs" href="imutools_demos.html" />
-    <link rel="prev" title="Bout analysis" href="demo_bouts.html" />
+    <link rel="next" title="Modules" href="../modules/index.html" />
+    <link rel="prev" title="Bouts analysis" href="demo_bouts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.0.0" />
   </head>
   
   
@@ -66,19 +66,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -86,7 +75,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -94,8 +82,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -128,8 +116,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 0.4.0 documentation - Home"/>
-    <script>document.write(`<img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark" alt="skdiveMove 0.4.0 documentation - Home"/>`);</script>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.0 documentation - Home"/>
   
   
 </a></div>
@@ -168,29 +156,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -215,15 +195,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -242,7 +218,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -282,15 +259,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -319,14 +292,8 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="demo_tdr.html">Diving behaviour analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="demo_bouts.html">Bout analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_bouts.html">Bouts analysis</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Simulating bouts</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="imutools_demos.html">Working with tri-axial IMUs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="demo_imu2body.html">IMU-frame to body-frame transformations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="demo_allan.html">Allan deviation analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="demo_ellipsoid.html">Ellipsoid modelling for calibration purposes</a></li>
-</ul>
-</details></li>
 </ul>
 </div>
 </nav></div>
@@ -334,9 +301,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -354,8 +326,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -367,7 +337,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Demos</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Simulating bouts</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Simulating bouts</span></li>
   </ul>
 </nav>
 </div>
@@ -387,131 +357,132 @@ document.write(`
   <section id="simulating-bouts">
 <span id="demo-simulbouts-label"></span><h1>Simulating bouts<a class="headerlink" href="#simulating-bouts" title="Link to this heading">#</a></h1>
 <p>This follows the simulation of mixed Poisson distributions in <a class="reference external" href="https://doi.org/10.1163/156853907782418213">Luque &amp;
-Guinet (2007)</a>, and the comparison of models for characterizing such
-distributions.</p>
+Guinet (2007)</a>, and the
+comparison of models for characterizing such distributions.</p>
 <p>Set up the environment.</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># Set up</span>
-<span class="linenos">2</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="linenos">3</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="linenos">4</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="linenos">5</span><span class="kn">import</span> <span class="nn">skdiveMove.bouts</span> <span class="k">as</span> <span class="nn">skbouts</span>
-<span class="linenos">6</span>
-<span class="linenos">7</span><span class="c1"># For figure sizes</span>
-<span class="linenos">8</span><span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.bouts</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">skbouts</span>
+
+<span class="c1"># For figure sizes</span>
+<span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.precision&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
 </div>
 </div>
-<div class="jupyter_cell docutils container">
-<div class="cell_output docutils container">
-</div>
+</details>
 </div>
 <section id="generate-two-process-mixture">
 <h2>Generate two-process mixture<a class="headerlink" href="#generate-two-process-mixture" title="Link to this heading">#</a></h2>
 <p>For a mixed distribution of two random Poisson processes with a mixing
 parameter <span class="math notranslate nohighlight">\(p=0.7\)</span>, and density parameters <span class="math notranslate nohighlight">\(\lambda_f=0.05\)</span>, and
-<span class="math notranslate nohighlight">\(\lambda_s=0.005\)</span>, we use the <cite>random_mixexp</cite> function to generate
-samples.</p>
+<span class="math notranslate nohighlight">\(\lambda_s=0.005\)</span>, we use the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">random_mixexp()</span></code> function to generate samples.</p>
 <p>Define the true values described above, grouping the parameters into a
-<cite>Series</cite> to simplify further operations.</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">12</span><span class="n">p_true</span> <span class="o">=</span> <span class="mf">0.7</span>
-<span class="linenos">13</span><span class="n">lda0_true</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="linenos">14</span><span class="n">lda1_true</span> <span class="o">=</span> <span class="mf">0.005</span>
-<span class="linenos">15</span><span class="n">pars_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;lambda0&quot;</span><span class="p">:</span> <span class="n">lda0_true</span><span class="p">,</span>
-<span class="linenos">16</span>                       <span class="s2">&quot;lambda1&quot;</span><span class="p">:</span> <span class="n">lda1_true</span><span class="p">,</span>
-<span class="linenos">17</span>                       <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p_true</span><span class="p">})</span>
+<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a> to simplify further operations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">p_true</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="linenos">2</span><span class="n">lda0_true</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="linenos">3</span><span class="n">lda1_true</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="linenos">4</span><span class="n">pars_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;lambda0&quot;</span><span class="p">:</span> <span class="n">lda0_true</span><span class="p">,</span>
+<span class="linenos">5</span>                       <span class="s2">&quot;lambda1&quot;</span><span class="p">:</span> <span class="n">lda1_true</span><span class="p">,</span>
+<span class="linenos">6</span>                       <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p_true</span><span class="p">})</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>Declare the number of simulations and the number of samples to generate:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">18</span><span class="c1"># Number of simulations</span>
-<span class="linenos">19</span><span class="n">nsims</span> <span class="o">=</span> <span class="mi">500</span>
-<span class="linenos">20</span><span class="c1"># Size of each sample</span>
-<span class="linenos">21</span><span class="n">nsamp</span> <span class="o">=</span> <span class="mi">1000</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># Number of simulations</span>
+<span class="linenos">2</span><span class="n">nsims</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="linenos">3</span><span class="c1"># Size of each sample</span>
+<span class="linenos">4</span><span class="n">nsamp</span> <span class="o">=</span> <span class="mi">1000</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>Set up variables to accumulate simulations:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">22</span><span class="c1"># Set up NLS simulations</span>
-<span class="linenos">23</span><span class="n">coefs_nls</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos">24</span><span class="c1"># Set up MLE simulations</span>
-<span class="linenos">25</span><span class="n">coefs_mle</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos">26</span><span class="c1"># Fixed bounds fit 1</span>
-<span class="linenos">27</span><span class="n">p_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">28</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">29</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">30</span><span class="n">opts1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
-<span class="linenos">31</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">))</span>
-<span class="linenos">32</span><span class="c1"># Fixed bounds fit 2</span>
-<span class="linenos">33</span><span class="n">p_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">34</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">35</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">36</span><span class="n">opts2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
-<span class="linenos">37</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">))</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Set up NLS simulations</span>
+<span class="linenos"> 2</span><span class="n">coefs_nls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 3</span><span class="c1"># Set up MLE simulations</span>
+<span class="linenos"> 4</span><span class="n">coefs_mle</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 5</span><span class="c1"># Fixed bounds fit 1</span>
+<span class="linenos"> 6</span><span class="n">p_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="n">opts1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+<span class="linenos">10</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">))</span>
+<span class="linenos">11</span><span class="c1"># Fixed bounds fit 2</span>
+<span class="linenos">12</span><span class="n">p_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">13</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">14</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">15</span><span class="n">opts2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+<span class="linenos">16</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>Perform the simulations in a loop, fitting the nonlinear least squares
 (NLS) model, and the alternative maximum likelihood (MLE) model at each
 iteration.</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">38</span><span class="c1"># Set up a random number generator for efficiency</span>
-<span class="linenos">39</span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
-<span class="linenos">40</span><span class="c1"># Estimate parameters `nsims` times</span>
-<span class="linenos">41</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsims</span><span class="p">):</span>
-<span class="linenos">42</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span>
-<span class="linenos">43</span>                              <span class="p">(</span><span class="n">pars_true</span><span class="p">[[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">]]</span>
-<span class="linenos">44</span>                               <span class="o">.</span><span class="n">to_numpy</span><span class="p">()),</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
-<span class="linenos">45</span>    <span class="c1"># NLS</span>
-<span class="linenos">46</span>    <span class="n">xbouts</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="linenos">47</span>    <span class="n">init_pars</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">80</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="linenos">48</span>    <span class="n">coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">)</span>
-<span class="linenos">49</span>    <span class="n">p_i</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">bouts</span><span class="o">.</span><span class="n">calc_p</span><span class="p">(</span><span class="n">coefs</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># only one here</span>
-<span class="linenos">50</span>    <span class="n">coefs_i</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">coefs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;lambda&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p_i</span><span class="p">})])</span>
-<span class="linenos">51</span>    <span class="n">coefs_nls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefs_i</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
-<span class="linenos">52</span>
-<span class="linenos">53</span>    <span class="c1"># MLE</span>
-<span class="linenos">54</span>    <span class="n">xbouts</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsMLE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="linenos">55</span>    <span class="n">init_pars</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">80</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="linenos">56</span>    <span class="n">fit1</span><span class="p">,</span> <span class="n">fit2</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="n">fit1_opts</span><span class="o">=</span><span class="n">opts1</span><span class="p">,</span>
-<span class="linenos">57</span>                            <span class="n">fit2_opts</span><span class="o">=</span><span class="n">opts2</span><span class="p">)</span>
-<span class="linenos">58</span>    <span class="n">coefs_mle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Set up a random number generator for efficiency</span>
+<span class="linenos"> 2</span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+<span class="linenos"> 3</span><span class="c1"># Estimate parameters `nsims` times</span>
+<span class="linenos"> 4</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsims</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span>
+<span class="linenos"> 6</span>                              <span class="p">(</span><span class="n">pars_true</span><span class="p">[[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">]]</span>
+<span class="linenos"> 7</span>                               <span class="o">.</span><span class="n">to_numpy</span><span class="p">()),</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="linenos"> 8</span>    <span class="c1"># NLS</span>
+<span class="linenos"> 9</span>    <span class="n">xbouts</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="linenos">10</span>    <span class="n">init_pars</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">80</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">11</span>    <span class="n">coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">)</span>
+<span class="linenos">12</span>    <span class="n">p_i</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">bouts</span><span class="o">.</span><span class="n">calc_p</span><span class="p">(</span><span class="n">coefs</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># only one here</span>
+<span class="linenos">13</span>    <span class="n">coefs_i</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">coefs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;lambda&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p_i</span><span class="p">})])</span>
+<span class="linenos">14</span>    <span class="n">coefs_nls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefs_i</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="c1"># MLE</span>
+<span class="linenos">17</span>    <span class="n">xbouts</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsMLE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="linenos">18</span>    <span class="n">init_pars</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">80</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">19</span>    <span class="n">fit1</span><span class="p">,</span> <span class="n">fit2</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="n">fit1_opts</span><span class="o">=</span><span class="n">opts1</span><span class="p">,</span>
+<span class="linenos">20</span>                            <span class="n">fit2_opts</span><span class="o">=</span><span class="n">opts2</span><span class="p">)</span>
+<span class="linenos">21</span>    <span class="n">coefs_mle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 </section>
 <section id="non-linear-least-squares-nls">
 <h2>Non-linear least squares (NLS)<a class="headerlink" href="#non-linear-least-squares-nls" title="Link to this heading">#</a></h2>
 <p>Collect and display NLS results from the simulations:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">59</span><span class="n">nls_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coefs_nls</span><span class="p">),</span>
-<span class="linenos">60</span>                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
-<span class="linenos">61</span><span class="c1"># Centrality and variance</span>
-<span class="linenos">62</span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">nls_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coefs_nls</span><span class="p">),</span>
+<span class="linenos">2</span>                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
+<span class="linenos">3</span><span class="c1"># Centrality and variance</span>
+<span class="linenos">4</span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -549,44 +520,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.047</td>
-      <td>4.004e-03</td>
+      <td>3.991e-03</td>
       <td>0.729</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.005</td>
-      <td>4.165e-04</td>
-      <td>0.020</td>
+      <td>4.214e-04</td>
+      <td>0.022</td>
     </tr>
     <tr>
       <th>min</th>
       <td>0.032</td>
-      <td>3.023e-03</td>
-      <td>0.663</td>
+      <td>2.828e-03</td>
+      <td>0.654</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.044</td>
-      <td>3.715e-03</td>
+      <td>3.711e-03</td>
       <td>0.715</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.047</td>
       <td>3.972e-03</td>
-      <td>0.729</td>
+      <td>0.730</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.050</td>
-      <td>4.264e-03</td>
-      <td>0.743</td>
+      <td>4.268e-03</td>
+      <td>0.745</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>0.062</td>
-      <td>5.243e-03</td>
-      <td>0.785</td>
+      <td>0.060</td>
+      <td>5.552e-03</td>
+      <td>0.789</td>
     </tr>
   </tbody>
 </table>
@@ -596,12 +567,12 @@ iteration.</p>
 <section id="maximum-likelihood-estimation-mle">
 <h2>Maximum likelihood estimation (MLE)<a class="headerlink" href="#maximum-likelihood-estimation-mle" title="Link to this heading">#</a></h2>
 <p>Collect and display MLE results from the simulations:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">63</span><span class="n">mle_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coefs_mle</span><span class="p">),</span>
-<span class="linenos">64</span>                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
-<span class="linenos">65</span><span class="c1"># Centrality and variance</span>
-<span class="linenos">66</span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">mle_coefs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">coefs_mle</span><span class="p">),</span>
+<span class="linenos">2</span>                         <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda1&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">])</span>
+<span class="linenos">3</span><span class="c1"># Centrality and variance</span>
+<span class="linenos">4</span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -640,43 +611,43 @@ iteration.</p>
       <th>mean</th>
       <td>0.050</td>
       <td>5.022e-03</td>
-      <td>0.700</td>
+      <td>0.699</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.003</td>
-      <td>3.700e-04</td>
-      <td>0.022</td>
+      <td>3.883e-04</td>
+      <td>0.025</td>
     </tr>
     <tr>
       <th>min</th>
       <td>0.043</td>
-      <td>4.047e-03</td>
-      <td>0.630</td>
+      <td>3.924e-03</td>
+      <td>0.608</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.048</td>
-      <td>4.754e-03</td>
-      <td>0.684</td>
+      <td>4.751e-03</td>
+      <td>0.683</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.050</td>
-      <td>5.005e-03</td>
+      <td>4.982e-03</td>
       <td>0.700</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.052</td>
-      <td>5.264e-03</td>
-      <td>0.715</td>
+      <td>5.246e-03</td>
+      <td>0.717</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>0.059</td>
-      <td>6.106e-03</td>
-      <td>0.766</td>
+      <td>0.061</td>
+      <td>6.750e-03</td>
+      <td>0.764</td>
     </tr>
   </tbody>
 </table>
@@ -687,32 +658,32 @@ iteration.</p>
 <h2>Comparing NLS vs MLE<a class="headerlink" href="#comparing-nls-vs-mle" title="Link to this heading">#</a></h2>
 <p>The bias relative to the true values of the mixed distribution can be
 readily assessed for NLS:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">67</span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nls_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0   -3.029e-03
-lambda1   -9.961e-04
-p          2.865e-02
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lambda0   -0.003
+lambda1   -0.001
+p          0.029
 dtype: float64
 </pre></div>
 </div>
 </div>
 </div>
 <p>and for MLE:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">68</span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mle_coefs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">pars_true</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>lambda0    2.951e-05
-lambda1    2.226e-05
-p         -1.965e-04
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lambda0    3.000e-04
+lambda1    2.159e-05
+p         -7.200e-04
 dtype: float64
 </pre></div>
 </div>
@@ -720,118 +691,138 @@ dtype: float64
 </div>
 <p>To visualize the estimates obtained throughout the simulations, we can
 compare density plots, along with the true parameter values:</p>
-<div class="jupyter_cell docutils container">
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Combine results</span>
+<span class="linenos"> 2</span><span class="n">coefs_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">mle_coefs</span><span class="p">,</span> <span class="n">nls_coefs</span><span class="p">),</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mle&quot;</span><span class="p">,</span> <span class="s2">&quot;nls&quot;</span><span class="p">],</span>
+<span class="linenos"> 3</span>                         <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;idx&quot;</span><span class="p">])</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1"># Density plots</span>
+<span class="linenos"> 6</span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG3X1</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="n">lda0</span> <span class="o">=</span> <span class="p">(</span><span class="n">coefs_merged</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos"> 9</span>        <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<span class="linenos">10</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Density $[\lambda_f]$&quot;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="c1"># True value</span>
+<span class="linenos">12</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="linenos">13</span><span class="n">lda1</span> <span class="o">=</span> <span class="p">(</span><span class="n">coefs_merged</span><span class="p">[</span><span class="s2">&quot;lambda1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">14</span>        <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<span class="linenos">15</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Density $[\lambda_s]$&quot;</span><span class="p">)</span>
+<span class="linenos">16</span><span class="c1"># True value</span>
+<span class="linenos">17</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda1&quot;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">p_coef</span> <span class="o">=</span> <span class="p">(</span><span class="n">coefs_merged</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">19</span>          <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<span class="linenos">20</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Density $[p]$&quot;</span><span class="p">)</span>
+<span class="linenos">21</span><span class="c1"># True value</span>
+<span class="linenos">22</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="linenos">23</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;MLE&quot;</span><span class="p">,</span> <span class="s2">&quot;NLS&quot;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="linenos">24</span>              <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+</div>
 <div class="cell_output docutils container">
-<img alt="../_images/demo_simulbouts_10_0.png" src="../_images/demo_simulbouts_10_0.png" />
+<img alt="../_images/eb1effd6841de394a080b33228426138b68c6032835439265fb01d40d189b6a3.png" src="../_images/eb1effd6841de394a080b33228426138b68c6032835439265fb01d40d189b6a3.png" />
 </div>
 </div>
 </section>
 <section id="three-process-mixture">
 <h2>Three-process mixture<a class="headerlink" href="#three-process-mixture" title="Link to this heading">#</a></h2>
 <p>We generate a mixture of “fast”, “slow”, and “very slow” processes.  The
-probabilities considered for modeling this mixture are <span class="math notranslate nohighlight">\(p0\)</span> and
+probabilities considered for modeling this mixture are :math:<code class="docutils literal notranslate"><span class="pre">p0</span></code> and
 <span class="math notranslate nohighlight">\(p1\)</span>, representing the proportion of “fast” to “slow” events, and the
 proportion of “slow” to “slow” <em>and</em> “very slow” events, respectively.</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 93</span><span class="n">p_fast</span> <span class="o">=</span> <span class="mf">0.6</span>
-<span class="linenos"> 94</span><span class="n">p_svs</span> <span class="o">=</span> <span class="mf">0.7</span>                   <span class="c1"># prop of slow to (slow + very slow) procs</span>
-<span class="linenos"> 95</span><span class="n">p_true</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_fast</span><span class="p">,</span> <span class="n">p_svs</span><span class="p">]</span>
-<span class="linenos"> 96</span><span class="n">lda_true</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">8e-4</span><span class="p">]</span>
-<span class="linenos"> 97</span><span class="n">pars_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;lambda0&quot;</span><span class="p">:</span> <span class="n">lda_true</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-<span class="linenos"> 98</span>                       <span class="s2">&quot;lambda1&quot;</span><span class="p">:</span> <span class="n">lda_true</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-<span class="linenos"> 99</span>                       <span class="s2">&quot;lambda2&quot;</span><span class="p">:</span> <span class="n">lda_true</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-<span class="linenos">100</span>                       <span class="s2">&quot;p0&quot;</span><span class="p">:</span> <span class="n">p_true</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-<span class="linenos">101</span>                       <span class="s2">&quot;p1&quot;</span><span class="p">:</span> <span class="n">p_true</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">p_fast</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="linenos">2</span><span class="n">p_svs</span> <span class="o">=</span> <span class="mf">0.7</span>                   <span class="c1"># prop of slow to (slow + very slow) procs</span>
+<span class="linenos">3</span><span class="n">p_true</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_fast</span><span class="p">,</span> <span class="n">p_svs</span><span class="p">]</span>
+<span class="linenos">4</span><span class="n">lda_true</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">8e-4</span><span class="p">]</span>
+<span class="linenos">5</span><span class="n">pars_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s2">&quot;lambda0&quot;</span><span class="p">:</span> <span class="n">lda_true</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="linenos">6</span>                       <span class="s2">&quot;lambda1&quot;</span><span class="p">:</span> <span class="n">lda_true</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+<span class="linenos">7</span>                       <span class="s2">&quot;lambda2&quot;</span><span class="p">:</span> <span class="n">lda_true</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+<span class="linenos">8</span>                       <span class="s2">&quot;p0&quot;</span><span class="p">:</span> <span class="n">p_true</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="linenos">9</span>                       <span class="s2">&quot;p1&quot;</span><span class="p">:</span> <span class="n">p_true</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>Mixtures with more than two processes require careful choice of constraints
 to avoid numerical issues to fit the models; even the NLS model may require
 help.</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">102</span><span class="c1"># Bounds for NLS fit; flattened, two per process (a, lambda).  Two-tuple</span>
-<span class="linenos">103</span><span class="c1"># with lower and upper bounds for each parameter.</span>
-<span class="linenos">104</span><span class="n">nls_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span>
-<span class="linenos">105</span>    <span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]),</span>
-<span class="linenos">106</span>    <span class="p">([</span><span class="mf">5e4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">5e4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">5e4</span><span class="p">,</span> <span class="mi">1</span><span class="p">])))</span>
-<span class="linenos">107</span><span class="c1"># Fixed bounds MLE fit 1</span>
-<span class="linenos">108</span><span class="n">p0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">109</span><span class="n">p1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">110</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">111</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">112</span><span class="n">lda2_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="linenos">113</span><span class="n">opts1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
-<span class="linenos">114</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p0_bnd</span><span class="p">,</span> <span class="n">p1_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">,</span> <span class="n">lda2_bnd</span><span class="p">))</span>
-<span class="linenos">115</span><span class="c1"># Fixed bounds MLE fit 2</span>
-<span class="linenos">116</span><span class="n">p0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">9.9e-1</span><span class="p">)</span>
-<span class="linenos">117</span><span class="n">p1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">9.9e-1</span><span class="p">)</span>
-<span class="linenos">118</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2e-2</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">)</span>
-<span class="linenos">119</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3e-3</span><span class="p">,</span> <span class="mf">5e-2</span><span class="p">)</span>
-<span class="linenos">120</span><span class="n">lda2_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
-<span class="linenos">121</span><span class="n">opts2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
-<span class="linenos">122</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p0_bnd</span><span class="p">,</span> <span class="n">p1_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">,</span> <span class="n">lda2_bnd</span><span class="p">))</span>
-<span class="linenos">123</span>
-<span class="linenos">124</span><span class="n">x</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p0&quot;</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">]],</span>
-<span class="linenos">125</span>                          <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda1&quot;</span><span class="p">],</span>
-<span class="linenos">126</span>                           <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda2&quot;</span><span class="p">]],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Bounds for NLS fit; flattened, two per process (a, lambda).  Two-tuple</span>
+<span class="linenos"> 2</span><span class="c1"># with lower and upper bounds for each parameter.</span>
+<span class="linenos"> 3</span><span class="n">nls_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span>
+<span class="linenos"> 4</span>    <span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]),</span>
+<span class="linenos"> 5</span>    <span class="p">([</span><span class="mf">5e4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">5e4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">5e4</span><span class="p">,</span> <span class="mi">1</span><span class="p">])))</span>
+<span class="linenos"> 6</span><span class="c1"># Fixed bounds MLE fit 1</span>
+<span class="linenos"> 7</span><span class="n">p0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="n">p1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">10</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">11</span><span class="n">lda2_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">12</span><span class="n">opts1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+<span class="linenos">13</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p0_bnd</span><span class="p">,</span> <span class="n">p1_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">,</span> <span class="n">lda2_bnd</span><span class="p">))</span>
+<span class="linenos">14</span><span class="c1"># Fixed bounds MLE fit 2</span>
+<span class="linenos">15</span><span class="n">p0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">9.9e-1</span><span class="p">)</span>
+<span class="linenos">16</span><span class="n">p1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">9.9e-1</span><span class="p">)</span>
+<span class="linenos">17</span><span class="n">lda0_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2e-2</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">lda1_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3e-3</span><span class="p">,</span> <span class="mf">5e-2</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">lda2_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
+<span class="linenos">20</span><span class="n">opts2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+<span class="linenos">21</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p0_bnd</span><span class="p">,</span> <span class="n">p1_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">,</span> <span class="n">lda2_bnd</span><span class="p">))</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="n">x</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p0&quot;</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;p1&quot;</span><span class="p">]],</span>
+<span class="linenos">24</span>                          <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda0&quot;</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda1&quot;</span><span class="p">],</span>
+<span class="linenos">25</span>                           <span class="n">pars_true</span><span class="p">[</span><span class="s2">&quot;lambda2&quot;</span><span class="p">]],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>We fit the three-process data with the two models:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">127</span><span class="n">x_nls</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="linenos">128</span><span class="n">init_pars</span> <span class="o">=</span> <span class="n">x_nls</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">75</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="linenos">129</span><span class="n">coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">x_nls</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="o">**</span><span class="n">nls_opts</span><span class="p">)</span>
-<span class="linenos">130</span>
-<span class="linenos">131</span><span class="n">x_mle</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsMLE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="linenos">132</span><span class="n">init_pars</span> <span class="o">=</span> <span class="n">x_mle</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">75</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="linenos">133</span><span class="n">fit1</span><span class="p">,</span> <span class="n">fit2</span> <span class="o">=</span> <span class="n">x_mle</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="n">fit1_opts</span><span class="o">=</span><span class="n">opts1</span><span class="p">,</span>
-<span class="linenos">134</span>                       <span class="n">fit2_opts</span><span class="o">=</span><span class="n">opts2</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">x_nls</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="linenos">2</span><span class="n">init_pars</span> <span class="o">=</span> <span class="n">x_nls</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">75</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">3</span><span class="n">coefs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">x_nls</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="o">**</span><span class="n">nls_opts</span><span class="p">)</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span><span class="n">x_mle</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsMLE</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="linenos">6</span><span class="n">init_pars</span> <span class="o">=</span> <span class="n">x_mle</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">75</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">7</span><span class="n">fit1</span><span class="p">,</span> <span class="n">fit2</span> <span class="o">=</span> <span class="n">x_mle</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span> <span class="n">fit1_opts</span><span class="o">=</span><span class="n">opts1</span><span class="p">,</span>
+<span class="linenos">8</span>                       <span class="n">fit2_opts</span><span class="o">=</span><span class="n">opts2</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>Plot both fits and BECs:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">135</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="linenos">136</span><span class="n">x_nls</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="linenos">137</span><span class="n">x_mle</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">fit2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="linenos">2</span><span class="n">x_nls</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">3</span><span class="n">x_mle</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">fit2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/demo_simulbouts_14_0.png" src="../_images/demo_simulbouts_14_0.png" />
+<img alt="../_images/9bf00c17ffe5c1892238ef689a677d35f158fc42be3c3f8fdae569acff2a9339.png" src="../_images/9bf00c17ffe5c1892238ef689a677d35f158fc42be3c3f8fdae569acff2a9339.png" />
 </div>
 </div>
 <p>Compare cumulative frequency distributions:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">138</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="linenos">139</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NLS&quot;</span><span class="p">)</span>
-<span class="linenos">140</span><span class="n">x_nls</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="linenos">141</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MLE&quot;</span><span class="p">)</span>
-<span class="linenos">142</span><span class="n">x_mle</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">fit2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="linenos">2</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NLS&quot;</span><span class="p">)</span>
+<span class="linenos">3</span><span class="n">x_nls</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">4</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MLE&quot;</span><span class="p">)</span>
+<span class="linenos">5</span><span class="n">x_mle</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">fit2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/demo_simulbouts_15_0.png" src="../_images/demo_simulbouts_15_0.png" />
+<img alt="../_images/77161251f25339ec7e294232f08df4a041ee10c22d01cccefe7257c18e70c081.png" src="../_images/77161251f25339ec7e294232f08df4a041ee10c22d01cccefe7257c18e70c081.png" />
 </div>
 </div>
-<p>Feel free to download a copy of this demo
-(<a class="reference download internal" download="" href="../_downloads/6fe606eed06f1bf8dfd6732b391d309a/demo_simulbouts.py"><code class="xref download docutils literal notranslate"><span class="pre">demo_simulbouts.py</span></code></a>).</p>
 </section>
 </section>
 
@@ -851,15 +842,15 @@ help.</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Bout analysis</p>
+        <p class="prev-next-title">Bouts analysis</p>
       </div>
     </a>
     <a class="right-next"
-       href="imutools_demos.html"
+       href="../modules/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Working with tri-axial IMUs</p>
+        <p class="prev-next-title">Modules</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -870,7 +861,8 @@ help.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -890,13 +882,13 @@ help.</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/demos/demo_simulbouts.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/demos/demo_simulbouts.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -911,8 +903,8 @@ help.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -923,7 +915,7 @@ help.</p>
 
   <p class="copyright">
     
-      © Copyright 2020-2024, Sebastian Luque.
+      © Copyright 2020-2026 Sebastian Luque.
       <br/>
     
   </p>
@@ -932,7 +924,7 @@ help.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -953,7 +945,8 @@ help.</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

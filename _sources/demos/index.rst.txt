@@ -7,4 +7,3 @@ Demos
    demo_tdr
    demo_bouts
    demo_simulbouts
-   imutools_demos

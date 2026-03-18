@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Bout analysis &#8212; skdiveMove 0.4.0 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 1.0.0 documentation</title>
   
   
   
@@ -16,41 +16,40 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=6c02275b"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/thebelab-helper.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'modules/bouts';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Inertial Measurement Unit time series" href="imutools.html" />
     <link rel="prev" title="Time-Depth Recorder time series" href="tdr.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.0.0" />
   </head>
   
   
@@ -66,19 +65,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -86,7 +74,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -94,8 +81,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -128,8 +115,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 0.4.0 documentation - Home"/>
-    <script>document.write(`<img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark" alt="skdiveMove 0.4.0 documentation - Home"/>`);</script>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.0 documentation - Home"/>
   
   
 </a></div>
@@ -168,29 +155,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -215,15 +194,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -242,7 +217,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -282,15 +258,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -321,7 +293,6 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="metadata.html">Read and write metadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tdr.html">Time-Depth Recorder time series</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Bout analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="imutools.html">Inertial Measurement Unit time series</a></li>
 </ul>
 </div>
 </nav></div>
@@ -329,9 +300,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -349,8 +325,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -362,7 +336,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Modules</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Bout analysis</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Bout analysis</span></li>
   </ul>
 </nav>
 </div>
@@ -391,7 +365,7 @@ log-transformed frequencies.</p>
 <p>The abstract class <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bouts</span></code></a> provides basic methods.</p>
 <section id="abstract-class-methods-summary">
 <h2>Abstract class &amp; methods summary<a class="headerlink" href="#abstract-class-methods-summary" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bouts</span></code></a>(x, bw[, method])</p></td>
 <td><p>Abstract base class for models of log-transformed frequencies</p></td>
@@ -434,7 +408,7 @@ process.  Mixtures of more processes can also be added to the model.</p>
 </section>
 <section id="methods-summary">
 <h2>Methods summary<a class="headerlink" href="#methods-summary" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bouts.BoutsNLS.plot_ecdf" title="bouts.BoutsNLS.plot_ecdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsNLS.plot_ecdf</span></code></a>(coefs[, ax])</p></td>
 <td><p>Plot observed and modelled empirical cumulative frequencies</p></td>
@@ -465,7 +439,7 @@ slow process events in the sampled population.</p>
 </section>
 <section id="id1">
 <h2>Methods summary<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#bouts.BoutsMLE.negMLEll" title="bouts.BoutsMLE.negMLEll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoutsMLE.negMLEll</span></code></a>(params, x[, istransformed])</p></td>
 <td><p>Log likelihood function of parameters given observed data</p></td>
@@ -488,8 +462,8 @@ slow process events in the sampled population.</p>
 </section>
 <dl class="py class">
 <dt class="sig sig-object py" id="bouts.Bouts">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bouts.</span></span><span class="sig-name descname"><span class="pre">Bouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/bouts.html#Bouts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">bouts.</span></span><span class="sig-name descname"><span class="pre">Bouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/bouts.html#Bouts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Abstract base class for models of log-transformed frequencies</p>
 <p>This is a base class for other classes to build on, and do the model
 fitting.  <cite>Bouts</cite> is an abstract base class to set up bout
@@ -512,7 +486,7 @@ methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
 <dd><p>Method used for calculating the histogram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -524,19 +498,19 @@ methods, or re-use the default NLS methods in <cite>Bouts</cite>.</p>
 log-frequencies of <cite>x</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bouts.Bouts.bec">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/bouts.html#Bouts.bec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts.bec" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">bec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/bouts.html#Bouts.bec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts.bec" title="Link to this definition">#</a></dt>
 <dd><p>Calculate bout ending criteria from model coefficients</p>
 <p>Implementing default as from NLS method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
+<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -544,22 +518,22 @@ parameter names “a” and “lambda”.</p>
 <code class="docutils literal notranslate"><span class="pre">coefs.shape[1]</span></code></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a>, shape (n,)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)">numpy.ndarray</a>, shape (n,)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bouts.Bouts.fit">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/bouts.html#Bouts.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts.fit" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/bouts.html#Bouts.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.Bouts.fit" title="Link to this definition">#</a></dt>
 <dd><p>Fit Poisson mixture model to log frequencies</p>
 <p>Default is non-linear least squares method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a>.</p></li>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -584,7 +558,7 @@ parameter names “a” and “lambda”.</p>
 for broken stick model, such that <span class="math notranslate nohighlight">\(x &lt; x\_break_0\)</span> is
 first process, <span class="math notranslate nohighlight">\(x &gt;= x\_break_1\)</span> &amp; <span class="math notranslate nohighlight">\(x &lt; x\_break_2\)</span>
 is second process, and <span class="math notranslate nohighlight">\(x &gt;= x\_break_2\)</span> is third one.</p></li>
-<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot the broken stick model.</p></li>
+<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot the broken stick model.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – An Axes instance to use as target.  Default is to create one.</p></li>
 <li><p><strong>**kwargs</strong> (<em>optional keyword arguments</em>) – Passed to plotting function. Ignored currently.</p></li>
 </ul>
@@ -593,7 +567,7 @@ is second process, and <span class="math notranslate nohighlight">\(x &gt;= x\_b
 <dd class="field-even"><p><strong>out</strong> – DataFrame with coefficients for each process.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -605,7 +579,7 @@ is second process, and <span class="math notranslate nohighlight">\(x &gt;= x\_b
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
+<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns, and indexed by
 parameter names “a” and “lambda”.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.Axes instance</em>) – An Axes instance to use as target.</p></li>
 </ul>
@@ -623,7 +597,7 @@ parameter names “a” and “lambda”.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="bouts.BoutsMLE">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bouts.</span></span><span class="sig-name descname"><span class="pre">BoutsMLE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/boutsmle.html#BoutsMLE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsMLE" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">bouts.</span></span><span class="sig-name descname"><span class="pre">BoutsMLE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/boutsmle.html#BoutsMLE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsMLE" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#bouts.Bouts" title="bouts.bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bouts</span></code></a></p>
 <p>Maximum Likelihood estimation for models of Poisson process mixtures</p>
 <p>Methods for modelling log-frequency data as a mixture of Poisson
@@ -654,11 +628,11 @@ transformations for density parameters <span class="math notranslate nohighlight
 corresponding to the un-transformed model for step 4.</p>
 <p>The <a class="reference internal" href="#bouts.BoutsMLE.fit" title="bouts.BoutsMLE.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method performs the main job of maximizing the -log L2
 functions, and is essentially a wrapper around
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">minimize()</span></code></a>.  It only takes the -log L2 function,
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">minimize()</span></code></a>.  It only takes the -log L2 function,
 a <cite>DataFrame</cite> of starting values, and the variable to be modelled, all
-of which are passed to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">minimize()</span></code></a> for
+of which are passed to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">minimize()</span></code></a> for
 optimization.  Additionally, any other arguments are also passed to
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">minimize()</span></code></a>, hence great control is provided for
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">minimize()</span></code></a>, hence great control is provided for
 fitting any of the -log L2 functions.</p>
 <p>In practice, step 3 does not pose major problems using the
 reparameterized -log L2 function, but it might be useful to use method
@@ -692,14 +666,14 @@ objectivity. Behaviour, 144, 1315-1332.</p>
 <dd><p>Calculate bout ending criteria from model coefficients</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fit</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.14.1)"><em>scipy.optimize.OptimizeResult</em></a>) – Object with the optimization result, having a <cite>x</cite> attribute
+<dd class="field-odd"><p><strong>fit</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.17.0)"><em>scipy.optimize.OptimizeResult</em></a>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)">numpy.ndarray</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -714,14 +688,14 @@ of a single float is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with starting values for coefficients of each process
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – DataFrame with starting values for coefficients of each process
 in columns.  These can come from the “broken stick” method as
 in <a class="reference internal" href="#bouts.Bouts.init_pars" title="bouts.Bouts.init_pars"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Bouts.init_pars()</span></code></a>, and will be transformed to minimize
 the first log likelihood function.</p></li>
-<li><p><strong>fit1_opts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – Dictionaries with keywords to be passed to
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>, for the first and second fits.</p></li>
-<li><p><strong>fit2_opts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a>) – Dictionaries with keywords to be passed to
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>, for the first and second fits.</p></li>
+<li><p><strong>fit1_opts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionaries with keywords to be passed to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>, for the first and second fits.</p></li>
+<li><p><strong>fit2_opts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionaries with keywords to be passed to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>, for the first and second fits.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -729,7 +703,7 @@ the first log likelihood function.</p></li>
 fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.14.1)">scipy.optimize.OptimizeResult</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.17.0)">scipy.optimize.OptimizeResult</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -750,7 +724,7 @@ fit, having a <cite>x</cite> attribute with coefficients of the solution.</p>
 <span class="math notranslate nohighlight">\(\lambda_m\)</span>, <span class="math notranslate nohighlight">\(\lambda_s\)</span>.</p></li>
 <li><p><strong>x</strong> (<em>array_like</em>) – Independent data array described by model with parameters
 <cite>params</cite>.</p></li>
-<li><p><strong>istransformed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Whether <cite>params</cite> are transformed and need to be un-transformed
+<li><p><strong>istransformed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Whether <cite>params</cite> are transformed and need to be un-transformed
 to calculate the likelihood.</p></li>
 </ul>
 </dd>
@@ -767,15 +741,15 @@ to calculate the likelihood.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fit</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.14.1)"><em>scipy.optimize.OptimizeResult</em></a>) – Object with the optimization result, having a <cite>x</cite> attribute
+<li><p><strong>fit</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.17.0)"><em>scipy.optimize.OptimizeResult</em></a>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – An Axes instance to use as target.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="(in Matplotlib v3.9.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.gca()</span></code></a>.</p></li>
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="(in Matplotlib v3.10.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.gca()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.9.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ax</p>
@@ -790,13 +764,13 @@ with coefficients of the solution.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fit</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.14.1)"><em>scipy.optimize.OptimizeResult</em></a>) – Object with the optimization result, having a <cite>x</cite> attribute
+<li><p><strong>fit</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult" title="(in SciPy v1.17.0)"><em>scipy.optimize.OptimizeResult</em></a>) – Object with the optimization result, having a <cite>x</cite> attribute
 with coefficients of the solution.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – An Axes instance to use as target.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.9.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ax</p>
@@ -808,7 +782,7 @@ with coefficients of the solution.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="bouts.BoutsNLS">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bouts.</span></span><span class="sig-name descname"><span class="pre">BoutsNLS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/boutsnls.html#BoutsNLS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsNLS" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">bouts.</span></span><span class="sig-name descname"><span class="pre">BoutsNLS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bouts/boutsnls.html#BoutsNLS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.BoutsNLS" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#bouts.Bouts" title="bouts.bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bouts</span></code></a></p>
 <p>Nonlinear Least Squares fitting for models of Poisson process mixtures</p>
 <p>Methods for modelling log-frequency data as a mixture of Poisson
@@ -826,7 +800,7 @@ into bouts Animal Behaviour 39, 63-69.</p>
 <p>Draw 1000 samples from a mixture where the first process occurs with
 <span class="math notranslate nohighlight">\(p &lt; 0.7\)</span> and the second process occurs with the remaining
 probability.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skdiveMove.tests</span> <span class="kn">import</span> <span class="n">random_mixexp</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">random_mixexp</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">random_mixexp</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">lda</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">]),</span>
 <span class="gp">... </span>                   <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
@@ -848,12 +822,12 @@ probability.</p>
 </pre></div>
 </div>
 <p>Plot observed and predicted data:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xbouts2</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>  
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xbouts2</span><span class="o">.</span><span class="n">plot_fit</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
 <span class="go">&lt;Axes: ...&gt;</span>
 </pre></div>
 </div>
 <p>Plot ECDF:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xbouts2</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>  
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xbouts2</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
 <span class="go">&lt;Axes: ...&gt;</span>
 </pre></div>
 </div>
@@ -864,14 +838,14 @@ probability.</p>
 <p>The metaclass <a class="reference internal" href="#bouts.Bouts" title="bouts.Bouts"><code class="xref py py-class docutils literal notranslate"><span class="pre">bouts.Bouts</span></code></a> implements this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p>
+<dd class="field-odd"><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – 1-D array with BECs implied by <cite>coefs</cite>.  Length is
 <code class="docutils literal notranslate"><span class="pre">coefs.shape[1]</span></code></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a>, shape (n,)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)">numpy.ndarray</a>, shape (n,)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -884,9 +858,9 @@ probability.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – DataFrame with coefficients for each process in columns.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a>.</p></li>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy.optimize.curve_fit" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -906,14 +880,14 @@ probability.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p></li>
+<li><p><strong>coefs</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – DataFrame with model coefficients in columns.</p></li>
 <li><p><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – An Axes instance to use as target.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="(in Matplotlib v3.9.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.gca()</span></code></a>.</p></li>
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="(in Matplotlib v3.10.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.gca()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.9.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ax</p>
@@ -930,16 +904,16 @@ probability.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v2.2.3)"><em>pandas.Series</em></a>) – Series with data to classify according to <cite>bec</cite>.</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.1)"><em>pandas.Series</em></a>) – Series with data to classify according to <cite>bec</cite>.</p></li>
 <li><p><strong>bec</strong> (<em>array_like</em>) – Array with bout-ending criteria. It is assumed to be sorted.</p></li>
-<li><p><strong>as_diff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to apply <cite>diff</cite> on <cite>x</cite> so it matches <cite>bec</cite>’s scale.</p></li>
+<li><p><strong>as_diff</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to apply <cite>diff</cite> on <cite>x</cite> so it matches <cite>bec</cite>’s scale.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – Integer array with the same shape as <cite>x</cite>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -957,8 +931,8 @@ represents the proportion of “slow” to “slow” <em>and</em> “very slow�
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Output sample size.</p></li>
-<li><p><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em> or </em><em>array_like</em>) – Probabilities for processes in the output mixture sample.</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Output sample size.</p></li>
+<li><p><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array_like</em>) – Probabilities for processes in the output mixture sample.</p></li>
 <li><p><strong>lda</strong> (<em>array_like</em>) – array_like with <span class="math notranslate nohighlight">\(\lambda\)</span> (scale) for each process.</p></li>
 <li><p><strong>rng</strong> (<em>Generator</em>) – Random number generator object.  If not provided, a default one is
 used.</p></li>
@@ -974,7 +948,7 @@ used.</p></li>
 probability.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">random_mixexp</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">lda</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">]),</span>
-<span class="gp">... </span>              <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>  
+<span class="gp">... </span>              <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
 <span class="go">array([7.27468930e+00, 2.69331091e+00, 5.29542594e+00, 1.02697947e+01,</span>
 <span class="go">       ...])</span>
 </pre></div>
@@ -1002,15 +976,6 @@ probability.</p>
         <p class="prev-next-title">Time-Depth Recorder time series</p>
       </div>
     </a>
-    <a class="right-next"
-       href="imutools.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Inertial Measurement Unit time series</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -1018,7 +983,8 @@ probability.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1064,13 +1030,13 @@ probability.</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/modules/bouts.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/modules/bouts.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -1085,8 +1051,8 @@ probability.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1097,7 +1063,7 @@ probability.</p>
 
   <p class="copyright">
     
-      © Copyright 2020-2024, Sebastian Luque.
+      © Copyright 2020-2026 Sebastian Luque.
       <br/>
     
   </p>
@@ -1106,7 +1072,7 @@ probability.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -1127,7 +1093,8 @@ probability.</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

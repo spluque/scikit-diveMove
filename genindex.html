@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; skdiveMove 0.4.0 documentation</title>
+    <title>Index &#8212; skdiveMove 1.0.0 documentation</title>
   
   
   
@@ -15,38 +15,38 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=6c02275b"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/thebelab-helper.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.0.0" />
   </head>
   
   
@@ -62,19 +62,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -82,7 +71,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -90,8 +78,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -124,8 +112,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 0.4.0 documentation - Home"/>
-    <script>document.write(`<img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark" alt="skdiveMove 0.4.0 documentation - Home"/>`);</script>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.0 documentation - Home"/>
   
   
 </a></div>
@@ -164,29 +152,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -211,15 +191,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -236,7 +212,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -276,15 +253,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -308,9 +281,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -340,14 +318,11 @@ document.write(`
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
- | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -359,23 +334,7 @@ document.write(`
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.accel_sg">accel_sg (imutools.IMU2Body attribute)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.acceleration">acceleration (imutools.IMUBase property)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.allan_coefs">allan_coefs() (imutools.IMUBase method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.angular_velocity">angular_velocity (imutools.IMUBase property)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.apply_ellipsoid">apply_ellipsoid() (in module imutools)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.apply_model">apply_model() (imutools.IMUcalibrate method)</a>
-</li>
       <li><a href="modules/metadata.html#metadata.assign_xr_attrs">assign_xr_attrs() (in module metadata)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.axis_order">axis_order (imutools.IMUcalibrate attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -406,8 +365,6 @@ document.write(`
 </li>
       <li><a href="modules/bouts.html#bouts.BoutsNLS">BoutsNLS (class in bouts)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.build_tmodels">build_tmodels() (imutools.IMUcalibrate method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -420,34 +377,22 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/tdr.html#skdiveMove.TDR.calibrate_speed">calibrate_speed() (skdiveMove.TDR method)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.compute_orientation">compute_orientation() (imutools.IMUBase method)</a>
-</li>
   </ul></td>
 </tr></table>
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase.dead_reckon">dead_reckon() (imutools.IMUBase method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.depth">depth (imutools.IMUBase property)</a>
-
-      <ul>
-        <li><a href="modules/tdr.html#skdiveMove.TDR.depth">(skdiveMove.TDR property)</a>
-</li>
-      </ul></li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.depth_name">depth_name (imutools.IMUBase attribute)</a>
+      <li><a href="modules/tdr.html#skdiveMove.TDR.depth">depth (skdiveMove.TDR property)</a>
 </li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.depth_zoc">depth_zoc (skdiveMove.TDR property)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.describe_surfacing_durations">describe_surfacing_durations() (imutools.IMU2Body method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/tdr.html#skdiveMove.TDR.detect_dive_phases">detect_dive_phases() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.detect_dives">detect_dives() (skdiveMove.TDR method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/tdr.html#skdiveMove.TDR.detect_wet">detect_wet() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.dive_stats">dive_stats() (skdiveMove.TDR method)</a>
@@ -472,8 +417,6 @@ document.write(`
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.filter_surfacings">filter_surfacings() (imutools.IMU2Body method)</a>
-</li>
       <li><a href="modules/bouts.html#bouts.Bouts.fit">fit() (bouts.Bouts method)</a>
 
       <ul>
@@ -482,12 +425,6 @@ document.write(`
         <li><a href="modules/bouts.html#bouts.BoutsNLS.fit">(bouts.BoutsNLS method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.fit_ellipsoid">fit_ellipsoid() (in module imutools)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.from_csv_nc">from_csv_nc() (imutools.IMU2Body class method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -500,31 +437,13 @@ document.write(`
 </li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.get_dives_details">get_dives_details() (skdiveMove.TDR method)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.get_model">get_model() (imutools.IMUcalibrate method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.get_offset">get_offset() (imutools.IMUcalibrate method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.get_orientation">get_orientation() (imutools.IMU2Body method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.get_orientations">get_orientations() (imutools.IMU2Body method)</a>
-</li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.get_phases_params">get_phases_params() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.get_speed">get_speed() (skdiveMove.TDR method)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.get_surface_vectors">get_surface_vectors() (imutools.IMU2Body method)</a>
-</li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.get_tdr">get_tdr() (skdiveMove.TDR method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase.has_depth">has_depth (imutools.IMUBase attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -532,27 +451,6 @@ document.write(`
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase.imu">imu (imutools.IMUBase attribute)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body">IMU2Body (class in imutools)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.imu_file">imu_file (imutools.IMUBase attribute)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.imu_var_names">imu_var_names (imutools.IMUBase attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase">IMUBase (class in imutools)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate">IMUcalibrate (class in imutools)</a>
-</li>
-      <li>
-    imutools
-
-      <ul>
-        <li><a href="modules/imutools.html#module-imutools">module</a>
-</li>
-      </ul></li>
       <li><a href="modules/bouts.html#bouts.Bouts.init_pars">init_pars() (bouts.Bouts method)</a>
 </li>
   </ul></td>
@@ -573,8 +471,6 @@ document.write(`
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase.magnetic_density">magnetic_density (imutools.IMUBase property)</a>
-</li>
       <li>
     metadata
 
@@ -584,8 +480,6 @@ document.write(`
       </ul></li>
       <li><a href="modules/bouts.html#bouts.Bouts.method">method (bouts.Bouts attribute)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.models_l">models_l (imutools.IMUcalibrate attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
@@ -593,8 +487,6 @@ document.write(`
 
       <ul>
         <li><a href="modules/bouts.html#module-bouts">bouts</a>
-</li>
-        <li><a href="modules/imutools.html#module-imutools">imutools</a>
 </li>
         <li><a href="modules/metadata.html#module-metadata">metadata</a>
 </li>
@@ -612,27 +504,9 @@ document.write(`
   </ul></td>
 </tr></table>
 
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.orient_IMU">orient_IMU() (imutools.IMU2Body method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.orient_surfacing">orient_surfacing() (imutools.IMU2Body method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.orient_surfacings">orient_surfacings() (imutools.IMU2Body method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.orientations">orientations (imutools.IMU2Body attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.periods">periods (imutools.IMUcalibrate attribute)</a>
-</li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.plot">plot() (skdiveMove.TDR method)</a>
 </li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.plot_dive_model">plot_dive_model() (skdiveMove.TDR method)</a>
@@ -643,8 +517,6 @@ document.write(`
         <li><a href="modules/bouts.html#bouts.BoutsNLS.plot_ecdf">(bouts.BoutsNLS method)</a>
 </li>
       </ul></li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.plot_experiment">plot_experiment() (imutools.IMUcalibrate method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/bouts.html#bouts.Bouts.plot_fit">plot_fit() (bouts.Bouts method)</a>
@@ -655,19 +527,7 @@ document.write(`
       </ul></li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.plot_phases">plot_phases() (skdiveMove.TDR method)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.plot_standardized">plot_standardized() (imutools.IMUcalibrate method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.plot_var_model">plot_var_model() (imutools.IMUcalibrate method)</a>
-</li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.plot_zoc">plot_zoc() (skdiveMove.TDR method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="Q">Q</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase.quats">quats (imutools.IMUBase attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -677,32 +537,16 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/bouts.html#bouts.random_mixexp">random_mixexp() (in module bouts)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMUBase.read_netcdf">read_netcdf() (imutools.IMUBase class method)</a>
-
-      <ul>
-        <li><a href="modules/imutools.html#imutools.IMUcalibrate.read_netcdf">(imutools.IMUcalibrate class method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/tdr.html#skdiveMove.TDR.read_netcdf">read_netcdf() (skdiveMove.TDR class method)</a>
 </li>
-        <li><a href="modules/tdr.html#skdiveMove.TDR.read_netcdf">(skdiveMove.TDR class method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase.sampling_interval">sampling_interval (imutools.IMUBase property)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.savgol_filter">savgol_filter() (imutools.IMUcalibrate method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.scatterIMU3D">scatterIMU3D() (imutools.IMU2Body method)</a>
-
-      <ul>
-        <li><a href="modules/imutools.html#imutools.scatterIMU3D">(in module imutools)</a>
-</li>
-      </ul></li>
-      <li><a href="modules/imutools.html#imutools.scatterIMU_svd">scatterIMU_svd() (in module imutools)</a>
-</li>
       <li>
     skdiveMove
 
@@ -718,10 +562,6 @@ document.write(`
 </li>
       <li><a href="modules/tdr.html#skdiveMove.TDR.stamp_dives">stamp_dives() (skdiveMove.TDR method)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMUcalibrate.subset_imu">subset_imu() (imutools.IMUcalibrate method)</a>
-</li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.surface_details">surface_details (imutools.IMU2Body attribute)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -730,18 +570,10 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/tdr.html#skdiveMove.TDR">TDR (class in skdiveMove)</a>
 </li>
-      <li><a href="modules/tdr.html#skdiveMove.TDR.time_budget">time_budget() (skdiveMove.TDR method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/imutools.html#imutools.IMUBase.time_name">time_name (imutools.IMUBase attribute)</a>
+      <li><a href="modules/tdr.html#skdiveMove.TDR.time_budget">time_budget() (skdiveMove.TDR method)</a>
 </li>
-      <li><a href="modules/imutools.html#imutools.IMU2Body.tsplotIMU_depth">tsplotIMU_depth() (imutools.IMU2Body method)</a>
-
-      <ul>
-        <li><a href="modules/imutools.html#imutools.tsplotIMU_depth">(in module imutools)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -802,8 +634,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -814,7 +646,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2020-2024, Sebastian Luque.
+      © Copyright 2020-2026 Sebastian Luque.
       <br/>
     
   </p>
@@ -823,7 +655,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -844,7 +676,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
