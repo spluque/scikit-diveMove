@@ -7,4 +7,3 @@ Modules
    metadata
    tdr
    bouts
-   imutools

@@ -1,51 +1,85 @@
-[build-system]
-# This is the default table, so is here for clarity only
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "scikit-diveMove"
+dynamic = ["version"]
 description = "Python interface to R package diveMove"
-readme = "README.rst"
-license = {file = "LICENSE"}
-authors = [{name = "Sebastian Luque", email = "spluque@gmail.com"}]
-requires-python = ">=3.10"
-dependencies = ["ahrs",
-	        "allantools",
-		"bottleneck",
-		"docutils>=0.20",
-		"matplotlib>=3.10",
-		"netCDF4>=1.7.2",
-		"numpy>=2.1",
-		"pandas>=3.0",
-		"rpy2>=3.6",
-		"scikit-learn>=1.8",
-		"scipy>=1.17",
-		"statsmodels>=0.14",
-		"xarray>=2026"]
+authors = [
+    {name = "Sebastian Luque"}
+]
+license = {text = "AGPL-3.0-or-later"}
+requires-python = ">=3.11"
+dependencies = [
+    "bottleneck (>=1.6.0,<2.0.0)",
+    "docutils (>=0.22.4,<0.23.0)",
+    "matplotlib (>=3.10.8,<4.0.0)",
+    "netcdf4 (>=1.7.4,<2.0.0)",
+    "numpy (>=2.4.3,<3.0.0)",
+    "pandas (>=3.0.1,<4.0.0)",
+    "rpy2 (>=3.6.5,<4.0.0)",
+    "scipy (>=1.17.1,<2.0.0)",
+    "statsmodels (>=0.14.6,<0.15.0)",
+    "xarray (>=2026.2.0,<2027.0.0)"
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: GNU Affero General Public License v3",
-    "Topic :: Scientific/Engineering"]
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Instrument Drivers"
+]
 keywords = ["animal behaviour",
 	    "biology",
 	    "behavioural ecology",
             "diving",
-	    "diving behaviour"]
-dynamic = ["version"]
-
-[project.optional-dependencies]
-dev = ["ipykernel>=7.2", "myst-nb", "pydata-sphinx-theme"]
-test = ["pytest", "coverage"]
+	    "diving behaviour"
+]
 
 [project.urls]
-Repository = "https://github.com/spluque/scikit-diveMove"
+repository = "https://github.com/spluque/scikit-diveMove"
+documentation = "https://spluque.github.io/scikit-diveMove"
 
-[tool.setuptools.packages.find]
-include = ["skdiveMove", "skdiveMove.*"]
+[dependency-groups]
+docs = [
+    "ipykernel (>=7.2.0,<8.0.0)",
+    "myst-nb (>=1.4.0,<2.0.0)",
+    "pydata-sphinx-theme (>=0.16.1,<0.17.0)"
+]
+test = [
+    "pytest (>=9.0.2,<10.0.0)",
+    "coverage (>=7.13.5,<8.0.0)"
+]
 
-[tool.setuptools.dynamic]
-version = {attr = "skdiveMove.__version__"}
+[tool.poetry]
+packages = [ {include = "skdiveMove"} ]
+include = [
+    "skdiveMove/tests/data/*.db",
+    "skdiveMove/tests/data/*.txt",
+    "skdiveMove/tests/data/*.csv",
+    "skdiveMove/tests/data/*.nc",
+    "skdiveMove/config_examples/*.json"
+]
+version = "1.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry-dynamic-versioning]
+enable = true
+
+[tool.poetry-dynamic-versioning.from-file]
+source = "skdiveMove/__init__.py"
+pattern = "^__version__\\s*=\\s*['\"](?P<version>.+?)['\"]"
+
+[build-system]
+requires = [
+    "poetry-core>=2.0.0,<3.0.0",
+    "poetry-dynamic-versioning>=1.0.0,<2.0.0"
+]
+build-backend = "poetry_dynamic_versioning.backend"

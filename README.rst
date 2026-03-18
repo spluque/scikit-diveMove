@@ -24,10 +24,8 @@
 `scikit-diveMove` is a Python interface to R package `diveMove`_ for
 scientific data analysis, with a focus on diving behaviour analysis.  It
 has utilities to represent, visualize, filter, analyse, and summarize
-time-depth recorder (TDR) data.  Miscellaneous functions for handling
-position and 3D kinematics data are also provided.  `scikit-diveMove`
-communicates with a single `R` instance for access to low-level tools of
-package `diveMove`.
+time-depth recorder (TDR) data. `scikit-diveMove` communicates with a
+single `R` instance for access to low-level tools of package `diveMove`.
 
 .. _diveMove: https://github.com/spluque/diveMove
 
@@ -158,7 +156,7 @@ Alternatively, installing the package as follows:
 
 .. code-block:: sh
 
-   pip install -e .["dev"]
+   pip install -e .["docs"]
 
 allows the documentation to be built locally (choosing the desired target
 {"html", "pdf", etc.}):

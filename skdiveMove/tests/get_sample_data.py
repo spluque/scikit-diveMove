@@ -7,7 +7,6 @@ from skdiveMove.tdr import TDR
 from skdiveMove.tdrsource import TDRSource
 from skdiveMove.tdrphases import TDRPhases
 from skdiveMove.zoc import ZOC
-from skdiveMove.imutools import IMU2Body
 
 
 def diveMove2skd(oclass="TDR", **kwargs):
@@ -44,18 +43,3 @@ def diveMove2skd(oclass="TDR", **kwargs):
                            .format(oclass)))
 
     return tdrX
-
-
-def _nc2imu2body():
-    """Get example data into a IMU2Body instance
-
-    Convenience function for tests and examples.
-
-    """
-    ncfname = "gert_imu_frame.nc"
-    icdf = (rsrc.files("skdiveMove") / "tests" /
-            "data" / "gertrude" / ncfname)
-    icsv = (rsrc.files("skdiveMove") / "tests" /
-            "data" / "gertrude" / "gert_long_srfc.csv")
-
-    return IMU2Body.from_csv_nc(icsv, icdf, imu_filename=ncfname)

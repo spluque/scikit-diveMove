@@ -30,7 +30,7 @@ _FIG3X1 = (9, 12)
 
 ```{code-cell}
 ---
-tags: [hide-cell]
+tags: [hide-input]
 ---
 
 pd.set_option("display.precision", 3)

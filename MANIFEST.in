@@ -1,2 +1,0 @@
-recursive-include skdiveMove/tests/data *.db *.txt *.csv *.nc
-recursive-include skdiveMove/config_examples *.json
