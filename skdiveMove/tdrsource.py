@@ -66,7 +66,7 @@ class TDRSource:
             for vname, da in self.tdr.data_vars.items():
                 da.attrs["sampling_rate"] = (1.0 /
                                              pd.to_timedelta(subsample)
-                                             .seconds)
+                                             .total_seconds())
                 da.attrs["sampling_rate_units"] = "Hz"
                 _append_xr_attr(da, "history",
                                 "Resampled to {}\n".format(subsample))
