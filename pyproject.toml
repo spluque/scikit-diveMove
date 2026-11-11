@@ -6,17 +6,17 @@ authors = [
     {name = "Sebastian Luque"}
 ]
 license = {text = "AGPL-3.0-or-later"}
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = [
     "bottleneck (>=1.6.0,<2.0.0)",
-    "docutils (>=0.22.4,<0.23.0)",
+    "docutils (>=0.23,<0.24)",
     "matplotlib (>=3.10.8,<4.0.0)",
     "netcdf4 (>=1.7.4,<2.0.0)",
     "numpy (>=2.4.3,<3.0.0)",
     "pandas (>=3.0.1,<4.0.0)",
     "rpy2 (>=3.6.5,<4.0.0)",
     "scipy (>=1.17.1,<2.0.0)",
-    "statsmodels (>=0.14.6,<0.15.0)",
+    "statsmodels (>=0.15.0,<0.16.0)",
     "xarray (>=2026.2.0,<2027.0.0)"
 ]
 classifiers = [

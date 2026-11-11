@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        python-version: ["3.13", "3.14", "3.15"]
     env:
-      PY_LATEST: "3.13"
+      PY_LATEST: "3.15"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up R (release)
         # They tell us to use master (ambiguously)
@@ -34,7 +34,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -57,7 +57,7 @@ jobs:
           poetry run coverage xml
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         if: matrix.python-version == env.PY_LATEST
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -92,7 +92,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
 
