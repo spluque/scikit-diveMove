@@ -180,7 +180,7 @@ class TDRPhases(ZOC):
                                dry_thr=dry_thr,
                                wet_thr=wet_thr,
                                wet_cond=(robjs.vectors
-                                         .BoolVector(~depth_py.isna())),
+                                         .BoolVector(wet_cond)),
                                interval=dtime))
         with (robjs.default_converter + pandas2ri.converter).context():
             phases = pd.DataFrame({'phase_id': phases_l.rx2("phase.id"),
@@ -256,7 +256,7 @@ class TDRPhases(ZOC):
         # Replace dots with underscore
         phases_df.columns = (phases_df.columns.str
                              .replace(".", "_", regex=False))
-        phases_df.set_index(depth_py.index, inplace=True)
+        phases_df = phases_df.set_index(depth_py.index)
         dive_activity = phases_df.pop("dive_activity")
         # Dive and post-dive ID should be integer
         phases_df = phases_df.astype(int)

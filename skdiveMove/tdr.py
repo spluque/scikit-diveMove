@@ -285,7 +285,7 @@ class TDR(TDRPhases):
             ones_list.append(res)
 
         ones_df = pd.concat(ones_list, ignore_index=True)
-        ones_df.set_index(dive_ids[ok].unique(), inplace=True)
+        ones_df = ones_df.set_index(dive_ids[ok].unique())
         ones_df.index.rename("dive_id", inplace=True)
         ones_df["postdive_dur"] = postdive_dur[idx_name]
 
@@ -832,7 +832,7 @@ def calibrate(tdr_file, config_file=None):
 
     """
     if config_file is None:
-        config = calibconfig._DEFAULT_CONFIG
+        config = calibconfig._DEFAULT_CONFIG.copy()
     else:
         config = calibconfig.read_config(config_file)
 
