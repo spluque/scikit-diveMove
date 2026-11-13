@@ -107,6 +107,6 @@ def calibrate_speed(x, tau, contour_level, plot=True, ax=None):
 
 
 if __name__ == '__main__':
-    from skdiveMove.tests import diveMove2skd
+    from skdiveMove.tests.get_sample_data import diveMove2skd
     tdrX = diveMove2skd()
     print(tdrX)

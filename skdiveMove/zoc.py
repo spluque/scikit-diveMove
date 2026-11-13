@@ -172,7 +172,9 @@ class ZOC(TDRSource):
         --------
         ZOC using the "offset" method
 
-        >>> from skdiveMove.tests import diveMove2skd
+        >>> import matplotlib.pyplot as plt
+        >>> from skdiveMove.tests.get_sample_data import diveMove2skd
+
         >>> tdrX = diveMove2skd()
         >>> tdrX.zoc("offset", offset=3)
 
@@ -186,9 +188,11 @@ class ZOC(TDRSource):
 
         Plot the filters that were applied
 
-        >>> tdrX.plot_zoc(ylim=[-1, 10])  # doctest: +ELLIPSIS
-        (<Figure ... with 3 Axes>, array([<Axes: ...>,
-            <Axes: ...>, <Axes: ...>], dtype=object))
+        >>> fig, axs = tdrX.plot_zoc(ylim=[-1, 10])
+        >>> isinstance(fig, plt.Figure)
+        True
+        >>> len(axs) == 3
+        True
 
         """
         if method == "offset":

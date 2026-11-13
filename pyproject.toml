@@ -43,7 +43,7 @@ documentation = "https://spluque.github.io/scikit-diveMove"
 docs = [
     "ipykernel (>=7.2.0,<8.0.0)",
     "myst-nb (>=1.4.0,<2.0.0)",
-    "pydata-sphinx-theme (>=0.16.1,<0.17.0)"
+    "pydata-sphinx-theme (>=0.24.0,<0.25.0)"
 ]
 test = [
     "pytest (>=9.0.2,<10.0.0)",
@@ -76,6 +76,29 @@ enable = true
 [tool.poetry-dynamic-versioning.from-file]
 source = "skdiveMove/__init__.py"
 pattern = "^__version__\\s*=\\s*['\"](?P<version>.+?)['\"]"
+
+[tool.pytest]
+minversion = "9.0"
+testpaths = ["skdiveMove"]
+addopts = [
+    "--doctest-modules",
+    "--ignore-glob=skdiveMove/config_examples/*.json",
+    "-v",
+    "--tb=short",
+    "--strict-markers"
+]
+doctest_optionflags = ["NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
+markers = [
+    "integration: integration tests (deselect with '-m \"not integration\"')",
+    "slow: slow tests (deselect with '-m \"not slow\"')",
+    "plotting: tests that generate plots"
+]
+filterwarnings = [
+    "ignore:.*ABCs.+:DeprecationWarning",
+    "ignore:.*tostring.+:DeprecationWarning"
+]
+log_format = "%(asctime)s[%(levelname)s] %(name)s:%(lineno)d: %(message)s"
+log_date_format = "%Y-%m-%dT%H:%M:%S%z"
 
 [build-system]
 requires = [

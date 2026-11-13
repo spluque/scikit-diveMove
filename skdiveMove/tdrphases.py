@@ -148,7 +148,7 @@ class TDRPhases(ZOC):
         --------
         ZOC using the "offset" method for convenience
 
-        >>> from skdiveMove.tests import diveMove2skd
+        >>> from skdiveMove.tests.get_sample_data import diveMove2skd
         >>> tdrX = diveMove2skd("TDRPhases")
         >>> tdrX.zoc("offset", offset=3)
 
@@ -234,7 +234,7 @@ class TDRPhases(ZOC):
         --------
         ZOC using the ``offset`` method for convenience
 
-        >>> from skdiveMove.tests import diveMove2skd
+        >>> from skdiveMove.tests.get_sample_data import diveMove2skd
         >>> tdrX = diveMove2skd("TDRPhases")
         >>> tdrX.zoc("offset", offset=3)
 
@@ -383,7 +383,7 @@ class TDRPhases(ZOC):
         --------
         ZOC using the "offset" method for convenience
 
-        >>> from skdiveMove.tests import diveMove2skd
+        >>> from skdiveMove.tests.get_sample_data import diveMove2skd
         >>> tdrX = diveMove2skd("TDRPhases")
         >>> tdrX.zoc("offset", offset=3)
 
@@ -664,7 +664,7 @@ class TDRPhases(ZOC):
 
         Examples
         --------
-        >>> from skdiveMove.tests import diveMove2skd
+        >>> from skdiveMove.tests.get_sample_data import diveMove2skd
         >>> tdrX = diveMove2skd("TDRPhases")
         >>> tdrX.zoc("offset", offset=3)
         >>> tdrX.detect_wet()
@@ -712,7 +712,7 @@ class TDRPhases(ZOC):
 
         Examples
         --------
-        >>> from skdiveMove.tests import diveMove2skd
+        >>> from skdiveMove.tests.get_sample_data import diveMove2skd
         >>> tdrX = diveMove2skd("TDRPhases")
         >>> tdrX.zoc("offset", offset=3)
         >>> tdrX.detect_wet()

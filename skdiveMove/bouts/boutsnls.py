@@ -26,7 +26,7 @@ class BoutsNLS(bouts.Bouts):
     :math:`p < 0.7` and the second process occurs with the remaining
     probability.
 
-    >>> from skdiveMove.tests import random_mixexp
+    >>> from skdiveMove.tests.get_sample_data import random_mixexp
     >>> rng = np.random.default_rng(123)
     >>> x2 = random_mixexp(1000, p=0.7, lda=np.array([0.05, 0.005]),
     ...                    rng=rng)
@@ -48,13 +48,16 @@ class BoutsNLS(bouts.Bouts):
 
     Plot observed and predicted data:
 
-    >>> xbouts2.plot_fit(coefs)  # doctest: +ELLIPSIS
-    <Axes: ...>
+    >>> from matplotlib.pyplot import Axes
+    >>> ax = xbouts2.plot_fit(coefs)
+    >>> isinstance(ax, Axes)
+    True
 
     Plot ECDF:
 
-    >>> xbouts2.plot_ecdf(coefs)  # doctest: +ELLIPSIS
-    <Axes: ...>
+    >>> ax = xbouts2.plot_ecdf(coefs)
+    >>> isinstance(ax, Axes)
+    True
 
     """
     def fit(self, start, **kwargs):
@@ -156,7 +159,7 @@ class BoutsNLS(bouts.Bouts):
 
 
 if __name__ == '__main__':
-    from skdiveMove.tests import diveMove2skd
+    from skdiveMove.tests.get_sample_data import diveMove2skd
     import pandas as pd
 
     tdrX = diveMove2skd()

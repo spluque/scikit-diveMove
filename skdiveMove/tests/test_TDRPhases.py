@@ -1,205 +1,162 @@
-"""Unit test for TDR classes
+"""Test TDRPhases class
 
 """
 
-import unittest as ut
 import numpy as np
+import pytest
+
 from pandas import DataFrame, Series
 from pandas.testing import assert_frame_equal
 from skdiveMove.tdrphases import TDRPhases
-from skdiveMove.tests import diveMove2skd
+from skdiveMove.tests.scenarios import TDRScenario  # noqa: E402
 
 
-class TestTDRPhases(ut.TestCase):
-    """Test `TDR` class methods
-
-    """
-    def setUp(self):
-        # An instance to work with
-        tdrX = diveMove2skd("TDRPhases", has_speed=True)
-        zoc_offset = 3
-        dry_thr = 70
-        wet_thr = 3610
-        dive_thr = 3
-        dive_model = "unimodal"
-        smooth_par = 0.1
-        knot_factor = 3
-        descent_crit_q = 0
-        ascent_crit_q = 0
-        self.default_pars = {"zoc_offset": zoc_offset,
-                             "dry_thr": dry_thr,
-                             "wet_thr": wet_thr,
-                             "dive_thr": dive_thr,
-                             "dive_model": dive_model,
-                             "smooth_par": smooth_par,
-                             "knot_factor": knot_factor,
-                             "descent_crit_q": descent_crit_q,
-                             "ascent_crit_q": ascent_crit_q}
-        tdrX.zoc("offset", offset=zoc_offset)
-        self.phases = tdrX
-
-        tdrX = diveMove2skd("TDRPhases", has_speed=True)
-        tdrX.zoc("offset", offset=zoc_offset)
-        tdrX.detect_wet(dry_thr=dry_thr, wet_cond=None,
-                        wet_thr=wet_thr, interp_wet=False)
-        tdrX.detect_dives(dive_thr)
-        tdrX.detect_dive_phases(dive_model=dive_model,
-                                smooth_par=smooth_par,
-                                knot_factor=knot_factor,
-                                descent_crit_q=descent_crit_q,
-                                ascent_crit_q=ascent_crit_q)
-        self.calib = tdrX
-        diveNo_max = (tdrX
-                      .get_dives_details("row_ids", "dive_id")
-                      .max())
-        self.diveNo_seq = np.arange(diveNo_max) + 1
-
-    def test_init(self):
-        self.assertIsInstance(self.phases, TDRPhases)
-
-    def test_str(self):
-        self.assertIn("Class TDRPhases object", self.phases.__str__())
-
-    def test_detect_wet(self):
-        # Bypass setUp's `calib` to do it from scratch
-        dry_thr = self.default_pars["dry_thr"]
-        wet_thr = self.default_pars["wet_thr"]
-        self.phases.detect_wet(dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr)
-        wet_dry = self.phases.wet_dry
-        self.assertIsInstance(wet_dry, DataFrame)
-        self.assertEqual(wet_dry.ndim, 2)
-
-        # Retest with interpolation of wet depth
-        self.phases.detect_wet(dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=True)
-        wet_dry = self.phases.wet_dry
-        self.assertIsInstance(wet_dry, DataFrame)
-        self.assertEqual(wet_dry.ndim, 2)
-        # we should have ZOC depth history updated
-        depth_zoc = self.phases.depth_zoc
-        self.assertIn("interp_wet", depth_zoc.attrs["history"])
-
-        # Test providing wet_cond
-        dry_cond = self.phases.depth.to_series().isna()
-        self.phases.detect_wet(dry_thr=dry_thr, wet_cond=~dry_cond,
-                               wet_thr=wet_thr, interp_wet=True)
-        wwet_dry = self.phases.wet_dry
-        # Here we expect same result as before
-        assert_frame_equal(wet_dry, wwet_dry)
-
-    def test_detect_dives(self):
-        # Bypass setUp's `calib` to do it from scratch
-        dry_thr = self.default_pars["dry_thr"]
-        wet_thr = self.default_pars["wet_thr"]
-        dive_thr = self.default_pars["dive_thr"]
-        self.phases.detect_wet(dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=False)
-        self.phases.detect_dives(dive_thr)
-        row_ids = self.phases.get_dives_details("row_ids")
-        self.assertIsInstance(row_ids, DataFrame)
-        self.assertEqual(row_ids.ndim, 2)
-        # self.assertEqual(row_ids.shape[0], self.tdrX.tdr.shape[0])
-
-    def test_detect_dive_phases(self):
-        # Bypass setUp's `calib` to do it from scratch
-        dry_thr = self.default_pars["dry_thr"]
-        wet_thr = self.default_pars["wet_thr"]
-        dive_thr = self.default_pars["dive_thr"]
-        dive_model = self.default_pars["dive_model"]
-        smooth_par = self.default_pars["smooth_par"]
-        knot_factor = self.default_pars["knot_factor"]
-        descent_crit_q = self.default_pars["descent_crit_q"]
-        ascent_crit_q = self.default_pars["ascent_crit_q"]
-        self.phases.detect_wet(dry_thr=dry_thr, wet_cond=None,
-                               wet_thr=wet_thr, interp_wet=False)
-        self.phases.detect_dives(dive_thr)
-        self.phases.detect_dive_phases(dive_model=dive_model,
-                                       smooth_par=smooth_par,
-                                       knot_factor=knot_factor,
-                                       descent_crit_q=descent_crit_q,
-                                       ascent_crit_q=ascent_crit_q)
-        dive_model_tdrX = self.phases.get_dives_details("model")
-        self.assertEqual(dive_model, dive_model_tdrX)
-        crit_vals = self.phases.get_dives_details("crit_vals")
-        self.assertIsInstance(crit_vals, DataFrame)
-        self.assertEqual(crit_vals.ndim, 2)
-        dids_per_row = (self.phases
-                        .get_dives_details("row_ids", "dive_id"))
-        dids_uniq = dids_per_row[dids_per_row > 0].unique()
-        self.assertEqual(crit_vals.shape[0], dids_uniq.size)
-
-    def test_time_budget(self):
-        calib = self.calib
-        budget = calib.time_budget(ignore_z=True, ignore_du=True)
-        self.assertIsInstance(budget, DataFrame)
-        budget = calib.time_budget(ignore_z=False, ignore_du=True)
-        self.assertIsInstance(budget, DataFrame)
-        budget = calib.time_budget(ignore_z=False, ignore_du=False)
-        self.assertIsInstance(budget, DataFrame)
-        budget = calib.time_budget(ignore_z=True, ignore_du=False)
-        self.assertIsInstance(budget, DataFrame)
-
-    def test_stamp_dives(self):
-        calib = self.calib
-        stamps = calib.stamp_dives(ignore_z=True)
-        self.assertIsInstance(stamps, DataFrame)
-        stamps = calib.stamp_dives(ignore_z=False)
-        self.assertIsInstance(stamps, DataFrame)
-
-    def test_get_dives_details(self):
-        calib = self.calib
-        phases = self.phases
-        # Test wrong key
-        self.assertRaises(KeyError, calib.get_dives_details, "foo")
-        self.assertRaises(KeyError, calib.get_dives_details,
-                          "row_ids", "foo")
-        self.assertRaises(KeyError, phases.get_dives_details, "foo")
-
-    def test_get_dive_deriv(self):
-        calib = self.calib
-        # random dive
-        rdive = np.random.choice(self.diveNo_seq)
-
-        # Full length derivative
-        dder = calib.get_dive_deriv(rdive)
-        self.assertIsInstance(dder, DataFrame)
-        # Individual phases
-        for phase in ["descent", "bottom", "ascent"]:
-            dder = calib.get_dive_deriv(rdive, phase)
-            self.assertIsInstance(dder, DataFrame)
-            # Test nonexistent phase
-            self.assertRaises(KeyError, calib.get_dive_deriv,
-                              rdive, "foo")
-
-    def test_get_params(self):
-        calib = self.calib
-
-        wet_dry = calib.get_phases_params("wet_dry")
-        self.assertIsInstance(wet_dry, dict)
-        dives = calib.get_phases_params("dives")
-        self.assertIsInstance(dives, dict)
-        self.assertRaises(KeyError, calib.get_phases_params, "foo")
-        # ZOC params should be tuple
-        self.assertIsInstance(calib.zoc_params, tuple)
-
-        # dive spline slots
-        self.assertIsInstance(calib.
-                              _get_dive_spline_slot(diveNo=300,
-                                                    name="data"),
-                              Series)
-        self.assertIsInstance(calib.
-                              _get_dive_spline_slot(diveNo=300,
-                                                    name="xy"),
-                              Series)
-        scalars = ["order", "lambda.opt", "sigmasq", "degree",
-                   "g", "a", "b", "variter"]
-        for name in scalars:
-            self.assertIsInstance(calib.
-                                  _get_dive_spline_slot(diveNo=300,
-                                                        name=name),
-                                  float)
+@pytest.fixture
+def test_tdr():
+    return TDRScenario("TDRPhases", has_speed=True)
 
 
-if __name__ == '__main__':
-    ut.main()
+@pytest.fixture(scope="module")
+def test_tdr_calib():
+    tdr = TDRScenario("TDRPhases", has_speed=True)
+    tdr.detect_dive_phases()
+    return tdr
+
+
+def test_init(test_tdr):
+    assert isinstance(test_tdr.tdrX, TDRPhases)
+
+
+def test_str(test_tdr):
+    assert "Class TDRPhases object" in test_tdr.tdrX.__str__()
+
+
+def test_detect_wet(test_tdr):
+    test_tdr.detect_wet()
+    wet_dry = test_tdr.tdrX.wet_dry
+    assert isinstance(wet_dry, DataFrame)
+    assert wet_dry.ndim == 2
+
+
+def test_detect_wet_interp(test_tdr):
+    default_pars = test_tdr.default_pars
+    test_tdr.zoc()
+    test_tdr.tdrX.detect_wet(
+        dry_thr=default_pars["dry_thr"],
+        wet_cond=None,
+        wet_thr=default_pars["wet_thr"],
+        interp_wet=True)
+    wet_dry = test_tdr.tdrX.wet_dry
+    assert isinstance(wet_dry, DataFrame)
+    assert wet_dry.ndim == 2
+    # we should have ZOC depth history updated
+    depth_zoc = test_tdr.tdrX.depth_zoc
+    assert "interp_wet" in depth_zoc.attrs["history"]
+
+    # Test providing wet_cond
+    dry_cond = test_tdr.tdrX.depth.to_series().isna()
+    test_tdr.tdrX.detect_wet(
+        dry_thr=default_pars["dry_thr"],
+        wet_cond=~dry_cond,
+        wet_thr=default_pars["wet_thr"],
+        interp_wet=True)
+    wwet_dry = test_tdr.tdrX.wet_dry
+    # Here we expect same result as before
+    assert_frame_equal(wet_dry, wwet_dry)
+
+
+def test_detect_dives(test_tdr):
+    test_tdr.detect_dives()
+    row_ids = test_tdr.tdrX.get_dives_details("row_ids")
+    assert isinstance(row_ids, DataFrame)
+    assert row_ids.ndim == 2
+    # self.assertEqual(row_ids.shape[0], self.tdrX.tdr.shape[0])
+
+
+def test_detect_dive_phases(test_tdr_calib):
+    dive_model_tdrX = test_tdr_calib.tdrX.get_dives_details("model")
+    dive_model = test_tdr_calib.default_pars["dive_model"]
+    assert dive_model == dive_model_tdrX
+    crit_vals = test_tdr_calib.tdrX.get_dives_details("crit_vals")
+    assert isinstance(crit_vals, DataFrame)
+    assert crit_vals.ndim == 2
+    dids_per_row = (test_tdr_calib.tdrX
+                    .get_dives_details("row_ids", "dive_id"))
+    dids_uniq = dids_per_row[dids_per_row > 0].unique()
+    assert crit_vals.shape[0] == dids_uniq.size
+
+
+def test_time_budget(test_tdr_calib):
+    calib = test_tdr_calib.tdrX
+    budget = calib.time_budget(ignore_z=True, ignore_du=True)
+    assert isinstance(budget, DataFrame)
+    budget = calib.time_budget(ignore_z=False, ignore_du=True)
+    assert isinstance(budget, DataFrame)
+    budget = calib.time_budget(ignore_z=False, ignore_du=False)
+    assert isinstance(budget, DataFrame)
+    budget = calib.time_budget(ignore_z=True, ignore_du=False)
+    assert isinstance(budget, DataFrame)
+
+
+def test_stamp_dives(test_tdr_calib):
+    calib = test_tdr_calib.tdrX
+    stamps = calib.stamp_dives(ignore_z=True)
+    assert isinstance(stamps, DataFrame)
+    stamps = calib.stamp_dives(ignore_z=False)
+    assert isinstance(stamps, DataFrame)
+
+
+def test_get_dives_details(test_tdr_calib):
+    calib = test_tdr_calib.tdrX
+    # Test wrong key
+    with pytest.raises(KeyError):
+        calib.get_dives_details("foo")
+    with pytest.raises(KeyError):
+        calib.get_dives_details("row_ids", "foo")
+
+
+def test_get_dive_deriv(test_tdr_calib):
+    calib = test_tdr_calib.tdrX
+    # random dive
+    rdive = np.random.choice(test_tdr_calib.diveNo_seq)
+
+    # Full length derivative
+    dder = calib.get_dive_deriv(rdive)
+    assert isinstance(dder, DataFrame)
+    # Individual phases
+    for phase in ["descent", "bottom", "ascent"]:
+        dder = calib.get_dive_deriv(rdive, phase)
+        assert isinstance(dder, DataFrame)
+        # Test nonexistent phase
+        with pytest.raises(KeyError):
+            calib.get_dive_deriv(rdive, "foo")
+
+
+def test_get_params(test_tdr_calib):
+    calib = test_tdr_calib.tdrX
+
+    wet_dry = calib.get_phases_params("wet_dry")
+    assert isinstance(wet_dry, dict)
+    dives = calib.get_phases_params("dives")
+    assert isinstance(dives, dict)
+    with pytest.raises(KeyError):
+        calib.get_phases_params("foo")
+    # ZOC params should be tuple
+    assert isinstance(calib.zoc_params, tuple)
+
+    # dive spline slots
+    assert isinstance(calib.
+                      _get_dive_spline_slot(diveNo=300,
+                                            name="data"),
+                      Series)
+    assert isinstance(calib.
+                      _get_dive_spline_slot(diveNo=300,
+                                            name="xy"),
+                      Series)
+    scalars = ["order", "lambda.opt", "sigmasq", "degree",
+               "g", "a", "b", "variter"]
+    for name in scalars:
+        assert isinstance(calib.
+                          _get_dive_spline_slot(diveNo=300,
+                                                name=name),
+                          float)
