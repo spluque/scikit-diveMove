@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -7,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metadata &#8212; skdiveMove 1.0.0 documentation</title>
+    <title>metadata &#8212; skdiveMove 1.0.1 documentation</title>
   
   
   
@@ -26,41 +25,49 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/documentation_options.js?v=292eb321"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/metadata';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.0" />
+  <meta name="docsearch:version" content="1.0.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -86,9 +93,9 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -112,8 +119,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.0 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
   
   
 </a></div>
@@ -152,7 +159,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -162,11 +169,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -179,8 +193,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -191,7 +204,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -212,7 +225,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -253,11 +266,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -270,8 +290,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -311,7 +330,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -335,7 +354,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for metadata</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Tools to read and write DataArray and Dataset attributes</span>
+<span></span><span class="sd">"""Tools to read and write DataArray and Dataset attributes</span>
 
 <span class="sd">Easily dump a template to set up metadata for a given</span>
 <span class="sd">:class:`~xarray.Dataset` or :class:`~xarray.DataArray` that can</span>
@@ -350,77 +369,77 @@
 <span class="sd">   dump_config_template</span>
 <span class="sd">   assign_xr_attrs</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dump_config_template&quot;</span><span class="p">,</span> <span class="s2">&quot;assign_xr_attrs&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"dump_config_template"</span><span class="p">,</span> <span class="s2">"assign_xr_attrs"</span><span class="p">]</span>
 
 <span class="n">_SENSOR_DATA_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;sampling&#39;</span><span class="p">:</span> <span class="s2">&quot;regular&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;sampling_rate&#39;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;sampling_rate_units&#39;</span><span class="p">:</span> <span class="s2">&quot;Hz&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;history&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;full_name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;units_name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;units_label&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;column_name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;frame&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;axes&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;files&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'sampling'</span><span class="p">:</span> <span class="s2">"regular"</span><span class="p">,</span>
+    <span class="s1">'sampling_rate'</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+    <span class="s1">'sampling_rate_units'</span><span class="p">:</span> <span class="s2">"Hz"</span><span class="p">,</span>
+    <span class="s1">'history'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'name'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'full_name'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'description'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'units'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'units_name'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'units_label'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'column_name'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'frame'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'axes'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'files'</span><span class="p">:</span> <span class="s2">""</span>
 <span class="p">}</span>
 
 <span class="n">_DATASET_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;dep_id&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;dep_device_tzone&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;dep_device_regional_settings&#39;</span><span class="p">:</span> <span class="s2">&quot;YYYY-mm-dd HH:MM:SS&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;dep_device_time_beg&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;deploy&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;locality&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;device_time_on&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'dep_id'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'dep_device_tzone'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'dep_device_regional_settings'</span><span class="p">:</span> <span class="s2">"YYYY-mm-dd HH:MM:SS"</span><span class="p">,</span>
+    <span class="s1">'dep_device_time_beg'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s1">'deploy'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'locality'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'lon'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'lat'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'device_time_on'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'method'</span><span class="p">:</span> <span class="s2">""</span>
     <span class="p">},</span>
-    <span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;date_beg&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;date_end&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'project'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'name'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'date_beg'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'date_end'</span><span class="p">:</span> <span class="s2">""</span>
     <span class="p">},</span>
-    <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;affiliation&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;license&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;cite&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;doi&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'provider'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'name'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'affiliation'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'email'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'license'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'cite'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'doi'</span><span class="p">:</span> <span class="s2">""</span>
     <span class="p">},</span>
-    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;creation_date&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;nfiles&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'data'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'source'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'format'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'creation_date'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'nfiles'</span><span class="p">:</span> <span class="s2">""</span>
     <span class="p">},</span>
-    <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;serial&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;make&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'device'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'serial'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'make'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'type'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'model'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'url'</span><span class="p">:</span> <span class="s2">""</span>
     <span class="p">},</span>
-    <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;firmware&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;software&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;list&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'sensors'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'firmware'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'software'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'list'</span><span class="p">:</span> <span class="s2">""</span>
     <span class="p">},</span>
-    <span class="s1">&#39;animal&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;species_common&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;species_science&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;dbase_url&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="s1">'animal'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'id'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'species_common'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'species_science'</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s1">'dbase_url'</span><span class="p">:</span> <span class="s2">""</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -428,7 +447,7 @@
 <div class="viewcode-block" id="dump_config_template">
 <a class="viewcode-back" href="../modules/metadata.html#metadata.dump_config_template">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dump_config_template</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config_type</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dump configuration file</span>
+<span class="w">    </span><span class="sd">"""Dump configuration file</span>
 
 <span class="sd">    Dump a json configuration template file to build metadata for a</span>
 <span class="sd">    :class:`~xarray.Dataset` or :class:`~xarray.DataArray`.</span>
@@ -437,25 +456,25 @@
 <span class="sd">    ----------</span>
 <span class="sd">    fname : str</span>
 <span class="sd">        A valid string path for output file.</span>
-<span class="sd">    config_type : {&quot;dataset&quot;, &quot;sensor&quot;}</span>
+<span class="sd">    config_type : {"dataset", "sensor"}</span>
 <span class="sd">        The type of config to dump.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import skdiveMove.metadata as metadata</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mydataset.json&quot;,</span>
-<span class="sd">    ...                               &quot;dataset&quot;)  # doctest: +SKIP</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mysensor.json&quot;,</span>
-<span class="sd">    ...                               &quot;sensor&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template("mydataset.json",</span>
+<span class="sd">    ...                               "dataset")  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template("mysensor.json",</span>
+<span class="sd">    ...                               "sensor")  # doctest: +SKIP</span>
 
 <span class="sd">    edit the files to your specifications.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofile</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofile</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="n">config_type</span> <span class="o">==</span> <span class="s2">&quot;dataset&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config_type</span> <span class="o">==</span> <span class="s2">"dataset"</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">_DATASET_CONFIG</span><span class="p">,</span> <span class="n">ofile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">config_type</span> <span class="o">==</span> <span class="s2">&quot;sensor&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">config_type</span> <span class="o">==</span> <span class="s2">"sensor"</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">_SENSOR_DATA_CONFIG</span><span class="p">,</span> <span class="n">ofile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
 
 
@@ -463,7 +482,7 @@
 <div class="viewcode-block" id="assign_xr_attrs">
 <a class="viewcode-back" href="../modules/metadata.html#metadata.assign_xr_attrs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">assign_xr_attrs</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">config_file</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assign attributes to :class:`~xarray.Dataset` or</span>
+<span class="w">    </span><span class="sd">"""Assign attributes to :class:`~xarray.Dataset` or</span>
 <span class="sd">    :class:`~xarray.DataArray`</span>
 
 <span class="sd">    The `config_file` should have only one-level of nesting.</span>
@@ -489,35 +508,35 @@
 <span class="sd">    Synthetic dataset with depth and speed</span>
 
 <span class="sd">    &gt;&gt;&gt; nsamples = 60 * 60 * 24</span>
-<span class="sd">    &gt;&gt;&gt; times = pd.date_range(&quot;2000-01-01&quot;, freq=&quot;1s&quot;, periods=nsamples,</span>
-<span class="sd">    ...                       name=&quot;time&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; times = pd.date_range("2000-01-01", freq="1s", periods=nsamples,</span>
+<span class="sd">    ...                       name="time")</span>
 <span class="sd">    &gt;&gt;&gt; cycles = np.sin(2 * np.pi * np.arange(nsamples) / (60 * 20))</span>
-<span class="sd">    &gt;&gt;&gt; ds = xr.Dataset({&quot;depth&quot;: ((&quot;time&quot;), 1 + cycles),</span>
-<span class="sd">    ...                  &quot;speed&quot;: ((&quot;time&quot;), 3 + cycles)},</span>
-<span class="sd">    ...                 {&quot;time&quot;: times})</span>
+<span class="sd">    &gt;&gt;&gt; ds = xr.Dataset({"depth": (("time"), 1 + cycles),</span>
+<span class="sd">    ...                  "speed": (("time"), 3 + cycles)},</span>
+<span class="sd">    ...                 {"time": times})</span>
 
 <span class="sd">    Dump dataset and sensor templates</span>
 
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;mydataset.json&quot;,</span>
-<span class="sd">    ...                               &quot;dataset&quot;)  # doctest: +SKIP</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;P_sensor.json&quot;,</span>
-<span class="sd">    ...                               &quot;sensor&quot;)  # doctest: +SKIP</span>
-<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template(&quot;S_sensor.json&quot;,</span>
-<span class="sd">    ...                               &quot;sensor&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template("mydataset.json",</span>
+<span class="sd">    ...                               "dataset")  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template("P_sensor.json",</span>
+<span class="sd">    ...                               "sensor")  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; metadata.dump_config_template("S_sensor.json",</span>
+<span class="sd">    ...                               "sensor")  # doctest: +SKIP</span>
 
 <span class="sd">    Edit the templates as appropriate, load and assign to objects</span>
 
-<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds, &quot;mydataset.json&quot;)       # doctest: +SKIP</span>
-<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.depth, &quot;P_sensor.json&quot;)  # doctest: +SKIP</span>
-<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.speed, &quot;S_sensor.json&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds, "mydataset.json")       # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.depth, "P_sensor.json")  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; assign_xr_attrs(ds.speed, "S_sensor.json")  # doctest: +SKIP</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifile</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ifile</span><span class="p">)</span>
 
     <span class="c1"># Parse the dict</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">top_kname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">top_kname</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
             <span class="k">continue</span>
 
@@ -525,7 +544,7 @@
             <span class="k">for</span> <span class="n">key_n</span><span class="p">,</span> <span class="n">val_n</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">val_n</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">lower_kname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">_</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top_kname</span><span class="p">,</span> <span class="n">key_n</span><span class="p">)</span>
+                <span class="n">lower_kname</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{0}</span><span class="s2">_</span><span class="si">{1}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top_kname</span><span class="p">,</span> <span class="n">key_n</span><span class="p">)</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">lower_kname</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_n</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">obj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">top_kname</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
@@ -559,8 +578,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -580,8 +599,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
   </p>
 </div>
       
@@ -602,7 +620,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Bouts analysis &#8212; skdiveMove 1.0.0 documentation</title>
+    <title>Bouts analysis &#8212; skdiveMove 1.0.1 documentation</title>
   
   
   
@@ -27,43 +26,51 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/documentation_options.js?v=292eb321"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'demos/demo_bouts';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Simulating bouts" href="demo_simulbouts.html" />
     <link rel="prev" title="Diving behaviour analysis" href="demo_tdr.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.0" />
+  <meta name="docsearch:version" content="1.0.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -89,9 +96,9 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -115,8 +122,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.0 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
   
   
 </a></div>
@@ -155,7 +162,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -165,11 +172,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -182,8 +196,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -194,7 +207,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -203,7 +216,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -217,7 +230,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -258,11 +271,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -275,8 +295,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -285,13 +304,21 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
         <div class="sidebar-primary-item">
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="demo_tdr.html">Diving behaviour analysis</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Bouts analysis</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Bouts analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_simulbouts.html">Simulating bouts</a></li>
 </ul>
 </div>
@@ -330,7 +357,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -353,11 +380,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="bouts-analysis">
-<span id="demo-bouts-label"></span><h1>Bouts analysis<a class="headerlink" href="#bouts-analysis" title="Link to this heading">#</a></h1>
+  <section id="demo-bouts-label">
+<span id="bouts-analysis"></span><h1>Bouts analysis<a class="headerlink" href="#demo-bouts-label" title="Link to this heading">#</a></h1>
 <p>Here is a brief demo on bout analysis with the <a class="reference internal" href="../modules/bouts.html#module-bouts" title="bouts"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bouts</span></code></a> module for
 data generated by mixtures of random Poisson processes.</p>
-<p>Set up the environment.  Consider loading the <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> module and
+<p>Set up the environment.  Consider loading the <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.15)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> module and
 setting up a logger to monitor progress to this section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -385,8 +412,8 @@ setting up a logger to monitor progress to this section.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.precision&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.precision"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">"+"</span><span class="p">)</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
@@ -399,10 +426,10 @@ setting up a logger to monitor progress to this section.</p>
 necessary statistics:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">config_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">rsrc</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;config_examples&quot;</span> <span class="o">/</span>
-<span class="linenos">2</span>               <span class="s2">&quot;ag_mk7_2002_022_config.json&quot;</span><span class="p">)</span>
-<span class="linenos">3</span><span class="n">tdr_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">rsrc</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span>
-<span class="linenos">4</span>            <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;ag_mk7_2002_022.nc&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">config_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">rsrc</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">"skdiveMove"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"config_examples"</span> <span class="o">/</span>
+<span class="linenos">2</span>               <span class="s2">"ag_mk7_2002_022_config.json"</span><span class="p">)</span>
+<span class="linenos">3</span><span class="n">tdr_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">rsrc</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">"skdiveMove"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"tests"</span> <span class="o">/</span>
+<span class="linenos">4</span>            <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"ag_mk7_2002_022.nc"</span><span class="p">)</span>
 <span class="linenos">5</span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">calibrate</span><span class="p">(</span><span class="n">tdr_file</span><span class="p">,</span> <span class="n">config_file</span><span class="p">)</span>
 <span class="linenos">6</span><span class="n">stats</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">dive_stats</span><span class="p">()</span>
 <span class="linenos">7</span><span class="n">stamps</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">stamp_dives</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -421,7 +448,7 @@ necessary statistics:</p>
   
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.DataFrame&#39;&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class 'pandas.DataFrame'&gt;
 Index: 426 entries, 1 to 426
 Data columns (total 49 columns):
  #   Column               Non-Null Count  Dtype          
@@ -429,9 +456,9 @@ Data columns (total 49 columns):
  0   phase_id             426 non-null    int64          
  1   beg                  426 non-null    datetime64[ns] 
  2   end                  426 non-null    datetime64[ns] 
- 3   begdesc              426 non-null    datetime64[s]  
- 4   enddesc              426 non-null    datetime64[s]  
- 5   begasc               426 non-null    datetime64[s]  
+ 3   begdesc              426 non-null    datetime64[us] 
+ 4   enddesc              426 non-null    datetime64[us] 
+ 5   begasc               426 non-null    datetime64[us] 
  6   desctim              426 non-null    float64        
  7   botttim              292 non-null    float64        
  8   asctim               426 non-null    float64        
@@ -443,14 +470,14 @@ Data columns (total 49 columns):
  14  bottdep_median       292 non-null    float64        
  15  bottdep_sd           292 non-null    float64        
  16  maxdep               426 non-null    float64        
- 17  desc_tdist           202 non-null    float64        
- 18  desc_mean_speed      202 non-null    float64        
- 19  desc_angle           171 non-null    float64        
+ 17  desc_tdist           201 non-null    float64        
+ 18  desc_mean_speed      201 non-null    float64        
+ 19  desc_angle           169 non-null    float64        
  20  bott_tdist           292 non-null    float64        
  21  bott_mean_speed      292 non-null    float64        
- 22  asc_tdist            160 non-null    float64        
- 23  asc_mean_speed       160 non-null    float64        
- 24  asc_angle            154 non-null    float64        
+ 22  asc_tdist            158 non-null    float64        
+ 23  asc_mean_speed       158 non-null    float64        
+ 24  asc_angle            152 non-null    float64        
  25  descD_mean           426 non-null    float64        
  26  descD_std            426 non-null    float64        
  27  descD_min            426 non-null    float64        
@@ -475,7 +502,7 @@ Data columns (total 49 columns):
  46  postdive_dur         426 non-null    timedelta64[ns]
  47  postdive_tdist       420 non-null    float64        
  48  postdive_mean_speed  420 non-null    float64        
-dtypes: datetime64[ns](2), datetime64[s](3), float64(42), int64(1), timedelta64[ns](1)
+dtypes: datetime64[ns](2), datetime64[us](3), float64(42), int64(1), timedelta64[ns](1)
 memory usage: 166.4 KB
 </pre></div>
 </div>
@@ -484,7 +511,7 @@ memory usage: 166.4 KB
 <p>Extract postdive duration for further analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">postdives</span> <span class="o">=</span> <span class="n">stats_tab</span><span class="p">[</span><span class="s2">&quot;postdive_dur&quot;</span><span class="p">][</span><span class="n">stats_tab</span><span class="p">[</span><span class="s2">&quot;phase_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">postdives</span> <span class="o">=</span> <span class="n">stats_tab</span><span class="p">[</span><span class="s2">"postdive_dur"</span><span class="p">][</span><span class="n">stats_tab</span><span class="p">[</span><span class="s2">"phase_id"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">]</span>
 <span class="linenos">2</span><span class="n">postdives_diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">postdives</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
 <span class="linenos">3</span>                  <span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">abs</span><span class="p">())</span>
 <span class="linenos">4</span><span class="c1"># Remove isolated dives</span>
@@ -537,15 +564,15 @@ max    1449.950   3.091
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/577df8d94be42a02dea32e9c4ab6d31b779589b42666cf4c780b6f336d6be152.png" src="../_images/577df8d94be42a02dea32e9c4ab6d31b779589b42666cf4c780b6f336d6be152.png" />
+<img alt="../_images/1fb0494340d7b17ffd41128b0839e2f7db18ea1a8ebd5d34e610d51f5a28013d.png" src="../_images/1fb0494340d7b17ffd41128b0839e2f7db18ea1a8ebd5d34e610d51f5a28013d.png" />
 </div>
 </div>
 <p>Fit the two-process model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">coefs2</span><span class="p">,</span> <span class="n">pcov2</span> <span class="o">=</span> <span class="n">postdives_nlsbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars2</span><span class="p">)</span>
-<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficients:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coefs2</span><span class="p">))</span>
-<span class="linenos">3</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Covariance between parameters:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pcov2</span><span class="p">))</span>
+<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Coefficients:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coefs2</span><span class="p">))</span>
+<span class="linenos">3</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Covariance between parameters:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pcov2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -568,7 +595,7 @@ Covariance between parameters:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># `bec` returns ndarray, and we have only one here</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bec = {[0]:.2f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">postdives_nlsbouts</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">coefs2</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"bec = {[0]:.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">postdives_nlsbouts</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">coefs2</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -587,7 +614,7 @@ Covariance between parameters:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/696161ae589ca7c4d71629337f8048958ac0298343316fa4cbb6c36258a189a3.png" src="../_images/696161ae589ca7c4d71629337f8048958ac0298343316fa4cbb6c36258a189a3.png" />
+<img alt="../_images/a9ff6e93241c13960e1e7a9a218f0dd6157d59025d96e2509c883b814e33eb56.png" src="../_images/a9ff6e93241c13960e1e7a9a218f0dd6157d59025d96e2509c883b814e33eb56.png" />
 </div>
 </div>
 </section>
@@ -602,15 +629,15 @@ Covariance between parameters:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/a8120291399674ec0d4ad42b2893fe5d7bf99d1efbd8015e22f997e73283ce7a.png" src="../_images/a8120291399674ec0d4ad42b2893fe5d7bf99d1efbd8015e22f997e73283ce7a.png" />
+<img alt="../_images/90453cd1836f1c66a377544150fa6f67f20e272e390aaa633da311a84e5612e1.png" src="../_images/90453cd1836f1c66a377544150fa6f67f20e272e390aaa633da311a84e5612e1.png" />
 </div>
 </div>
 <p>Fit three-process model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">coefs3</span><span class="p">,</span> <span class="n">pcov3</span> <span class="o">=</span> <span class="n">postdives_nlsbouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars3</span><span class="p">)</span>
-<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficients:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coefs3</span><span class="p">))</span>
-<span class="linenos">3</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Covariance between parameters:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pcov3</span><span class="p">))</span>
+<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Coefficients:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coefs3</span><span class="p">))</span>
+<span class="linenos">3</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Covariance between parameters:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pcov3</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -640,7 +667,7 @@ Covariance between parameters:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/a740188f0d53591ccc66f175f5f168f7efcab9013d76966277ac2db5c82d4b0e.png" src="../_images/a740188f0d53591ccc66f175f5f168f7efcab9013d76966277ac2db5c82d4b0e.png" />
+<img alt="../_images/282eb7641e6b9e426337406c1264083a87b75d5ac36ed42c3e61d8a22bbb07bd.png" src="../_images/282eb7641e6b9e426337406c1264083a87b75d5ac36ed42c3e61d8a22bbb07bd.png" />
 </div>
 </div>
 <p>Compare the cumulative frequency distributions of two- vs three-process
@@ -654,7 +681,7 @@ models.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/b1e0dc18fadd76a6066be23250a2bc7a7fe7271e717fb83ee10ccbce7c33a3e4.png" src="../_images/b1e0dc18fadd76a6066be23250a2bc7a7fe7271e717fb83ee10ccbce7c33a3e4.png" />
+<img alt="../_images/450a32ef259ac13d9ad99b7247938bc6bf27605cd8071b23101bde1008fe4abb.png" src="../_images/450a32ef259ac13d9ad99b7247938bc6bf27605cd8071b23101bde1008fe4abb.png" />
 </div>
 </div>
 <p>The three-process model does not follow the observed data as well as the
@@ -701,7 +728,7 @@ max    1449.950   3.091
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/577df8d94be42a02dea32e9c4ab6d31b779589b42666cf4c780b6f336d6be152.png" src="../_images/577df8d94be42a02dea32e9c4ab6d31b779589b42666cf4c780b6f336d6be152.png" />
+<img alt="../_images/1fb0494340d7b17ffd41128b0839e2f7db18ea1a8ebd5d34e610d51f5a28013d.png" src="../_images/1fb0494340d7b17ffd41128b0839e2f7db18ea1a8ebd5d34e610d51f5a28013d.png" />
 </div>
 </div>
 <p>Fit the two-process model.  It is important, but optional, to supply
@@ -720,9 +747,9 @@ Therefore, there are two sets of bounds required.</p>
 <span class="linenos"> 7</span><span class="n">lda2_bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e-8</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="linenos"> 8</span><span class="n">bnd2</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">,</span> <span class="n">lda2_bnd</span><span class="p">)</span>
 <span class="linenos"> 9</span><span class="n">fit1</span><span class="p">,</span> <span class="n">fit2</span> <span class="o">=</span> <span class="n">postdives_mlebouts</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">init_pars</span><span class="p">,</span>
-<span class="linenos">10</span>                                    <span class="n">fit1_opts</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+<span class="linenos">10</span>                                    <span class="n">fit1_opts</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">"L-BFGS-B"</span><span class="p">,</span>
 <span class="linenos">11</span>									<span class="n">bounds</span><span class="o">=</span><span class="n">bnd1</span><span class="p">),</span>
-<span class="linenos">12</span>									<span class="n">fit2_opts</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+<span class="linenos">12</span>									<span class="n">fit2_opts</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">"L-BFGS-B"</span><span class="p">,</span>
 <span class="linenos">13</span>									<span class="n">bounds</span><span class="o">=</span><span class="n">bnd2</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -730,8 +757,8 @@ Therefore, there are two sets of bounds required.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First fit:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fit1</span><span class="p">))</span>
-<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Second fit:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fit2</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">print</span><span class="p">(</span><span class="s2">"First fit:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fit1</span><span class="p">))</span>
+<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Second fit:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fit2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -766,7 +793,7 @@ Second fit:
 <p>Calculate bout-ending criterion (BEC).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bec = </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">postdives_mlebouts</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">fit2</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"bec = </span><span class="si">{:.2f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">postdives_mlebouts</span><span class="o">.</span><span class="n">bec</span><span class="p">(</span><span class="n">fit2</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -785,7 +812,7 @@ Second fit:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/047ddf191961c182d56570d23b767bde3ea031df079a4d8228dbf31cb18cfe67.png" src="../_images/047ddf191961c182d56570d23b767bde3ea031df079a4d8228dbf31cb18cfe67.png" />
+<img alt="../_images/74d8fb0c5ed501db9e7e8b8efaa9a6c4a5297df59ba741bc916a3ce022ec52e1.png" src="../_images/74d8fb0c5ed501db9e7e8b8efaa9a6c4a5297df59ba741bc916a3ce022ec52e1.png" />
 </div>
 </div>
 <p>Compare the cumulative frequency distribution between NLS and MLE model
@@ -794,18 +821,18 @@ estimates.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG1X2</span><span class="p">)</span>
 <span class="linenos">2</span><span class="n">postdives_nlsbouts</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">coefs2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="linenos">3</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NLS&quot;</span><span class="p">)</span>
+<span class="linenos">3</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"NLS"</span><span class="p">)</span>
 <span class="linenos">4</span><span class="n">postdives_mlebouts</span><span class="o">.</span><span class="n">plot_ecdf</span><span class="p">(</span><span class="n">fit2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="linenos">5</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MLE&quot;</span><span class="p">);</span>
+<span class="linenos">5</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"MLE"</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/1bc2b76b3cf46ab983b59899ee007adfdd0d6b6aacd5e2aeb25e1806f802108f.png" src="../_images/1bc2b76b3cf46ab983b59899ee007adfdd0d6b6aacd5e2aeb25e1806f802108f.png" />
+<img alt="../_images/ffa11bedf1249b3589960681a386b2aeac65b3859b4c216a2399f1a979b78b7e.png" src="../_images/ffa11bedf1249b3589960681a386b2aeac65b3859b4c216a2399f1a979b78b7e.png" />
 </div>
 </div>
 <p>Label bouts based on BEC from the last MLE model.  Note that
-<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html#pandas.Timedelta" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> type needs to be converted to total seconds to
+<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html#pandas.Timedelta" title="(in pandas v3.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> type needs to be converted to total seconds to
 allow comparison with BEC.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -869,7 +896,7 @@ Name: postdive_dur, Length: 191, dtype: int64
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -879,8 +906,8 @@ Name: postdive_dur, Length: 191, dtype: int64
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-postdive-duration">Calculate postdive duration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-least-squares-via-broken-stick-model">Non-linear least squares via “broken-stick” model</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-process-model">Two-process model</a></li>
@@ -892,13 +919,13 @@ Name: postdive_dur, Length: 191, dtype: int64
   </nav></div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/demos/demo_bouts.md.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/demos/demo_bouts.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -913,8 +940,8 @@ Name: postdive_dur, Length: 191, dtype: int64
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -934,8 +961,7 @@ Name: postdive_dur, Length: 191, dtype: int64
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
   </p>
 </div>
       
@@ -956,7 +982,7 @@ Name: postdive_dur, Length: 191, dtype: int64
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

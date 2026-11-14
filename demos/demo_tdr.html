@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Diving behaviour analysis &#8212; skdiveMove 1.0.0 documentation</title>
+    <title>Diving behaviour analysis &#8212; skdiveMove 1.0.1 documentation</title>
   
   
   
@@ -27,43 +26,51 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/documentation_options.js?v=292eb321"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'demos/demo_tdr';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Bouts analysis" href="demo_bouts.html" />
     <link rel="prev" title="Demos" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.0" />
+  <meta name="docsearch:version" content="1.0.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -89,9 +96,9 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -115,8 +122,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.0 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
   
   
 </a></div>
@@ -155,7 +162,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -165,11 +172,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -182,8 +196,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -194,7 +207,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -203,7 +216,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -217,7 +230,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -258,11 +271,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -275,8 +295,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -285,12 +304,20 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
         <div class="sidebar-primary-item">
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Diving behaviour analysis</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Diving behaviour analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_bouts.html">Bouts analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo_simulbouts.html">Simulating bouts</a></li>
 </ul>
@@ -330,7 +357,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -353,12 +380,12 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="diving-behaviour-analysis">
-<span id="demo-tdr-label"></span><h1>Diving behaviour analysis<a class="headerlink" href="#diving-behaviour-analysis" title="Link to this heading">#</a></h1>
+  <section id="demo-tdr-label">
+<span id="diving-behaviour-analysis"></span><h1>Diving behaviour analysis<a class="headerlink" href="#demo-tdr-label" title="Link to this heading">#</a></h1>
 <p>This is a bird’s-eye view of the functionality of <code class="docutils literal notranslate"><span class="pre">scikit-diveMove</span></code>,
 loosely following <code class="xref py py-mod docutils literal notranslate"><span class="pre">diveMove</span></code>’s
 <a class="reference external" href="https://cran.r-project.org/web/packages/diveMove/vignettes/diveMove.html">vignette</a>.</p>
-<p>Set up the environment.  Consider loading the <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> module and
+<p>Set up the environment.  Consider loading the <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.15)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> module and
 setting up a logger to monitor progress to this section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -386,9 +413,9 @@ setting up a logger to monitor progress to this section.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>  <span class="c1"># only for setting print options here</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>  <span class="c1"># only for setting print options here</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.precision&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
-<span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">display_style</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.precision"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">"+"</span><span class="p">)</span>
+<span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">display_style</span><span class="o">=</span><span class="s2">"html"</span><span class="p">)</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
@@ -401,10 +428,10 @@ setting up a logger to monitor progress to this section.</p>
 print:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">ifile</span> <span class="o">=</span> <span class="p">(</span><span class="n">rsrc</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;skdiveMove&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span>
-<span class="linenos">2</span>         <span class="s2">&quot;ag_mk7_2002_022.nc&quot;</span><span class="p">)</span>
-<span class="linenos">3</span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">skdive</span><span class="o">.</span><span class="n">TDR</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
-<span class="linenos">4</span>                              <span class="n">time_name</span><span class="o">=</span><span class="s2">&quot;date_time&quot;</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">ifile</span> <span class="o">=</span> <span class="p">(</span><span class="n">rsrc</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">"skdiveMove"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"tests"</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span>
+<span class="linenos">2</span>         <span class="s2">"ag_mk7_2002_022.nc"</span><span class="p">)</span>
+<span class="linenos">3</span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">skdive</span><span class="o">.</span><span class="n">TDR</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">depth_name</span><span class="o">=</span><span class="s2">"depth"</span><span class="p">,</span>
+<span class="linenos">4</span>                              <span class="n">time_name</span><span class="o">=</span><span class="s2">"date_time"</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="linenos">5</span><span class="c1"># Or simply use function `skdive.tests.diveMove2skd` to do the</span>
 <span class="linenos">6</span><span class="c1"># same with this particular data set.</span>
 <span class="linenos">7</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="p">)</span>
@@ -420,7 +447,7 @@ Sampling Begins      2002-01-05 11:32:00
 Sampling Ends        2002-01-07 11:01:50
 Total duration       1 days 23:29:50
 Measured depth range [-4.0,91.0]
-Other variables      [&#39;light&#39;, &#39;temperature&#39;, &#39;speed&#39;]
+Other variables      ['light', 'temperature', 'speed']
 Attributes:
                           animal_id: Ag_022
               animal_species_common: Antarctic fur seal
@@ -443,7 +470,7 @@ Attributes:
                    project_date_beg: 2000-11-01
                    project_date_end: 2003-04-30
                        project_name: Antarctic and Subantarctic fur seal foraging/energetics
-               provider_affiliation: Centre d&#39;Etudes Biologiques de Chize, France
+               provider_affiliation: Centre d'Etudes Biologiques de Chize, France
                      provider_email: spluque@gmail.com
                    provider_license: AGPLv3
                       provider_name: Sebastian Luque
@@ -460,16 +487,16 @@ Speed calibration coefficients: (a=None, b=None)
 <p>Notice that <code class="xref py py-meth docutils literal notranslate"><span class="pre">TDR.__init__()</span></code> reads files in
 <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf">NetCDF4</a> format, which is a
 very versatile file format that encourages using properly documented data
-sets. <a class="reference internal" href="../modules/tdr.html#module-skdiveMove" title="skdiveMove"><code class="xref py py-mod docutils literal notranslate"><span class="pre">skdiveMove</span></code></a> relies on <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> objects to
+sets. <a class="reference internal" href="../modules/tdr.html#module-skdiveMove" title="skdiveMove"><code class="xref py py-mod docutils literal notranslate"><span class="pre">skdiveMove</span></code></a> relies on <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> objects to
 represent such data sets.  It is easy to generate a
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> objects from Pandas DataFrames by using method
-<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_xarray.html#pandas.DataFrame.to_xarray" title="(in pandas v3.0.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_xarray()</span></code></a>. <a class="reference internal" href="../modules/tdr.html#module-skdiveMove" title="skdiveMove"><code class="xref py py-mod docutils literal notranslate"><span class="pre">skdiveMove</span></code></a> documents
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> objects from Pandas DataFrames by using method
+<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_xarray.html#pandas.DataFrame.to_xarray" title="(in pandas v3.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_xarray()</span></code></a>. <a class="reference internal" href="../modules/tdr.html#module-skdiveMove" title="skdiveMove"><code class="xref py py-mod docutils literal notranslate"><span class="pre">skdiveMove</span></code></a> documents
 processing steps by appending to the <code class="docutils literal notranslate"><span class="pre">history</span></code> attribute, in an effort
 towards building metadata standards.</p>
 <p>Access measured data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;measured&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">"measured"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1032,34 +1059,34 @@ Attributes:
     units_label:          meters
     column_name:          depth
     axes:                 D
-    files:                dives.csv</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'>&#x27;depth&#x27;</div><ul class='xr-dim-list'><li><span class='xr-has-index'>date_time</span>: 34199</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-0ba9a105-8aed-4ba7-b11f-7d680a039a7d' class='xr-array-in' type='checkbox' checked><label for='section-0ba9a105-8aed-4ba7-b11f-7d680a039a7d' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>nan nan nan nan nan nan nan nan ... nan nan nan nan nan nan nan nan</span></div><div class='xr-array-data'><pre>array([+nan, +nan, +nan, ..., +nan, +nan, +nan], shape=(34199,))</pre></div></div></li><li class='xr-section-item'><input id='section-84d42365-1aa4-43dc-a8e8-a13d92dcbcda' class='xr-section-summary-in' type='checkbox' checked /><label for='section-84d42365-1aa4-43dc-a8e8-a13d92dcbcda' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>date_time</span></div><div class='xr-var-dims'>(date_time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2002-01-05T11:32:00 ... 2002-01-...</div><input id='attrs-39e237ef-0970-4995-8e3b-d29494d5c565' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-39e237ef-0970-4995-8e3b-d29494d5c565' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5802df80-fbb7-4dc4-bf22-ac56fe21fa6e' class='xr-var-data-in' type='checkbox'><label for='data-5802df80-fbb7-4dc4-bf22-ac56fe21fa6e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;2002-01-05T11:32:00.000000000&#x27;, &#x27;2002-01-05T11:32:05.000000000&#x27;,
+    files:                dives.csv</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-obj-name'>&#x27;depth&#x27;</div><ul class='xr-dim-list'><li><span class='xr-has-index'>date_time</span>: 34199</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-07a72ce8-ca1c-4f29-bc6c-3709e694c613' class='xr-array-in' type='checkbox' checked><label for='section-07a72ce8-ca1c-4f29-bc6c-3709e694c613' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>nan nan nan nan nan nan nan nan ... nan nan nan nan nan nan nan nan</span></div><div class='xr-array-data'><pre>array([+nan, +nan, +nan, ..., +nan, +nan, +nan], shape=(34199,))</pre></div></div></li><li class='xr-section-item'><input id='section-fff26ca8-1cdd-42ae-95a7-4037fc4fafad' class='xr-section-summary-in' type='checkbox' checked /><label for='section-fff26ca8-1cdd-42ae-95a7-4037fc4fafad' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>date_time</span></div><div class='xr-var-dims'>(date_time)</div><div class='xr-var-dtype'>datetime64[ns]</div><div class='xr-var-preview xr-preview'>2002-01-05T11:32:00 ... 2002-01-...</div><input id='attrs-de9ceb9d-8060-48c8-86c1-022756dc84c9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-de9ceb9d-8060-48c8-86c1-022756dc84c9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f1231b53-ccbc-4d68-8001-0f5ba56f2546' class='xr-var-data-in' type='checkbox'><label for='data-f1231b53-ccbc-4d68-8001-0f5ba56f2546' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;2002-01-05T11:32:00.000000000&#x27;, &#x27;2002-01-05T11:32:05.000000000&#x27;,
        &#x27;2002-01-05T11:32:10.000000000&#x27;, ..., &#x27;2002-01-07T11:01:40.000000000&#x27;,
        &#x27;2002-01-07T11:01:45.000000000&#x27;, &#x27;2002-01-07T11:01:50.000000000&#x27;],
-      shape=(34199,), dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-6b34b995-186a-4a2f-95aa-99188e1367cb' class='xr-section-summary-in' type='checkbox' /><label for='section-6b34b995-186a-4a2f-95aa-99188e1367cb' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(12)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>sampling :</span></dt><dd>regular</dd><dt><span>sampling_rate :</span></dt><dd>5</dd><dt><span>sampling_rate_units :</span></dt><dd>s</dd><dt><span>name :</span></dt><dd>P</dd><dt><span>full_name :</span></dt><dd>Depth</dd><dt><span>description :</span></dt><dd>dive depth</dd><dt><span>units :</span></dt><dd>m H2O</dd><dt><span>units_name :</span></dt><dd>meters H2O (salt)</dd><dt><span>units_label :</span></dt><dd>meters</dd><dt><span>column_name :</span></dt><dd>depth</dd><dt><span>axes :</span></dt><dd>D</dd><dt><span>files :</span></dt><dd>dives.csv</dd></dl></div></li></ul></div></div></div></div>
+      shape=(34199,), dtype=&#x27;datetime64[ns]&#x27;)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8fc9e02b-7ea5-4a67-b177-176bce3d62f5' class='xr-section-summary-in' type='checkbox' /><label for='section-8fc9e02b-7ea5-4a67-b177-176bce3d62f5' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(12)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>sampling :</span></dt><dd>regular</dd><dt><span>sampling_rate :</span></dt><dd>5</dd><dt><span>sampling_rate_units :</span></dt><dd>s</dd><dt><span>name :</span></dt><dd>P</dd><dt><span>full_name :</span></dt><dd>Depth</dd><dt><span>description :</span></dt><dd>dive depth</dd><dt><span>units :</span></dt><dd>m H2O</dd><dt><span>units_name :</span></dt><dd>meters H2O (salt)</dd><dt><span>units_label :</span></dt><dd>meters</dd><dt><span>column_name :</span></dt><dd>depth</dd><dt><span>axes :</span></dt><dd>D</dd><dt><span>files :</span></dt><dd>dives.csv</dd></dl></div></li></ul></div></div></div></div>
 </div>
 <p>Plot measured data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">"2002-01-05 21:00:00"</span><span class="p">,</span> <span class="s2">"2002-01-06 04:10:00"</span><span class="p">],</span>
           <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG1X1</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8f4679ac39d94a5c7a6f4d12ae9f9c4ce2efbad2279c614fe89dba174d5b0ef4.png" src="../_images/8f4679ac39d94a5c7a6f4d12ae9f9c4ce2efbad2279c614fe89dba174d5b0ef4.png" />
+<img alt="../_images/2550b1ccbb31c6e1f65dc075641e6d268d37e67dc4800acb1961a2f027ae926f.png" src="../_images/2550b1ccbb31c6e1f65dc075641e6d268d37e67dc4800acb1961a2f027ae926f.png" />
 </div>
 </div>
 <p>Plot concurrent data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccvars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;light&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">]</span>
-<span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ccvars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"light"</span><span class="p">,</span> <span class="s2">"speed"</span><span class="p">]</span>
+<span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">"2002-01-05 21:00:00"</span><span class="p">,</span> <span class="s2">"2002-01-06 04:10:00"</span><span class="p">],</span>
           <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span> <span class="n">concur_vars</span><span class="o">=</span><span class="n">ccvars</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">_FIG3X1</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/b1edc66c690b46b46283901e5daa1b999cd74a63084a3cd1c9cfae74a381ac77.png" src="../_images/b1edc66c690b46b46283901e5daa1b999cd74a63084a3cd1c9cfae74a381ac77.png" />
+<img alt="../_images/126663d9c2801dc2c90add0b2513d82e4193680a2d44c41b7b7cf0233dfa15a7.png" src="../_images/126663d9c2801dc2c90add0b2513d82e4193680a2d44c41b7b7cf0233dfa15a7.png" />
 </div>
 </div>
 </section>
@@ -1073,25 +1100,25 @@ data from pressure sensors (barometers):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Helper dict to set parameter values</span>
-<span class="linenos"> 2</span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-<span class="linenos"> 3</span>        <span class="s2">&quot;dry_thr&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
-<span class="linenos"> 4</span>        <span class="s2">&quot;wet_thr&quot;</span><span class="p">:</span> <span class="mi">3610</span><span class="p">,</span>
-<span class="linenos"> 5</span>        <span class="s2">&quot;dive_thr&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-<span class="linenos"> 6</span>        <span class="s2">&quot;dive_model&quot;</span><span class="p">:</span> <span class="s2">&quot;unimodal&quot;</span><span class="p">,</span>
-<span class="linenos"> 7</span>        <span class="s2">&quot;knot_factor&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-<span class="linenos"> 8</span>        <span class="s2">&quot;descent_crit_q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="linenos"> 9</span>        <span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="linenos"> 2</span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"offset_zoc"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="linenos"> 3</span>        <span class="s2">"dry_thr"</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+<span class="linenos"> 4</span>        <span class="s2">"wet_thr"</span><span class="p">:</span> <span class="mi">3610</span><span class="p">,</span>
+<span class="linenos"> 5</span>        <span class="s2">"dive_thr"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="linenos"> 6</span>        <span class="s2">"dive_model"</span><span class="p">:</span> <span class="s2">"unimodal"</span><span class="p">,</span>
+<span class="linenos"> 7</span>        <span class="s2">"knot_factor"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="linenos"> 8</span>        <span class="s2">"descent_crit_q"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 9</span>        <span class="s2">"ascent_crit_q"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 <span class="linenos">10</span>
-<span class="linenos">11</span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;offset_zoc&quot;</span><span class="p">])</span>
+<span class="linenos">11</span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"offset_zoc"</span><span class="p">])</span>
 <span class="linenos">12</span>
 <span class="linenos">13</span><span class="c1"># Plot ZOC job</span>
-<span class="linenos">14</span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
+<span class="linenos">14</span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">"2002-01-05 21:00:00"</span><span class="p">,</span> <span class="s2">"2002-01-06 04:10:00"</span><span class="p">],</span>
 <span class="linenos">15</span>              <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">));</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/1aa5279a310ec0572fb67ccd619011f40546784e5ba27c2c9bf14cf4ec5fff0f.png" src="../_images/1aa5279a310ec0572fb67ccd619011f40546784e5ba27c2c9bf14cf4ec5fff0f.png" />
+<img alt="../_images/d7099899d832bae629953a4408d5d431825d7ce61f1a7555eec6837496fd6459.png" src="../_images/d7099899d832bae629953a4408d5d431825d7ce61f1a7555eec6837496fd6459.png" />
 </div>
 </div>
 </section>
@@ -1102,7 +1129,7 @@ dry phases, whereas periods that are briefer than <code class="docutils literal 
 considered to represent a transition to a wet phase.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">(</span><span class="n">dry_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">],</span> <span class="n">wet_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;wet_thr&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">(</span><span class="n">dry_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"dry_thr"</span><span class="p">],</span> <span class="n">wet_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"wet_thr"</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1125,7 +1152,7 @@ below <code class="docutils literal notranslate"><span class="pre">wet_thr</span
 to have started, ending when measurements cross that threshold again.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_thr&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="n">dive_thr</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"dive_thr"</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1143,10 +1170,10 @@ to have started, ending when measurements cross that threshold again.</p>
 <code class="docutils literal notranslate"><span class="pre">smooth.spline</span></code>), and this demo uses the default <code class="docutils literal notranslate"><span class="pre">unimodal</span></code> method:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="n">dive_model</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;dive_model&quot;</span><span class="p">],</span>
-<span class="linenos">2</span>                        <span class="n">knot_factor</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;knot_factor&quot;</span><span class="p">],</span>
-<span class="linenos">3</span>                        <span class="n">descent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;descent_crit_q&quot;</span><span class="p">],</span>
-<span class="linenos">4</span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;ascent_crit_q&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="n">dive_model</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"dive_model"</span><span class="p">],</span>
+<span class="linenos">2</span>                        <span class="n">knot_factor</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"knot_factor"</span><span class="p">],</span>
+<span class="linenos">3</span>                        <span class="n">descent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"descent_crit_q"</span><span class="p">],</span>
+<span class="linenos">4</span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="n">pars</span><span class="p">[</span><span class="s2">"ascent_crit_q"</span><span class="p">])</span>
 <span class="linenos">5</span>
 <span class="linenos">6</span><span class="nb">print</span><span class="p">(</span><span class="n">tdrX</span><span class="p">)</span>
 </pre></div>
@@ -1161,7 +1188,7 @@ Sampling Begins      2002-01-05 11:32:00
 Sampling Ends        2002-01-07 11:01:50
 Total duration       1 days 23:29:50
 Measured depth range [-4.0,91.0]
-Other variables      [&#39;light&#39;, &#39;temperature&#39;, &#39;speed&#39;]
+Other variables      ['light', 'temperature', 'speed']
 Attributes:
                           animal_id: Ag_022
               animal_species_common: Antarctic fur seal
@@ -1184,15 +1211,15 @@ Attributes:
                    project_date_beg: 2000-11-01
                    project_date_end: 2003-04-30
                        project_name: Antarctic and Subantarctic fur seal foraging/energetics
-               provider_affiliation: Centre d&#39;Etudes Biologiques de Chize, France
+               provider_affiliation: Centre d'Etudes Biologiques de Chize, France
                      provider_email: spluque@gmail.com
                    provider_license: AGPLv3
                       provider_name: Sebastian Luque
                        sensors_list: pressure,light,temperature,speed
 ZOC method:          offset
-ZOC parameters:      {&#39;offset&#39;: 3}
-Wet/Dry parameters:  {&#39;dry_thr&#39;: 70, &#39;wet_thr&#39;: 3610}
-Dives parameters:    {&#39;dive_thr&#39;: 3, &#39;dive_model&#39;: &#39;unimodal&#39;, &#39;smooth_par&#39;: 0.1, &#39;knot_factor&#39;: 3, &#39;descent_crit_q&#39;: 0, &#39;ascent_crit_q&#39;: 0}
+ZOC parameters:      {'offset': 3}
+Wet/Dry parameters:  {'dry_thr': 70, 'wet_thr': 3610}
+Dives parameters:    {'dive_thr': 3, 'dive_model': 'unimodal', 'smooth_par': 0.1, 'knot_factor': 3, 'descent_crit_q': 0, 'ascent_crit_q': 0}
 Speed calibration coefficients: (a=None, b=None)
 </pre></div>
 </div>
@@ -1258,7 +1285,7 @@ visualized:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/312cafe56cd345eacb93eba40d321005d6354d457bd603e364c223ef04897a53.png" src="../_images/312cafe56cd345eacb93eba40d321005d6354d457bd603e364c223ef04897a53.png" />
+<img alt="../_images/f38e6858ea245a8d095f7fa7aa9036da71883413dcd6d2b724ce491521f98e65.png" src="../_images/f38e6858ea245a8d095f7fa7aa9036da71883413dcd6d2b724ce491521f98e65.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1269,7 +1296,7 @@ visualized:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/1a00b10d9796aaa4cb96a05f220bde5a8747f82327a302f73cbcfccd96f41016.png" src="../_images/1a00b10d9796aaa4cb96a05f220bde5a8747f82327a302f73cbcfccd96f41016.png" />
+<img alt="../_images/8523006a10b5d08db1086ed3e5710918581f1b75b65380e9a2fd50c81972e4b3.png" src="../_images/8523006a10b5d08db1086ed3e5710918581f1b75b65380e9a2fd50c81972e4b3.png" />
 </div>
 </div>
 </section>
@@ -1294,8 +1321,8 @@ relationship with the rate of change in depth in the vertical dimension.</p>
 Dep. Variable:                      y   Pseudo R-squared:              0.07433
 Model:                       QuantReg   Bandwidth:                      0.2129
 Method:                 Least Squares   Sparsity:                        2.682
-Date:                Wed, 18 Mar 2026   No. Observations:                 2108
-Time:                        14:44:59   Df Residuals:                     2106
+Date:                Sat, 14 Nov 2026   No. Observations:                 2108
+Time:                        15:45:56   Df Residuals:                     2106
                                         Df Model:                            1
 ==============================================================================
                  coef    std err          t      P&gt;|t|      [0.025      0.975]
@@ -1305,21 +1332,21 @@ x              0.6872      0.049     13.902      0.000       0.590       0.784
 ==============================================================================
 </pre></div>
 </div>
-<img alt="../_images/a2f02cbeac8e3105d7ebd4c73496fb4bcd0c0e34981b6dcf0c4d18e30a53c979.png" src="../_images/a2f02cbeac8e3105d7ebd4c73496fb4bcd0c0e34981b6dcf0c4d18e30a53c979.png" />
+<img alt="../_images/0d7dedeae747a13b9721345f81f187ecc70951572fa3423998723553b986b0e4.png" src="../_images/0d7dedeae747a13b9721345f81f187ecc70951572fa3423998723553b986b0e4.png" />
 </div>
 </div>
 <p>Notice processing steps have been appended to the <code class="docutils literal notranslate"><span class="pre">history</span></code> attribute of
-the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>:</p>
+the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Zero-offset-corrected depth:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">&quot;zoc&quot;</span><span class="p">)))</span>
-<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calibrated speed:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_speed</span><span class="p">(</span><span class="s2">&quot;calibrated&quot;</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Zero-offset-corrected depth:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">"zoc"</span><span class="p">)))</span>
+<span class="linenos">2</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Calibrated speed:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_speed</span><span class="p">(</span><span class="s2">"calibrated"</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Zero-offset-corrected depth:
-&lt;xarray.DataArray &#39;depth&#39; (date_time: 34199)&gt; Size: 274kB
+&lt;xarray.DataArray 'depth' (date_time: 34199)&gt; Size: 274kB
 array([+nan, +nan, +nan, ..., +nan, +nan, +nan], shape=(34199,))
 Coordinates:
   * date_time  (date_time) datetime64[ns] 274kB 2002-01-05T11:32:00 ... 2002-...
@@ -1339,7 +1366,7 @@ Attributes: (12/13)
     history:              ZOC
 
 Calibrated speed:
-&lt;xarray.DataArray &#39;speed&#39; (date_time: 34199)&gt; Size: 274kB
+&lt;xarray.DataArray 'speed' (date_time: 34199)&gt; Size: 274kB
 array([+nan, +nan, +nan, ..., +nan, +nan, +nan], shape=(34199,))
 Coordinates:
   * date_time  (date_time) datetime64[ns] 274kB 2002-01-05T11:32:00 ... 2002-...
@@ -1368,22 +1395,22 @@ Attributes: (12/13)
 <p>Following calibration, use the different accessor methods:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wet/dry phases:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Wet/dry phases:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">))</span>
 <span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters applied:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="linenos"> 4</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">)[</span><span class="s2">&quot;dry_thr&quot;</span><span class="p">]))</span>
+<span class="linenos"> 3</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Parameters applied:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span>
+<span class="linenos"> 4</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">"wet_dry"</span><span class="p">)[</span><span class="s2">"dry_thr"</span><span class="p">]))</span>
 <span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters applied:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="linenos"> 7</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">&quot;wet_dry&quot;</span><span class="p">)[</span><span class="s2">&quot;wet_thr&quot;</span><span class="p">]))</span>
+<span class="linenos"> 6</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Parameters applied:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span>
+<span class="linenos"> 7</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_phases_params</span><span class="p">(</span><span class="s2">"wet_dry"</span><span class="p">)[</span><span class="s2">"wet_thr"</span><span class="p">]))</span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Row IDs:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="linenos">10</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;row_ids&quot;</span><span class="p">)))</span>
+<span class="linenos"> 9</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Row IDs:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span>
+<span class="linenos">10</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">"row_ids"</span><span class="p">)))</span>
 <span class="linenos">11</span>
-<span class="linenos">12</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spline derivatives:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="linenos">13</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;spline_derivs&quot;</span><span class="p">)))</span>
+<span class="linenos">12</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Spline derivatives:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span>
+<span class="linenos">13</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">"spline_derivs"</span><span class="p">)))</span>
 <span class="linenos">14</span>
-<span class="linenos">15</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Critical values for phase detection:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="linenos">16</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">&quot;crit_vals&quot;</span><span class="p">)))</span>
+<span class="linenos">15</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Critical values for phase detection:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span>
+<span class="linenos">16</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">"crit_vals"</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -1430,7 +1457,7 @@ date_time
 
 Spline derivatives:
                                    y
-1   0 days 00:00:00            1.449
+1   0 days 00:00:00.000000000  1.449
     0 days 00:00:01.363636364  1.386
     0 days 00:00:02.727272727  1.223
     0 days 00:00:04.090909091  0.953
@@ -1440,7 +1467,7 @@ Spline derivatives:
     0 days 00:02:40.099009901 -0.967
     0 days 00:02:41.732673267 -0.992
     0 days 00:02:43.366336634 -1.011
-    0 days 00:02:45              NaN
+    0 days 00:02:45.000000000    NaN
 
 [10920 rows x 1 columns]
 
@@ -1469,9 +1496,9 @@ dive_id
 <h2>Time budgets<a class="headerlink" href="#time-budgets" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ignore trivial aquatic periods and account for all phases:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Ignore trivial aquatic periods and account for all phases:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span>
 <span class="linenos">2</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
-<span class="linenos">3</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ignore trivial aquatic periods, and underwater and diving:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="linenos">3</span><span class="nb">print</span><span class="p">(</span><span class="s2">"Ignore trivial aquatic periods, and underwater and diving:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span>
 <span class="linenos">4</span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_du</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -1642,7 +1669,7 @@ dive_id
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -1652,8 +1679,8 @@ dive_id
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-data-files">Reading data files</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibrate-measurements">Calibrate measurements</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-offset-correction-zoc-of-depth-measurements">Zero offset correction (ZOC) of depth measurements</a></li>
@@ -1672,13 +1699,13 @@ dive_id
   </nav></div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/demos/demo_tdr.md.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/demos/demo_tdr.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -1693,8 +1720,8 @@ dive_id
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1714,8 +1741,7 @@ dive_id
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
   </p>
 </div>
       
@@ -1736,7 +1762,7 @@ dive_id
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

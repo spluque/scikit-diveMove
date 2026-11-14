@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Time-Depth Recorder time series &#8212; skdiveMove 1.0.0 documentation</title>
+    <title>Time-Depth Recorder time series &#8212; skdiveMove 1.0.1 documentation</title>
   
   
   
@@ -27,44 +26,52 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/documentation_options.js?v=292eb321"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'modules/tdr';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Bout analysis" href="bouts.html" />
     <link rel="prev" title="Read and write metadata" href="metadata.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.0" />
+  <meta name="docsearch:version" content="1.0.1" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -90,9 +97,9 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -116,8 +123,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.0 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
   
   
 </a></div>
@@ -156,7 +163,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -166,11 +173,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -183,8 +197,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -195,7 +208,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -204,7 +217,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -218,7 +231,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -259,11 +272,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -276,8 +296,7 @@
           
           
           
-          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/spluque/scikit-diveMove" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -286,13 +305,21 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
         <div class="sidebar-primary-item">
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="metadata.html">Read and write metadata</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Time-Depth Recorder time series</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Time-Depth Recorder time series</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bouts.html">Bout analysis</a></li>
 </ul>
 </div>
@@ -331,7 +358,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -510,17 +537,23 @@ an <cite>R</cite> session to interact with low-level functions and methods of pa
 <code class="xref py py-class docutils literal notranslate"><span class="pre">TDRPhases</span></code>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></p>
+<p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></p>
 </div>
 <p class="rubric">Examples</p>
 <p>Construct an instance from diveMove example dataset</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Plot the <cite>TDR</cite> object</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="go">(&lt;Figure ... 1 Axes&gt;, &lt;Axes: ...&gt;)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -530,20 +563,20 @@ an <cite>R</cite> session to interact with low-level functions and methods of pa
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
-<li><p><strong>depth_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Name of data variable with depth measurements. Default: “depth”.</p></li>
-<li><p><strong>time_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the time dimension in the dataset.</p></li>
-<li><p><strong>subsample</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Subsample dataset at given frequency specification.  See pandas
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.9.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>depth_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><em>optional</em>) – Name of data variable with depth measurements. Default: “depth”.</p></li>
+<li><p><strong>time_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the time dimension in the dataset.</p></li>
+<li><p><strong>subsample</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><em>optional</em>) – Subsample dataset at given frequency specification.  See pandas
 offset aliases.</p></li>
-<li><p><strong>has_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Weather data includes speed measurements. Column name must be
+<li><p><strong>has_speed</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Weather data includes speed measurements. Column name must be
 one of [“velocity”, “speed”].  Default: False.</p></li>
-<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional keyword arguments passed to <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.9.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.load_dataset</span></code></a></p>
+<p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>, <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.9.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.load_dataset</span></code></a></p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -565,18 +598,18 @@ al. (1999) <a class="footnote-reference brackets" href="#id2" id="id1" role="doc
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tau</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Quantile on which to regress speed on rate of depth change.</p></li>
-<li><p><strong>contour_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The mesh obtained from the bivariate kernel density estimation
+<li><p><strong>tau</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Quantile on which to regress speed on rate of depth change.</p></li>
+<li><p><strong>contour_level</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – The mesh obtained from the bivariate kernel density estimation
 corresponding to this contour will be used for the quantile
 regression to define the calibration line.</p></li>
-<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Only changes in depth larger than this value will be used for
+<li><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Only changes in depth larger than this value will be used for
 calibration.</p></li>
 <li><p><strong>bad</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Two-element <cite>array_like</cite> indicating that only rates of depth
 change and speed greater than the given values should be used
 for calibration, respectively.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments listed below.</p></li>
-<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>default True</em>) – Whether to plot calibration results.</p></li>
-<li><p><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instance to use as target.
+<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>default True</em>) – Whether to plot calibration results.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.Axes</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instance to use as target.
 Default is to create one.</p></li>
 </ul>
 </dd>
@@ -591,9 +624,9 @@ for calibrating swim-speed recorders.  Marine Mammal Science
 </aside>
 </aside>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">calibrate_speed</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -633,15 +666,15 @@ identification.  One of <cite>smooth.spline</cite> or <cite>unimodal</cite>, to
 choose among smoothing spline or unimodal regression. For dives
 with less than five observations, smoothing spline regression
 is used regardless.</p></li>
-<li><p><strong>smooth_par</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Amount of smoothing when <code class="docutils literal notranslate"><span class="pre">dive.model=&quot;smooth.spline&quot;</span></code>. If it
+<li><p><strong>smooth_par</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Amount of smoothing when <code class="docutils literal notranslate"><span class="pre">dive.model=&quot;smooth.spline&quot;</span></code>. If it
 is <cite>None</cite>, then the smoothing parameter is determined by
 Generalized Cross-validation (GCV). Ignored with default
 <code class="docutils literal notranslate"><span class="pre">dive.model=&quot;unimodal&quot;</span></code>.</p></li>
-<li><p><strong>knot_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Multiplier for the number of samples in the dive.  This is used
+<li><p><strong>knot_factor</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a><em>, </em><em>optional</em>) – Multiplier for the number of samples in the dive.  This is used
 to construct the time predictor for the derivative.</p></li>
-<li><p><strong>descent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Critical quantile of rates of descent below which descent is
+<li><p><strong>descent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Critical quantile of rates of descent below which descent is
 deemed to have ended.</p></li>
-<li><p><strong>ascent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Critical quantile of rates of ascent above which ascent is
+<li><p><strong>ascent_crit_q</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Critical quantile of rates of ascent above which ascent is
 deemed to have started.</p></li>
 </ul>
 </dd>
@@ -703,9 +736,9 @@ SFB 876, TU Dortmund</p>
 </div>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">"TDRPhases"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Detect wet/dry phases and dives with 3 m threshold</p>
@@ -715,7 +748,7 @@ SFB 876, TU Dortmund</p>
 </div>
 <p>Detect dive phases using the “unimodal” method and selected
 parameters</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -734,7 +767,7 @@ variable with finer levels of activity is thus generated, including
 described above.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dive_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Threshold depth below which an underwater phase should be
+<dd class="field-odd"><p><strong>dive_thr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Threshold depth below which an underwater phase should be
 considered a dive.</p>
 </dd>
 </dl>
@@ -744,9 +777,9 @@ considered a dive.</p>
 </div>
 <p class="rubric">Examples</p>
 <p>ZOC using the <code class="docutils literal notranslate"><span class="pre">offset</span></code> method for convenience</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">"TDRPhases"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Detect wet/dry phases and dives with 3 m threshold</p>
@@ -789,16 +822,16 @@ interpolation through legitimate dry periods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dry_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Dry error threshold in seconds. Dry phases shorter than this
+<li><p><strong>dry_thr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Dry error threshold in seconds. Dry phases shorter than this
 threshold will be considered as wet.</p></li>
 <li><p><strong>wet_cond</strong> (<em>bool mask</em><em>, </em><em>optional</em>) – A Pandas.Series bool mask indexed as <cite>depth</cite>. It indicates
 which observations should be considered wet. If it is not
 provided, records with non-missing depth are assumed to
 correspond to wet conditions. Default is generated from testing
 for non-missing <cite>depth</cite>.</p></li>
-<li><p><strong>wet_thr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Wet threshold in seconds. At-sea phases shorter than this
+<li><p><strong>wet_thr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Wet threshold in seconds. At-sea phases shorter than this
 threshold will be considered as trivial wet.</p></li>
-<li><p><strong>interp_wet</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If <cite>True</cite>, then an interpolating spline function is used to
+<li><p><strong>interp_wet</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – If <cite>True</cite>, then an interpolating spline function is used to
 impute NA depths in wet periods (after ZOC). Use with
 caution: it may only be useful in cases where the missing data
 pattern in wet periods is restricted to shallow depths near the
@@ -813,9 +846,9 @@ not stored with the class instance, as this information can be
 retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budget" title="skdiveMove.TDR.time_budget"><code class="xref py py-meth docutils literal notranslate"><span class="pre">time_budget()</span></code></a> method.</p>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method for convenience</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">"TDRPhases"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Detect wet/dry phases</p>
@@ -838,7 +871,7 @@ retrieved via the <a class="reference internal" href="#skdiveMove.TDR.time_budge
 <dd><p>Calculate dive statistics in <cite>TDR</cite> records</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>depth_deriv</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to compute depth derivative statistics.</p>
+<dd class="field-odd"><p><strong>depth_deriv</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to compute depth derivative statistics.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>DataFrame indexed by dive number, having the following columns:</p>
@@ -882,14 +915,14 @@ each phase of the dive are included.</p>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>This method is homologous to diveMove’s <cite>diveStats</cite> function.</p>
 <p class="rubric">Examples</p>
 <p>ZOC using the “filter” method</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -897,10 +930,10 @@ each phase of the dive are included.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5760</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">dive_stats</span><span class="p">()</span>
 <span class="go">                begdesc  ... postdive_mean_speed</span>
@@ -922,7 +955,7 @@ each phase of the dive are included.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -930,16 +963,19 @@ each phase of the dive are included.</p>
 <p><a class="reference internal" href="#skdiveMove.TDR.get_tdr" title="skdiveMove.TDR.get_tdr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.get_tdr</span></code></a></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">extract_dives</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="go">&lt;xarray.Dataset&gt; ...</span>
-<span class="go">Dimensions: ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dives_ds</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">extract_dives</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">dives_ds</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">)</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -953,7 +989,7 @@ each phase of the dive are included.</p>
 <dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;zoc&quot;}</em>) – Which depth to retrieve.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)">xarray.DataArray</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.9.0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -969,7 +1005,7 @@ each phase of the dive are included.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diveNo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Dive number to retrieve derivative for.</p></li>
+<li><p><strong>diveNo</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Dive number to retrieve derivative for.</p></li>
 <li><p><strong>phase</strong> (<em>{&quot;descent&quot;</em><em>, </em><em>&quot;bottom&quot;</em><em>, </em><em>&quot;ascent&quot;}</em>) – If provided, the dive phase to retrieve data for.</p></li>
 </ul>
 </dd>
@@ -977,7 +1013,7 @@ each phase of the dive are included.</p>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1008,7 +1044,7 @@ each phase of the dive are included.</p>
 <dd class="field-even"><p><strong>out</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1022,7 +1058,7 @@ each phase of the dive are included.</p>
 <dd class="field-odd"><p><strong>kind</strong> (<em>{&quot;measured&quot;</em><em>, </em><em>&quot;calibrated&quot;}</em>) – Type of speed to retrieve.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)">xarray.DataArray</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.9.0)">xarray.DataArray</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -1038,12 +1074,12 @@ each phase of the dive are included.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>calib_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to return calibrated depth measurements.</p></li>
-<li><p><strong>calib_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to return calibrated speed measurements.</p></li>
+<li><p><strong>calib_depth</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to return calibrated depth measurements.</p></li>
+<li><p><strong>calib_speed</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to return calibrated speed measurements.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)">xarray.Dataset</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)">xarray.Dataset</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -1059,44 +1095,49 @@ each phase of the dive are included.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
+<li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
 select additional data to plot.</p></li>
-<li><p><strong>concur_var_titles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
+<li><p><strong>concur_var_titles</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to plotting function,
 including those listed below. Additional arguments are passed
 to underlying plotting method.</p></li>
-<li><p><strong>xlim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.  Ignored when
+<li><p><strong>xlim</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><em>tuple</em></a><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.  Ignored when
 <code class="docutils literal notranslate"><span class="pre">concur_vars=None</span></code>.</p></li>
-<li><p><strong>ylim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">y</span></code> axis for data other than
+<li><p><strong>ylim</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><em>tuple</em></a><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">y</span></code> axis for data other than
 depth.</p></li>
-<li><p><strong>depth_lim</strong> (<em>array_like</em><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for depth to plot.</p></li>
-<li><p><strong>xlab</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Label for <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.</p></li>
-<li><p><strong>ylab_depth</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Label for <code class="docutils literal notranslate"><span class="pre">y</span></code> axis for depth.</p></li>
-<li><p><strong>xlab_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Format string for formatting the <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.</p></li>
-<li><p><strong>sunrise_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Time of sunrise, in 24 hr format.  This is used for shading night
+<li><p><strong>depth_lim</strong> (<em>array_like</em><em> of </em><em>(</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>)</em>) – Minimum and maximum limits for depth to plot.</p></li>
+<li><p><strong>xlab</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Label for <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.</p></li>
+<li><p><strong>ylab_depth</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Label for <code class="docutils literal notranslate"><span class="pre">y</span></code> axis for depth.</p></li>
+<li><p><strong>xlab_format</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Format string for formatting the <code class="docutils literal notranslate"><span class="pre">x</span></code> axis.</p></li>
+<li><p><strong>sunrise_time</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Time of sunrise, in 24 hr format.  This is used for shading night
 time.</p></li>
-<li><p><strong>sunset_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Time of sunset, in 24 hr format.  This is used for shading night
+<li><p><strong>sunset_time</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Time of sunset, in 24 hr format.  This is used for shading night
 time.</p></li>
-<li><p><strong>night_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Color for shading night time.</p></li>
-<li><p><strong>dry_time</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><em>pandas.DataFrame</em></a>) – Two-column DataFrame with beginning and ending times corresponding
+<li><p><strong>night_col</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Color for shading night time.</p></li>
+<li><p><strong>dry_time</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.1)"><em>pandas.DataFrame</em></a>) – Two-column DataFrame with beginning and ending times corresponding
 to periods considered to be dry.</p></li>
-<li><p><strong>phase_cat</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.1)"><em>pandas.Series</em></a>) – Categorical series dividing rows into sections.</p></li>
+<li><p><strong>phase_cat</strong> (<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.1)"><em>pandas.Series</em></a>) – Categorical series dividing rows into sections.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2002-01-05 21:00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2002-01-06 04:10:00&quot;</span><span class="p">],</span>
-<span class="gp">... </span>          <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="go">(&lt;Figure ... with 1 Axes&gt;, &lt;Axes: ...&#39;&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="s2">"2002-01-05 21:00:00"</span><span class="p">,</span> <span class="s2">"2002-01-06 04:10:00"</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">depth_lim</span><span class="o">=</span><span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1115,15 +1156,15 @@ shows the first derivative of the smooth trace.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.10.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.11.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -1131,16 +1172,22 @@ shows the first derivative of the smooth trace.</p>
 <p><a class="reference internal" href="#skdiveMove.TDR.detect_dive_phases" title="skdiveMove.TDR.detect_dive_phases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_dive_phases</span></code></a></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-<span class="gp">... </span>                     <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="go">(&lt;Figure ... with 2 Axes&gt;, (&lt;Axes: ...&gt;, &lt;Axes: ...&gt;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">plot_dive_model</span><span class="p">(</span><span class="n">diveNo</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1153,20 +1200,20 @@ shows the first derivative of the smooth trace.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diveNo</strong> (<em>array_like</em><em>, </em><em>optional</em>) – List of dive numbers (1-based) to plot.</p></li>
-<li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
+<li><p><strong>concur_vars</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with names of columns in input to
 select additional data to plot.</p></li>
-<li><p><strong>concur_var_titles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
-<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot surface readings.</p></li>
+<li><p><strong>concur_var_titles</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>, </em><em>optional</em>) – String or list of strings with y-axis labels for <cite>concur_vars</cite>.</p></li>
+<li><p><strong>surface</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to plot surface readings.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to plotting function (see
 <a class="reference internal" href="#skdiveMove.TDR.plot" title="skdiveMove.TDR.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -1174,16 +1221,22 @@ select additional data to plot.</p></li>
 <p><a class="reference internal" href="#skdiveMove.TDR.detect_wet" title="skdiveMove.TDR.detect_wet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.detect_wet</span></code></a></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_phases</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">)),</span>
-<span class="gp">... </span>                 <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="go">(&lt;Figure ... with 1 Axes&gt;, &lt;Axes: ...&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">plot_phases</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">)),</span>
+<span class="gp">... </span>                           <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1204,15 +1257,15 @@ Luque and Fried (2011) <a class="footnote-reference brackets" href="#id7" id="id
 <li><p><strong>ylim</strong> (<em>array_like</em><em>, </em><em>optional</em>) – array_like with minimum and maximum limits for <code class="docutils literal notranslate"><span class="pre">x</span></code>- and
 <code class="docutils literal notranslate"><span class="pre">y</span></code>-axis, respectively.</p></li>
 <li><p><strong>**kwargs</strong> – Optional keyword arguments passed to
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.10.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="(in Matplotlib v3.11.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">subplots()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
-<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.10.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a>,
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -1220,20 +1273,25 @@ Luque and Fried (2011) <a class="footnote-reference brackets" href="#id7" id="id
 <p><a class="reference internal" href="#skdiveMove.TDR.zoc" title="skdiveMove.TDR.zoc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDR.zoc</span></code></a></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Window lengths and probabilities</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DB</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5760</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">depth_bounds</span><span class="o">=</span><span class="n">DB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"filter"</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">depth_bounds</span><span class="o">=</span><span class="n">DB</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">()</span>
-<span class="go">(&lt;Figure ... with 3 Axes&gt;, array([&lt;Axes: ...&#39;&gt;,</span>
-<span class="go">    &lt;Axes: ...&#39;&gt;, &lt;Axes: ...&gt;], dtype=object))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1244,7 +1302,7 @@ Luque and Fried (2011) <a class="footnote-reference brackets" href="#id7" id="id
 <dd><p>Identify the wet activity phase corresponding to each dive</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ignore_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p>
+<dd class="field-odd"><p><strong>ignore_z</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – DataFrame indexed by dive ID, and three columns identifying
@@ -1252,16 +1310,16 @@ which phase thy are in, and the beginning and ending time
 stamps.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">"TDRPhases"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">stamp_dives</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">         phase_id                 beg                 end</span>
@@ -1278,8 +1336,8 @@ stamps.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ignore_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p></li>
-<li><p><strong>ignore_du</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore diving and underwater periods.</p></li>
+<li><p><strong>ignore_z</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore trivial aquatic periods.</p></li>
+<li><p><strong>ignore_du</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to ignore diving and underwater periods.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1287,16 +1345,16 @@ stamps.</p>
 for each phase, and beginning and ending times.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">&quot;TDRPhases&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">(</span><span class="s2">"TDRPhases"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">&quot;unimodal&quot;</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="n">descent_crit_q</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">ascent_crit_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">knot_factor</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">time_budget</span><span class="p">(</span><span class="n">ignore_z</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span>                 <span class="n">ignore_du</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1368,9 +1426,12 @@ zero offset correction of diving depth time series. PLoS ONE
 </aside>
 <p class="rubric">Examples</p>
 <p>ZOC using the “offset” method</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">diveMove2skd</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span> <span class="o">=</span> <span class="n">diveMove2skd</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="s2">"offset"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using the “filter” method</p>
@@ -1382,9 +1443,11 @@ zero offset correction of diving depth time series. PLoS ONE
 </pre></div>
 </div>
 <p>Plot the filters that were applied</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<span class="go">(&lt;Figure ... with 3 Axes&gt;, array([&lt;Axes: ...&gt;,</span>
-<span class="go">    &lt;Axes: ...&gt;, &lt;Axes: ...&gt;], dtype=object))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">tdrX</span><span class="o">.</span><span class="n">plot_zoc</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1435,8 +1498,8 @@ guide the operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
-<li><p><strong>config_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – A valid string path for TDR calibration configuration file.</p></li>
+<li><p><strong>tdr_file</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>xarray.backends.*DataStore</em>) – As first argument for <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.load_dataset.html#xarray.load_dataset" title="(in xarray v2026.9.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">xarray.load_dataset()</span></code></a>.</p></li>
+<li><p><strong>config_file</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – A valid string path for TDR calibration configuration file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1462,11 +1525,11 @@ guide the operations.</p>
 <p>Dump a json configuration template file to set up TDR calibration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>file-like</em>) – A valid string path, or <cite>file-like</cite> object, for output file.</p>
+<dd class="field-odd"><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> or </em><em>file-like</em>) – A valid string path, or <cite>file-like</cite> object, for output file.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">&quot;tdr_config.json&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dump_config_template</span><span class="p">(</span><span class="s2">"tdr_config.json"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Edit the file to your specifications.</p>
@@ -1509,7 +1572,7 @@ guide the operations.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -1519,8 +1582,8 @@ guide the operations.</p>
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibration-and-phase-detection">Calibration and phase detection</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-and-summaries">Analysis and summaries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting">Plotting</a></li>
@@ -1561,13 +1624,13 @@ guide the operations.</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/modules/tdr.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/modules/tdr.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -1582,8 +1645,8 @@ guide the operations.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1603,8 +1666,7 @@ guide the operations.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
   </p>
 </div>
       
@@ -1625,7 +1687,7 @@ guide the operations.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>
