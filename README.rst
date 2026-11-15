@@ -122,7 +122,7 @@ Or install from source tree by typing the following at the command line:
 
 .. code-block:: sh
 
-   python setup.py install
+   pip install .
 
 Once installed, `skdiveMove` can be easily imported as: ::
 
@@ -164,7 +164,7 @@ and then install with:
 
 .. code-block:: sh
 
-   pip install -e .["docs"]
+   pip install -e . --group docs --group test
 
 .. stop-pypi
 
