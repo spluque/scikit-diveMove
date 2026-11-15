@@ -23,6 +23,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import skdiveMove.bouts as skbouts
 
+from skdiveMove.tests.get_sample_data import random_mixexp
+
 # For figure sizes
 _FIG3X1 = (9, 12)
 
@@ -44,7 +46,8 @@ np.set_printoptions(precision=3, sign="+")
 For a mixed distribution of two random Poisson processes with a mixing
 parameter {math}`p=0.7`, and density parameters {math}`\lambda_f=0.05`, and
 {math}`\lambda_s=0.005`, we use the
-{py:func}`~skdiveMove.bouts.random_mixexp` function to generate samples.
+{py:func}`~skdiveMove.tests.get_sample_data.random_mixexp` function to
+generate samples.
 
 Define the true values described above, grouping the parameters into a
 {py:class}`~pandas.Series` to simplify further operations.
@@ -120,9 +123,9 @@ mystnb:
 rng = np.random.default_rng()
 # Estimate parameters `nsims` times
 for i in range(nsims):
-    x = skbouts.random_mixexp(nsamp, pars_true["p"],
-                              (pars_true[["lambda0", "lambda1"]]
-                               .to_numpy()), rng=rng)
+    x = random_mixexp(nsamp, pars_true["p"],
+                      (pars_true[["lambda0", "lambda1"]]
+                       .to_numpy()), rng=rng)
     # NLS
     xbouts = skbouts.BoutsNLS(x, 5)
     init_pars = xbouts.init_pars([80], plot=False)
@@ -282,9 +285,9 @@ lda2_bnd = (1e-5, 1e-3)
 opts2 = dict(method="L-BFGS-B",
              bounds=(p0_bnd, p1_bnd, lda0_bnd, lda1_bnd, lda2_bnd))
 
-x = skbouts.random_mixexp(nsamp, [pars_true["p0"], pars_true["p1"]],
-                          [pars_true["lambda0"], pars_true["lambda1"],
-                           pars_true["lambda2"]], rng=rng)
+x = random_mixexp(nsamp, [pars_true["p0"], pars_true["p1"]],
+                  [pars_true["lambda0"], pars_true["lambda1"],
+                   pars_true["lambda2"]], rng=rng)
 
 ```
 

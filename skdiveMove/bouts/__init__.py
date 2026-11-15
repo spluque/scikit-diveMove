@@ -107,7 +107,5 @@ Methods summary
 from .bouts import Bouts, label_bouts
 from .boutsnls import BoutsNLS
 from .boutsmle import BoutsMLE
-from skdiveMove.tests.get_sample_data import random_mixexp
 
-__all__ = ["Bouts", "BoutsNLS", "BoutsMLE", "label_bouts",
-           "random_mixexp"]
+__all__ = ["Bouts", "BoutsNLS", "BoutsMLE", "label_bouts"]
