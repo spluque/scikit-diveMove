@@ -20,6 +20,7 @@
    :target: https://pypi.python.org/pypi/scikit-diveMove
    :alt: PyPI - Downloads
 
+.. start-pypi
 
 `scikit-diveMove` is a Python interface to R package `diveMove`_ for
 scientific data analysis, with a focus on diving behaviour analysis.  It
@@ -123,8 +124,6 @@ Or install from source tree by typing the following at the command line:
 
    python setup.py install
 
-The documentation can also be installed as described in `Documentation`_.
-
 Once installed, `skdiveMove` can be easily imported as: ::
 
   import skdiveMove as skdive
@@ -141,6 +140,33 @@ installed and available to the user running Python.  If needed, install
 
    install.packages("diveMove")
 
+
+Testing
+=======
+
+The `skdiveMove` package can be tested with `pytest`:
+
+.. code-block:: sh
+
+   pytest -v skdiveMove/tests
+
+
+Development
+===========
+
+Developers can clone the project from Github:
+
+.. code-block:: sh
+
+   git clone https://github.com/spluque/scikit-diveMove.git .
+
+and then install with:
+
+.. code-block:: sh
+
+   pip install -e .["docs"]
+
+.. stop-pypi
 
 Documentation
 =============

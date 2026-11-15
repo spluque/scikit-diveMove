@@ -5,6 +5,7 @@ description = "Python interface to R package diveMove"
 authors = [
     {name = "Sebastian Luque"}
 ]
+readme = "README.rst"
 license = {text = "AGPL-3.0-or-later"}
 requires-python = ">=3.13"
 dependencies = [
