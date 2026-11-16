@@ -4,6 +4,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+
 from matplotlib.ticker import ScalarFormatter
 from statsmodels.distributions.empirical_distribution import ECDF
 from . import bouts

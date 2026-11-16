@@ -22,6 +22,7 @@ Class and Methods Summary
 import logging
 import numpy as np
 import pandas as pd
+
 from skdiveMove.zoc import ZOC
 from skdiveMove.core import diveMove, robjs, pandas2ri
 from skdiveMove.helpers import (get_var_sampling_interval, _cut_dive,

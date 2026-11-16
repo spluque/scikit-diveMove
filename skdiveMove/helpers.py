@@ -5,6 +5,7 @@
 import numpy as np
 import pandas as pd
 import xarray as xr
+
 from skdiveMove.core import robjs, cv, pandas2ri, diveMove
 
 __all__ = ["_load_dataset", "_get_dive_indices", "_append_xr_attr",

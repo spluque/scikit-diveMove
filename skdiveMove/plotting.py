@@ -7,6 +7,7 @@ higher-level classes of the package.
 
 import pandas as pd
 import matplotlib.pyplot as plt
+
 from pandas.plotting import register_matplotlib_converters
 
 register_matplotlib_converters()

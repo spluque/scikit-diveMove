@@ -5,10 +5,11 @@
 import logging
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
 from scipy.optimize import minimize
 from scipy.special import logit, expit
 from statsmodels.distributions.empirical_distribution import ECDF
-import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 from . import bouts
 

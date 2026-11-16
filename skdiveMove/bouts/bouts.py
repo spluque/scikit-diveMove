@@ -6,12 +6,13 @@ This module also provides useful functions for other modules subclassing
 """
 
 import logging
-from abc import ABCMeta, abstractmethod
 import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
-from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
+
+from abc import ABCMeta, abstractmethod
+from scipy.optimize import curve_fit
 from skdiveMove.helpers import rle_key
 
 logger = logging.getLogger(__name__)

@@ -125,6 +125,7 @@ def test_plot_zoc(test_tdr_calib):
 
 
 @pytest.mark.plotting
+@pytest.mark.filterwarnings(r"ignore::UserWarning:pandas.*")
 def test_plot_zoc_filter(test_tdr):
     # Calibrate with "filter" and test plot_zoc. Modifies module-scoped
     # fixture.

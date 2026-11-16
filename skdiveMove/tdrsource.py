@@ -3,6 +3,7 @@
 """
 
 import pandas as pd
+
 from skdiveMove.helpers import (get_var_sampling_interval,
                                 _append_xr_attr, _load_dataset)
 
