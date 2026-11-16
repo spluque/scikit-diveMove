@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Simulating bouts &#8212; skdiveMove 1.0.1 documentation</title>
+    <title>Simulating bouts &#8212; skdiveMove 1.1.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../_static/documentation_options.js?v=fc837d61"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
@@ -51,7 +51,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1" />
+  <meta name="docsearch:version" content="1.1.0" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -123,8 +123,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.1.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.1.0 documentation - Home"/>
   
   
 </a></div>
@@ -395,6 +395,8 @@ comparison of models for characterizing such distributions.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.bouts</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">skbouts</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tests.get_sample_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">random_mixexp</span>
+
 <span class="c1"># For figure sizes</span>
 <span class="n">_FIG3X1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 </pre></div>
@@ -421,7 +423,8 @@ comparison of models for characterizing such distributions.</p>
 <p>For a mixed distribution of two random Poisson processes with a mixing
 parameter <span class="math notranslate nohighlight">\(p=0.7\)</span>, and density parameters <span class="math notranslate nohighlight">\(\lambda_f=0.05\)</span>, and
 <span class="math notranslate nohighlight">\(\lambda_s=0.005\)</span>, we use the
-<code class="xref py py-func docutils literal notranslate"><span class="pre">random_mixexp()</span></code> function to generate samples.</p>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">random_mixexp()</span></code> function to
+generate samples.</p>
 <p>Define the true values described above, grouping the parameters into a
 <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a> to simplify further operations.</p>
 <div class="cell docutils container">
@@ -479,9 +482,9 @@ iteration.</p>
 <span class="linenos"> 2</span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="linenos"> 3</span><span class="c1"># Estimate parameters `nsims` times</span>
 <span class="linenos"> 4</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsims</span><span class="p">):</span>
-<span class="linenos"> 5</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">"p"</span><span class="p">],</span>
-<span class="linenos"> 6</span>                              <span class="p">(</span><span class="n">pars_true</span><span class="p">[[</span><span class="s2">"lambda0"</span><span class="p">,</span> <span class="s2">"lambda1"</span><span class="p">]]</span>
-<span class="linenos"> 7</span>                               <span class="o">.</span><span class="n">to_numpy</span><span class="p">()),</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="linenos"> 5</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">"p"</span><span class="p">],</span>
+<span class="linenos"> 6</span>                      <span class="p">(</span><span class="n">pars_true</span><span class="p">[[</span><span class="s2">"lambda0"</span><span class="p">,</span> <span class="s2">"lambda1"</span><span class="p">]]</span>
+<span class="linenos"> 7</span>                       <span class="o">.</span><span class="n">to_numpy</span><span class="p">()),</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
 <span class="linenos"> 8</span>    <span class="c1"># NLS</span>
 <span class="linenos"> 9</span>    <span class="n">xbouts</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">BoutsNLS</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="linenos">10</span>    <span class="n">init_pars</span> <span class="o">=</span> <span class="n">xbouts</span><span class="o">.</span><span class="n">init_pars</span><span class="p">([</span><span class="mi">80</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -547,44 +550,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.047</td>
-      <td>4.013e-03</td>
-      <td>0.726</td>
+      <td>4.008e-03</td>
+      <td>0.729</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>0.004</td>
-      <td>4.041e-04</td>
-      <td>0.020</td>
+      <td>0.005</td>
+      <td>4.155e-04</td>
+      <td>0.021</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>0.032</td>
-      <td>2.829e-03</td>
-      <td>0.664</td>
+      <td>0.030</td>
+      <td>2.704e-03</td>
+      <td>0.642</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.044</td>
-      <td>3.735e-03</td>
-      <td>0.713</td>
+      <td>3.760e-03</td>
+      <td>0.715</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.047</td>
-      <td>4.024e-03</td>
-      <td>0.725</td>
+      <td>3.998e-03</td>
+      <td>0.729</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.050</td>
-      <td>4.279e-03</td>
-      <td>0.739</td>
+      <td>4.245e-03</td>
+      <td>0.744</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>0.059</td>
-      <td>5.355e-03</td>
-      <td>0.785</td>
+      <td>0.065</td>
+      <td>5.747e-03</td>
+      <td>0.788</td>
     </tr>
   </tbody>
 </table>
@@ -637,44 +640,44 @@ iteration.</p>
     <tr>
       <th>mean</th>
       <td>0.050</td>
-      <td>5.033e-03</td>
-      <td>0.697</td>
+      <td>5.000e-03</td>
+      <td>0.700</td>
     </tr>
     <tr>
       <th>std</th>
       <td>0.003</td>
-      <td>3.692e-04</td>
+      <td>3.825e-04</td>
       <td>0.024</td>
     </tr>
     <tr>
       <th>min</th>
-      <td>0.043</td>
-      <td>4.089e-03</td>
-      <td>0.616</td>
+      <td>0.044</td>
+      <td>4.001e-03</td>
+      <td>0.601</td>
     </tr>
     <tr>
       <th>25%</th>
       <td>0.048</td>
-      <td>4.776e-03</td>
-      <td>0.682</td>
+      <td>4.725e-03</td>
+      <td>0.684</td>
     </tr>
     <tr>
       <th>50%</th>
       <td>0.050</td>
-      <td>5.019e-03</td>
-      <td>0.697</td>
+      <td>4.979e-03</td>
+      <td>0.700</td>
     </tr>
     <tr>
       <th>75%</th>
       <td>0.052</td>
-      <td>5.255e-03</td>
-      <td>0.713</td>
+      <td>5.260e-03</td>
+      <td>0.718</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>0.061</td>
-      <td>6.150e-03</td>
-      <td>0.765</td>
+      <td>0.062</td>
+      <td>6.694e-03</td>
+      <td>0.780</td>
     </tr>
   </tbody>
 </table>
@@ -692,9 +695,9 @@ readily assessed for NLS:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lambda0   -2.996e-03
-lambda1   -9.870e-04
-p          2.624e-02
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lambda0   -2.840e-03
+lambda1   -9.916e-04
+p          2.873e-02
 dtype: float64
 </pre></div>
 </div>
@@ -708,9 +711,9 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lambda0    1.755e-04
-lambda1    3.345e-05
-p         -3.072e-03
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lambda0    9.011e-05
+lambda1   -4.068e-07
+p          4.621e-04
 dtype: float64
 </pre></div>
 </div>
@@ -748,7 +751,7 @@ compare density plots, along with the true parameter values:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/376aafc46d817b501a2a103cab546b2ace4698e7f0a96f5e18fd78ae1726b9e8.png" src="../_images/376aafc46d817b501a2a103cab546b2ace4698e7f0a96f5e18fd78ae1726b9e8.png" />
+<img alt="../_images/e9e440e20b09cb2a4cd432e8f7cfc317213d2cb95d163ca8fa7f6e1026ec1eb6.png" src="../_images/e9e440e20b09cb2a4cd432e8f7cfc317213d2cb95d163ca8fa7f6e1026ec1eb6.png" />
 </div>
 </div>
 </section>
@@ -800,9 +803,9 @@ help.</p>
 <span class="linenos">20</span><span class="n">opts2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">"L-BFGS-B"</span><span class="p">,</span>
 <span class="linenos">21</span>             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">p0_bnd</span><span class="p">,</span> <span class="n">p1_bnd</span><span class="p">,</span> <span class="n">lda0_bnd</span><span class="p">,</span> <span class="n">lda1_bnd</span><span class="p">,</span> <span class="n">lda2_bnd</span><span class="p">))</span>
 <span class="linenos">22</span>
-<span class="linenos">23</span><span class="n">x</span> <span class="o">=</span> <span class="n">skbouts</span><span class="o">.</span><span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">"p0"</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">"p1"</span><span class="p">]],</span>
-<span class="linenos">24</span>                          <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">"lambda0"</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">"lambda1"</span><span class="p">],</span>
-<span class="linenos">25</span>                           <span class="n">pars_true</span><span class="p">[</span><span class="s2">"lambda2"</span><span class="p">]],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="linenos">23</span><span class="n">x</span> <span class="o">=</span> <span class="n">random_mixexp</span><span class="p">(</span><span class="n">nsamp</span><span class="p">,</span> <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">"p0"</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">"p1"</span><span class="p">]],</span>
+<span class="linenos">24</span>                  <span class="p">[</span><span class="n">pars_true</span><span class="p">[</span><span class="s2">"lambda0"</span><span class="p">],</span> <span class="n">pars_true</span><span class="p">[</span><span class="s2">"lambda1"</span><span class="p">],</span>
+<span class="linenos">25</span>                   <span class="n">pars_true</span><span class="p">[</span><span class="s2">"lambda2"</span><span class="p">]],</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -832,7 +835,7 @@ help.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/77ce9fd8f9714ed6675317e11a92d0e6c62b556253cd4b030f74c990f2d184dd.png" src="../_images/77ce9fd8f9714ed6675317e11a92d0e6c62b556253cd4b030f74c990f2d184dd.png" />
+<img alt="../_images/f1ce7b424d9c76a8e95e43d43899e0256225acda157644f48bc018c4760af481.png" src="../_images/f1ce7b424d9c76a8e95e43d43899e0256225acda157644f48bc018c4760af481.png" />
 </div>
 </div>
 <p>Compare cumulative frequency distributions:</p>
@@ -847,7 +850,7 @@ help.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/89e0cb9bc79a892618b34455f0a93ec12d9a73cac9456ff0a906749929db35ea.png" src="../_images/89e0cb9bc79a892618b34455f0a93ec12d9a73cac9456ff0a906749929db35ea.png" />
+<img alt="../_images/d944b8f482993f674776db8c8392ba6fdbf03b2f7788e62599fafe1ab3fed70c.png" src="../_images/d944b8f482993f674776db8c8392ba6fdbf03b2f7788e62599fafe1ab3fed70c.png" />
 </div>
 </div>
 </section>

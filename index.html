@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>scikit-diveMove Documentation &#8212; skdiveMove 1.0.1 documentation</title>
+    <title>scikit-diveMove Documentation &#8212; skdiveMove 1.1.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=292eb321"></script>
+    <script src="_static/documentation_options.js?v=fc837d61"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
@@ -49,7 +49,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1" />
+  <meta name="docsearch:version" content="1.1.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.1.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.1.0 documentation - Home"/>
   
   
 </a></div>
@@ -337,9 +337,136 @@
 <p><cite>scikit-diveMove</cite> is a Python interface to R package <a class="reference external" href="https://github.com/spluque/diveMove">diveMove</a> for
 scientific data analysis, with a focus on diving behaviour analysis.  It
 has utilities to represent, visualize, filter, analyse, and summarize
-time-depth recorder (TDR) data.  Miscellaneous functions for handling
-location data are also provided.</p>
-<p><cite>scikit-diveMove</cite> is hosted at <a class="github reference external" href="https://github.com/spluque/scikit-diveMove">spluque/scikit-diveMove</a></p>
+time-depth recorder (TDR) data. <cite>scikit-diveMove</cite> communicates with a
+single <cite>R</cite> instance for access to low-level tools of package <cite>diveMove</cite>.</p>
+<p>The table below shows which features of <cite>diveMove</cite> are accessible from
+<cite>scikit-diveMove</cite>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"><p><cite>diveMove</cite></p></th>
+<th class="head" rowspan="2"><p><cite>scikit-diveMove</cite></p></th>
+<th class="head" rowspan="2"><p>Notes</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>Functionality</p></th>
+<th class="head"><p>Functions/Methods</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>Movement</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">austFilter</span></code>
+<code class="docutils literal notranslate"><span class="pre">rmsDistFilter</span></code>
+<code class="docutils literal notranslate"><span class="pre">grpSpeedFilter</span></code>
+<code class="docutils literal notranslate"><span class="pre">distSpeed</span></code>
+<code class="docutils literal notranslate"><span class="pre">readLocs</span></code></p></td>
+<td></td>
+<td><p>Under consideration.</p></td>
+</tr>
+<tr class="row-even"><td><p>Bout analysis</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boutfreqs</span></code>
+<code class="docutils literal notranslate"><span class="pre">boutinit</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts2.nlsFUN</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts2.nls</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts3.nlsFUN</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts3.nls</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts2.mleFUN</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts2.ll</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts2.LL</span></code>
+<code class="docutils literal notranslate"><span class="pre">bouts.mle</span></code>
+<code class="docutils literal notranslate"><span class="pre">labelBouts</span></code>
+<code class="docutils literal notranslate"><span class="pre">plotBouts</span></code>
+<code class="docutils literal notranslate"><span class="pre">plotBouts2.cdf</span></code>
+<code class="docutils literal notranslate"><span class="pre">bec2</span></code>
+<code class="docutils literal notranslate"><span class="pre">bec3</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BoutsNLS</span></code> <code class="docutils literal notranslate"><span class="pre">BoutsMLE</span></code></p></td>
+<td><p>Fully implemented in Python.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dive analysis</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">readTDR</span></code>
+<code class="docutils literal notranslate"><span class="pre">createTDR</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TDR.__init__</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDRSource.__init__</span></code></p></td>
+<td><p>Fully implemented.  Single
+<code class="docutils literal notranslate"><span class="pre">TDR</span></code> class for data with or
+without speed measurements.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">calibrateDepth</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TDR.calibrate</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.zoc</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.detect_wet</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.detect_dives</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.detect_dive_phases</span></code></p></td>
+<td><p>Fully implemented</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">calibrateSpeed</span></code>
+<code class="docutils literal notranslate"><span class="pre">rqPlot</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TDR.calibrate_speed</span></code></p></td>
+<td><p>New implementation of the
+algorithm entirely in Python.
+The procedure generates the plot
+concurrently.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">diveStats</span></code>
+<code class="docutils literal notranslate"><span class="pre">stampDive</span></code>
+<code class="docutils literal notranslate"><span class="pre">timeBudget</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TDR.dive_stats</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.time_budget</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.stamp_dives</span></code></p></td>
+<td><p>Fully implemented</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">plotTDR</span></code>
+<code class="docutils literal notranslate"><span class="pre">plotDiveModel</span></code>
+<code class="docutils literal notranslate"><span class="pre">plotZOC</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TDR.plot</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.plot_zoc_filters</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.plot_phases</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.plot_dive_model</span></code></p></td>
+<td><p>Fully implemented.
+Interactivity is the default, as
+standard <cite>matplotlib</cite>.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getTDR</span></code>
+<code class="docutils literal notranslate"><span class="pre">getDepth</span></code>
+<code class="docutils literal notranslate"><span class="pre">getSpeed</span></code>
+<code class="docutils literal notranslate"><span class="pre">getTime</span></code>
+<code class="docutils literal notranslate"><span class="pre">getCCData</span></code>
+<code class="docutils literal notranslate"><span class="pre">getDtime</span></code>
+<code class="docutils literal notranslate"><span class="pre">getFileName</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TDR.tdr</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.get_depth</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.get_speed</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.tdr.index</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.src_file</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.dtime</span></code></p></td>
+<td><p>Fully implemented.
+<code class="docutils literal notranslate"><span class="pre">getCCData</span></code> deemed redundant,
+as the columns can be accessed
+directly from the <code class="docutils literal notranslate"><span class="pre">TDR.tdr</span></code>
+attribute.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getDAct</span></code>
+<code class="docutils literal notranslate"><span class="pre">getDPhaseLab</span></code>
+<code class="docutils literal notranslate"><span class="pre">getDiveDeriv</span></code>
+<code class="docutils literal notranslate"><span class="pre">getDiveModel</span></code>
+<code class="docutils literal notranslate"><span class="pre">getGAct</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TDR.get_wet_activity</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.get_dives_details</span></code>
+<code class="docutils literal notranslate"><span class="pre">TDR.get_dive_deriv</span></code></p></td>
+<td><p>Fully implemented</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">extractDive</span></code></p></td>
+<td></td>
+<td><p>Fully implemented</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Analyses are fully tractable by encouraging the use of <a class="reference external" href="https://xarray.pydata.org">xarray</a> data
 structures that can be read from and written to NetCDF file format.  Using
 these data structures, meta-data attributes can be easily appended at all
@@ -351,7 +478,7 @@ layers as analyses progress.</p>
 </pre></div>
 </div>
 <p>Or install from source tree by typing the following at the command line:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>install
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
 <p>Once installed, <cite>skdiveMove</cite> can be easily imported as:</p>
@@ -370,11 +497,7 @@ installed and available to the user running Python.  If needed, install
 </section>
 <section id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
-<p>The <cite>skdiveMove</cite> package can be tested with <cite>unittest</cite>:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>-v<span class="w"> </span>skdiveMove/tests
-</pre></div>
-</div>
-<p>or <cite>pytest</cite>:</p>
+<p>The <cite>skdiveMove</cite> package can be tested with <cite>pytest</cite>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>-v<span class="w"> </span>skdiveMove/tests
 </pre></div>
 </div>
@@ -386,7 +509,7 @@ installed and available to the user running Python.  If needed, install
 </pre></div>
 </div>
 <p>and then install with:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span><span class="s2">"docs"</span><span class="o">]</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--group<span class="w"> </span>docs<span class="w"> </span>--group<span class="w"> </span><span class="nb">test</span>
 </pre></div>
 </div>
 </section>

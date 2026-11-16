@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.calibconfig &#8212; skdiveMove 1.0.1 documentation</title>
+    <title>skdiveMove.calibconfig &#8212; skdiveMove 1.1.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../_static/documentation_options.js?v=fc837d61"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skdiveMove/calibconfig';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1" />
+  <meta name="docsearch:version" content="1.1.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -119,8 +119,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.1.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.1.0 documentation - Home"/>
   
   
 </a></div>
@@ -359,14 +359,18 @@
 <span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"dump_config_template"</span><span class="p">,</span> <span class="s2">"dump_config"</span><span class="p">,</span> <span class="s2">"read_config"</span><span class="p">]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">asdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+
+<span class="c1"># __all__ = ["dump_config_template", "dump_config", "read_config"]</span>
 
 <span class="n">_DEFAULT_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">'log_level'</span><span class="p">:</span> <span class="s2">"INFO"</span><span class="p">,</span>
     <span class="s1">'read'</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">'depth_name'</span><span class="p">:</span> <span class="s2">"depth"</span><span class="p">,</span>
         <span class="s1">'time_name'</span><span class="p">:</span> <span class="s2">"timestamp"</span><span class="p">,</span>
-        <span class="s1">'subsample'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s1">'subsample'</span><span class="p">:</span> <span class="s2">"5s"</span><span class="p">,</span>
         <span class="s1">'has_speed'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s1">'load_dataset_kwargs'</span><span class="p">:</span> <span class="p">{}</span>
     <span class="p">},</span>
@@ -390,13 +394,265 @@
     <span class="s1">'speed_calib'</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">'required'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s1">'tau'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s1">'contour_level'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s1">'z'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s1">'bad'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="p">}</span>
+        <span class="s1">'contour_level'</span><span class="p">:</span> <span class="mf">0.1</span>
+    <span class="p">},</span>
+    <span class="s1">'log_level'</span><span class="p">:</span> <span class="s2">"INFO"</span>
 <span class="p">}</span>
 
 <span class="n">_DUMP_INDENT</span> <span class="o">=</span> <span class="mi">4</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigTDRRead</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Configuration of variables for reading source TDR dataset.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    depth_name : str</span>
+<span class="sd">        Name of the depth variable in the dataset.</span>
+<span class="sd">    time_name : str</span>
+<span class="sd">        Name of the time variables in the dataset.</span>
+<span class="sd">    subsample : str</span>
+<span class="sd">        Interval frequency to subsample the input dataset at, expressed as</span>
+<span class="sd">        in pandas offset aliases (:func:`pandas.Timedelta`).</span>
+<span class="sd">    has_speed : bool</span>
+<span class="sd">        Whether the dataset includes a speed variable.</span>
+<span class="sd">    load_dataset_kwargs : dict</span>
+<span class="sd">        Dictionary with optional key-value pairs for</span>
+<span class="sd">        :meth:`~xarray.load_dataset`.</span>
+
+<span class="sd">    """</span>
+    <span class="n">depth_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"depth"</span>
+    <span class="n">time_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"timestamp"</span>
+    <span class="n">subsample</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"5s"</span>
+    <span class="n">has_speed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">load_dataset_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigTDRZOC</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Configuration for zero offset correction procedure.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    required : bool</span>
+<span class="sd">        Whether ZOC is required for the input data.</span>
+<span class="sd">    method : {"offset", "filter"}</span>
+<span class="sd">        The ZOC method to use.</span>
+<span class="sd">    parameters : dict</span>
+<span class="sd">        A dictionary with parameters for the selected method.</span>
+
+<span class="sd">    """</span>
+    <span class="n">required</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"offset"</span><span class="p">,</span> <span class="s2">"filter"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"offset"</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Validate method."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"offset"</span><span class="p">,</span> <span class="s2">"filter"</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`method` must be one of 'offset' or 'filter'"</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigTDRWetDry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Configuration of variables for wet/dry phase identification.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dry_thr : float</span>
+<span class="sd">        The maximum dry time [s] allowed between wet phases. Dry phases</span>
+<span class="sd">        longer than this threshold generate a dry phase, otherwise they are</span>
+<span class="sd">        considered part of the encompassing wet phase.</span>
+<span class="sd">    wet_thr : float</span>
+<span class="sd">        The minimum wet time [s] allowed between dry phases without</span>
+<span class="sd">        interrupting them. Wet phases longer than this threshold generate a</span>
+<span class="sd">        wet phase, otherwise they are considered trivial wet phases.</span>
+<span class="sd">    interp_wet : bool</span>
+<span class="sd">        Whether to interpolate missing depth records in wet periods (after</span>
+<span class="sd">        ZOC).</span>
+
+<span class="sd">    """</span>
+    <span class="n">dry_thr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">70.0</span>
+    <span class="n">wet_thr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3610.0</span>
+    <span class="n">interp_wet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Validate thresholds."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_thr</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`dry_thr` must be greater than zero."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wet_thr</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`wet_thr` must be greater than zero."</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigTDRDives</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Configuration of variables for dive identification.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dive_thr : float</span>
+<span class="sd">        Threshold depth below which an underwater phase defines a dive.</span>
+<span class="sd">    dive_model : {"unimodal", "smooth.spline"}</span>
+<span class="sd">        Model to use for dive phase identification.</span>
+<span class="sd">    knot_factor : int</span>
+<span class="sd">        Multiplier to generate the knots in the dive spline.</span>
+<span class="sd">    smooth_par : float</span>
+<span class="sd">        Amount of smoothing (when ``dive_model="smooth.spline"``.</span>
+<span class="sd">    descent_crit_q, ascent_crit_q : float</span>
+<span class="sd">        Critical quantiles for rate of descent or ascent defining the end</span>
+<span class="sd">        of descent, or the beginning of ascent phases.</span>
+
+<span class="sd">    """</span>
+    <span class="n">smooth_par</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">dive_thr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span>
+    <span class="n">dive_model</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="s2">"smooth.spline"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"unimodal"</span>
+    <span class="n">knot_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">descent_crit_q</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ascent_crit_q</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Validate dive threshold</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dive_thr</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`dive_thr` must be greater than zero."</span><span class="p">)</span>
+        <span class="c1"># Validate dive model</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dive_model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"unimodal"</span><span class="p">,</span> <span class="s2">"smooth.spline"</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"`dive_model` must be one of 'unimodal' or 'smooth.spline'"</span><span class="p">)</span>
+        <span class="c1"># Validate knot factor</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">knot_factor</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`knot_factor` must be greater than zero."</span><span class="p">)</span>
+        <span class="c1"># Validate smooth paramater</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_par</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_par</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"`smooth_par` must lie in the [0, 1) interval."</span><span class="p">)</span>
+        <span class="c1"># Validate critical quantiles</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descent_crit_q</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"`descent_crit_q` must lie in the [0, 1) interval."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ascent_crit_q</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"`ascent_crit_q` must lie in the [0, 1) interval."</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigTDRSpeed</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Configuration of variables for speed calibration.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    required : bool</span>
+<span class="sd">        Whether speed calibration is required for the input data.</span>
+<span class="sd">    tau : float</span>
+<span class="sd">        Quantile on which to regress speed on rate of depth change.</span>
+<span class="sd">    contour_level : float</span>
+<span class="sd">        Contour level to use for quantile regression.</span>
+
+<span class="sd">    """</span>
+    <span class="n">required</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">tau</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">contour_level</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Validate tau and contour level."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`tau` must lie in the [0, 1] interval."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contour_level</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"`contour_level` must lie in the [0, 1] interval."</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigTDR</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Configuration for TDR processing</span>
+
+<span class="sd">    Encapsulates variables required by methods and functions for processing</span>
+<span class="sd">    TDR records.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log_level :  str</span>
+<span class="sd">        Logging level.</span>
+<span class="sd">    read : ConfigTDRRead</span>
+<span class="sd">    zoc : ConfigTDRZOC</span>
+<span class="sd">    wet_dry : ConfigTDRWetDry</span>
+<span class="sd">    dives : ConfigTDRDives</span>
+<span class="sd">    speed_calib : ConfigTDRSpeed</span>
+
+<span class="sd">    """</span>
+    <span class="n">read</span><span class="p">:</span> <span class="n">ConfigTDRRead</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ConfigTDRRead</span><span class="p">(</span><span class="o">**</span><span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"read"</span><span class="p">]))</span>
+    <span class="n">zoc</span><span class="p">:</span> <span class="n">ConfigTDRZOC</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ConfigTDRZOC</span><span class="p">(</span><span class="o">**</span><span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"zoc"</span><span class="p">]))</span>
+    <span class="n">wet_dry</span><span class="p">:</span> <span class="n">ConfigTDRWetDry</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ConfigTDRWetDry</span><span class="p">(</span><span class="o">**</span><span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"wet_dry"</span><span class="p">]))</span>
+    <span class="n">dives</span><span class="p">:</span> <span class="n">ConfigTDRDives</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ConfigTDRDives</span><span class="p">(</span><span class="o">**</span><span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"dives"</span><span class="p">]))</span>
+    <span class="n">speed_calib</span><span class="p">:</span> <span class="n">ConfigTDRSpeed</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ConfigTDRSpeed</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"speed_calib"</span><span class="p">]))</span>
+    <span class="n">log_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"log_level"</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">:</span> <span class="s2">"ConfigTDR"</span><span class="p">,</span>
+            <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ConfigTDR"</span><span class="p">:</span>
+        <span class="n">read_d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"read"</span><span class="p">,</span> <span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"read"</span><span class="p">])</span>
+        <span class="n">zoc_d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"zoc"</span><span class="p">,</span> <span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"zoc"</span><span class="p">])</span>
+        <span class="n">wet_dry_d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"wet_dry"</span><span class="p">,</span> <span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"wet_dry"</span><span class="p">])</span>
+        <span class="n">dives_d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dives"</span><span class="p">,</span> <span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"dives"</span><span class="p">])</span>
+        <span class="n">speed_calib_d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">"speed_calib"</span><span class="p">,</span> <span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"speed_calib"</span><span class="p">])</span>
+        <span class="n">log_level</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">"log_level"</span><span class="p">,</span> <span class="n">_DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">"log_level"</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">read</span><span class="o">=</span><span class="n">ConfigTDRRead</span><span class="p">(</span><span class="o">**</span><span class="n">read_d</span><span class="p">),</span>
+            <span class="n">zoc</span><span class="o">=</span><span class="n">ConfigTDRZOC</span><span class="p">(</span><span class="o">**</span><span class="n">zoc_d</span><span class="p">),</span>
+            <span class="n">wet_dry</span><span class="o">=</span><span class="n">ConfigTDRWetDry</span><span class="p">(</span><span class="o">**</span><span class="n">wet_dry_d</span><span class="p">),</span>
+            <span class="n">dives</span><span class="o">=</span><span class="n">ConfigTDRDives</span><span class="p">(</span><span class="o">**</span><span class="n">dives_d</span><span class="p">),</span>
+            <span class="n">speed_calib</span><span class="o">=</span><span class="n">ConfigTDRSpeed</span><span class="p">(</span><span class="o">**</span><span class="n">speed_calib_d</span><span class="p">),</span>
+            <span class="n">log_level</span><span class="o">=</span><span class="n">log_level</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_config_file</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">:</span> <span class="s2">"ConfigTDR"</span><span class="p">,</span>
+            <span class="n">config_json</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ConfigTDR"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Instantiate from json configuration file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config_json : PosixPath</span>
+<span class="sd">            Path to json configuration file.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConfigTDR</span>
+
+<span class="sd">        """</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_json</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfg</span><span class="p">:</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Invalid JSON syntax in </span><span class="si">{</span><span class="n">config_json</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">dump_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Dump configuration dictionary to file</span>
+
+<span class="sd">        Dump instance dictionary onto a JSON configuration file to set up</span>
+<span class="sd">        TDR calibration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fname : str or file-like</span>
+<span class="sd">            A valid string path, or `file-like` object, for output file.</span>
+
+<span class="sd">        """</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofile</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">ofile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">_DUMP_INDENT</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="dump_config_template">
@@ -423,46 +679,8 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">read_config</span><span class="p">(</span><span class="n">config_file</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Read configuration file into dictionary</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    config_file : str or file-like</span>
-<span class="sd">        A valid string path, or `file-like` object, for input file.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : dict</span>
-
-<span class="sd">    """</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ifile</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ifile</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">config</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">dump_config</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Dump configuration dictionary to file</span>
-
-<span class="sd">    Dump a dictionary onto a JSON configuration file to set up TDR</span>
-<span class="sd">    calibration.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    fname : str or file-like</span>
-<span class="sd">        A valid string path, or `file-like` object, for output file.</span>
-<span class="sd">    config_dict : dict</span>
-<span class="sd">        Dictionary to dump.</span>
-
-<span class="sd">    """</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ofile</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ofile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">_DUMP_INDENT</span><span class="p">)</span>
-
-
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">dump_config_template</span><span class="p">(</span><span class="s2">"tdr_config.json"</span><span class="p">)</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">(</span><span class="s2">"tdr_config.json"</span><span class="p">)</span>
 </pre></div>
 
                 </article>

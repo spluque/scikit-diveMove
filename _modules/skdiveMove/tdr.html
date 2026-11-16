@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdr &#8212; skdiveMove 1.0.1 documentation</title>
+    <title>skdiveMove.tdr &#8212; skdiveMove 1.1.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../_static/documentation_options.js?v=fc837d61"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skdiveMove/tdr';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1" />
+  <meta name="docsearch:version" content="1.1.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -119,8 +119,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.1.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.1.0 documentation - Home"/>
   
   
 </a></div>
@@ -362,14 +362,16 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tdrphases</span><span class="w"> </span><span class="kn">import</span> <span class="n">TDRPhases</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.plotting</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plotting</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.calibspeed</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">speedcal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.calibconfig</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">calibconfig</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tdrphases</span><span class="w"> </span><span class="kn">import</span> <span class="n">TDRPhases</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">get_var_sampling_interval</span><span class="p">,</span>
                                 <span class="n">_get_dive_indices</span><span class="p">,</span> <span class="n">_append_xr_attr</span><span class="p">,</span>
                                 <span class="n">_one_dive_stats</span><span class="p">,</span> <span class="n">_speed_stats</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.calibconfig</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">calibconfig</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -1249,35 +1251,46 @@
 
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">config_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">calibconfig</span><span class="o">.</span><span class="n">_DEFAULT_CONFIG</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">calibconfig</span><span class="o">.</span><span class="n">ConfigTDR</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">calibconfig</span><span class="o">.</span><span class="n">read_config</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">calibconfig</span><span class="o">.</span><span class="n">ConfigTDR</span><span class="o">.</span><span class="n">from_config_file</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
 
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"log_level"</span><span class="p">])</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">log_level</span><span class="p">)</span>
 
-    <span class="n">load_dataset_kwargs</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"load_dataset_kwargs"</span><span class="p">)</span>
+    <span class="n">read_args</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">load_dataset_kwargs</span> <span class="o">=</span> <span class="n">read_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"load_dataset_kwargs"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">load_dataset_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Reading config: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">"</span>
-                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">],</span> <span class="n">load_dataset_kwargs</span><span class="p">))</span>
-    <span class="n">tdr</span> <span class="o">=</span> <span class="n">TDR</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">tdr_file</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">],</span> <span class="o">**</span><span class="n">load_dataset_kwargs</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">read_args</span><span class="p">,</span> <span class="n">load_dataset_kwargs</span><span class="p">))</span>
+    <span class="n">tdr</span> <span class="o">=</span> <span class="n">TDR</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span>
+        <span class="n">tdr_file</span><span class="p">,</span> <span class="o">**</span><span class="n">read_args</span><span class="p">,</span> <span class="o">**</span><span class="n">load_dataset_kwargs</span><span class="p">)</span>
 
-    <span class="n">do_zoc</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"zoc"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"required"</span><span class="p">)</span>
+    <span class="n">zoc_d</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">zoc</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"ZOC config: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zoc_d</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">do_zoc</span> <span class="o">=</span> <span class="n">zoc_d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"required"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">do_zoc</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="n">do_zoc</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"ZOC config: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"zoc"</span><span class="p">]))</span>
-        <span class="n">tdr</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"zoc"</span><span class="p">][</span><span class="s2">"method"</span><span class="p">],</span> <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">"zoc"</span><span class="p">][</span><span class="s2">"parameters"</span><span class="p">])</span>
+        <span class="n">tdr</span><span class="o">.</span><span class="n">zoc</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">zoc</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">zoc</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Wet/Dry config: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"wet_dry"</span><span class="p">]))</span>
-    <span class="n">tdr</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">"wet_dry"</span><span class="p">])</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Wet/Dry config: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">))</span>
+    <span class="n">tdr</span><span class="o">.</span><span class="n">detect_wet</span><span class="p">(</span><span class="o">**</span><span class="n">asdict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">wet_dry</span><span class="p">))</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Dives config: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"dives"</span><span class="p">]))</span>
-    <span class="n">tdr</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"dives"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"dive_thr"</span><span class="p">))</span>
-    <span class="n">tdr</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">"dives"</span><span class="p">])</span>
+    <span class="n">dives_d</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">dives</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Dives config: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dives_d</span><span class="p">))</span>
+    <span class="n">tdr</span><span class="o">.</span><span class="n">detect_dives</span><span class="p">(</span><span class="n">dives_d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"dive_thr"</span><span class="p">))</span>
+    <span class="n">tdr</span><span class="o">.</span><span class="n">detect_dive_phases</span><span class="p">(</span><span class="o">**</span><span class="n">dives_d</span><span class="p">)</span>
 
-    <span class="n">do_speed_calib</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"speed_calib"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"required"</span><span class="p">))</span>
+    <span class="n">speed_calib_d</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">speed_calib</span><span class="p">)</span>
+    <span class="n">do_speed_calib</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">speed_calib_d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"required"</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">tdr</span><span class="o">.</span><span class="n">has_speed</span> <span class="ow">and</span> <span class="n">do_speed_calib</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Speed calibration config: </span><span class="si">{}</span><span class="s2">"</span>
-                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"speed_calib"</span><span class="p">]))</span>
-        <span class="n">tdr</span><span class="o">.</span><span class="n">calibrate_speed</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">"speed_calib"</span><span class="p">],</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">speed_calib</span><span class="p">))</span>
+        <span class="n">tdr</span><span class="o">.</span><span class="n">calibrate_speed</span><span class="p">(</span><span class="o">**</span><span class="n">speed_calib_d</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">tdr</span></div>
 
@@ -1291,6 +1304,8 @@
     <span class="n">tdrX</span> <span class="o">=</span> <span class="n">TDR</span><span class="o">.</span><span class="n">read_netcdf</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">has_speed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># tdrX = TDRSource(ifile, has_speed=True)</span>
     <span class="c1"># print(tdrX)</span>
+    <span class="n">calibrate</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span>
+              <span class="n">config_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">"config_examples/ag_mk7_2002_022_config.json"</span><span class="p">)</span>
 </pre></div>
 
                 </article>

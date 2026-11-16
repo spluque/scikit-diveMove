@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Bout analysis &#8212; skdiveMove 1.0.1 documentation</title>
+    <title>Bout analysis &#8212; skdiveMove 1.1.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../_static/documentation_options.js?v=fc837d61"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
@@ -50,7 +50,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1" />
+  <meta name="docsearch:version" content="1.1.0" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -122,8 +122,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.0.1 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.0.1 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.1.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.1.0 documentation - Home"/>
   
   
 </a></div>
@@ -948,43 +948,6 @@ probability.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="bouts.random_mixexp">
-<span class="sig-prename descclassname"><span class="pre">bouts.</span></span><span class="sig-name descname"><span class="pre">random_mixexp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/skdiveMove/tests/get_sample_data.html#random_mixexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bouts.random_mixexp" title="Link to this definition">#</a></dt>
-<dd><p>Generate samples from mixture of exponential distributions</p>
-<p>Simulate a mixture of two or three random exponential distributions.
-This uses a special definition for the probabilities (<span class="math notranslate nohighlight">\(p_i\)</span>).  In
-the two-process case, <span class="math notranslate nohighlight">\(p\)</span> represents the proportion of “fast” to
-“slow” events in the mixture.  In the three-process case, <span class="math notranslate nohighlight">\(p_0\)</span>
-represents the proportion of “fast” to “slow” events, and <span class="math notranslate nohighlight">\(p_1\)</span>
-represents the proportion of “slow” to “slow” <em>and</em> “very slow” events.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Output sample size.</p></li>
-<li><p><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em> or </em><em>array_like</em>) – Probabilities for processes in the output mixture sample.</p></li>
-<li><p><strong>lda</strong> (<em>array_like</em>) – array_like with <span class="math notranslate nohighlight">\(\lambda\)</span> (scale) for each process.</p></li>
-<li><p><strong>rng</strong> (<em>Generator</em>) – Random number generator object.  If not provided, a default one is
-used.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><cite>ndarray</cite></p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<p>Draw 1000 samples from a mixture where the first process occurs with
-<span class="math notranslate nohighlight">\(p &lt; 0.7\)</span> and the second process occurs with the remaining
-probability.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">random_mixexp</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">lda</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">]),</span>
-<span class="gp">... </span>              <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
-<span class="go">array([7.27468930e+00, 2.69331091e+00, 5.29542594e+00, 1.02697947e+01,</span>
-<span class="go">       ...])</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </section>
 
 
@@ -1055,7 +1018,6 @@ probability.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bouts.label_bouts"><code class="docutils literal notranslate"><span class="pre">label_bouts()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bouts.random_mixexp"><code class="docutils literal notranslate"><span class="pre">random_mixexp()</span></code></a></li>
 </ul>
   </nav></div>
 
