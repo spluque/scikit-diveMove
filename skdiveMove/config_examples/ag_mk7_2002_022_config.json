@@ -1,8 +1,8 @@
 {
-    "log_level": "INFO",
     "read": {
 	"depth_name": "depth",
 	"time_name": "date_time",
+	"subsample": "5s",
 	"has_speed": true,
 	"load_dataset_kwargs": {}
     },
@@ -28,8 +28,7 @@
     "speed_calib": {
 	"required": true,
 	"tau": 0.1,
-	"contour_level": 0.1,
-	"z": 2,
-	"bad": [0, 0]
-    }
+	"contour_level": 0.1
+    },
+    "log_level": "INFO"
 }

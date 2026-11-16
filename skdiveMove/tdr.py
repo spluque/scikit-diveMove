@@ -6,14 +6,16 @@
 import logging
 import numpy as np
 import pandas as pd
-from skdiveMove.tdrphases import TDRPhases
 import skdiveMove.plotting as plotting
 import skdiveMove.calibspeed as speedcal
+import skdiveMove.calibconfig as calibconfig
+import xarray as xr
+
+from dataclasses import asdict
+from skdiveMove.tdrphases import TDRPhases
 from skdiveMove.helpers import (get_var_sampling_interval,
                                 _get_dive_indices, _append_xr_attr,
                                 _one_dive_stats, _speed_stats)
-import skdiveMove.calibconfig as calibconfig
-import xarray as xr
 
 
 logger = logging.getLogger(__name__)
@@ -858,35 +860,46 @@ def calibrate(tdr_file, config_file=None):
 
     """
     if config_file is None:
-        config = calibconfig._DEFAULT_CONFIG.copy()
+        config = calibconfig.ConfigTDR()
     else:
-        config = calibconfig.read_config(config_file)
+        config = calibconfig.ConfigTDR.from_config_file(config_file)
 
     logger = logging.getLogger(__name__)
-    logger.setLevel(config["log_level"])
+    logger.setLevel(config.log_level)
 
-    load_dataset_kwargs = config["read"].pop("load_dataset_kwargs")
+    read_args = asdict(config.read)
+    try:
+        load_dataset_kwargs = read_args.pop("load_dataset_kwargs")
+    except KeyError:
+        load_dataset_kwargs = {}
     logger.info("Reading config: {}, {}"
-                .format(config["read"], load_dataset_kwargs))
-    tdr = TDR.read_netcdf(tdr_file, **config["read"], **load_dataset_kwargs)
+                .format(read_args, load_dataset_kwargs))
+    tdr = TDR.read_netcdf(
+        tdr_file, **read_args, **load_dataset_kwargs)
 
-    do_zoc = config["zoc"].pop("required")
+    zoc_d = asdict(config.zoc)
+    logger.info("ZOC config: {}".format(zoc_d))
+    try:
+        do_zoc = zoc_d.pop("required")
+    except KeyError:
+        do_zoc = False
     if do_zoc:
-        logger.info("ZOC config: {}".format(config["zoc"]))
-        tdr.zoc(config["zoc"]["method"], **config["zoc"]["parameters"])
+        tdr.zoc(config.zoc.method, **config.zoc.parameters)
 
-    logger.info("Wet/Dry config: {}".format(config["wet_dry"]))
-    tdr.detect_wet(**config["wet_dry"])
+    logger.info("Wet/Dry config: {}".format(config.wet_dry))
+    tdr.detect_wet(**asdict(config.wet_dry))
 
-    logger.info("Dives config: {}".format(config["dives"]))
-    tdr.detect_dives(config["dives"].pop("dive_thr"))
-    tdr.detect_dive_phases(**config["dives"])
+    dives_d = asdict(config.dives)
+    logger.info("Dives config: {}".format(dives_d))
+    tdr.detect_dives(dives_d.pop("dive_thr"))
+    tdr.detect_dive_phases(**dives_d)
 
-    do_speed_calib = bool(config["speed_calib"].pop("required"))
+    speed_calib_d = asdict(config.speed_calib)
+    do_speed_calib = bool(speed_calib_d.pop("required"))
     if tdr.has_speed and do_speed_calib:
         logger.info("Speed calibration config: {}"
-                    .format(config["speed_calib"]))
-        tdr.calibrate_speed(**config["speed_calib"], plot=False)
+                    .format(config.speed_calib))
+        tdr.calibrate_speed(**speed_calib_d, plot=False)
 
     return tdr
 
@@ -899,3 +912,5 @@ if __name__ == '__main__':
     tdrX = TDR.read_netcdf(ifile, has_speed=True)
     # tdrX = TDRSource(ifile, has_speed=True)
     # print(tdrX)
+    calibrate(ifile,
+              config_file=r"config_examples/ag_mk7_2002_022_config.json")

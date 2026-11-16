@@ -8,6 +8,7 @@ import skdiveMove.calibconfig as calibconfig
 import pytest
 
 from pathlib import Path
+from dataclasses import asdict
 
 
 @pytest.fixture(scope="module")
@@ -27,16 +28,21 @@ def test_calibrate(tdr_ifiles):
 
 
 def test_config_template(tmp_path: Path):
-    conffile = tmp_path / "config.json"
+    conffile = tmp_path / "template_config.json"
 
     calibconfig.dump_config_template(conffile)
-    config = calibconfig.read_config(conffile)
-    assert config == calibconfig._DEFAULT_CONFIG
+    config = calibconfig.ConfigTDR.from_config_file(conffile)
+    config_d = asdict(config)
+    del config_d["dives"]["smooth_par"]  # remove injected default
+    assert config_d == calibconfig._DEFAULT_CONFIG
 
 
-def test_dump_config(tmp_path: Path):
-    conffile = tmp_path / "config.json"
+def test_dump_config(tdr_ifiles, tmp_path: Path):
+    _, config_file = tdr_ifiles
+    conffile = tmp_path / "tdr_config.json"
 
-    calibconfig.dump_config(conffile, calibconfig._DEFAULT_CONFIG)
-    config = calibconfig.read_config(conffile)
-    assert config == calibconfig._DEFAULT_CONFIG
+    config_in = calibconfig.ConfigTDR.from_config_file(config_file)
+    config_in.dump_config(conffile)
+    config_out = calibconfig.ConfigTDR.from_config_file(conffile)
+    config_in_d = asdict(config_in)
+    assert config_in_d == asdict(config_out)
