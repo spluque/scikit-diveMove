@@ -539,13 +539,18 @@ class TDR(TDRPhases):
         """
         row_ids = self.get_dives_details("row_ids")
         dive_ids = row_ids["dive_id"]
-        dive_ids_uniq = dive_ids.unique()
         postdive_ids = row_ids["postdive_id"]
+        valid_dive_ids = dive_ids[dive_ids > 0].unique()
 
         if diveNo is None:
-            diveNo = np.arange(1, row_ids["dive_id"].max() + 1).tolist()
+            diveNo = valid_dive_ids.tolist()
         else:
-            diveNo = [x for x in sorted(diveNo) if x in dive_ids_uniq]
+            if np.isscalar(diveNo):
+                diveNo = [diveNo]
+            diveNo = [x for x in sorted(diveNo) if x in valid_dive_ids]
+
+        if not diveNo:
+            raise ValueError("No valid dives selected for plotting.")
 
         depth_all = self.get_depth("zoc").to_dataframe()  # DataFrame
 
@@ -561,12 +566,22 @@ class TDR(TDRPhases):
         if surface:
             isin = isin_dive_ids | isin_postdive_ids
             dives_in = dives_all[isin]
-            sfce0_idx = (postdive_ids[postdive_ids == diveNo[0] - 1]
-                         .last_valid_index())
-            dives_df = pd.concat((dives_all.loc[[sfce0_idx]], dives_in),
-                                 axis=0)
-            details_df = pd.concat((row_ids.loc[[sfce0_idx]], row_ids[isin]),
-                                   axis=0)
+            details_in = row_ids[isin]
+
+            sfce0_idx = (
+                postdive_ids[postdive_ids == diveNo[0] - 1]
+                .last_valid_index()
+            )
+            if sfce0_idx is not None:
+                dives_df = pd.concat(
+                    [dives_all.loc[[sfce0_idx]], dives_in], axis=0
+                )
+                details_df = pd.concat(
+                    [row_ids.loc[[sfce0_idx]], details_in], axis=0
+                )
+            else:
+                dives_df = dives_in
+                details_df = details_in
         else:
             idx_ok = _get_dive_indices(dive_ids, diveNo)
             dives_df = dives_all.iloc[idx_ok, :]
