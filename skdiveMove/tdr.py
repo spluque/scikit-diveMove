@@ -256,6 +256,13 @@ class TDR(TDRPhases):
         postdive_ids = phases_df.loc[:, "postdive_id"]
         ok = (dive_ids > 0) & dive_ids.isin(postdive_ids)
         okpd = (postdive_ids > 0) & postdive_ids.isin(dive_ids)
+
+        if not ok.any():
+            raise ValueError(
+                "No dives with matching post-dive periods are available "
+                "for dive statistics."
+            )
+
         postdive_ids = postdive_ids[okpd]
 
         postdive_dur = (postdive_ids.reset_index()
