@@ -6,7 +6,7 @@ import logging
 import pandas as pd
 
 from skdiveMove.tdrsource import TDRSource
-from skdiveMove.core import robjs, pandas2ri, diveMove
+from skdiveMove.core import get_r
 from skdiveMove.helpers import _append_xr_attr
 
 logger = logging.getLogger(__name__)
@@ -233,11 +233,12 @@ class ZOC(TDRSource):
             column `depth_adj` for corrected depth.
 
         """
-        with (robjs.default_converter + pandas2ri.converter).context():
-            depthmtx = diveMove._depthFilter(depth,
-                                             pd.Series(k), pd.Series(probs),
-                                             pd.Series(depth_bounds),
-                                             na_rm)
+        r = get_r()
+        with (r.robjs.default_converter + r.pandas2ri.converter).context():
+            depthmtx = r.diveMove._depthFilter(depth,
+                                               pd.Series(k), pd.Series(probs),
+                                               pd.Series(depth_bounds),
+                                               na_rm)
 
         colnames = ["k{0}_p{1}".format(k, p) for k, p in zip(k, probs)]
         colnames.append("depth_adj")

@@ -11,7 +11,7 @@ mpl.use("Agg")
 import matplotlib.pyplot as plt              # noqa: E402
 import pytest                                # noqa: E402
 
-from skdiveMove.core import robjs, diveMove  # noqa: E402
+from skdiveMove.core import get_r                        # noqa: E402
 from skdiveMove.tests.scenarios import BoutsBaseScenario  # noqa: E402
 
 
@@ -279,18 +279,19 @@ def test_compare2r(bouts2, bouts3):
     fit1, fit2 = xbouts.fit(init_pars, fit1_opts=fit1_opts,
                             fit2_opts=fit2_opts)
 
-    robjs.r("""
+    r = get_r()
+    r.robjs.r("""
          opts0 <- list(method="L-BFGS-B", lower=c(-2, -5, -10))
          ## opts1 <- list(method="L-BFGS-B", lower=c(1e-1, 1e-3, 1e-6))
          opts1 <- list(method="L-BFGS-B", lower=c(1e-2, 1e-4, 1e-8))
     """)
 
-    x_r = robjs.FloatVector(x2)
-    xbouts_r = diveMove.boutfreqs(x_r, bw=5, plot=False)
-    startval = diveMove.boutinit(xbouts_r, robjs.FloatVector([80]),
-                                 plot=False)
-    fit_r = diveMove.fitMLEbouts(xbouts_r, start=startval,
-                                 optim_opts0=robjs.r["opts0"],
-                                 optim_opts1=robjs.r["opts1"])
-    coefs_r = np.array(robjs.r("coef")(fit_r))
+    x_r = r.robjs.FloatVector(x2)
+    xbouts_r = r.diveMove.boutfreqs(x_r, bw=5, plot=False)
+    startval = r.diveMove.boutinit(xbouts_r, r.robjs.FloatVector([80]),
+                                   plot=False)
+    fit_r = r.diveMove.fitMLEbouts(xbouts_r, start=startval,
+                                   optim_opts0=r.robjs.r["opts0"],
+                                   optim_opts1=r.robjs.r["opts1"])
+    coefs_r = np.array(r.robjs.r("coef")(fit_r))
     np.testing.assert_allclose(coefs_r, fit2.x, rtol=1e-4)

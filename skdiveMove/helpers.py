@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-from skdiveMove.core import robjs, cv, pandas2ri, diveMove
+from skdiveMove.core import get_r
 
 __all__ = ["_load_dataset", "_get_dive_indices", "_append_xr_attr",
            "get_var_sampling_interval", "_cut_dive",
@@ -34,9 +34,10 @@ def _load_dataset(filename_or_obj, **kwargs):
 
 def _get_dive_indices(indices, diveNo):
     """Mapping to diveMove's `.diveIndices`"""
-    with (robjs.default_converter + pandas2ri.converter).context():
+    r = get_r()
+    with (r.robjs.default_converter + r.pandas2ri.converter).context():
         # Subtract 1 for zero-based python
-        idx_ok = diveMove._diveIndices(indices, diveNo) - 1
+        idx_ok = r.diveMove._diveIndices(indices, diveNo) - 1
 
     return idx_ok
 
@@ -115,27 +116,28 @@ def _cut_dive(x, dive_model, smooth_par, knot_factor,
         'ascent_crit', 'descent_crit_rate', 'ascent_crit_rate'}
 
     """
+    r = get_r()
     xx = x.iloc[:, 1:]
-    with (robjs.default_converter + pandas2ri.converter).context():
-        dmodel = diveMove._cutDive(cv.get_conversion().py2rpy(xx),
-                                   dive_model=dive_model,
-                                   smooth_par=smooth_par,
-                                   knot_factor=knot_factor,
-                                   descent_crit_q=descent_crit_q,
-                                   ascent_crit_q=ascent_crit_q)
+    with (r.robjs.default_converter + r.pandas2ri.converter).context():
+        dmodel = r.diveMove._cutDive(r.cv.get_conversion().py2rpy(xx),
+                                     dive_model=dive_model,
+                                     smooth_par=smooth_par,
+                                     knot_factor=knot_factor,
+                                     descent_crit_q=descent_crit_q,
+                                     ascent_crit_q=ascent_crit_q)
         dmodel_slots = ["label.matrix", "dive.spline", "spline.deriv",
                         "descent.crit", "ascent.crit",
                         "descent.crit.rate", "ascent.crit.rate"]
-        lmtx = (np.array(robjs.r.slot(dmodel, dmodel_slots[0]))
+        lmtx = (np.array(r.robjs.r.slot(dmodel, dmodel_slots[0]))
                 .reshape((xx.shape[0], 2), order="F"))
 
-    spl = robjs.r.slot(dmodel, dmodel_slots[1])
-    spl_der = robjs.r.slot(dmodel, dmodel_slots[2])
+    spl = r.robjs.r.slot(dmodel, dmodel_slots[1])
+    spl_der = r.robjs.r.slot(dmodel, dmodel_slots[2])
     spl_der = np.column_stack((spl_der[0], spl_der[1]))
-    desc_crit = robjs.r.slot(dmodel, dmodel_slots[3])[0]
-    asc_crit = robjs.r.slot(dmodel, dmodel_slots[4])[0]
-    desc_crit_r = robjs.r.slot(dmodel, dmodel_slots[5])[0]
-    asc_crit_r = robjs.r.slot(dmodel, dmodel_slots[6])[0]
+    desc_crit = r.robjs.r.slot(dmodel, dmodel_slots[3])[0]
+    asc_crit = r.robjs.r.slot(dmodel, dmodel_slots[4])[0]
+    desc_crit_r = r.robjs.r.slot(dmodel, dmodel_slots[5])[0]
+    asc_crit_r = r.robjs.r.slot(dmodel, dmodel_slots[6])[0]
     # Replace dots with underscore for the output
     dmodel_slots = [x.replace(".", "_") for x in dmodel_slots]
     res = dict(zip(dmodel_slots,
@@ -160,6 +162,7 @@ def _one_dive_stats(x, interval, has_speed=False):
     out : pandas.DataFrame
 
     """
+    r = get_r()
     xx = x.iloc[:, 1:]
     onames_speed = ["begdesc", "enddesc", "begasc", "desctim", "botttim",
                     "asctim", "divetim", "descdist", "bottdist", "ascdist",
@@ -169,8 +172,8 @@ def _one_dive_stats(x, interval, has_speed=False):
                     "asc_tdist", "asc_mean_speed", "asc_angle"]
     onames_nospeed = onames_speed[:14]
 
-    with (robjs.default_converter + pandas2ri.converter).context():
-        res = diveMove.oneDiveStats(xx, interval, has_speed)
+    with (r.robjs.default_converter + r.pandas2ri.converter).context():
+        res = r.diveMove.oneDiveStats(xx, interval, has_speed)
 
     if has_speed:
         onames = onames_speed
@@ -202,11 +205,12 @@ def _speed_stats(x, vdist=None):
     out :
 
     """
+    r = get_r()
     kwargs = dict(x=x)
     if vdist is not None:
         kwargs.update(vdist=vdist)
-    with (robjs.default_converter + pandas2ri.converter).context():
-        res = diveMove._speedStats(**kwargs)
+    with (r.robjs.default_converter + r.pandas2ri.converter).context():
+        res = r.diveMove._speedStats(**kwargs)
 
     return res
 
