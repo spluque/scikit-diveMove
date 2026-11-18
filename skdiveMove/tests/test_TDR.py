@@ -52,6 +52,13 @@ def test_dive_stats(test_tdr_calib):
     dstats = tdr_calib.dive_stats()
     assert isinstance(dstats, DataFrame)
 
+    # Generate a new scenario with no eligible dives
+    tdr = TDRScenario("TDR", has_speed=True)
+    tdr.default_pars["dive_thr"] = 100
+    tdr.detect_dives()
+    with pytest.raises(ValueError):
+        tdr.tdrX.dive_stats()
+
 
 def test_get_depth(test_tdr_calib):
     tdr_calib = test_tdr_calib.tdrX
@@ -196,6 +203,10 @@ def test_plot_phases(test_tdr_calib):
     speed_scat = axs[1].collections[0].get_offsets().data
     assert l_depth.size == l_speed.size
     assert speed_scat.size <= l_speed.size
+
+    # Test invalid dive request
+    with pytest.raises(ValueError):
+        tdr_calib.plot_phases(1000)
 
 
 @pytest.mark.plotting

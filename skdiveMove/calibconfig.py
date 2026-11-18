@@ -168,14 +168,14 @@ class ConfigTDRDives:
         # Validate smooth paramater
         if self.smooth_par is not None and not (0 < self.smooth_par <= 1):
             raise ValueError(
-                "`smooth_par` must lie in the [0, 1) interval.")
+                "`smooth_par` must lie in the (0, 1] interval.")
         # Validate critical quantiles
         if not (0 <= self.descent_crit_q <= 1):
             raise ValueError(
-                "`descent_crit_q` must lie in the [0, 1) interval.")
+                "`descent_crit_q` must lie in the [0, 1] interval.")
         if not (0 <= self.ascent_crit_q <= 1):
             raise ValueError(
-                "`ascent_crit_q` must lie in the [0, 1) interval.")
+                "`ascent_crit_q` must lie in the [0, 1] interval.")
 
 
 @dataclass
