@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdrsource &#8212; skdiveMove 1.1.0 documentation</title>
+    <title>skdiveMove.tdrsource &#8212; skdiveMove 1.2.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=fc837d61"></script>
+    <script src="../../_static/documentation_options.js?v=6efca38a"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skdiveMove/tdrsource';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.1.0" />
+  <meta name="docsearch:version" content="1.2.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -119,8 +119,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.1.0 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.1.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.2.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.2.0 documentation - Home"/>
   
   
 </a></div>
@@ -418,15 +418,26 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_name</span> <span class="o">=</span> <span class="n">time_name</span>
         <span class="k">if</span> <span class="n">subsample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">resample</span><span class="p">({</span><span class="n">time_name</span><span class="p">:</span> <span class="n">subsample</span><span class="p">})</span>
-                        <span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="s2">"linear"</span><span class="p">))</span>
+            <span class="n">dataset_attrs</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">variable_attrs</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">name</span><span class="p">:</span> <span class="n">variable</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+
+            <span class="n">resampled</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">resample</span><span class="p">({</span><span class="n">time_name</span><span class="p">:</span> <span class="n">subsample</span><span class="p">})</span>
+                         <span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="s2">"linear"</span><span class="p">))</span>
+            <span class="n">resampled</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">dataset_attrs</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="n">variable_attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">resampled</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                    <span class="n">resampled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">attrs</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span> <span class="o">=</span> <span class="n">resampled</span>
             <span class="k">for</span> <span class="n">vname</span><span class="p">,</span> <span class="n">da</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span>
-                                             <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">subsample</span><span class="p">)</span>
-                                             <span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
+                <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">subsample</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
                 <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"sampling_rate_units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Hz"</span>
-                <span class="n">_append_xr_attr</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="s2">"history"</span><span class="p">,</span>
-                                <span class="s2">"Resampled to </span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subsample</span><span class="p">))</span>
+                <span class="n">_append_xr_attr</span><span class="p">(</span>
+                    <span class="n">da</span><span class="p">,</span> <span class="s2">"history"</span><span class="p">,</span> <span class="s2">"Resampled to </span><span class="si">{}</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subsample</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tdr</span> <span class="o">=</span> <span class="n">dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">depth_name</span> <span class="o">=</span> <span class="n">depth_name</span>

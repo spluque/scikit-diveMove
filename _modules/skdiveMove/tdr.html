@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>skdiveMove.tdr &#8212; skdiveMove 1.1.0 documentation</title>
+    <title>skdiveMove.tdr &#8212; skdiveMove 1.2.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=fc837d61"></script>
+    <script src="../../_static/documentation_options.js?v=6efca38a"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/skdiveMove/tdr';</script>
@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.1.0" />
+  <meta name="docsearch:version" content="1.2.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -119,8 +119,8 @@
       
     
     
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.1.0 documentation - Home"/>
-    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.1.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-light" alt="skdiveMove 1.2.0 documentation - Home"/>
+    <img src="https://raw.githubusercontent.com/spluque/scikit-diveMove/master/docs/source/.static/skdiveMove_logo_1line.png" class="logo__image only-dark pst-js-only" alt="skdiveMove 1.2.0 documentation - Home"/>
   
   
 </a></div>
@@ -365,7 +365,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.plotting</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plotting</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.calibspeed</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">speedcal</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">skdiveMove.calibconfig</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">calibconfig</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">skdiveMove.tdrphases</span><span class="w"> </span><span class="kn">import</span> <span class="n">TDRPhases</span>
@@ -378,9 +377,6 @@
 <span class="c1"># Add the null handler if importing as library; whatever using this library</span>
 <span class="c1"># should set up logging.basicConfig() as needed</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NullHandler</span><span class="p">())</span>
-
-<span class="c1"># Keep attributes in xarray operations</span>
-<span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="TDR">
@@ -619,6 +615,13 @@
         <span class="n">postdive_ids</span> <span class="o">=</span> <span class="n">phases_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">"postdive_id"</span><span class="p">]</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">dive_ids</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">dive_ids</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">postdive_ids</span><span class="p">)</span>
         <span class="n">okpd</span> <span class="o">=</span> <span class="p">(</span><span class="n">postdive_ids</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">postdive_ids</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">dive_ids</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"No dives with matching post-dive periods are available "</span>
+                <span class="s2">"for dive statistics."</span>
+            <span class="p">)</span>
+
         <span class="n">postdive_ids</span> <span class="o">=</span> <span class="n">postdive_ids</span><span class="p">[</span><span class="n">okpd</span><span class="p">]</span>
 
         <span class="n">postdive_dur</span> <span class="o">=</span> <span class="p">(</span><span class="n">postdive_ids</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
@@ -904,13 +907,18 @@
 <span class="sd">        """</span>
         <span class="n">row_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dives_details</span><span class="p">(</span><span class="s2">"row_ids"</span><span class="p">)</span>
         <span class="n">dive_ids</span> <span class="o">=</span> <span class="n">row_ids</span><span class="p">[</span><span class="s2">"dive_id"</span><span class="p">]</span>
-        <span class="n">dive_ids_uniq</span> <span class="o">=</span> <span class="n">dive_ids</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
         <span class="n">postdive_ids</span> <span class="o">=</span> <span class="n">row_ids</span><span class="p">[</span><span class="s2">"postdive_id"</span><span class="p">]</span>
+        <span class="n">valid_dive_ids</span> <span class="o">=</span> <span class="n">dive_ids</span><span class="p">[</span><span class="n">dive_ids</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">diveNo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">diveNo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">row_ids</span><span class="p">[</span><span class="s2">"dive_id"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">diveNo</span> <span class="o">=</span> <span class="n">valid_dive_ids</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">diveNo</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">diveNo</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dive_ids_uniq</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">diveNo</span><span class="p">):</span>
+                <span class="n">diveNo</span> <span class="o">=</span> <span class="p">[</span><span class="n">diveNo</span><span class="p">]</span>
+            <span class="n">diveNo</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">diveNo</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">valid_dive_ids</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">diveNo</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No valid dives selected for plotting."</span><span class="p">)</span>
 
         <span class="n">depth_all</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="s2">"zoc"</span><span class="p">)</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>  <span class="c1"># DataFrame</span>
 
@@ -926,12 +934,22 @@
         <span class="k">if</span> <span class="n">surface</span><span class="p">:</span>
             <span class="n">isin</span> <span class="o">=</span> <span class="n">isin_dive_ids</span> <span class="o">|</span> <span class="n">isin_postdive_ids</span>
             <span class="n">dives_in</span> <span class="o">=</span> <span class="n">dives_all</span><span class="p">[</span><span class="n">isin</span><span class="p">]</span>
-            <span class="n">sfce0_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">postdive_ids</span><span class="p">[</span><span class="n">postdive_ids</span> <span class="o">==</span> <span class="n">diveNo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-                         <span class="o">.</span><span class="n">last_valid_index</span><span class="p">())</span>
-            <span class="n">dives_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">dives_all</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="n">sfce0_idx</span><span class="p">]],</span> <span class="n">dives_in</span><span class="p">),</span>
-                                 <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">details_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">row_ids</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="n">sfce0_idx</span><span class="p">]],</span> <span class="n">row_ids</span><span class="p">[</span><span class="n">isin</span><span class="p">]),</span>
-                                   <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">details_in</span> <span class="o">=</span> <span class="n">row_ids</span><span class="p">[</span><span class="n">isin</span><span class="p">]</span>
+
+            <span class="n">sfce0_idx</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">postdive_ids</span><span class="p">[</span><span class="n">postdive_ids</span> <span class="o">==</span> <span class="n">diveNo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="o">.</span><span class="n">last_valid_index</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">sfce0_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">dives_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">dives_all</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="n">sfce0_idx</span><span class="p">]],</span> <span class="n">dives_in</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">)</span>
+                <span class="n">details_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">row_ids</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="n">sfce0_idx</span><span class="p">]],</span> <span class="n">details_in</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dives_df</span> <span class="o">=</span> <span class="n">dives_in</span>
+                <span class="n">details_df</span> <span class="o">=</span> <span class="n">details_in</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">idx_ok</span> <span class="o">=</span> <span class="n">_get_dive_indices</span><span class="p">(</span><span class="n">dive_ids</span><span class="p">,</span> <span class="n">diveNo</span><span class="p">)</span>
             <span class="n">dives_df</span> <span class="o">=</span> <span class="n">dives_all</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_ok</span><span class="p">,</span> <span class="p">:]</span>
@@ -1122,6 +1140,7 @@
                 <span class="n">coef_b</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">ospeed</span> <span class="o">=</span> <span class="p">(</span><span class="n">ispeed</span> <span class="o">-</span> <span class="n">coef_a</span><span class="p">)</span> <span class="o">/</span> <span class="n">coef_b</span>
+            <span class="n">ospeed</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ispeed</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">_append_xr_attr</span><span class="p">(</span><span class="n">ospeed</span><span class="p">,</span> <span class="s2">"history"</span><span class="p">,</span> <span class="s2">"speed_calib_fit"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">"kind must be one of: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kinds</span><span class="p">)</span>
