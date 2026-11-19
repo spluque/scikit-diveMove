@@ -9,7 +9,6 @@ import pandas as pd
 import skdiveMove.plotting as plotting
 import skdiveMove.calibspeed as speedcal
 import skdiveMove.calibconfig as calibconfig
-import xarray as xr
 
 from dataclasses import asdict
 from skdiveMove.tdrphases import TDRPhases
@@ -22,9 +21,6 @@ logger = logging.getLogger(__name__)
 # Add the null handler if importing as library; whatever using this library
 # should set up logging.basicConfig() as needed
 logger.addHandler(logging.NullHandler())
-
-# Keep attributes in xarray operations
-xr.set_options(keep_attrs=True)
 
 
 class TDR(TDRPhases):
@@ -763,6 +759,7 @@ class TDR(TDRPhases):
                 coef_b = coefs[1]
 
             ospeed = (ispeed - coef_a) / coef_b
+            ospeed.attrs = ispeed.attrs.copy()
             _append_xr_attr(ospeed, "history", "speed_calib_fit")
         else:
             msg = "kind must be one of: {}".format(kinds)

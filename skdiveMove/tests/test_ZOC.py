@@ -92,3 +92,18 @@ def test_zoc_filter(zocX):
     assert zocX.zoc_method == "filter"
     attr_hist = zocX.depth_zoc.attrs["history"]
     assert "ZOC" in attr_hist
+
+
+def test_offset_depth_preserves_attrs_without_global_keep_attrs(zocX):
+    source_attrs = zocX.depth.attrs.copy()
+
+    with xr.set_options(keep_attrs=False):
+        zocX._offset_depth(offset=3)
+
+    result_attrs = zocX.depth_zoc.attrs
+    for key in ("units", "full_name", "sampling_rate",
+                "sampling_rate_units"):
+        if key in source_attrs:
+            assert result_attrs[key] == source_attrs[key]
+
+    assert "ZOC" in result_attrs["history"]

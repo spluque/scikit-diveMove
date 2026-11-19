@@ -18,6 +18,7 @@ def tdrX():
 
 
 def test_init(tdrX):
+    source_attrs = tdrX.depth.attrs.copy()
     assert isinstance(tdrX, tdrsrc.TDRSource)
     assert isinstance(tdrX.tdr, xr.Dataset)
     assert tdrX.has_speed
@@ -30,6 +31,10 @@ def test_init(tdrX):
     tdr = diveMove2skd("TDRSource", has_speed=True, subsample="10s")
     assert 10 == pytest.approx(get_var_sampling_interval(tdr.depth)
                                .total_seconds())
+    # Test unchanged original attributes were kept
+    for key in ("units", "full_name"):
+        if key in source_attrs:
+            assert tdrX.depth.attrs[key] == source_attrs[key]
 
 
 def test_str(tdrX):

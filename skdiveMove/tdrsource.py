@@ -62,15 +62,26 @@ class TDRSource:
         """
         self.time_name = time_name
         if subsample is not None:
-            self.tdr = (dataset.resample({time_name: subsample})
-                        .interpolate("linear"))
+            dataset_attrs = dataset.attrs.copy()
+            variable_attrs = {
+                name: variable.attrs.copy()
+                for name, variable in dataset.variables.items()
+                }
+
+            resampled = (dataset.resample({time_name: subsample})
+                         .interpolate("linear"))
+            resampled.attrs = dataset_attrs
+            for name, attrs in variable_attrs.items():
+                if name in resampled.variables:
+                    resampled[name].attrs = attrs
+
+            self.tdr = resampled
             for vname, da in self.tdr.data_vars.items():
-                da.attrs["sampling_rate"] = (1.0 /
-                                             pd.to_timedelta(subsample)
-                                             .total_seconds())
+                da.attrs["sampling_rate"] = (
+                    1.0 / pd.to_timedelta(subsample).total_seconds())
                 da.attrs["sampling_rate_units"] = "Hz"
-                _append_xr_attr(da, "history",
-                                "Resampled to {}\n".format(subsample))
+                _append_xr_attr(
+                    da, "history", "Resampled to {}\n".format(subsample))
         else:
             self.tdr = dataset
         self.depth_name = depth_name

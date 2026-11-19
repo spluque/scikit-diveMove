@@ -75,6 +75,7 @@ class ZOC(TDRSource):
         self._zoc_params = dict(offset=offset)
 
         depth_zoc = depth - offset
+        depth_zoc.attrs = depth.attrs.copy()
         depth_zoc[depth_zoc < 0] = 0
 
         _append_xr_attr(depth_zoc, "history", "ZOC")
@@ -104,7 +105,7 @@ class ZOC(TDRSource):
         depth_zoc = depthmtx.pop("depth_adj")
         depth_zoc[depth_zoc < 0] = 0
         depth_zoc = depth_zoc.rename("depth").to_xarray()
-        depth_zoc.attrs = depth.attrs
+        depth_zoc.attrs = depth.attrs.copy()
         _append_xr_attr(depth_zoc, "history", "ZOC")
         self._depth_zoc = depth_zoc
         self.zoc_filters = depthmtx
